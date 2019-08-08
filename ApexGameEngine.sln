@@ -3,24 +3,24 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.438
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestSandbox", "TestSandbox\TestSandbox.vcxproj", "{3BAE598F-2D01-49B9-A991-B0B4CAC0155E}"
+EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ApexGameEngine", "ApexGameEngine\ApexGameEngine.vcxproj", "{50017F75-CCF2-47B8-81F0-4C815A26AA45}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
-		Debug|x86 = Debug|x86
 		Release|x64 = Release|x64
-		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{50017F75-CCF2-47B8-81F0-4C815A26AA45}.Debug|x64.ActiveCfg = Debug|x64
 		{50017F75-CCF2-47B8-81F0-4C815A26AA45}.Debug|x64.Build.0 = Debug|x64
-		{50017F75-CCF2-47B8-81F0-4C815A26AA45}.Debug|x86.ActiveCfg = Debug|Win32
-		{50017F75-CCF2-47B8-81F0-4C815A26AA45}.Debug|x86.Build.0 = Debug|Win32
 		{50017F75-CCF2-47B8-81F0-4C815A26AA45}.Release|x64.ActiveCfg = Release|x64
 		{50017F75-CCF2-47B8-81F0-4C815A26AA45}.Release|x64.Build.0 = Release|x64
-		{50017F75-CCF2-47B8-81F0-4C815A26AA45}.Release|x86.ActiveCfg = Release|Win32
-		{50017F75-CCF2-47B8-81F0-4C815A26AA45}.Release|x86.Build.0 = Release|Win32
+		{3BAE598F-2D01-49B9-A991-B0B4CAC0155E}.Debug|x64.ActiveCfg = Debug|x64
+		{3BAE598F-2D01-49B9-A991-B0B4CAC0155E}.Debug|x64.Build.0 = Debug|x64
+		{3BAE598F-2D01-49B9-A991-B0B4CAC0155E}.Release|x64.ActiveCfg = Release|x64
+		{3BAE598F-2D01-49B9-A991-B0B4CAC0155E}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
