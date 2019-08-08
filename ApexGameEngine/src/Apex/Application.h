@@ -10,7 +10,7 @@ namespace Apex {
 		Application();
 		virtual ~Application();
 
-		void run();
+		void Run();
 	};
 
 
