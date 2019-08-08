@@ -1,0 +1,3 @@
+[submodule "ApexGameEngine/vendor/spdlog"]
+	path = ApexGameEngine/vendor/spdlog
+	url = https://github.com/gabime/spdlog
