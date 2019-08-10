@@ -61,14 +61,17 @@ project "ApexGameEngine"
 
 	filter "configurations:Debug"
 		defines "APEX_DEBUG"
+		buildoptions "/MDd"
 		symbols "On"
 
 	filter "configurations:Release"
 		defines "APEX_RELEASE"
+		buildoptions "/MD"
 		optimize "On"
 
 	filter "configurations:Dist"
 		defines "APEX_DIST"
+		buildoptions "/MD"
 		optimize "On"
 
 
@@ -106,12 +109,15 @@ project "Sandbox"
 
 	filter "configurations:Debug"
 		defines "APEX_DEBUG"
+		buildoptions "/MDd"
 		symbols "On"
 
 	filter "configurations:Release"
 		defines "APEX_DEBUG"
+		buildoptions "/MD"
 		optimize "On"
 
 	filter "configurations:Dist"
 		defines "APEX_DEBUG"
+		buildoptions "/MD"
 		optimize "On"

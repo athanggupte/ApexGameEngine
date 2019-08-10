@@ -7,6 +7,9 @@
     <Filter Include="Apex\Events">
       <UniqueIdentifier>{9756FD0B-030C-7601-8C00-70D8F8B46C05}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Apex\Layers">
+      <UniqueIdentifier>{7241E01A-DEF6-5810-67EB-52E7D39F4F14}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Apex\Log">
       <UniqueIdentifier>{6487141A-5054-6F25-796D-5DCD6599A4B3}</UniqueIdentifier>
     </Filter>
@@ -37,6 +40,9 @@
     <ClInclude Include="src\Apex\Events\MouseEvent.h">
       <Filter>Apex\Events</Filter>
     </ClInclude>
+    <ClInclude Include="src\Apex\Layers\Layer.h">
+      <Filter>Apex\Layers</Filter>
+    </ClInclude>
     <ClInclude Include="src\Apex\Log\Log.h">
       <Filter>Apex\Log</Filter>
     </ClInclude>
@@ -50,10 +56,14 @@
       <Filter>Platform\Windows</Filter>
     </ClInclude>
     <ClInclude Include="src\apex_pch.h" />
+    <ClInclude Include="src\Apex\Layers\LayerStack.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Apex\Application.cpp">
       <Filter>Apex</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Apex\Layers\Layer.cpp">
+      <Filter>Apex\Layers</Filter>
     </ClCompile>
     <ClCompile Include="src\Apex\Log\Log.cpp">
       <Filter>Apex\Log</Filter>
@@ -62,5 +72,6 @@
       <Filter>Platform\Windows</Filter>
     </ClCompile>
     <ClCompile Include="src\apex_pch.cpp" />
+    <ClCompile Include="src\Apex\Layers\LayerStack.cpp" />
   </ItemGroup>
 </Project>
