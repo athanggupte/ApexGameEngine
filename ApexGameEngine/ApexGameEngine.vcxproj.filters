@@ -43,6 +43,9 @@
     <ClInclude Include="src\Apex\Layers\Layer.h">
       <Filter>Apex\Layers</Filter>
     </ClInclude>
+    <ClInclude Include="src\Apex\Layers\LayerStack.h">
+      <Filter>Apex\Layers</Filter>
+    </ClInclude>
     <ClInclude Include="src\Apex\Log\Log.h">
       <Filter>Apex\Log</Filter>
     </ClInclude>
@@ -56,13 +59,15 @@
       <Filter>Platform\Windows</Filter>
     </ClInclude>
     <ClInclude Include="src\apex_pch.h" />
-    <ClInclude Include="src\Apex\Layers\LayerStack.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Apex\Application.cpp">
       <Filter>Apex</Filter>
     </ClCompile>
     <ClCompile Include="src\Apex\Layers\Layer.cpp">
+      <Filter>Apex\Layers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Apex\Layers\LayerStack.cpp">
       <Filter>Apex\Layers</Filter>
     </ClCompile>
     <ClCompile Include="src\Apex\Log\Log.cpp">
@@ -72,6 +77,5 @@
       <Filter>Platform\Windows</Filter>
     </ClCompile>
     <ClCompile Include="src\apex_pch.cpp" />
-    <ClCompile Include="src\Apex\Layers\LayerStack.cpp" />
   </ItemGroup>
 </Project>

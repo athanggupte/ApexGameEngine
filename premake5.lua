@@ -13,8 +13,10 @@ outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 IncludeDirs = {}
 IncludeDirs["spdlog"] = "ApexGameEngine/vendor/spdlog/include"
 IncludeDirs["GLFW"] = "ApexGameEngine/vendor/GLFW/include"
+IncludeDirs["Glad"] = "ApexGameEngine/vendor/Glad/include"
 
 include "ApexGameEngine/vendor/GLFW"
+include "ApexGameEngine/vendor/Glad"
 
 
 -- Apex Game Engine Project
@@ -37,11 +39,13 @@ project "ApexGameEngine"
 	includedirs {
 		"%{prj.name}/src",
 		"%{IncludeDirs.spdlog}",
-		"%{IncludeDirs.GLFW}"
+		"%{IncludeDirs.GLFW}",
+		"%{IncludeDirs.Glad}"
 	}
 
 	links {
 		"GLFW",
+		"Glad",
 		"opengl32.lib"
 	}
 
@@ -52,7 +56,8 @@ project "ApexGameEngine"
 
 		defines {
 			"APEX_PLATFORM_WINDOWS",
-			"APEX_BUILD_DLL"
+			"APEX_BUILD_DLL",
+			"GLFW_INCLUDE_NONE"
 		}
 
 		postbuildcommands {
@@ -60,7 +65,9 @@ project "ApexGameEngine"
 		}
 
 	filter "configurations:Debug"
-		defines "APEX_DEBUG"
+		defines {
+			"APEX_DEBUG", "APEX_ENABLE_ASSERTS"
+		}
 		buildoptions "/MDd"
 		symbols "On"
 
@@ -108,7 +115,9 @@ project "Sandbox"
 		}
 
 	filter "configurations:Debug"
-		defines "APEX_DEBUG"
+		defines {
+			"APEX_DEBUG", "APEX_ENABLE_ASSERTS"
+		}
 		buildoptions "/MDd"
 		symbols "On"
 

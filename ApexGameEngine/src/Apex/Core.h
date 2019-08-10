@@ -7,7 +7,7 @@
 		#define APEX_API __declspec(dllimport)
 	#endif
 #else
-	#error Apex only support Windows for now!
+	#error Apex only supportS Windows for now!
 #endif
 
 #ifdef APEX_ENABLE_ASSERTS
