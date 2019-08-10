@@ -1,3 +1,6 @@
 [submodule "ApexGameEngine/vendor/spdlog"]
 	path = ApexGameEngine/vendor/spdlog
 	url = https://github.com/gabime/spdlog
+[submodule "ApexGameEngine/vendor/GLFW"]
+	path = ApexGameEngine/vendor/GLFW
+	url = https://github.com/TheCherno/glfw.git

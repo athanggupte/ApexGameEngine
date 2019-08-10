@@ -8,12 +8,7 @@ int main(int argc, char** argv)
 {
 	Apex::Log::Init();
 
-	APEX_CORE_TRACE("TRACE LEVEL");
-	APEX_DEBUG("DEBUG LEVEL");
-	APEX_CORE_INFO("INFO LEVEL");
-	APEX_WARN("WARN LEVEL");
-	APEX_CORE_ERROR("ERROR LEVEL");
-	APEX_CRITICAL("CRITICAL LEVEL");
+	APEX_CORE_INFO("Welcome to Apex Game Engine !");
 
 	auto app = Apex::CreateApplication();
 	app->Run();

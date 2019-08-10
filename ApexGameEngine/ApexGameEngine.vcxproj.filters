@@ -4,6 +4,18 @@
     <Filter Include="Apex">
       <UniqueIdentifier>{139E827C-FFD4-830D-A8C1-691094D7FF0E}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Apex\Events">
+      <UniqueIdentifier>{9756FD0B-030C-7601-8C00-70D8F8B46C05}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Apex\Log">
+      <UniqueIdentifier>{6487141A-5054-6F25-796D-5DCD6599A4B3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Platform">
+      <UniqueIdentifier>{2AC788B4-1694-E3BF-3FAD-D1672BD9184E}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Platform\Windows">
+      <UniqueIdentifier>{64FBD71A-50F4-F66C-7926-DCF1657ED678}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Apex.h" />
@@ -13,19 +25,42 @@
     <ClInclude Include="src\Apex\Core.h">
       <Filter>Apex</Filter>
     </ClInclude>
-    <ClInclude Include="src\Apex\Log.h">
-      <Filter>Apex</Filter>
+    <ClInclude Include="src\Apex\Events\ApplicationEvent.h">
+      <Filter>Apex\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Apex\Events\Event.h">
+      <Filter>Apex\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Apex\Events\KeyEvent.h">
+      <Filter>Apex\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Apex\Events\MouseEvent.h">
+      <Filter>Apex\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Apex\Log\Log.h">
+      <Filter>Apex\Log</Filter>
     </ClInclude>
     <ClInclude Include="src\Apex\StartUp.h">
       <Filter>Apex</Filter>
     </ClInclude>
+    <ClInclude Include="src\Apex\Window.h">
+      <Filter>Apex</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Platform\Windows\WindowsWindow.h">
+      <Filter>Platform\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="src\apex_pch.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Apex\Application.cpp">
       <Filter>Apex</Filter>
     </ClCompile>
-    <ClCompile Include="src\Apex\Log.cpp">
-      <Filter>Apex</Filter>
+    <ClCompile Include="src\Apex\Log\Log.cpp">
+      <Filter>Apex\Log</Filter>
     </ClCompile>
+    <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp">
+      <Filter>Platform\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="src\apex_pch.cpp" />
   </ItemGroup>
 </Project>

@@ -9,6 +9,15 @@ workspace "ApexGameEngine"
 
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
+-- Include directories relative to the root (solution) directory
+IncludeDirs = {}
+IncludeDirs["spdlog"] = "ApexGameEngine/vendor/spdlog/include"
+IncludeDirs["GLFW"] = "ApexGameEngine/vendor/GLFW/include"
+
+include "ApexGameEngine/vendor/GLFW"
+
+
+-- Apex Game Engine Project
 project "ApexGameEngine"
 	location "ApexGameEngine"
 	kind "SharedLib"	--DLL
@@ -17,19 +26,29 @@ project "ApexGameEngine"
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
 
+	pchheader "apex_pch.h"
+	pchsource "ApexGameEngine/src/apex_pch.cpp"
+
 	files {
 		"%{prj.name}/src/**.h",
 		"%{prj.name}/src/**.cpp"
 	}
 
 	includedirs {
-		"%{prj.name}/vendor/spdlog/include"
+		"%{prj.name}/src",
+		"%{IncludeDirs.spdlog}",
+		"%{IncludeDirs.GLFW}"
+	}
+
+	links {
+		"GLFW",
+		"opengl32.lib"
 	}
 
 	filter "system:windows"
 		cppdialect "C++17"
 		staticruntime "On"
-		systemversion "10.0.16299.0"
+		systemversion "latest"
 
 		defines {
 			"APEX_PLATFORM_WINDOWS",
@@ -45,13 +64,15 @@ project "ApexGameEngine"
 		symbols "On"
 
 	filter "configurations:Release"
-		defines "APEX_DEBUG"
+		defines "APEX_RELEASE"
 		optimize "On"
 
 	filter "configurations:Dist"
-		defines "APEX_DEBUG"
+		defines "APEX_DIST"
 		optimize "On"
 
+
+-- Client Application Project
 project "Sandbox"
 	location "Sandbox"
 	kind "ConsoleApp"	--Executable
@@ -66,8 +87,8 @@ project "Sandbox"
 	}
 
 	includedirs {
-		"ApexGameEngine/vendor/spdlog/include",
-		"ApexGameEngine/src"
+		"ApexGameEngine/src",
+		"%{IncludeDirs.spdlog}"
 	}
 
 	links {
@@ -77,7 +98,7 @@ project "Sandbox"
 	filter "system:windows"
 		cppdialect "C++17"
 		staticruntime "On"
-		systemversion "10.0.16299.0"
+		systemversion "latest"
 
 		defines {
 			"APEX_PLATFORM_WINDOWS"
