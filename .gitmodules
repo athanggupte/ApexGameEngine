@@ -4,10 +4,6 @@
 [submodule "ApexGameEngine/vendor/GLFW"]
 	path = ApexGameEngine/vendor/GLFW
 	url = https://github.com/TheCherno/glfw.git
-[submodule "ApexGameEngine\\vendor\\imgui"]
-	path = ApexGameEngine\\vendor\\imgui
-	url = https://github.com/TheCherno/imgui.git
 [submodule "ApexGameEngine/vendor/imgui"]
 	path = ApexGameEngine/vendor/imgui
 	url = https://github.com/TheCherno/imgui.git
-	branch = master
