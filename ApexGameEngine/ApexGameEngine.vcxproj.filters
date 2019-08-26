@@ -7,6 +7,9 @@
     <Filter Include="Apex\Events">
       <UniqueIdentifier>{9756FD0B-030C-7601-8C00-70D8F8B46C05}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Apex\ImGui">
+      <UniqueIdentifier>{7D151CF1-69CD-5D3E-D2D4-369ABEABF82E}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Apex\Layers">
       <UniqueIdentifier>{7241E01A-DEF6-5810-67EB-52E7D39F4F14}</UniqueIdentifier>
     </Filter>
@@ -15,6 +18,9 @@
     </Filter>
     <Filter Include="Platform">
       <UniqueIdentifier>{2AC788B4-1694-E3BF-3FAD-D1672BD9184E}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Platform\OpenGL">
+      <UniqueIdentifier>{1E7D2C1D-8A08-9AE1-9319-1DD6FF23F6E1}</UniqueIdentifier>
     </Filter>
     <Filter Include="Platform\Windows">
       <UniqueIdentifier>{64FBD71A-50F4-F66C-7926-DCF1657ED678}</UniqueIdentifier>
@@ -40,6 +46,9 @@
     <ClInclude Include="src\Apex\Events\MouseEvent.h">
       <Filter>Apex\Events</Filter>
     </ClInclude>
+    <ClInclude Include="src\Apex\ImGui\ImGuiLayer.h">
+      <Filter>Apex\ImGui</Filter>
+    </ClInclude>
     <ClInclude Include="src\Apex\Layers\Layer.h">
       <Filter>Apex\Layers</Filter>
     </ClInclude>
@@ -55,6 +64,9 @@
     <ClInclude Include="src\Apex\Window.h">
       <Filter>Apex</Filter>
     </ClInclude>
+    <ClInclude Include="src\Platform\OpenGL\imgui_impl_opengl3.h">
+      <Filter>Platform\OpenGL</Filter>
+    </ClInclude>
     <ClInclude Include="src\Platform\Windows\WindowsWindow.h">
       <Filter>Platform\Windows</Filter>
     </ClInclude>
@@ -64,6 +76,9 @@
     <ClCompile Include="src\Apex\Application.cpp">
       <Filter>Apex</Filter>
     </ClCompile>
+    <ClCompile Include="src\Apex\ImGui\ImGuiLayer.cpp">
+      <Filter>Apex\ImGui</Filter>
+    </ClCompile>
     <ClCompile Include="src\Apex\Layers\Layer.cpp">
       <Filter>Apex\Layers</Filter>
     </ClCompile>
@@ -72,6 +87,9 @@
     </ClCompile>
     <ClCompile Include="src\Apex\Log\Log.cpp">
       <Filter>Apex\Log</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Platform\OpenGL\imgui_impl_opengl3.cpp">
+      <Filter>Platform\OpenGL</Filter>
     </ClCompile>
     <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp">
       <Filter>Platform\Windows</Filter>

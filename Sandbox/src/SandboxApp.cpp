@@ -25,6 +25,7 @@ public:
 	Sandbox()
 	{
 		PushLayer(new SandboxLayer());
+		PushOverlay(new Apex::ImGuiLayer());
 	}
 
 	~Sandbox()

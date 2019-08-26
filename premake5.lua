@@ -14,9 +14,11 @@ IncludeDirs = {}
 IncludeDirs["spdlog"] = "ApexGameEngine/vendor/spdlog/include"
 IncludeDirs["GLFW"] = "ApexGameEngine/vendor/GLFW/include"
 IncludeDirs["Glad"] = "ApexGameEngine/vendor/Glad/include"
+IncludeDirs["ImGui"] = "ApexGameEngine/vendor/imgui"
 
 include "ApexGameEngine/vendor/GLFW"
 include "ApexGameEngine/vendor/Glad"
+include "ApexGameEngine/vendor/imgui"
 
 
 -- Apex Game Engine Project
@@ -40,12 +42,14 @@ project "ApexGameEngine"
 		"%{prj.name}/src",
 		"%{IncludeDirs.spdlog}",
 		"%{IncludeDirs.GLFW}",
-		"%{IncludeDirs.Glad}"
+		"%{IncludeDirs.Glad}",
+		"%{IncludeDirs.ImGui}"
 	}
 
 	links {
 		"GLFW",
 		"Glad",
+		"ImGui",
 		"opengl32.lib"
 	}
 

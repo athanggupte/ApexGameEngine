@@ -80,7 +80,7 @@
       <PrecompiledHeaderFile>apex_pch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>APEX_PLATFORM_WINDOWS;APEX_BUILD_DLL;GLFW_INCLUDE_NONE;APEX_DEBUG;APEX_ENABLE_ASSERTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\GLFW\include;vendor\Glad\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\GLFW\include;vendor\Glad\include;vendor\imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -103,7 +103,7 @@
       <PrecompiledHeaderFile>apex_pch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>APEX_PLATFORM_WINDOWS;APEX_BUILD_DLL;GLFW_INCLUDE_NONE;APEX_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\GLFW\include;vendor\Glad\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\GLFW\include;vendor\Glad\include;vendor\imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -130,7 +130,7 @@
       <PrecompiledHeaderFile>apex_pch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>APEX_PLATFORM_WINDOWS;APEX_BUILD_DLL;GLFW_INCLUDE_NONE;APEX_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\GLFW\include;vendor\Glad\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\GLFW\include;vendor\Glad\include;vendor\imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -159,19 +159,23 @@
     <ClInclude Include="src\Apex\Events\Event.h" />
     <ClInclude Include="src\Apex\Events\KeyEvent.h" />
     <ClInclude Include="src\Apex\Events\MouseEvent.h" />
+    <ClInclude Include="src\Apex\ImGui\ImGuiLayer.h" />
     <ClInclude Include="src\Apex\Layers\Layer.h" />
     <ClInclude Include="src\Apex\Layers\LayerStack.h" />
     <ClInclude Include="src\Apex\Log\Log.h" />
     <ClInclude Include="src\Apex\StartUp.h" />
     <ClInclude Include="src\Apex\Window.h" />
+    <ClInclude Include="src\Platform\OpenGL\imgui_impl_opengl3.h" />
     <ClInclude Include="src\Platform\Windows\WindowsWindow.h" />
     <ClInclude Include="src\apex_pch.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Apex\Application.cpp" />
+    <ClCompile Include="src\Apex\ImGui\ImGuiLayer.cpp" />
     <ClCompile Include="src\Apex\Layers\Layer.cpp" />
     <ClCompile Include="src\Apex\Layers\LayerStack.cpp" />
     <ClCompile Include="src\Apex\Log\Log.cpp" />
+    <ClCompile Include="src\Platform\OpenGL\imgui_impl_opengl3.cpp" />
     <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp" />
     <ClCompile Include="src\apex_pch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
@@ -183,6 +187,9 @@
     </ProjectReference>
     <ProjectReference Include="vendor\Glad\Glad.vcxproj">
       <Project>{BDD6857C-A90D-870D-52FA-6C103E10030F}</Project>
+    </ProjectReference>
+    <ProjectReference Include="vendor\imgui\ImGui.vcxproj">
+      <Project>{C0FF640D-2C14-8DBE-F595-301E616989EF}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

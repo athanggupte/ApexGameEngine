@@ -6,4 +6,6 @@
 #include "Apex/Layers/Layer.h"
 #include "Apex/Log/Log.h"
 
+#include "Apex/ImGui/ImGuiLayer.h"
+
 #include "Apex/StartUp.h"
