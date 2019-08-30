@@ -57,5 +57,24 @@ namespace Apex {
 
 		EVENT_CLASS_TYPE(KeyReleased)
 	};
+	
+	
+	class APEX_API CharTypedEvent : public KeyEvent
+	{
+	public:
+		CharTypedEvent(int keycode)
+			: KeyEvent(keycode) {}
+
+		std::string ToString() const override
+		{
+			std::stringstream ss;
+			ss << "CharTypedEvent : " << m_KeyCode;
+			return ss.str();
+		}
+
+		EVENT_CLASS_TYPE(CharTyped)
+
+	private:
+	};
 
 }

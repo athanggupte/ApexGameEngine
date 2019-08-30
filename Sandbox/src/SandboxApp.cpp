@@ -8,12 +8,12 @@ public:
 
 	void OnUpdate() override
 	{
-		APEX_INFO("SandboxLayer::Update()");
+		//APEX_INFO("SandboxLayer::Update()");
 	}
 
 	void OnEvent(Apex::Event& event) override
 	{
-		APEX_DEBUG("{0}", event);
+		//APEX_DEBUG("{0}", event);
 	}
 
 };
