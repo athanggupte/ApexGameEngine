@@ -7,6 +7,8 @@
 #include "Apex/Events/Event.h"
 #include "Apex/Events/ApplicationEvent.h"
 
+#include "Apex/ImGui/ImGuiLayer.h"
+
 namespace Apex {
 
 	class APEX_API Application
@@ -29,6 +31,7 @@ namespace Apex {
 		bool OnWindowClose(WindowCloseEvent& e);
 
 		std::unique_ptr<Window> m_Window;
+		ImGuiLayer* m_ImGuiLayer;
 		bool m_Running = true;
 		LayerStack m_LayerStack;
 

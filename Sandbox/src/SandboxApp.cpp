@@ -1,5 +1,7 @@
 #include <Apex.h>
 
+#include <imgui.h>
+
 class SandboxLayer : public Apex::Layer
 {
 public:
@@ -21,6 +23,13 @@ public:
 		}
 	}
 
+	void OnImGuiRender() override
+	{
+		ImGui::Begin("Test");
+		ImGui::Button("Test Button", { 20.f, 20.f });
+		ImGui::End();
+	}
+
 };
 
 
@@ -30,7 +39,6 @@ public:
 	Sandbox()
 	{
 		PushLayer(new SandboxLayer());
-		PushOverlay(new Apex::ImGuiLayer());
 	}
 
 	~Sandbox()

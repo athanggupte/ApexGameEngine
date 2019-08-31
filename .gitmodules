@@ -7,3 +7,6 @@
 [submodule "ApexGameEngine/vendor/imgui"]
 	path = ApexGameEngine/vendor/imgui
 	url = https://github.com/TheCherno/imgui.git
+[submodule "ApexGameEngine/vendor/glm"]
+	path = ApexGameEngine/vendor/glm
+	url = https://github.com/g-truc/glm

@@ -15,6 +15,7 @@ IncludeDirs["spdlog"] = "ApexGameEngine/vendor/spdlog/include"
 IncludeDirs["GLFW"] = "ApexGameEngine/vendor/GLFW/include"
 IncludeDirs["Glad"] = "ApexGameEngine/vendor/Glad/include"
 IncludeDirs["ImGui"] = "ApexGameEngine/vendor/imgui"
+IncludeDirs["glm"] = "ApexGameEngine/vendor/glm"
 
 include "ApexGameEngine/vendor/GLFW"
 include "ApexGameEngine/vendor/Glad"
@@ -35,7 +36,10 @@ project "ApexGameEngine"
 
 	files {
 		"%{prj.name}/src/**.h",
-		"%{prj.name}/src/**.cpp"
+		"%{prj.name}/src/**.cpp",
+		"%{prj.name}/vendor/glm/glm/**.hpp",
+		"%{prj.name}/vendor/glm/glm/**.inl",
+		"%{prj.name}/vendor/glm/glm/**.h"
 	}
 
 	includedirs {
@@ -43,7 +47,8 @@ project "ApexGameEngine"
 		"%{IncludeDirs.spdlog}",
 		"%{IncludeDirs.GLFW}",
 		"%{IncludeDirs.Glad}",
-		"%{IncludeDirs.ImGui}"
+		"%{IncludeDirs.ImGui}",
+		"%{IncludeDirs.glm}"
 	}
 
 	links {
@@ -102,7 +107,10 @@ project "Sandbox"
 
 	includedirs {
 		"ApexGameEngine/src",
-		"%{IncludeDirs.spdlog}"
+		"%{IncludeDirs.spdlog}",
+		"%{IncludeDirs.ImGui}",
+		"%{IncludeDirs.glm}"
+
 	}
 
 	links {
