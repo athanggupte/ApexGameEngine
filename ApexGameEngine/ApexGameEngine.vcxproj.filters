@@ -25,6 +25,9 @@
     <Filter Include="Platform\Windows">
       <UniqueIdentifier>{64FBD71A-50F4-F66C-7926-DCF1657ED678}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Apex\Input">
+      <UniqueIdentifier>{33eac835-ca4f-4ab1-9d0d-331eb0102640}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Apex.h" />
@@ -67,10 +70,22 @@
     <ClInclude Include="src\Platform\OpenGL\imgui_impl_opengl3.h">
       <Filter>Platform\OpenGL</Filter>
     </ClInclude>
+    <ClInclude Include="src\apex_pch.h" />
+    <ClInclude Include="src\Platform\Windows\WindowsInput.h">
+      <Filter>Platform\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Apex\Input\Input.h">
+      <Filter>Apex\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Apex\Input\MouseCodes.h">
+      <Filter>Apex\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Apex\Input\KeyCodes.h">
+      <Filter>Apex\Input</Filter>
+    </ClInclude>
     <ClInclude Include="src\Platform\Windows\WindowsWindow.h">
       <Filter>Platform\Windows</Filter>
     </ClInclude>
-    <ClInclude Include="src\apex_pch.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Apex\Application.cpp">
@@ -91,9 +106,12 @@
     <ClCompile Include="src\Platform\OpenGL\imgui_impl_opengl3.cpp">
       <Filter>Platform\OpenGL</Filter>
     </ClCompile>
+    <ClCompile Include="src\apex_pch.cpp" />
+    <ClCompile Include="src\Platform\Windows\WindowsInput.cpp">
+      <Filter>Platform\Windows</Filter>
+    </ClCompile>
     <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp">
       <Filter>Platform\Windows</Filter>
     </ClCompile>
-    <ClCompile Include="src\apex_pch.cpp" />
   </ItemGroup>
 </Project>

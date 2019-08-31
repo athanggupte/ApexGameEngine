@@ -2,6 +2,7 @@
 #include "Application.h"
 
 #include "Apex/Log/Log.h"
+#include "Apex/Input/Input.h"
 
 #include <glad/glad.h>
 

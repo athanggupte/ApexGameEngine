@@ -8,12 +8,17 @@ public:
 
 	void OnUpdate() override
 	{
-		//APEX_INFO("SandboxLayer::Update()");
+		if (Apex::Input::IsKeyPressed(APEX_KEY_SPACE))
+			APEX_TRACE("__SPACE__ (poll)");
 	}
 
 	void OnEvent(Apex::Event& event) override
 	{
-		//APEX_DEBUG("{0}", event);
+		if (event.GetEventType() == Apex::EventType::KeyPressed) {
+			Apex::KeyPressedEvent& e = (Apex::KeyPressedEvent&)event;
+			if (e.GetKeyCode() == APEX_KEY_SPACE)
+				APEX_TRACE("__SPACE__ (event)");
+		}
 	}
 
 };
