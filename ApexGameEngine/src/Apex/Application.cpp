@@ -5,8 +5,6 @@
 #include "Apex/Input/Input.h"
 #include "Apex/Renderer/Renderer.h"
 
-#include <glad/glad.h>
-
 namespace Apex {
 
 #define BIND_CALLBACK_FN(x) std::bind(&Application::x, this, std::placeholders::_1)
@@ -14,6 +12,7 @@ namespace Apex {
 	Application* Application::s_Instance = nullptr;
 
 	Application::Application()
+		: m_Camera(-1.0f, 1.0f, -1.0f, 1.0f)
 	{
 		APEX_CORE_ASSERT(!s_Instance, "Application already exists.");
 		s_Instance = this;
@@ -59,6 +58,8 @@ namespace Apex {
 			layout(location = 0) in vec3 a_Position;
 			layout(location = 1) in vec4 a_Color;
 
+			uniform mat4 u_ViewProjection;
+
 			out vec3 v_Position;
 			out vec4 v_Color;
 
@@ -66,7 +67,7 @@ namespace Apex {
 			{
 				v_Position = a_Position;
 				v_Color = a_Color;
-				gl_Position = vec4(a_Position, 1.0);
+				gl_Position = u_ViewProjection * vec4(a_Position, 1.0);
 			}
 		)";
 
@@ -119,12 +120,14 @@ namespace Apex {
 
 			layout(location = 0) in vec3 a_Position;
 
+			uniform mat4 u_ViewProjection;
+
 			out vec3 v_Position;
 
 			void main()
 			{
 				v_Position = a_Position;
-				gl_Position = vec4(a_Position, 1.0);
+				gl_Position = u_ViewProjection * vec4(a_Position, 1.0);
 			}
 		)";
 
@@ -156,15 +159,21 @@ namespace Apex {
 		while (m_Running) {
 			x = x + 0.01f;
 
+			m_Camera.SetPosition({ sin(x), cos(x), 0.0f });
+
 			RenderCommands::SetClearColor({ 0.12f, 0.1185f, 0.12f, 1.0f });
 			RenderCommands::Clear();
 			
 			Renderer::BeginScene();
 
-			m_SquareShader->Bind(); glUniform1f(1, x);
+			m_SquareShader->Bind();
+			m_SquareShader->SetUniFloat1("x", x);
+			m_SquareShader->SetUniMat4("u_ViewProjection", m_Camera.GetViewProjectionMatrix());
 			Renderer::Submit(m_SquareVA);
 
-			m_Shader->Bind(); glUniform1f(1, x);
+			m_Shader->Bind();
+			m_SquareShader->SetUniFloat1("x", x);
+			m_SquareShader->SetUniMat4("u_ViewProjection", m_Camera.GetViewProjectionMatrix());
 			Renderer::Submit(m_VertexArray);
 
 			Renderer::EndScene();

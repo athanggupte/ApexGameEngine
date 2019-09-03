@@ -1254,6 +1254,7 @@
     <ClInclude Include="src\Apex\Renderer\RendererAPI.h" />
     <ClInclude Include="src\Apex\Renderer\RenderCommands.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLRendererAPI.h" />
+    <ClInclude Include="src\Apex\Renderer\Camera.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Apex\Application.cpp">
@@ -1294,5 +1295,6 @@
     <ClCompile Include="src\Apex\Renderer\RendererAPI.cpp" />
     <ClCompile Include="src\Apex\Renderer\RenderCommands.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLRendererAPI.cpp" />
+    <ClCompile Include="src\Apex\Renderer\Camera.cpp" />
   </ItemGroup>
 </Project>

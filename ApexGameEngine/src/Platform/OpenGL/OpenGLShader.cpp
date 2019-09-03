@@ -2,6 +2,7 @@
 #include "OpenGLShader.h"
 
 #include <glad/glad.h>
+#include <glm/gtc/type_ptr.hpp>
 
 namespace Apex {
 
@@ -97,5 +98,15 @@ namespace Apex {
 	
 	void OpenGLShader::Unbind() const
 	{
+	}
+	
+	void OpenGLShader::SetUniFloat1(const std::string & name, float value)
+	{
+		glUniform1f(glGetUniformLocation(m_RendererID, name.c_str()), value);
+	}
+
+	void OpenGLShader::SetUniMat4(const std::string& name, const glm::mat4 & matrix)
+	{
+		glUniformMatrix4fv(glGetUniformLocation(m_RendererID, name.c_str()), 1, GL_FALSE, glm::value_ptr(matrix));
 	}
 }

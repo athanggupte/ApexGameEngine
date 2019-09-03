@@ -8,6 +8,7 @@
 #include "Apex/Renderer/Shader.h"
 #include "Apex/Renderer/Buffer.h"
 #include "Apex/Renderer/VertexArray.h"
+#include "Apex/Renderer/Camera.h"
 
 #include "Apex/ImGui/ImGuiLayer.h"
 
@@ -42,6 +43,8 @@ namespace Apex {
 
 		std::shared_ptr<Shader> m_SquareShader;
 		std::shared_ptr<VertexArray> m_SquareVA;
+
+		OrthographicCamera m_Camera;
 
 		static Application* s_Instance;
 	};
