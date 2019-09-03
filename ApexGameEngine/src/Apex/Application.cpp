@@ -3,6 +3,7 @@
 
 #include "Apex/Log/Log.h"
 #include "Apex/Input/Input.h"
+#include "Apex/Renderer/Renderer.h"
 
 #include <glad/glad.h>
 
@@ -154,20 +155,19 @@ namespace Apex {
 		float x = 0;
 		while (m_Running) {
 			x = x + 0.01f;
-			glClearColor(0.12f, 0.1185f, 0.12f, 1.0f);
-			glClear(GL_COLOR_BUFFER_BIT);
 
-			m_SquareShader->Bind();
-			glUniform1f(1, x);
-			m_SquareVA->Bind();
-			glDrawElements(GL_TRIANGLES, m_SquareVA->GetIndexBuffers().at(0)->GetCount(), GL_UNSIGNED_INT, nullptr);
-			m_SquareVA->Unbind();
+			RenderCommands::SetClearColor({ 0.12f, 0.1185f, 0.12f, 1.0f });
+			RenderCommands::Clear();
+			
+			Renderer::BeginScene();
 
-			m_Shader->Bind();
-			glUniform1f(1, x);
-			m_VertexArray->Bind();
-			glDrawElements(GL_TRIANGLES, m_VertexArray->GetIndexBuffers().at(0)->GetCount(), GL_UNSIGNED_INT, nullptr);
-			m_VertexArray->Unbind();
+			m_SquareShader->Bind(); glUniform1f(1, x);
+			Renderer::Submit(m_SquareVA);
+
+			m_Shader->Bind(); glUniform1f(1, x);
+			Renderer::Submit(m_VertexArray);
+
+			Renderer::EndScene();
 
 			for (Layer* layer : m_LayerStack)
 				layer->OnUpdate();

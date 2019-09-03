@@ -11,8 +11,8 @@ namespace Apex {
 	{
 		switch (Renderer::GetAPI())
 		{
-		case RenderAPI::None:	APEX_CORE_CRITICAL("No Rendering API selected"); return nullptr;
-		case RenderAPI::OpenGL:	return new OpenGLShader(vertexSrc, fragmentSrc);
+		case RendererAPI::API::None:	APEX_CORE_CRITICAL("No Rendering API selected"); return nullptr;
+		case RendererAPI::API::OpenGL:	return new OpenGLShader(vertexSrc, fragmentSrc);
 
 		default:				APEX_CORE_CRITICAL("Unknown Rendering API"); return nullptr;
 		}

@@ -1,18 +1,20 @@
 #pragma once
 
-namespace Apex {
+#include "RenderCommands.h"
 
-	enum class RenderAPI
-	{
-		None = 0, OpenGL = 1
-	};
+namespace Apex {
 
 	class APEX_API Renderer
 	{
 	public:
-		inline static RenderAPI GetAPI() { return s_RenderAPI; }
-		inline static RenderAPI SetAPI(RenderAPI renderAPI) { s_RenderAPI = renderAPI; }
+		static void BeginScene();
+		static void EndScene();
+
+		static void Submit(const std::shared_ptr<VertexArray>& vertexArray);
+
+		inline static RendererAPI::API GetAPI() { return RendererAPI::GetAPI(); }
+
 	private:
-		static RenderAPI s_RenderAPI;
+
 	};
 }

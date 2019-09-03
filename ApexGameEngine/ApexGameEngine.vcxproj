@@ -154,7 +154,9 @@
     <ClInclude Include="src\Apex\Layers\Layer.h" />
     <ClInclude Include="src\Apex\Layers\LayerStack.h" />
     <ClInclude Include="src\Apex\Log\Log.h" />
+    <ClInclude Include="src\Apex\Renderer\RenderCommands.h" />
     <ClInclude Include="src\Apex\Renderer\Renderer.h" />
+    <ClInclude Include="src\Apex\Renderer\RendererAPI.h" />
     <ClInclude Include="src\Apex\Renderer\RenderingContext.h" />
     <ClInclude Include="src\Apex\Renderer\Shader.h" />
     <ClInclude Include="src\Apex\Renderer\Buffer.h" />
@@ -163,6 +165,7 @@
     <ClInclude Include="src\Apex\Window.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLBuffer.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLContext.h" />
+    <ClInclude Include="src\Platform\OpenGL\OpenGLRendererAPI.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLShader.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLVertexArray.h" />
     <ClInclude Include="src\Platform\Windows\WindowsInput.h" />
@@ -554,11 +557,14 @@
     <ClCompile Include="src\Apex\Layers\LayerStack.cpp" />
     <ClCompile Include="src\Apex\Log\Log.cpp" />
     <ClCompile Include="src\Apex\Renderer\Buffer.cpp" />
+    <ClCompile Include="src\Apex\Renderer\RenderCommands.cpp" />
     <ClCompile Include="src\Apex\Renderer\Renderer.cpp" />
+    <ClCompile Include="src\Apex\Renderer\RendererAPI.cpp" />
     <ClCompile Include="src\Apex\Renderer\Shader.cpp" />
     <ClCompile Include="src\Apex\Renderer\VertexArray.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLBuffer.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLContext.cpp" />
+    <ClCompile Include="src\Platform\OpenGL\OpenGLRendererAPI.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLShader.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLVertexArray.cpp" />
     <ClCompile Include="src\Platform\Windows\WindowsInput.cpp" />
