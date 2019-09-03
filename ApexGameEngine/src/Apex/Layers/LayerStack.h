@@ -22,7 +22,7 @@ namespace Apex {
 
 	private:
 		std::vector<Layer*> m_Layers;
-		unsigned int m_LayerInsertIndex;
+		uint32_t m_LayerInsertIndex;
 	};
 
 }

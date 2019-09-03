@@ -15,8 +15,8 @@ namespace Apex {
 
 		void OnUpdate() override;
 
-		inline unsigned int GetWidth() const override { return m_Data.w_Width; }
-		inline unsigned int GetHeight() const override { return m_Data.w_Height; }
+		inline uint32_t GetWidth() const override { return m_Data.w_Width; }
+		inline uint32_t GetHeight() const override { return m_Data.w_Height; }
 
 		inline void SetEventCallback(const EventCallbackFn& callback) override { m_Data.EventCallback = callback; }
 		void SetVSync(bool enabled) override;
@@ -34,7 +34,7 @@ namespace Apex {
 		struct WindowData
 		{
 			std::string w_Title;
-			unsigned int w_Width, w_Height;
+			uint32_t w_Width, w_Height;
 			bool VSync;
 
 			EventCallbackFn EventCallback;

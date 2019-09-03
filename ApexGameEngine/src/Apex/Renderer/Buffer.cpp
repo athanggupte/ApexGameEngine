@@ -11,10 +11,10 @@ namespace Apex{
 	{
 		switch (Renderer::GetAPI())
 		{
-		case RenderAPI::None:	APEX_CORE_CRITICAL("No Rendering API selected"); return nullptr;
-		case RenderAPI::OpenGL:	return new OpenGLVertexBuffer(vertices, size);
+			case RenderAPI::None:	APEX_CORE_CRITICAL("No Rendering API selected"); return nullptr;
+			case RenderAPI::OpenGL:	return new OpenGLVertexBuffer(vertices, size);
 
-		default:				APEX_CORE_CRITICAL("Unknown Rendering API"); return nullptr;
+			default:				APEX_CORE_CRITICAL("Unknown Rendering API"); return nullptr;
 		}
 	}
 
@@ -22,10 +22,10 @@ namespace Apex{
 	{
 		switch (Renderer::GetAPI())
 		{
-		case RenderAPI::None:	APEX_CORE_CRITICAL("No Rendering API selected"); return nullptr;
-		case RenderAPI::OpenGL:	return new OpenGLIndexBuffer(indices, count);
+			case RenderAPI::None:	APEX_CORE_CRITICAL("No Rendering API selected"); return nullptr;
+			case RenderAPI::OpenGL:	return new OpenGLIndexBuffer(indices, count);
 
-		default:				APEX_CORE_CRITICAL("Unknown Rendering API"); return nullptr;
+			default:				APEX_CORE_CRITICAL("Unknown Rendering API"); return nullptr;
 		}
 	}
 

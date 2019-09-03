@@ -98,7 +98,7 @@ namespace Apex {
 			}
 		});
 
-		glfwSetCharCallback(m_Window, [](GLFWwindow* window, unsigned int character) {
+		glfwSetCharCallback(m_Window, [](GLFWwindow* window, uint32_t character) {
 			WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
 
 			CharTypedEvent event(character);
