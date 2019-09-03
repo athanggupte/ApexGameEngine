@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Apex/Core.h"
 #include "Layer.h"
 
 #include <vector>

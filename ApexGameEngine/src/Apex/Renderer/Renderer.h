@@ -1,7 +1,5 @@
 #pragma once
 
-#include "Apex/Core.h"
-
 namespace Apex {
 
 	enum class RenderAPI

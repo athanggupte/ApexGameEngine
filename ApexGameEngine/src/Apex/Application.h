@@ -1,7 +1,5 @@
 #pragma once
 
-#include "Core.h"
-
 #include "Window.h"
 #include "Apex/Layers/LayerStack.h"
 #include "Apex/Events/Event.h"

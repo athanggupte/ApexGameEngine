@@ -4,7 +4,7 @@
 
 namespace Apex {
 
-	class Shader
+	class APEX_API Shader
 	{
 	public:
 		virtual ~Shader() {}

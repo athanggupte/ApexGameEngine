@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Apex/Core.h"
 #include "Apex/Events/Event.h"
 
 namespace Apex {
