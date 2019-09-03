@@ -5,7 +5,7 @@
 #include "Apex/Events/KeyEvent.h"
 #include "Apex/Events/MouseEvent.h"
 
-#include <glad/glad.h>
+#include "Platform/OpenGL/OpenGLContext.h"
 
 namespace Apex {
 
@@ -37,7 +37,7 @@ namespace Apex {
 		m_Data.w_Width = props.w_Width;
 		m_Data.w_Height = props.w_Height;
 
-		APEX_CORE_INFO("Creating window {0} ({1}, {2})", m_Data.w_Title, m_Data.w_Width, m_Data.w_Height);
+		APEX_CORE_INFO("Creating window \"{0}\" ({1}, {2})", m_Data.w_Title, m_Data.w_Width, m_Data.w_Height);
 
 		if (!s_GLFWInitialized) {
 			int success = glfwInit();
@@ -49,11 +49,9 @@ namespace Apex {
 		}
 
 		m_Window = glfwCreateWindow((int)m_Data.w_Width, (int)m_Data.w_Height, m_Data.w_Title.c_str(), nullptr, nullptr);
-		glfwMakeContextCurrent(m_Window);
-
-		// Initialize Glad
-		int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
-		APEX_CORE_ASSERT(status, "Could not initialize Glad!");
+		
+		m_Context = new OpenGLContext(m_Window);
+		m_Context->Init();
 
 		glfwSetWindowUserPointer(m_Window, &m_Data);
 		SetVSync(true);
@@ -146,7 +144,7 @@ namespace Apex {
 	void WindowsWindow::OnUpdate()
 	{
 		glfwPollEvents();
-		glfwSwapBuffers(m_Window);
+		m_Context->SwapBuffers();
 	}
 
 	void WindowsWindow::SetVSync(bool enabled)

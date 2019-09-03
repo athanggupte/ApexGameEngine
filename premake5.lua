@@ -25,8 +25,10 @@ include "ApexGameEngine/vendor/imgui"
 -- Apex Game Engine Project
 project "ApexGameEngine"
 	location "ApexGameEngine"
-	kind "SharedLib"	--DLL
+	kind "StaticLib"	--DLL
 	language "C++"
+	cppdialect "C++17"
+	staticruntime "on"
 
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
@@ -59,7 +61,6 @@ project "ApexGameEngine"
 	}
 
 	filter "system:windows"
-		cppdialect "C++17"
 		staticruntime "On"
 		systemversion "latest"
 
@@ -69,26 +70,22 @@ project "ApexGameEngine"
 			"GLFW_INCLUDE_NONE"
 		}
 
-		postbuildcommands {
-			("{COPY} %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/Sandbox")
-		}
-
 	filter "configurations:Debug"
 		defines {
 			"APEX_DEBUG", "APEX_ENABLE_ASSERTS"
 		}
-		buildoptions "/MDd"
-		symbols "On"
+		runtime "Debug"
+		symbols "on"
 
 	filter "configurations:Release"
 		defines "APEX_RELEASE"
-		buildoptions "/MD"
-		optimize "On"
+		runtime "Release"
+		optimize "on"
 
 	filter "configurations:Dist"
 		defines "APEX_DIST"
-		buildoptions "/MD"
-		optimize "On"
+		runtime "Release"
+		optimize "on"
 
 
 -- Client Application Project
@@ -96,6 +93,8 @@ project "Sandbox"
 	location "Sandbox"
 	kind "ConsoleApp"	--Executable
 	language "C++"
+	cppdialect "C++17"
+	staticruntime "on"
 
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
@@ -118,7 +117,6 @@ project "Sandbox"
 	}
 
 	filter "system:windows"
-		cppdialect "C++17"
 		staticruntime "On"
 		systemversion "latest"
 
@@ -130,15 +128,12 @@ project "Sandbox"
 		defines {
 			"APEX_DEBUG", "APEX_ENABLE_ASSERTS"
 		}
-		buildoptions "/MDd"
-		symbols "On"
+		symbols "on"
 
 	filter "configurations:Release"
-		defines "APEX_DEBUG"
-		buildoptions "/MD"
-		optimize "On"
+		defines "APEX_RELEASE"
+		optimize "on"
 
 	filter "configurations:Dist"
-		defines "APEX_DEBUG"
-		buildoptions "/MD"
-		optimize "On"
+		defines "APEX_RELEASE"
+		optimize "on"

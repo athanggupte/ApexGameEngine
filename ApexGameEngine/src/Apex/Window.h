@@ -1,7 +1,5 @@
 #pragma once
 
-#include "apex_pch.h"
-
 #include "Apex/Core.h"
 #include "Apex/Events/Event.h"
 

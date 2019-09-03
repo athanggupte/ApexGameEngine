@@ -7,6 +7,9 @@
 #include "Apex/Events/Event.h"
 #include "Apex/Events/ApplicationEvent.h"
 
+#include "Apex/Renderer/Shader.h"
+#include "Apex/Renderer/Buffer.h"
+
 #include "Apex/ImGui/ImGuiLayer.h"
 
 namespace Apex {
@@ -34,6 +37,12 @@ namespace Apex {
 		ImGuiLayer* m_ImGuiLayer;
 		bool m_Running = true;
 		LayerStack m_LayerStack;
+
+		unsigned int m_VertexArray;
+
+		std::unique_ptr<Shader> m_Shader;
+		std::unique_ptr<VertexBuffer> m_VertexBuffer;
+		std::unique_ptr<IndexBuffer> m_IndexBuffer;
 
 		static Application* s_Instance;
 	};

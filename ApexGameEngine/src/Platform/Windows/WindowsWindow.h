@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Apex/Window.h"
+#include "Apex/Renderer/RenderingContext.h"
 
 #include <GLFW/glfw3.h>
 
@@ -28,6 +29,7 @@ namespace Apex {
 		virtual void Shutdown();
 
 		GLFWwindow* m_Window;
+		RenderingContext* m_Context;
 
 		struct WindowData
 		{
