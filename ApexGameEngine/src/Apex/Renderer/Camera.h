@@ -3,7 +3,7 @@
 #include <glm/glm.hpp>
 
 namespace Apex {
-
+	/**
 	class APEX_API Camera
 	{
 	public:
@@ -19,7 +19,7 @@ namespace Apex {
 		float m_AspectRatio;
 		float m_NearPlane;
 		float m_FarPlane;
-	};
+	};*/
 
 	class APEX_API OrthographicCamera
 	{
@@ -44,8 +44,8 @@ namespace Apex {
 		glm::mat4 m_ViewMatrix;
 		glm::mat4 m_ViewProjectionMatrix;
 
-		glm::vec3 m_Position;
-		float m_Rotation;
+		glm::vec3 m_Position = { 0.f, 0.f, 0.f };
+		float m_Rotation = 0.f;
 	};
 
 }

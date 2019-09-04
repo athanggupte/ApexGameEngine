@@ -4,6 +4,9 @@
 #include "Apex/Log/Log.h"
 #include "Apex/Input/Input.h"
 #include "Apex/Renderer/Renderer.h"
+#include "Apex/MathPrimitiveParser.h"
+
+#include <glm/gtx/string_cast.hpp>
 
 namespace Apex {
 
@@ -12,7 +15,7 @@ namespace Apex {
 	Application* Application::s_Instance = nullptr;
 
 	Application::Application()
-		: m_Camera(-1.0f, 1.0f, -1.0f, 1.0f)
+		: m_Camera(-1.6f, 1.6f, -0.9f, 0.9f)
 	{
 		APEX_CORE_ASSERT(!s_Instance, "Application already exists.");
 		s_Instance = this;
@@ -159,22 +162,21 @@ namespace Apex {
 		while (m_Running) {
 			x = x + 0.01f;
 
-			m_Camera.SetPosition({ sin(x), cos(x), 0.0f });
+			m_Camera.SetPosition({ sin(x), cos(x), 0.f });
+			m_Camera.SetRotation(360.f * sin(x));
 
 			RenderCommands::SetClearColor({ 0.12f, 0.1185f, 0.12f, 1.0f });
 			RenderCommands::Clear();
 			
-			Renderer::BeginScene();
+			Renderer::BeginScene(m_Camera);
 
 			m_SquareShader->Bind();
 			m_SquareShader->SetUniFloat1("x", x);
-			m_SquareShader->SetUniMat4("u_ViewProjection", m_Camera.GetViewProjectionMatrix());
-			Renderer::Submit(m_SquareVA);
+			Renderer::Submit(m_SquareShader, m_SquareVA);
 
 			m_Shader->Bind();
 			m_SquareShader->SetUniFloat1("x", x);
-			m_SquareShader->SetUniMat4("u_ViewProjection", m_Camera.GetViewProjectionMatrix());
-			Renderer::Submit(m_VertexArray);
+			Renderer::Submit(m_Shader, m_VertexArray);
 
 			Renderer::EndScene();
 

@@ -5,6 +5,7 @@
 #include "Apex/Application.h"
 #include "Apex/Layers/Layer.h"
 #include "Apex/Log/Log.h"
+#include "Apex/MathPrimitiveParser.h"
 
 #include "Apex/Input/Input.h"
 #include "Apex/Input/KeyCodes.h"
