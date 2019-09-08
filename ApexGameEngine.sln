@@ -1,8 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.28307.779
-MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Sandbox", "Sandbox\Sandbox.vcxproj", "{F4C124E3-60A1-A37E-69B9-2E55D5170AE0}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ApexGameEngine", "ApexGameEngine\ApexGameEngine.vcxproj", "{63028D86-4FD0-808C-3864-F1B224D15CF1}"
@@ -12,8 +10,6 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Glad", "ApexGameEngine\vendor\Glad\Glad.vcxproj", "{BDD6857C-A90D-870D-52FA-6C103E10030F}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ImGui", "ApexGameEngine\vendor\imgui\ImGui.vcxproj", "{C0FF640D-2C14-8DBE-F595-301E616989EF}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Dependencies", "Dependencies", "{6E76D258-FA00-4D82-9AD2-A7E94119FBFF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -55,13 +51,5 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{154B857C-0182-860D-AA6E-6C109684020F} = {6E76D258-FA00-4D82-9AD2-A7E94119FBFF}
-		{BDD6857C-A90D-870D-52FA-6C103E10030F} = {6E76D258-FA00-4D82-9AD2-A7E94119FBFF}
-		{C0FF640D-2C14-8DBE-F595-301E616989EF} = {6E76D258-FA00-4D82-9AD2-A7E94119FBFF}
-	EndGlobalSection
-	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {6FD5D53F-AEE4-4743-B1AD-AE5A6748D498}
 	EndGlobalSection
 EndGlobal

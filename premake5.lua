@@ -16,6 +16,7 @@ IncludeDirs["GLFW"] = "ApexGameEngine/vendor/GLFW/include"
 IncludeDirs["Glad"] = "ApexGameEngine/vendor/Glad/include"
 IncludeDirs["ImGui"] = "ApexGameEngine/vendor/imgui"
 IncludeDirs["glm"] = "ApexGameEngine/vendor/glm"
+IncludeDirs["stb_image"] = "ApexGameEngine/vendor/stb_image"
 
 include "ApexGameEngine/vendor/GLFW"
 include "ApexGameEngine/vendor/Glad"
@@ -39,6 +40,8 @@ project "ApexGameEngine"
 	files {
 		"%{prj.name}/src/**.h",
 		"%{prj.name}/src/**.cpp",
+		"%{prj.name}/vendor/stb_image/**.h",
+		"%{prj.name}/vendor/stb_image/**.cpp",
 		"%{prj.name}/vendor/glm/glm/**.hpp",
 		"%{prj.name}/vendor/glm/glm/**.inl",
 		"%{prj.name}/vendor/glm/glm/**.h"
@@ -50,7 +53,8 @@ project "ApexGameEngine"
 		"%{IncludeDirs.GLFW}",
 		"%{IncludeDirs.Glad}",
 		"%{IncludeDirs.ImGui}",
-		"%{IncludeDirs.glm}"
+		"%{IncludeDirs.glm}",
+		"%{IncludeDirs.stb_image}"
 	}
 
 	links {

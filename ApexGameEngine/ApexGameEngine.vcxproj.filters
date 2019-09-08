@@ -22,8 +22,17 @@
     <Filter Include="src\Apex\Log">
       <UniqueIdentifier>{5B8A8E4A-47ED-1DEF-F072-56A5DCB4E971}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Apex\Material">
+      <UniqueIdentifier>{68C7C3AB-D4DD-C141-1D55-4D6389AA92C9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Apex\Renderer">
+      <UniqueIdentifier>{70DCDD6E-DCF2-DB04-256A-672691BFAC8C}</UniqueIdentifier>
+    </Filter>
     <Filter Include="src\Platform">
       <UniqueIdentifier>{21CA02E5-0D2D-9289-B6B2-CA3FA2F45D0C}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Platform\OpenGL">
+      <UniqueIdentifier>{35A49437-A105-7245-2A73-B8F796D3A804}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\Platform\Windows">
       <UniqueIdentifier>{5B054582-4794-CE4B-F0B2-E246DC20DFF1}</UniqueIdentifier>
@@ -51,6 +60,9 @@
     </Filter>
     <Filter Include="vendor\glm\glm\simd">
       <UniqueIdentifier>{CDE1A2E0-3943-80EE-C2B0-C6A02E11B7AD}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="vendor\stb_image">
+      <UniqueIdentifier>{0DA0BA59-F998-D9AB-22CB-BE300E23B9B7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -96,13 +108,67 @@
     <ClInclude Include="src\Apex\Log\Log.h">
       <Filter>src\Apex\Log</Filter>
     </ClInclude>
+    <ClInclude Include="src\Apex\MathPrimitiveParser.h">
+      <Filter>src\Apex</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Apex\Renderer\Buffer.h">
+      <Filter>src\Apex\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Apex\Renderer\Camera.h">
+      <Filter>src\Apex\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Apex\Renderer\RenderCommands.h">
+      <Filter>src\Apex\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Apex\Renderer\Renderer.h">
+      <Filter>src\Apex\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Apex\Renderer\RendererAPI.h">
+      <Filter>src\Apex\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Apex\Renderer\RenderingContext.h">
+      <Filter>src\Apex\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Apex\Renderer\Shader.h">
+      <Filter>src\Apex\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Apex\Renderer\Texture.h">
+      <Filter>src\Apex\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Apex\Renderer\VertexArray.h">
+      <Filter>src\Apex\Renderer</Filter>
+    </ClInclude>
     <ClInclude Include="src\Apex\StartUp.h">
+      <Filter>src\Apex</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Apex\Timer.h">
       <Filter>src\Apex</Filter>
     </ClInclude>
     <ClInclude Include="src\Apex\Window.h">
       <Filter>src\Apex</Filter>
     </ClInclude>
+    <ClInclude Include="src\Platform\OpenGL\OpenGLBuffer.h">
+      <Filter>src\Platform\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Platform\OpenGL\OpenGLContext.h">
+      <Filter>src\Platform\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Platform\OpenGL\OpenGLRendererAPI.h">
+      <Filter>src\Platform\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Platform\OpenGL\OpenGLShader.h">
+      <Filter>src\Platform\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Platform\OpenGL\OpenGLTexture.h">
+      <Filter>src\Platform\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Platform\OpenGL\OpenGLVertexArray.h">
+      <Filter>src\Platform\OpenGL</Filter>
+    </ClInclude>
     <ClInclude Include="src\Platform\Windows\WindowsInput.h">
+      <Filter>src\Platform\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Platform\Windows\WindowsTimer.h">
       <Filter>src\Platform\Windows</Filter>
     </ClInclude>
     <ClInclude Include="src\Platform\Windows\WindowsWindow.h">
@@ -1242,20 +1308,9 @@
     <ClInclude Include="vendor\glm\glm\vector_relational.hpp">
       <Filter>vendor\glm\glm</Filter>
     </ClInclude>
-    <ClInclude Include="src\Apex\Renderer\RenderingContext.h" />
-    <ClInclude Include="src\Platform\OpenGL\OpenGLContext.h" />
-    <ClInclude Include="src\Apex\Renderer\Shader.h" />
-    <ClInclude Include="src\Apex\Renderer\Buffer.h" />
-    <ClInclude Include="src\Platform\OpenGL\OpenGLBuffer.h" />
-    <ClInclude Include="src\Apex\Renderer\Renderer.h" />
-    <ClInclude Include="src\Platform\OpenGL\OpenGLShader.h" />
-    <ClInclude Include="src\Apex\Renderer\VertexArray.h" />
-    <ClInclude Include="src\Platform\OpenGL\OpenGLVertexArray.h" />
-    <ClInclude Include="src\Apex\Renderer\RendererAPI.h" />
-    <ClInclude Include="src\Apex\Renderer\RenderCommands.h" />
-    <ClInclude Include="src\Platform\OpenGL\OpenGLRendererAPI.h" />
-    <ClInclude Include="src\Apex\Renderer\Camera.h" />
-    <ClInclude Include="src\Apex\MathPrimitiveParser.h" />
+    <ClInclude Include="vendor\stb_image\stb_image.h">
+      <Filter>vendor\stb_image</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Apex\Application.cpp">
@@ -1276,7 +1331,58 @@
     <ClCompile Include="src\Apex\Log\Log.cpp">
       <Filter>src\Apex\Log</Filter>
     </ClCompile>
+    <ClCompile Include="src\Apex\MathPrimitiveParser.cpp">
+      <Filter>src\Apex</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Apex\Renderer\Buffer.cpp">
+      <Filter>src\Apex\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Apex\Renderer\Camera.cpp">
+      <Filter>src\Apex\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Apex\Renderer\RenderCommands.cpp">
+      <Filter>src\Apex\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Apex\Renderer\Renderer.cpp">
+      <Filter>src\Apex\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Apex\Renderer\RendererAPI.cpp">
+      <Filter>src\Apex\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Apex\Renderer\Shader.cpp">
+      <Filter>src\Apex\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Apex\Renderer\Texture.cpp">
+      <Filter>src\Apex\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Apex\Renderer\VertexArray.cpp">
+      <Filter>src\Apex\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Apex\Timer.cpp">
+      <Filter>src\Apex</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Platform\OpenGL\OpenGLBuffer.cpp">
+      <Filter>src\Platform\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Platform\OpenGL\OpenGLContext.cpp">
+      <Filter>src\Platform\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Platform\OpenGL\OpenGLRendererAPI.cpp">
+      <Filter>src\Platform\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Platform\OpenGL\OpenGLShader.cpp">
+      <Filter>src\Platform\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Platform\OpenGL\OpenGLTexture.cpp">
+      <Filter>src\Platform\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Platform\OpenGL\OpenGLVertexArray.cpp">
+      <Filter>src\Platform\OpenGL</Filter>
+    </ClCompile>
     <ClCompile Include="src\Platform\Windows\WindowsInput.cpp">
+      <Filter>src\Platform\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Platform\Windows\WindowsTimer.cpp">
       <Filter>src\Platform\Windows</Filter>
     </ClCompile>
     <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp">
@@ -1285,18 +1391,8 @@
     <ClCompile Include="src\apex_pch.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\Platform\OpenGL\OpenGLContext.cpp" />
-    <ClCompile Include="src\Apex\Renderer\Shader.cpp" />
-    <ClCompile Include="src\Apex\Renderer\Buffer.cpp" />
-    <ClCompile Include="src\Platform\OpenGL\OpenGLBuffer.cpp" />
-    <ClCompile Include="src\Apex\Renderer\Renderer.cpp" />
-    <ClCompile Include="src\Platform\OpenGL\OpenGLShader.cpp" />
-    <ClCompile Include="src\Apex\Renderer\VertexArray.cpp" />
-    <ClCompile Include="src\Platform\OpenGL\OpenGLVertexArray.cpp" />
-    <ClCompile Include="src\Apex\Renderer\RendererAPI.cpp" />
-    <ClCompile Include="src\Apex\Renderer\RenderCommands.cpp" />
-    <ClCompile Include="src\Platform\OpenGL\OpenGLRendererAPI.cpp" />
-    <ClCompile Include="src\Apex\Renderer\Camera.cpp" />
-    <ClCompile Include="src\Apex\MathPrimitiveParser.cpp" />
+    <ClCompile Include="vendor\stb_image\stb_image.cpp">
+      <Filter>vendor\stb_image</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

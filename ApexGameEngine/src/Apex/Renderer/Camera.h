@@ -3,25 +3,19 @@
 #include <glm/glm.hpp>
 
 namespace Apex {
-	/**
+	
 	class APEX_API Camera
 	{
 	public:
-		Camera(const glm::vec3& position, const glm::vec3& rotation, float fov, float aspectRatio, float nearPlane, float farPlane);
+		virtual const glm::mat4& GetProjectionMatrix() const = 0;
+		virtual const glm::mat4& GetViewMatrix() const = 0;
+		virtual const glm::mat4& GetViewProjectionMatrix() const = 0;
+	
+	protected:
+		virtual void RecalculateViewMatrix() = 0;
+	};
 
-		inline const float GetFOV() const { return m_FOV; }
-		inline const float GetAspectRatio() const { return m_AspectRatio; }
-
-	private:
-		glm::vec3 m_Position;
-		glm::vec3 m_Rotation;
-		float m_FOV;
-		float m_AspectRatio;
-		float m_NearPlane;
-		float m_FarPlane;
-	};*/
-
-	class APEX_API OrthographicCamera
+	class APEX_API OrthographicCamera : public Camera
 	{
 	public:
 		OrthographicCamera(float left, float right, float bottom, float top);
@@ -32,9 +26,9 @@ namespace Apex {
 		inline const glm::vec3& GetPosition() const { return m_Position; }
 		inline float GetRotation() const { return m_Rotation; }
 
-		const glm::mat4& GetProjectionMatrix() const { return m_ProjectionMatrix; }
-		const glm::mat4& GetViewMatrix() const { return m_ViewMatrix; }
-		const glm::mat4& GetViewProjectionMatrix() const { return m_ViewProjectionMatrix; }
+		inline const glm::mat4& GetProjectionMatrix() const override { return m_ProjectionMatrix; }
+		inline const glm::mat4& GetViewMatrix() const override { return m_ViewMatrix; }
+		inline const glm::mat4& GetViewProjectionMatrix() const override { return m_ViewProjectionMatrix; }
 
 	private:
 		void RecalculateViewMatrix();

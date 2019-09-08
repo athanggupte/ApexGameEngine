@@ -22,6 +22,9 @@ int main(int argc, char** argv)
 	APEX_CORE_INFO("Welcome to Apex Game Engine !");
 
 	auto app = Apex::CreateApplication();
+
+	Apex::Timer::InitTimer();
+
 	app->Run();
 	delete app;
 

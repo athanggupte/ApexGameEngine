@@ -14,10 +14,11 @@ namespace Apex {
 	{
 	}
 
-	void Renderer::Submit(const std::shared_ptr<Shader>& shader, const std::shared_ptr<VertexArray>& vertexArray)
+	void Renderer::Submit(const Ref<Shader>& shader, const Ref<VertexArray>& vertexArray, const glm::mat4& modelMatrix)
 	{
 		shader->Bind();
 		shader->SetUniMat4("u_ViewProjection", s_SceneData->ViewProjectionMatrix);
+		shader->SetUniMat4("u_Model", modelMatrix);
 
 		vertexArray->Bind();
 		RenderCommands::DrawIndexed(vertexArray);

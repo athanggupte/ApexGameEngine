@@ -3,10 +3,8 @@
 
 #include "Apex/Log/Log.h"
 #include "Apex/Input/Input.h"
-#include "Apex/Renderer/Renderer.h"
-#include "Apex/MathPrimitiveParser.h"
 
-#include <glm/gtx/string_cast.hpp>
+#include <GLFW/glfw3.h>
 
 namespace Apex {
 
@@ -15,140 +13,17 @@ namespace Apex {
 	Application* Application::s_Instance = nullptr;
 
 	Application::Application()
-		: m_Camera(-1.6f, 1.6f, -0.9f, 0.9f)
 	{
 		APEX_CORE_ASSERT(!s_Instance, "Application already exists.");
 		s_Instance = this;
 
-		m_Window = std::unique_ptr<Window>(Window::Create());
+		m_Window = Apex::Scope<Window>(Window::Create());
 		m_Window->SetEventCallback(BIND_CALLBACK_FN(OnEvent));
+		m_Window->SetVSync(true);
 
 		m_ImGuiLayer = new ImGuiLayer();
 		PushOverlay(m_ImGuiLayer);
 
-		/* Triangle Data */
-		m_VertexArray.reset(VertexArray::Create());
-
-		float vertices[] = {
-			-0.5f, -0.5f, 0.0f, 0.8f, 0.5f, 0.7f, 1.0f,
-			 0.5f, -0.5f, 0.0f, 0.7f, 0.8f, 0.5f, 1.0f,
-			 0.0f,  0.75f, 0.0f, 0.5f, 0.7f, 0.8f, 1.0f
-		};
-		std::shared_ptr<VertexBuffer> vertexBuffer;
-		vertexBuffer.reset(VertexBuffer::Create(vertices, sizeof(vertices)));
-
-		{
-			BufferLayout layout = {
-				{ ShaderDataType::Float3, "a_Position" },
-				{ ShaderDataType::Float4, "a_Color" }
-			};
-			vertexBuffer->SetLayout(layout);
-		}
-
-		m_VertexArray->AddVertexBuffer(vertexBuffer);
-
-		uint32_t indices[3] = { 0, 1, 2 };
-		std::shared_ptr<IndexBuffer> indexBuffer;
-		indexBuffer.reset(IndexBuffer::Create(indices, 3));
-		m_VertexArray->AddIndexBuffer(indexBuffer);
-
-		m_VertexArray->Unbind();
-		/* End Triangle Data */
-
-		std::string vertexSrc = R"(
-			#version 450
-
-			layout(location = 0) in vec3 a_Position;
-			layout(location = 1) in vec4 a_Color;
-
-			uniform mat4 u_ViewProjection;
-
-			out vec3 v_Position;
-			out vec4 v_Color;
-
-			void main()
-			{
-				v_Position = a_Position;
-				v_Color = a_Color;
-				gl_Position = u_ViewProjection * vec4(a_Position, 1.0);
-			}
-		)";
-
-		std::string fragmentSrc = R"(
-			#version 450
-
-			layout(location = 0) out vec4 o_Color;
-			layout(location = 1) uniform float x;
-			
-			in vec3 v_Position;
-			in vec4 v_Color;
-
-			void main()
-			{
-				o_Color = vec4(v_Color.r * abs(cos(x)), v_Color.g * abs(sin(2 * x)), v_Color.b * abs(sin(3 * x)), v_Color.a);
-			}
-		)";
-
-		m_Shader.reset(Shader::Create(vertexSrc, fragmentSrc));
-
-		/* Square Data */
-		m_SquareVA.reset(VertexArray::Create());
-
-		std::shared_ptr<VertexBuffer> squareVB;
-		float squareVertices[] = {
-			-0.5f, -0.5f, 0.0f,
-			 0.5f, -0.5f, 0.0f,
-			 0.5f,  0.5f, 0.0f,
-			-0.5f,  0.5f, 0.0f
-		};
-		squareVB.reset(VertexBuffer::Create(squareVertices, sizeof(squareVertices)));
-		squareVB->SetLayout({
-			{ ShaderDataType::Float3, "a_Position" }
-		});
-		m_SquareVA->AddVertexBuffer(squareVB);
-
-		std::shared_ptr<IndexBuffer> squareIB;
-		uint32_t squareIndices[] = {
-			0, 1, 2,
-			0, 2, 3
-		};
-		squareIB.reset(IndexBuffer::Create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t)));
-		m_SquareVA->AddIndexBuffer(squareIB);
-
-		m_SquareVA->Unbind();
-		/* End Square Data */
-
-		std::string squareVertexSrc = R"(
-			#version 450
-
-			layout(location = 0) in vec3 a_Position;
-
-			uniform mat4 u_ViewProjection;
-
-			out vec3 v_Position;
-
-			void main()
-			{
-				v_Position = a_Position;
-				gl_Position = u_ViewProjection * vec4(a_Position, 1.0);
-			}
-		)";
-
-		std::string squareFragmentSrc = R"(
-			#version 450
-
-			layout(location = 0) out vec4 o_Color;
-			layout(location = 1) uniform float x;
-			
-			in vec3 v_Position;
-
-			void main()
-			{
-				o_Color = vec4(abs(cos(x)), abs(sin(2 * x)), abs(sin(3 * x)), 1.0);
-			}
-		)";
-
-		m_SquareShader.reset(Shader::Create(squareVertexSrc, squareFragmentSrc));
 	}
 
 
@@ -158,27 +33,9 @@ namespace Apex {
 
 	void Application::Run()
 	{
-		float x = 0;
 		while (m_Running) {
-			x = x + 0.01f;
 
-			m_Camera.SetPosition({ sin(x), cos(x), 0.f });
-			m_Camera.SetRotation(360.f * sin(x));
-
-			RenderCommands::SetClearColor({ 0.12f, 0.1185f, 0.12f, 1.0f });
-			RenderCommands::Clear();
-			
-			Renderer::BeginScene(m_Camera);
-
-			m_SquareShader->Bind();
-			m_SquareShader->SetUniFloat1("x", x);
-			Renderer::Submit(m_SquareShader, m_SquareVA);
-
-			m_Shader->Bind();
-			m_SquareShader->SetUniFloat1("x", x);
-			Renderer::Submit(m_Shader, m_VertexArray);
-
-			Renderer::EndScene();
+			Timer::UpdateTime();
 
 			for (Layer* layer : m_LayerStack)
 				layer->OnUpdate();

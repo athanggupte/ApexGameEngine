@@ -9,6 +9,7 @@
 #include <string>
 #include <sstream>
 #include <vector>
+#include <map>
 
 #include "Apex/Log/Log.h"
 

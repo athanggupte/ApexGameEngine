@@ -84,6 +84,8 @@ namespace Apex {
 		glDetachShader(program, vertexShader);
 		glDetachShader(program, fragmentShader);
 
+		OpenGLShader::GetActiveUniformLocations();
+
 	}
 
 	OpenGLShader::~OpenGLShader()
@@ -99,14 +101,94 @@ namespace Apex {
 	void OpenGLShader::Unbind() const
 	{
 	}
+
+	void OpenGLShader::GetActiveUniformLocations()
+	{
+		int numUniforms = -1;
+		glGetProgramiv(m_RendererID, GL_ACTIVE_UNIFORMS, &numUniforms);
+
+		for (int i = 0; i < numUniforms; i++) {
+			
+			int namelen = -1, num = -1;
+			GLenum type = GL_ZERO;
+			char name[512];
+
+			glGetActiveUniform(m_RendererID,
+				static_cast<uint32_t>(i),
+				sizeof(name)-1,
+				&namelen,
+				&num,
+				&type,
+				name
+				);
+			name[namelen] = 0;
+
+			uint32_t location = glGetUniformLocation(m_RendererID, name);
+
+			m_UniformLocations.emplace(name, location);
+		}
+	}
 	
+#ifndef SHADER_UNIFORMS_NO_CACHE
+#define SHADER_UNIFORMS_NO_CACHE
+#endif
+
+
+	void OpenGLShader::SetUniInt(const std::string & name, int value)
+	{
+	#ifdef SHADER_UNIFORMS_NO_CACHE
+		glUniform1i(glGetUniformLocation(m_RendererID, name.c_str()), value);
+	#else
+		glUniform1i(m_UniformLocations.at(name), value);
+	#endif
+	}
+
 	void OpenGLShader::SetUniFloat1(const std::string & name, float value)
 	{
+	#ifdef SHADER_UNIFORMS_NO_CACHE
 		glUniform1f(glGetUniformLocation(m_RendererID, name.c_str()), value);
+	#else
+		glUniform1f(m_UniformLocations.at(name), value);
+	#endif
+	}
+	void OpenGLShader::SetUniFloat2(const std::string & name, const glm::vec2 & value)
+	{
+	#ifdef SHADER_UNIFORMS_NO_CACHE
+		glUniform2fv(glGetUniformLocation(m_RendererID, name.c_str()), 1, glm::value_ptr(value));
+	#else
+		glUniform2fv(m_UniformLocations.at(name), 1, glm::value_ptr(value));
+	#endif
+	}
+
+	void OpenGLShader::SetUniFloat3(const std::string & name, const glm::vec3 & value)
+	{
+	#ifdef SHADER_UNIFORMS_NO_CACHE
+		glUniform3fv(glGetUniformLocation(m_RendererID, name.c_str()), 1, glm::value_ptr(value));
+	#else
+		glUniform3fv(m_UniformLocations.at(name), 1, glm::value_ptr(value));
+	#endif
+	}
+
+	void OpenGLShader::SetUniFloat4(const std::string & name, const glm::vec4 & value)
+	{
+	#ifdef SHADER_UNIFORMS_NO_CACHE
+		glUniform4fv(glGetUniformLocation(m_RendererID, name.c_str()), 1, glm::value_ptr(value));
+	#else
+		glUniform4fv(m_UniformLocations.at(name), 1, glm::value_ptr(value)); 
+	#endif
 	}
 
 	void OpenGLShader::SetUniMat4(const std::string& name, const glm::mat4 & matrix)
 	{
+	#ifdef SHADER_UNIFORMS_NO_CACHE
 		glUniformMatrix4fv(glGetUniformLocation(m_RendererID, name.c_str()), 1, GL_FALSE, glm::value_ptr(matrix));
+	#else
+		glUniformMatrix4fv(m_UniformLocations.at(name), 1, GL_FALSE, glm::value_ptr(matrix));
+	#endif
 	}
+
+#ifdef SHADER_UNIFORMS_NO_CACHE
+#undef SHADER_UNIFORMS_NO_CACHE
+#endif
+
 }

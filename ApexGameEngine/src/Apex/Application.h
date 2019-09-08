@@ -4,11 +4,7 @@
 #include "Apex/Layers/LayerStack.h"
 #include "Apex/Events/Event.h"
 #include "Apex/Events/ApplicationEvent.h"
-
-#include "Apex/Renderer/Shader.h"
-#include "Apex/Renderer/Buffer.h"
-#include "Apex/Renderer/VertexArray.h"
-#include "Apex/Renderer/Camera.h"
+#include "Timer.h"
 
 #include "Apex/ImGui/ImGuiLayer.h"
 
@@ -33,18 +29,12 @@ namespace Apex {
 	private:
 		bool OnWindowClose(WindowCloseEvent& e);
 
-		std::unique_ptr<Window> m_Window;
+		Scope<Window> m_Window;
 		ImGuiLayer* m_ImGuiLayer;
 		bool m_Running = true;
 		LayerStack m_LayerStack;
 
-		std::shared_ptr<Shader> m_Shader;
-		std::shared_ptr<VertexArray> m_VertexArray;
-
-		std::shared_ptr<Shader> m_SquareShader;
-		std::shared_ptr<VertexArray> m_SquareVA;
-
-		OrthographicCamera m_Camera;
+		float m_LastFrameTime;
 
 		static Application* s_Instance;
 	};

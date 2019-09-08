@@ -33,7 +33,7 @@ namespace Apex {
 	//////////////////////////////////////////////////////////////////////
 	/*-------------------------Index Buffer-----------------------------*/
 	//////////////////////////////////////////////////////////////////////
-	OpenGLIndexBuffer::OpenGLIndexBuffer(uint32_t * indices, size_t count)
+	OpenGLIndexBuffer::OpenGLIndexBuffer(uint32_t * indices, uint32_t count)
 		: m_Count(count)
 	{
 		glCreateBuffers(1, &m_RendererID);
