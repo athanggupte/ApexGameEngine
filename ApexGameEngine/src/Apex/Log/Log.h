@@ -6,7 +6,7 @@
 
 namespace Apex {
 
-	class APEX_API Log
+	class Log
 	{
 	public:
 		static void Init();

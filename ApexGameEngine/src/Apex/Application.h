@@ -10,7 +10,7 @@
 
 namespace Apex {
 
-	class APEX_API Application
+	class Application
 	{
 	public:
 		Application();

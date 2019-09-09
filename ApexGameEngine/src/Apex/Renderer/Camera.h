@@ -4,7 +4,7 @@
 
 namespace Apex {
 	
-	class APEX_API Camera
+	class Camera
 	{
 	public:
 		virtual const glm::mat4& GetProjectionMatrix() const = 0;
@@ -15,7 +15,7 @@ namespace Apex {
 		virtual void RecalculateViewMatrix() = 0;
 	};
 
-	class APEX_API OrthographicCamera : public Camera
+	class OrthographicCamera : public Camera
 	{
 	public:
 		OrthographicCamera(float left, float right, float bottom, float top);

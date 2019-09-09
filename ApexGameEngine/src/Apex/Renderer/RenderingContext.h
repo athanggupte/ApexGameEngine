@@ -4,7 +4,7 @@
 
 namespace Apex {
 
-	class APEX_API RenderingContext
+	class RenderingContext
 	{
 	public:
 		virtual void Init() = 0;

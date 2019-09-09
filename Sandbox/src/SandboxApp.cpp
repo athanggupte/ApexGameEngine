@@ -16,10 +16,10 @@ public:
 
 		Apex::Ref<Apex::VertexBuffer> squareVB;
 		float squareVertices[] = {
-			-0.5f, -0.5f, -1.0f, 0.0f, 0.0f,
-			 0.5f, -0.5f, -1.0f, 1.0f, 0.0f,
-			 0.5f,  0.5f, -1.0f, 1.0f, 1.0f,
-			-0.5f,  0.5f, -1.0f, 0.0f, 1.0f
+			-0.5f, -0.5f, 0.0f, 0.0f, 0.0f,
+			 0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
+			 0.5f,  0.5f, 0.0f, 1.0f, 1.0f,
+			-0.5f,  0.5f, 0.0f, 0.0f, 1.0f
 		};
 		squareVB = Apex::VertexBuffer::Create(squareVertices, sizeof(squareVertices));
 		squareVB->SetLayout({
@@ -40,44 +40,7 @@ public:
 		/// End Square Data ///
 
 		/// Texture Shader ///
-		std::string squareVertexSrc = R"(
-			#version 450
-
-			layout(location = 0) in vec3 a_Position;
-			layout(location = 1) in vec2 a_TexCoord;
-
-			uniform mat4 u_ViewProjection;
-			uniform mat4 u_Model;
-
-			out vec3 v_Position;
-			out vec2 v_TexCoord;
-
-			void main()
-			{
-				v_Position = a_Position;
-				//v_TexCoord = a_TexCoord;
-				v_TexCoord = vec2(a_TexCoord.x, -a_TexCoord.y);
-				gl_Position = u_ViewProjection * u_Model * vec4(a_Position, 1.0);
-			}
-		)";
-
-		std::string squareFragmentSrc = R"(
-			#version 450
-
-			layout(location = 0) out vec4 o_Color;
-
-			uniform sampler2D u_Texture;
-			
-			in vec3 v_Position;
-			in vec2 v_TexCoord;
-
-			void main()
-			{
-				o_Color = texture(u_Texture, v_TexCoord);
-				//o_Color = vec4(v_TexCoord.x, v_TexCoord.y, 0.0, 1.0);
-			}
-		)";
-		m_TextureShader = Apex::Shader::Create(squareVertexSrc, squareFragmentSrc);
+		m_TextureShader = Apex::Shader::Create("assets/shaders/Texture.glsl");
 		m_PusheenTexture = Apex::Texture2D::Create("assets/textures/pusheen-thug-life.png");
 		m_CheckerTexture = Apex::Texture2D::Create("assets/textures/Checkerboard.png");
 		m_TextureShader->Bind();
@@ -124,9 +87,6 @@ public:
 
 	void OnUpdate() override
 	{
-		if (Apex::Input::IsKeyPressed(APEX_KEY_W))
-			m_CameraPosition.y += m_CameraMoveSpeed * Apex::Timer::GetSeconds();
-
 		auto[mouseX, mouseY] = Apex::Input::GetMousePos();
 		if (!ImGui::IsAnyItemActive() && !ImGui::IsAnyWindowFocused()) {
 			std::pair<float, float> mouseDiff = {
@@ -158,17 +118,19 @@ public:
 
 		static glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.075f, 0.075f, 0.075f));
 
-		m_CheckerTexture->Bind(0);
+		m_FlatShader->Bind();
 		for (int i = 0; i < 20; i++) {
 			for (int j = 0; j < 20; j++) {
-				//m_FlatShader->SetUniFloat4("u_Color", m_SquareColor);
-				Apex::Renderer::Submit(m_TextureShader, m_SquareVA,
-					glm::translate(glm::mat4(1.0f), glm::vec3(i*0.085f - 9.5f * 0.085f, j*0.085f - 9.5f * 0.085f, -1.0f)) * scale);
+				m_FlatShader->SetUniFloat4("u_Color", m_SquareColor);
+				Apex::Renderer::Submit(m_FlatShader, m_SquareVA,
+					glm::translate(glm::mat4(1.0f), glm::vec3(i*0.085f - 9.5f * 0.085f, j*0.085f - 9.5f * 0.085f, -2.3f)) * scale);
 			}
 		}
 
+		m_CheckerTexture->Bind();
+		Apex::Renderer::Submit(m_TextureShader, m_SquareVA, glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -1.7f)));
 		m_PusheenTexture->Bind();
-		Apex::Renderer::Submit(m_TextureShader, m_SquareVA, glm::mat4(1.0f));
+		Apex::Renderer::Submit(m_TextureShader, m_SquareVA, glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -1.0f)));
 
 		Apex::Renderer::EndScene();
 	}

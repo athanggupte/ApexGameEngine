@@ -16,7 +16,7 @@ namespace Apex {
 			: w_Title(title), w_Width(width), w_Height(height) {}
 	};
 
-	class APEX_API Window
+	class Window
 	{
 	public:
 		using EventCallbackFn = std::function<void(Event&)>;

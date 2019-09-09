@@ -2,7 +2,7 @@
 
 namespace Apex {
 
-	class APEX_API Texture
+	class Texture
 	{
 	public:
 		virtual ~Texture() = default;

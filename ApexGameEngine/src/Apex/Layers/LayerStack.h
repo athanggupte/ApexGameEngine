@@ -6,7 +6,7 @@
 
 namespace Apex {
 
-	class APEX_API LayerStack
+	class LayerStack
 	{
 	public:
 		LayerStack();

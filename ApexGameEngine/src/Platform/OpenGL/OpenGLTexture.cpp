@@ -10,6 +10,7 @@ namespace Apex {
 		: m_Path(path)
 	{
 		int width, height, channels;
+		stbi_set_flip_vertically_on_load(1);
 		stbi_uc* data = stbi_load(path.c_str(), &width, &height, &channels, 0);
 		APEX_CORE_ASSERT(data, std::string("Failed to load image : " + path));
 
@@ -18,17 +19,18 @@ namespace Apex {
 
 		APEX_CORE_DEBUG("image channels : {0}", channels);
 
-		GLenum internalFormat;
-		GLenum format;
+		GLenum internalFormat = 0, dataFormat = 0;
 
 		if (channels == 3) {
 			internalFormat = GL_RGB8;
-			format = GL_RGB;
+			dataFormat = GL_RGB;
 		}
 		else if (channels == 4) {
 			internalFormat = GL_RGBA8;
-			format = GL_RGBA;
+			dataFormat = GL_RGBA;
 		}
+
+		APEX_CORE_ASSERT(internalFormat && dataFormat, "Image format not supported");
 
 		glCreateTextures(GL_TEXTURE_2D, 1, &m_RendererID);
 		glTextureStorage2D(m_RendererID, 1, internalFormat, m_Width, m_Height);
@@ -36,7 +38,7 @@ namespace Apex {
 		glTextureParameteri(m_RendererID, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		glTextureParameteri(m_RendererID, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
-		glTextureSubImage2D(m_RendererID, 0, 0, 0, m_Width, m_Height, format, GL_UNSIGNED_BYTE, data);
+		glTextureSubImage2D(m_RendererID, 0, 0, 0, m_Width, m_Height, dataFormat, GL_UNSIGNED_BYTE, data);
 
 		stbi_image_free(data);
 	}

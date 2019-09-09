@@ -5,7 +5,7 @@
 
 namespace Apex {
 
-	class APEX_API KeyEvent : public Event
+	class KeyEvent : public Event
 	{
 	public:
 		inline int GetKeyCode() const { return m_KeyCode; }
@@ -20,7 +20,7 @@ namespace Apex {
 	};
 
 
-	class APEX_API KeyPressedEvent : public KeyEvent
+	class KeyPressedEvent : public KeyEvent
 	{
 	public:
 		KeyPressedEvent(int keycode, int repeatCount)
@@ -42,7 +42,7 @@ namespace Apex {
 	};
 
 
-	class APEX_API KeyReleasedEvent : public KeyEvent
+	class KeyReleasedEvent : public KeyEvent
 	{
 	public:
 		KeyReleasedEvent(int keycode)
@@ -59,7 +59,7 @@ namespace Apex {
 	};
 	
 	
-	class APEX_API CharTypedEvent : public KeyEvent
+	class CharTypedEvent : public KeyEvent
 	{
 	public:
 		CharTypedEvent(int keycode)

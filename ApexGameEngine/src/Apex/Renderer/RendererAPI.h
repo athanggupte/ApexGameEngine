@@ -6,7 +6,7 @@
 
 namespace Apex {
 
-	class APEX_API RendererAPI
+	class RendererAPI
 	{
 	public:
 		enum class API
@@ -15,6 +15,8 @@ namespace Apex {
 		};
 
 	public:
+		virtual void Init() = 0;
+
 		virtual void SetClearColor(const glm::vec4& color) = 0;
 		virtual void Clear() = 0;
 		

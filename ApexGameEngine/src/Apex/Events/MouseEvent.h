@@ -5,7 +5,7 @@
 
 namespace Apex {
 
-	class APEX_API MouseMovedEvent : public Event
+	class MouseMovedEvent : public Event
 	{
 	public:
 		MouseMovedEvent(float x, float y)
@@ -29,7 +29,7 @@ namespace Apex {
 	};
 
 
-	class APEX_API MouseScrolledEvent : public Event
+	class MouseScrolledEvent : public Event
 	{
 	public:
 		MouseScrolledEvent(float x, float y)
@@ -54,7 +54,7 @@ namespace Apex {
 
 	/*--------------------------------------------------------------------------*/
 
-	class APEX_API MouseButtonEvent : public Event
+	class MouseButtonEvent : public Event
 	{
 	public:
 		inline int GetMouseButton() const { return m_Button; }
@@ -68,7 +68,7 @@ namespace Apex {
 	};
 
 
-	class APEX_API MouseButtonPressedEvent : public MouseButtonEvent
+	class MouseButtonPressedEvent : public MouseButtonEvent
 	{
 	public:
 		MouseButtonPressedEvent(int button)
@@ -85,7 +85,7 @@ namespace Apex {
 	};
 
 
-	class APEX_API MouseButtonReleasedEvent : public MouseButtonEvent
+	class MouseButtonReleasedEvent : public MouseButtonEvent
 	{
 	public:
 		MouseButtonReleasedEvent(int button)

@@ -4,7 +4,7 @@
 
 namespace Apex {
 
-	class APEX_API VertexArray
+	class VertexArray
 	{
 	public:
 		virtual ~VertexArray() = default;

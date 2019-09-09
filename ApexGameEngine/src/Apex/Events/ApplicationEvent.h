@@ -5,7 +5,7 @@
 
 namespace Apex {
 
-	class APEX_API WindowResizeEvent : public Event
+	class WindowResizeEvent : public Event
 	{
 	public:
 		WindowResizeEvent(uint32_t width, uint32_t height)
@@ -29,7 +29,7 @@ namespace Apex {
 	};
 
 	
-	class APEX_API WindowCloseEvent : public Event
+	class WindowCloseEvent : public Event
 	{
 	public:
 		WindowCloseEvent() {}
@@ -39,7 +39,7 @@ namespace Apex {
 	};
 
 	
-	class APEX_API AppTickEvent : public Event
+	class AppTickEvent : public Event
 	{
 	public:
 		AppTickEvent() {}
@@ -49,7 +49,7 @@ namespace Apex {
 	};
 
 	
-	class APEX_API AppUpdateEvent : public Event
+	class AppUpdateEvent : public Event
 	{
 	public:
 		AppUpdateEvent() {}
@@ -59,7 +59,7 @@ namespace Apex {
 	};
 
 
-	class APEX_API AppRenderEvent : public Event
+	class AppRenderEvent : public Event
 	{
 	public:
 		AppRenderEvent() {}

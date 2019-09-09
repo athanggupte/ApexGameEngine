@@ -5,12 +5,12 @@
 #ifdef APEX_PLATFORM_WINDOWS
 	#ifdef APEX_DYNAMIC_LINK
 		#ifdef APEX_BUILD_DLL
-			#define APEX_API __declspec(dllexport)
+			#define _APEX_API __declspec(dllexport)
 		#else
-			#define APEX_API __declspec(dllimport)
+			#define _APEX_API __declspec(dllimport)
 		#endif
 	#else
-		#define APEX_API
+		#define _APEX_API
 	#endif
 #else
 	#error Apex only supports Windows for now!

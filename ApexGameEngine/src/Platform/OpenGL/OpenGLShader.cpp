@@ -1,68 +1,130 @@
 #include "apex_pch.h"
 #include "OpenGLShader.h"
 
+#include <fstream>
 #include <glad/glad.h>
 #include <glm/gtc/type_ptr.hpp>
 
 namespace Apex {
 
-	OpenGLShader::OpenGLShader(const std::string & vertexSrc, const std::string & fragmentSrc)
+	static GLenum ShaderTypeFromString(const std::string & type)
 	{
-		const GLchar* source;
-		GLint success;
+		if (type == "vertex")
+			return GL_VERTEX_SHADER;
+		if (type == "fragment" || type == "pixel")
+			return GL_FRAGMENT_SHADER;
 
-		//Create Vertex Shader
-		GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
-		source = (const GLchar*)vertexSrc.c_str();
-		glShaderSource(vertexShader, 1, &source, nullptr);
-		glCompileShader(vertexShader);
+		return 0;
+	}
 
-		glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
-		if (success == GL_FALSE) {
-			GLint maxLength = 0;
-			glGetShaderiv(vertexShader, GL_INFO_LOG_LENGTH, &maxLength);
-
-			GLchar* infoLog = new GLchar[maxLength];
-			glGetShaderInfoLog(vertexShader, maxLength, &maxLength, infoLog);
-			glDeleteShader(vertexShader);
-
-			APEX_CORE_ERROR("{0}", infoLog);
-			APEX_CORE_ASSERT(false, "Vertex shader compilation failed");
-
-			return;
+	OpenGLShader::OpenGLShader(const std::string & filepath)
+	{
+		std::string source;
+		std::ifstream in(filepath, std::ios::in | std::ios::binary);
+		if (in) {
+			in.seekg(0, std::ios::end);
+			source.resize(in.tellg());
+			in.seekg(0, std::ios::beg);
+			in.read(&source[0], source.size());
+			in.close();
+		}
+		else {
+			APEX_CORE_ERROR("Could not open file : {0}", filepath);
 		}
 
-		GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-		source = (const GLchar*)fragmentSrc.c_str();
-		glShaderSource(fragmentShader, 1, &source, nullptr);
-		glCompileShader(fragmentShader);
+		auto& shaderSources = ParseSource(source);
+		Compile(shaderSources);
 
-		glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
-		if (success == GL_FALSE) {
-			GLint maxLength = 0;
-			glGetShaderiv(fragmentShader, GL_INFO_LOG_LENGTH, &maxLength);
+		// Extract name from filepath
+		auto lastSlash = filepath.find_last_of("/\\");
+		lastSlash = lastSlash == std::string::npos ? 0 : lastSlash + 1;
+		auto lastDot = filepath.rfind('.');
+		auto count = lastDot == std::string::npos ? filepath.size() - lastSlash : lastDot - lastSlash;
+		m_Name = filepath.substr(lastSlash, count);
+	}
 
-			GLchar* infoLog = new GLchar[maxLength];
-			glGetShaderInfoLog(fragmentShader, maxLength, &maxLength, infoLog);
+	OpenGLShader::OpenGLShader(const std::string & name, const std::string & vertexSrc, const std::string & fragmentSrc)
+		: m_Name(name)
+	{
+		std::unordered_map<GLenum, std::string> sources;
+		sources[GL_VERTEX_SHADER] = vertexSrc;
+		sources[GL_FRAGMENT_SHADER] = fragmentSrc;
 
-			glDeleteShader(fragmentShader);
-			glDeleteShader(vertexShader);
+		Compile(sources);
 
-			APEX_CORE_ERROR("{0}", infoLog);
-			APEX_CORE_ASSERT(false, "Fragment shader compilation failed");
+		//OpenGLShader::GetActiveUniformLocations();
 
-			return;
+	}
+
+	OpenGLShader::~OpenGLShader()
+	{
+		glDeleteProgram(m_RendererID);
+	}
+	
+	std::unordered_map<GLenum, std::string> OpenGLShader::ParseSource(const std::string & source)
+	{
+		std::unordered_map<GLenum, std::string> shaderSources;
+
+		const char* typeToken = "#type";
+		size_t typeTokenLength = strlen(typeToken);
+		size_t pos = source.find(typeToken, 0);
+		while (pos != std::string::npos) {
+			size_t eol = source.find_first_of("\r\n", pos);
+			APEX_CORE_ASSERT(eol != std::string::npos, "Syntax Error");
+			size_t begin = pos + typeTokenLength + 1;
+			std::string type = source.substr(begin, eol - begin);
+			APEX_CORE_ASSERT(ShaderTypeFromString(type), "Invalid shader type specified : " + type);
+
+			size_t nextLinePos = source.find_first_not_of("\r\n", eol);
+			pos = source.find(typeToken, nextLinePos);
+			shaderSources[ShaderTypeFromString(type)] =
+				source.substr(nextLinePos,
+					pos - (nextLinePos == std::string::npos ? source.size() - 1 : nextLinePos));
 		}
 
+		return shaderSources;
+	}
 
-		m_RendererID = glCreateProgram();
-		GLuint program = m_RendererID;
+	void OpenGLShader::Compile(const std::unordered_map<GLenum, std::string>& shaderSources)
+	{
+		GLuint program = glCreateProgram();
+		APEX_CORE_ASSERT(shaderSources.size() < 4, "Max. 4 shaders supported");
+		std::array<GLuint, 4> glShaderIDs;
+		int shaderIndex = 0;
+		for (auto& kv : shaderSources) {
+			GLenum type = kv.first;
+			const std::string& src = kv.second;
 
-		glAttachShader(program, vertexShader);
-		glAttachShader(program, fragmentShader);
+			GLuint shader = glCreateShader(type);
+			const GLchar* source = (const GLchar*)src.c_str();
+			glShaderSource(shader, 1, &source, nullptr);
+			glCompileShader(shader);
 
+			GLint success;
+			glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
+			if (success == GL_FALSE) {
+				GLint maxLength = 0;
+				glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &maxLength);
+
+				GLchar* infoLog = new GLchar[maxLength];
+				glGetShaderInfoLog(shader, maxLength, &maxLength, infoLog);
+				glDeleteShader(shader);
+
+				APEX_CORE_ERROR("{0}", infoLog);
+				APEX_CORE_CRITICAL("Shader compilation failed");
+
+				glDeleteProgram(program);
+
+				return;
+			}
+
+			glAttachShader(program, shader);
+			glShaderIDs[shaderIndex++] = shader;
+		}
+		
 		glLinkProgram(program);
 
+		GLint success;
 		glGetProgramiv(program, GL_LINK_STATUS, &success);
 		if (success == GL_FALSE) {
 			GLint maxLength = 0;
@@ -72,27 +134,25 @@ namespace Apex {
 			glGetProgramInfoLog(program, maxLength, &maxLength, infoLog);
 
 			glDeleteProgram(program);
-			glDeleteShader(vertexShader);
-			glDeleteShader(fragmentShader);
+			
+			for (auto id : glShaderIDs) {
+				glDeleteShader(id);
+			}
 
 			APEX_CORE_ERROR("{0}", infoLog);
 			APEX_CORE_ASSERT(false, "Shader program linking failed");
 
 			return;
 		}
+		
+		m_RendererID = program;
 
-		glDetachShader(program, vertexShader);
-		glDetachShader(program, fragmentShader);
-
-		OpenGLShader::GetActiveUniformLocations();
+		for (auto id : glShaderIDs) {
+			glDetachShader(program, id);
+		}		
 
 	}
 
-	OpenGLShader::~OpenGLShader()
-	{
-		glDeleteProgram(m_RendererID);
-	}
-	
 	void OpenGLShader::Bind() const
 	{
 		glUseProgram(m_RendererID);
@@ -151,6 +211,7 @@ namespace Apex {
 		glUniform1f(m_UniformLocations.at(name), value);
 	#endif
 	}
+
 	void OpenGLShader::SetUniFloat2(const std::string & name, const glm::vec2 & value)
 	{
 	#ifdef SHADER_UNIFORMS_NO_CACHE
@@ -190,5 +251,4 @@ namespace Apex {
 #ifdef SHADER_UNIFORMS_NO_CACHE
 #undef SHADER_UNIFORMS_NO_CACHE
 #endif
-
 }

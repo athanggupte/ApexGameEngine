@@ -2,6 +2,7 @@
 #include "Application.h"
 
 #include "Apex/Log/Log.h"
+#include "Apex/Renderer/Renderer.h"
 #include "Apex/Input/Input.h"
 
 #include <GLFW/glfw3.h>
@@ -20,6 +21,8 @@ namespace Apex {
 		m_Window = Apex::Scope<Window>(Window::Create());
 		m_Window->SetEventCallback(BIND_CALLBACK_FN(OnEvent));
 		m_Window->SetVSync(true);
+
+		Renderer::Init();
 
 		m_ImGuiLayer = new ImGuiLayer();
 		PushOverlay(m_ImGuiLayer);

@@ -71,7 +71,7 @@ namespace Apex {
 
 
 	/*-------------------------Buffer Layout----------------------------*/
-	class APEX_API BufferLayout
+	class BufferLayout
 	{
 	public:
 		BufferLayout() {}
@@ -109,7 +109,7 @@ namespace Apex {
 
 
 	/*-------------------------Vertex Buffer----------------------------*/
-	class APEX_API VertexBuffer
+	class VertexBuffer
 	{
 	public:
 		virtual ~VertexBuffer() = default;
@@ -125,7 +125,7 @@ namespace Apex {
 
 
 	/*-------------------------Index Buffer-----------------------------*/
-	class APEX_API IndexBuffer
+	class IndexBuffer
 	{
 	public:
 		virtual ~IndexBuffer() = default;

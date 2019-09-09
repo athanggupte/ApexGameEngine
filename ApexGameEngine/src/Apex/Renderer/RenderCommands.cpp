@@ -7,4 +7,9 @@ namespace Apex {
 
 	RendererAPI* RenderCommands::s_RendererAPI = new OpenGLRendererAPI();
 
+	void RenderCommands::Init()
+	{
+		s_RendererAPI->Init();
+	}
+
 }
