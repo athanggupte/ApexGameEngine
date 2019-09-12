@@ -17,8 +17,6 @@ namespace Apex {
 		m_Width = width;
 		m_Height = height;
 
-		APEX_CORE_DEBUG("image channels : {0}", channels);
-
 		GLenum internalFormat = 0, dataFormat = 0;
 
 		if (channels == 3) {

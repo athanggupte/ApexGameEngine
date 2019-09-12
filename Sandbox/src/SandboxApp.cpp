@@ -5,6 +5,8 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+#include "Apex/Material/Material.h"
+
 class SandboxLayer : public Apex::Layer
 {
 public:
@@ -46,6 +48,13 @@ public:
 		m_TextureShader->Bind();
 		m_TextureShader->SetUniInt("u_Texture", 0);
 
+		/* ------------------TEST CODE------------------------- */
+		Apex::Material material;
+		material.SetShader(m_TextureShader);
+		material.AddTexture("Texture", m_CheckerTexture);
+		material.Bind();
+		/* ---------------------------------------------------- */
+
 		/// Flat Shader ///
 		std::string flatVertexSrc = R"(
 			#version 450
@@ -77,7 +86,7 @@ public:
 				o_Color = u_Color;
 			}
 		)";
-		m_FlatShader = Apex::Shader::Create(flatVertexSrc, flatFragmentSrc);
+		m_FlatShader = Apex::Shader::Create("FlatColorShader", flatVertexSrc, flatFragmentSrc);
 	}
 
 	// Inherited via Layer

@@ -55,7 +55,20 @@ namespace Apex {
 		return shader;
 	}
 	
-	Ref<Shader> ShaderLibrary::Get(const std::string & name)
+	size_t ShaderLibrary::GetNumAvailableShaders()
+	{
+		return m_Shaders.size();
+	}
+
+	std::vector<std::string> ShaderLibrary::ListAllShaders()
+	{
+		std::vector<std::string> shaderList;
+		auto key_selector = [](auto pair) {return pair.first; };
+		std::transform(m_Shaders.begin(), m_Shaders.end(), shaderList.begin(), key_selector);
+		return shaderList;
+	}
+
+	Ref<Shader> ShaderLibrary::GetShader(const std::string & name)
 	{
 		APEX_CORE_ASSERT(Exists(name), "Shader not found");
 		return m_Shaders[name];
