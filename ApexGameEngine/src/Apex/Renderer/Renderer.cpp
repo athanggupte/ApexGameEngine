@@ -8,6 +8,7 @@ namespace Apex {
 	void Renderer::Init()
 	{
 		RenderCommands::Init();
+		APEX_CORE_TRACE("Apex::Renderer initialized successfully!");
 	}
 
 	void Renderer::BeginScene(OrthographicCamera& camera)
@@ -18,7 +19,7 @@ namespace Apex {
 	void Renderer::EndScene()
 	{
 	}
-
+	
 	void Renderer::Submit(const Ref<Shader>& shader, const Ref<VertexArray>& vertexArray, const glm::mat4& modelMatrix)
 	{
 		shader->Bind();
@@ -28,5 +29,14 @@ namespace Apex {
 		vertexArray->Bind();
 		RenderCommands::DrawIndexed(vertexArray);
 	}
+
+	/*--------------------------------------------------------------------------------------------------*/
+	void Renderer::SubmitPostProcess(const Ref<Shader>& shader, const Ref<VertexArray>& vertexArray)
+	{
+		shader->Bind();
+		vertexArray->Bind();
+		RenderCommands::Draw(vertexArray);
+	}
+	/*--------------------------------------------------------------------------------------------------*/
 
 }

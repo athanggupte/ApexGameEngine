@@ -10,6 +10,7 @@ namespace Apex {
 	void RenderCommands::Init()
 	{
 		s_RendererAPI->Init();
+		APEX_CORE_TRACE("Apex::RenderCommands initialized successfully!");
 	}
 
 }

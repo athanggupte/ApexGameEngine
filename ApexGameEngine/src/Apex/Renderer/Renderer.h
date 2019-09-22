@@ -20,6 +20,9 @@ namespace Apex {
 
 		inline static RendererAPI::API GetAPI() { return RendererAPI::GetAPI(); }
 
+
+		/* Temporary */	static void SubmitPostProcess(const Ref<Shader>& shader, const Ref<VertexArray>& vertexArray);
+
 	private:
 		struct SceneData
 		{

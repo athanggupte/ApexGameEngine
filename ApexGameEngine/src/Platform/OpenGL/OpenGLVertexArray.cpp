@@ -75,6 +75,7 @@ namespace Apex {
 		indexBuffer->Bind();
 
 		m_IndexBuffers.push_back(indexBuffer);
+		glBindVertexArray(0);
 	}
 
 }

@@ -6,6 +6,20 @@
 
 namespace Apex {
 
+	OpenGLTexture2D::OpenGLTexture2D()
+		: m_Width(1280), m_Height(720)
+	{
+		glGenTextures(1, &m_RendererID);
+		glBindTexture(GL_TEXTURE_2D, m_RendererID);
+		//glTextureStorage2D(m_RendererID, 1, GL_RGB8, m_Width, m_Height);
+		
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB8, m_Width, m_Height, 0, GL_RGB, GL_UNSIGNED_BYTE, nullptr);
+		//glTextureSubImage2D(m_RendererID, 0, 0, 0, m_Width, m_Height, GL_RGB, GL_UNSIGNED_BYTE, nullptr);
+
+		glTextureParameteri(m_RendererID, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTextureParameteri(m_RendererID, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	}
+	
 	OpenGLTexture2D::OpenGLTexture2D(const std::string & path)
 		: m_Path(path)
 	{
@@ -46,8 +60,14 @@ namespace Apex {
 		glDeleteTextures(1, &m_RendererID);
 	}
 	
+	uint32_t OpenGLTexture2D::GetID() const
+	{
+		return m_RendererID;
+	}
+	
 	void OpenGLTexture2D::Bind(uint32_t slot) const
 	{
 		glBindTextureUnit(slot, m_RendererID);
 	}
+	
 }

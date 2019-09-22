@@ -142,6 +142,7 @@
   <ItemGroup>
     <ClInclude Include="src\Apex.h" />
     <ClInclude Include="src\Apex\Application.h" />
+    <ClInclude Include="src\Apex\AssetManager\AssetManager.h" />
     <ClInclude Include="src\Apex\Core.h" />
     <ClInclude Include="src\Apex\Events\ApplicationEvent.h" />
     <ClInclude Include="src\Apex\Events\Event.h" />
@@ -158,6 +159,7 @@
     <ClInclude Include="src\Apex\MathPrimitiveParser.h" />
     <ClInclude Include="src\Apex\Renderer\Buffer.h" />
     <ClInclude Include="src\Apex\Renderer\Camera.h" />
+    <ClInclude Include="src\Apex\Renderer\FrameBuffer.h" />
     <ClInclude Include="src\Apex\Renderer\RenderCommands.h" />
     <ClInclude Include="src\Apex\Renderer\Renderer.h" />
     <ClInclude Include="src\Apex\Renderer\RendererAPI.h" />
@@ -170,6 +172,7 @@
     <ClInclude Include="src\Apex\Window.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLBuffer.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLContext.h" />
+    <ClInclude Include="src\Platform\OpenGL\OpenGLFrameBuffer.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLRendererAPI.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLShader.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLTexture.h" />
@@ -559,6 +562,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Apex\Application.cpp" />
+    <ClCompile Include="src\Apex\AssetManager\AssetManager.cpp" />
     <ClCompile Include="src\Apex\ImGui\ImGuiBuild.cpp" />
     <ClCompile Include="src\Apex\ImGui\ImGuiLayer.cpp" />
     <ClCompile Include="src\Apex\Layers\Layer.cpp" />
@@ -568,6 +572,7 @@
     <ClCompile Include="src\Apex\MathPrimitiveParser.cpp" />
     <ClCompile Include="src\Apex\Renderer\Buffer.cpp" />
     <ClCompile Include="src\Apex\Renderer\Camera.cpp" />
+    <ClCompile Include="src\Apex\Renderer\FrameBuffer.cpp" />
     <ClCompile Include="src\Apex\Renderer\RenderCommands.cpp" />
     <ClCompile Include="src\Apex\Renderer\Renderer.cpp" />
     <ClCompile Include="src\Apex\Renderer\RendererAPI.cpp" />
@@ -577,6 +582,7 @@
     <ClCompile Include="src\Apex\Timer.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLBuffer.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLContext.cpp" />
+    <ClCompile Include="src\Platform\OpenGL\OpenGLFrameBuffer.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLRendererAPI.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLShader.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLTexture.cpp" />

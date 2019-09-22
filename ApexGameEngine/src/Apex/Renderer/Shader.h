@@ -40,6 +40,7 @@ namespace Apex {
 		std::vector<std::string> ListAllShaders();
 		Ref<Shader> GetShader(const std::string& name);
  		bool Exists(const std::string & name);
+
 	private:
 		std::unordered_map<std::string, Ref<Shader>> m_Shaders;
 	};

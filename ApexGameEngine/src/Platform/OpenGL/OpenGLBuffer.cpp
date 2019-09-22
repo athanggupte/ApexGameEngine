@@ -9,6 +9,7 @@ namespace Apex {
 	/*-------------------------Vertex Buffer----------------------------*/
 	//////////////////////////////////////////////////////////////////////
 	OpenGLVertexBuffer::OpenGLVertexBuffer(float * vertices, size_t size)
+		: m_Count(size)
 	{
 		glCreateBuffers(1, &m_RendererID);
 		glBindBuffer(GL_ARRAY_BUFFER, m_RendererID);

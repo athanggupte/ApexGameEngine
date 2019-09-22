@@ -18,6 +18,7 @@ int main(int argc, char** argv)
 	Apex::PhysicsManager::Init();
 	// ...
 	*/
+	Apex::AssetManager::Init();
 
 	APEX_CORE_INFO("Welcome to Apex Game Engine !");
 

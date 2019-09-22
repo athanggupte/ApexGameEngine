@@ -29,6 +29,11 @@ namespace Apex {
 		}
 	}
 	
+
+	/////////////////////////////////////////////////////////////////////////
+	//                            ShaderLibrary                            //
+	/////////////////////////////////////////////////////////////////////////
+
 	void ShaderLibrary::Add(const std::string & name, const Ref<Shader>& shader)
 	{
 		APEX_CORE_ASSERT(!Exists(name), "Shader already exists");
@@ -62,8 +67,8 @@ namespace Apex {
 
 	std::vector<std::string> ShaderLibrary::ListAllShaders()
 	{
-		std::vector<std::string> shaderList;
-		auto key_selector = [](auto pair) {return pair.first; };
+		std::vector<std::string> shaderList(m_Shaders.size());
+		auto key_selector = [](auto pair) { return pair.first; };
 		std::transform(m_Shaders.begin(), m_Shaders.end(), shaderList.begin(), key_selector);
 		return shaderList;
 	}

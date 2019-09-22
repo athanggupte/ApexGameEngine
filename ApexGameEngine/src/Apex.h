@@ -3,6 +3,7 @@
 //For use by applications only
 
 #include "Apex/Application.h"
+#include "Apex/AssetManager/AssetManager.h"
 #include "Apex/Layers/Layer.h"
 #include "Apex/Log/Log.h"
 #include "Apex/MathPrimitiveParser.h"
@@ -26,6 +27,7 @@
 #include "Apex/Renderer/Texture.h"
 #include "Apex/Renderer/Buffer.h"
 #include "Apex/Renderer/VertexArray.h"
+#include "Apex/Renderer/FrameBuffer.h"
 #include "Apex/Renderer/Camera.h"
 //------------------------------------//
 

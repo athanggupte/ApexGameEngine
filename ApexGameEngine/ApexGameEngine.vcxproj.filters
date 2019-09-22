@@ -64,6 +64,9 @@
     <Filter Include="vendor\stb_image">
       <UniqueIdentifier>{0DA0BA59-F998-D9AB-22CB-BE300E23B9B7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Apex\AssetManager">
+      <UniqueIdentifier>{8ee8dfab-6ebc-41e8-9cbd-85536ccabc30}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Apex.h">
@@ -1311,7 +1314,12 @@
     <ClInclude Include="vendor\stb_image\stb_image.h">
       <Filter>vendor\stb_image</Filter>
     </ClInclude>
-    <ClInclude Include="src\Apex\Material\Material.h" />
+    <ClInclude Include="src\Apex\Material\Material.h">
+      <Filter>src\Apex\Material</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Apex\AssetManager\AssetManager.h" />
+    <ClInclude Include="src\Apex\Renderer\FrameBuffer.h" />
+    <ClInclude Include="src\Platform\OpenGL\OpenGLFrameBuffer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Apex\Application.cpp">
@@ -1395,6 +1403,11 @@
     <ClCompile Include="vendor\stb_image\stb_image.cpp">
       <Filter>vendor\stb_image</Filter>
     </ClCompile>
-    <ClCompile Include="src\Apex\Material\Material.cpp" />
+    <ClCompile Include="src\Apex\Material\Material.cpp">
+      <Filter>src\Apex\Material</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Apex\AssetManager\AssetManager.cpp" />
+    <ClCompile Include="src\Apex\Renderer\FrameBuffer.cpp" />
+    <ClCompile Include="src\Platform\OpenGL\OpenGLFrameBuffer.cpp" />
   </ItemGroup>
 </Project>
