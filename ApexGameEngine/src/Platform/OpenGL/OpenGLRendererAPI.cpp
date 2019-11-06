@@ -29,6 +29,11 @@ namespace Apex {
 	{
 		glDrawElements(GL_TRIANGLES, vertexArray->GetIndexBuffers().at(0)->GetCount(), GL_UNSIGNED_INT, nullptr);
 	}
+	
+	void OpenGLRendererAPI::DrawInstanced(const Ref<VertexArray>& vertexArray, size_t count)
+	{
+		glDrawElementsInstanced(GL_TRIANGLES, vertexArray->GetIndexBuffers().at(0)->GetCount(), GL_UNSIGNED_INT, nullptr, count);
+	}
 
 	void OpenGLRendererAPI::SetDepthTest(bool value)
 	{

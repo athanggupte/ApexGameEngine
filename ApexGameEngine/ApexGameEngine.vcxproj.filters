@@ -1320,6 +1320,7 @@
     <ClInclude Include="src\Apex\AssetManager\AssetManager.h" />
     <ClInclude Include="src\Apex\Renderer\FrameBuffer.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLFrameBuffer.h" />
+    <ClInclude Include="src\Apex\PostProcessing\Blur.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Apex\Application.cpp">
@@ -1409,5 +1410,6 @@
     <ClCompile Include="src\Apex\AssetManager\AssetManager.cpp" />
     <ClCompile Include="src\Apex\Renderer\FrameBuffer.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLFrameBuffer.cpp" />
+    <ClCompile Include="src\Apex\PostProcessing\Blur.cpp" />
   </ItemGroup>
 </Project>

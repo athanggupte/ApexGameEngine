@@ -7,13 +7,13 @@ namespace Apex {
 	class OpenGLFrameBuffer : public FrameBuffer
 	{
 	public:
-		OpenGLFrameBuffer();
+		OpenGLFrameBuffer(bool depth);
 		virtual ~OpenGLFrameBuffer();
 
 		virtual void Bind() const override;
 		virtual void Unbind() const override;
 
-		virtual void AttachTexture(const Ref<Texture2D> texture) override;
+		virtual void AttachTexture(const Ref<Texture2D>& texture) override;
 		virtual const std::vector<Ref<Texture>>& GetTextures() const override { return m_Textures; }
 
 		virtual bool IsComplete() const;
@@ -22,6 +22,7 @@ namespace Apex {
 		uint32_t m_RendererID;
 		uint32_t m_RenderBuffer;
 		std::vector<Ref<Texture>> m_Textures;
+		bool m_HDR;
 	};
 
 }

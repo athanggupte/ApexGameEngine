@@ -31,4 +31,8 @@
 #include "Apex/Renderer/Camera.h"
 //------------------------------------//
 
+//-----PostProcessing-------------------
+#include "Apex/PostProcessing/Blur.h"
+//------------------------------------//
+
 #include "Apex/StartUp.h" 

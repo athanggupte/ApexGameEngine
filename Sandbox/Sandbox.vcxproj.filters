@@ -3,7 +3,4 @@
   <ItemGroup>
     <ClCompile Include="src\SandboxApp.cpp" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="assets\shaders\GaussianBlur.glsl" />
-  </ItemGroup>
 </Project>

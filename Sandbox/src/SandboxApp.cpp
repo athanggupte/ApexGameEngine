@@ -11,7 +11,7 @@ class SandboxLayer : public Apex::Layer
 {
 public:
 	SandboxLayer()
-		: Layer("Sandbox"), m_Camera(-1.6f, 1.6f, -0.9f, 0.9f), m_CameraPosition(0.0f), m_SquareColor(0.78f, 0.23f, 0.47f, 1.0f)
+		: Layer("Sandbox"), m_Camera(-1.6f, 1.6f, -0.9f, 0.9f), m_CameraPosition(0.0f), m_SquareColor(5.78f, 3.23f, 3.47f, 1.0f), m_BlurEffect()
 	{
 		/// Square Data ///
 		m_SquareVA = Apex::VertexArray::Create();
@@ -41,11 +41,25 @@ public:
 		m_SquareVA->Unbind();
 		/// End Square Data ///
 
+		/// Instances Data ///
+		glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.075f, 0.075f, 0.075f));
+
+		for (int i = 0; i < 10; i++) {
+			for (int j = 0; j < 10; j++) {
+					m_InstancedModelMatrices.push_back(translate(glm::mat4(1.0f), glm::vec3(i*0.125f - 9.5f * 0.125f, j*0.125f - 9.5f * 0.125f, -2.3f)) * scale);
+			}
+		}
+
+		/*for (glm::mat4 mat : m_InstancedModelMatrices)
+		{
+			APEX_TRACE("{0}", Apex::MathParser::ParseMatrix(mat));
+		}*/
+
 		/// Texture Shader ///
 		
 		auto textureShader = Apex::AssetManager::GetShaderLibrary().Load("assets/shaders/Texture.glsl");
-		m_PusheenTexture = Apex::Texture2D::Create("assets/textures/pusheen-thug-life.png");
-		m_CheckerTexture = Apex::Texture2D::Create("assets/textures/Checkerboard.png");
+		m_PusheenTexture = Apex::Texture2D_HDR::Create("assets/textures/pusheen-thug-life.png");
+		m_CheckerTexture = Apex::Texture2D_HDR::Create("assets/textures/Checkerboard.png");
 		textureShader->Bind();
 		textureShader->SetUniInt("u_Texture", 0);
 
@@ -63,14 +77,14 @@ public:
 			layout(location = 0) in vec3 a_Position;
 
 			uniform mat4 u_ViewProjection;
-			uniform mat4 u_Model;
+			uniform mat4 u_Model[100];
 
 			out vec3 v_Position;
 
 			void main()
 			{
 				v_Position = a_Position;
-				gl_Position = u_ViewProjection * u_Model * vec4(a_Position, 1.0);
+				gl_Position = u_ViewProjection * u_Model[gl_InstanceID] * vec4(a_Position, 1.0);
 			}
 		)";
 
@@ -78,6 +92,7 @@ public:
 			#version 450
 
 			layout(location = 0) out vec4 o_Color;
+
 			uniform vec4 u_Color;
 			
 			in vec3 v_Position;
@@ -87,14 +102,22 @@ public:
 				o_Color = u_Color;
 			}
 		)";
+
 		m_FlatShader = Apex::Shader::Create("FlatColorShader", flatVertexSrc, flatFragmentSrc);
+		m_FlatShader->Bind();
+		m_FlatShader->SetUniFloat4("u_Color", m_SquareColor);
+		//m_FlatShader->SetUniMat4("u_ModelTemp", glm::translate(glm::mat4(1.0f), glm::vec3(-9.5f * 0.085f, -9.5f * 0.085f, -2.3f)) * scale);
 
 		/// Frame Buffer ///
-		m_ScreenVA = Apex::VertexArray::Create();
-		m_FrameBuffer = Apex::FrameBuffer::Create();
-		m_ScreenColorTexture = Apex::Texture2D::Create();
+		m_FrameBuffer = Apex::FrameBuffer::Create(true);
+		m_ScreenColorTexture = Apex::Texture2D_HDR::Create();
 		m_FrameBuffer->AttachTexture(m_ScreenColorTexture);
 
+		m_PostProcessFB = Apex::FrameBuffer::Create(false);
+		m_BrightColorTexture = Apex::Texture2D_HDR::Create();
+		m_PostProcessFB->AttachTexture(m_BrightColorTexture);
+
+		m_ScreenVA = Apex::VertexArray::Create();
 		Apex::Ref<Apex::VertexBuffer> screenVB;
 		float screenVertices[] = {
 			-1.0f,  1.0f,  0.0f, 1.0f,
@@ -112,38 +135,21 @@ public:
 			});
 		m_ScreenVA->AddVertexBuffer(screenVB);
 
-		std::string screenVertexSrc = R"(
-			#version 450
+		m_BrightShader = Apex::Shader::Create("assets/shaders/BrightnessSplit.glsl");
+		m_BrightShader->Bind();
+		m_BrightShader->SetUniInt("u_ScreenTexture", 0);
+		
+		m_BlendShader = Apex::Shader::Create("assets/shaders/Blend.glsl");
+		m_BlendShader->Bind();
+		m_BlendShader->SetUniInt("u_SceneTexture", 0);
+		m_BlendShader->SetUniInt("u_BlurTexture", 1);
 
-			layout(location = 0) in vec2 a_Position;
-			layout(location = 1) in vec2 a_TexCoord;
-
-			out vec2 v_TexCoord;
-
-			void main()
-			{
-				v_TexCoord = a_TexCoord;
-				gl_Position = vec4(a_Position, 0.0, 1.0);
-			}
-		)";
-
-		std::string screenFragmentSrc = R"(
-			#version 450
-
-			layout(location = 0) out vec4 o_Color;
-			
-			in vec2 v_TexCoord;
-
-			uniform sampler2D u_ScreenTexture;
-
-			void main()
-			{
-				o_Color = texture(u_ScreenTexture, v_TexCoord);
-			}
-		)";
-		m_ScreenShader = Apex::Shader::Create("assets/shaders/GaussianBlur.glsl");
-		m_ScreenShader->Bind();
-		m_ScreenShader->SetUniInt("u_ScreenTexture", 0);
+		auto screenHDRShader = Apex::AssetManager::GetShaderLibrary().Load("assets/shaders/ScreenHDR.glsl");
+		screenHDRShader->Bind();
+		screenHDRShader->SetUniInt("u_ScreenTexture", 0);
+		auto screenShader = Apex::AssetManager::GetShaderLibrary().Load("assets/shaders/Screen.glsl");
+		screenShader->Bind();
+		screenShader->SetUniInt("u_ScreenTexture", 0);
 	}
 
 	// Inherited via Layer
@@ -157,7 +163,8 @@ public:
 		if (!ImGui::IsAnyItemActive() && !ImGui::IsAnyWindowFocused()) {
 			std::pair<float, float> mouseDiff = {
 				 Apex::Input::IsMouseButtonPressed(APEX_MOUSE_BUTTON_LEFT) ? (mouseX - m_MousePos.first) : 0.0f,
-				 Apex::Input::IsMouseButtonPressed(APEX_MOUSE_BUTTON_LEFT) ? (mouseY - m_MousePos.second) : 0.0f };
+				 Apex::Input::IsMouseButtonPressed(APEX_MOUSE_BUTTON_LEFT) ? (mouseY - m_MousePos.second) : 0.0f
+			};
 			m_CameraRotation += Apex::Input::IsMouseButtonPressed(APEX_MOUSE_BUTTON_RIGHT) ? ((mouseY - m_MousePos.second) * m_CameraRotateSpeed * Apex::Timer::GetSeconds()) : 0.0f;
 			m_CameraPosition.x -= mouseDiff.first * m_CameraMoveSpeed;
 			m_CameraPosition.y += mouseDiff.second * m_CameraMoveSpeed;
@@ -184,8 +191,7 @@ public:
 		Apex::RenderCommands::Clear();
 		Apex::Renderer::BeginScene(m_Camera);
 
-		static glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.075f, 0.075f, 0.075f));
-
+		/*static glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.075f, 0.075f, 0.075f));
 		m_FlatShader->Bind();
 		for (int i = 0; i < 20; i++) {
 			for (int j = 0; j < 20; j++) {
@@ -193,7 +199,17 @@ public:
 				Apex::Renderer::Submit(m_FlatShader, m_SquareVA,
 					glm::translate(glm::mat4(1.0f), glm::vec3(i*0.085f - 9.5f * 0.085f, j*0.085f - 9.5f * 0.085f, -2.3f)) * scale);
 			}
-		}
+		}*/
+		
+		/*glm::mat4 matArray[4] = {
+			glm::translate(glm::mat4(1.0f), glm::vec3(-1.0f, -1.0f, -2.3f)),
+			glm::translate(glm::mat4(1.0f), glm::vec3(-1.0f, 1.0f, -2.3f)),
+			glm::translate(glm::mat4(1.0f), glm::vec3(1.0f, 1.0f, -2.3f)),
+			glm::translate(glm::mat4(1.0f), glm::vec3(1.0f, -1.0f, -2.3f))
+		};*/
+
+		Apex::Renderer::SubmitArray(m_FlatShader, m_SquareVA, m_InstancedModelMatrices.data(), 100 /*m_InstancedModelMatrices.size()*/);
+		
 
 		auto textureShader = Apex::AssetManager::GetShaderLibrary().GetShader("Texture");
 
@@ -204,13 +220,34 @@ public:
 
 		Apex::Renderer::EndScene();
 
-		//// Second Pass : Render to default framebuffer ////
+		//// Split Pass : Render to Bright Texture ////
+		m_PostProcessFB->Bind();
+		Apex::RenderCommands::SetDepthTest(false);
+		Apex::RenderCommands::SetClearColor({ 0.12f, 0.1185f, 0.12f, 1.0f });
+		Apex::RenderCommands::Clear();
+		m_ScreenColorTexture->Bind(0);
+		Apex::Renderer::SubmitPostProcess(m_BrightShader, m_ScreenVA);
+
+		//// Blur Pass : Render to Blur framebuffer ////
+		
+		auto blurTex = m_BlurEffect.GaussianBlur(5, m_BrightColorTexture, m_ScreenVA);
+
+		//// Final Pass : Render to default framebuffer ////
 		m_FrameBuffer->Unbind();
 		Apex::RenderCommands::SetDepthTest(false);
 		Apex::RenderCommands::SetClearColor({ 1.0f, 1.0f, 1.0f, 1.0f });
 		Apex::RenderCommands::Clear();
-		m_ScreenColorTexture->Bind();
-		Apex::Renderer::SubmitPostProcess(m_ScreenShader, m_ScreenVA);
+		m_ScreenColorTexture->Bind(0);
+		//m_BrightColorTexture->Bind(0);
+		blurTex->Bind(1);
+		//Apex::AssetManager::GetShaderLibrary().GetShader("Screen");
+		//auto screenShader = Apex::AssetManager::GetShaderLibrary().GetShader("ScreenHDR");
+		//screenShader->Bind();
+		//screenShader->SetUniFloat1("exposure", m_Exposure);
+		//screenShader->SetUniFloat1("contrast", m_Contrast);
+		m_BlendShader->Bind();
+		m_BlendShader->SetUniFloat1("exposure", m_Exposure);
+		Apex::Renderer::SubmitPostProcess(m_BlendShader, m_ScreenVA);
 
 	}
 
@@ -219,6 +256,8 @@ public:
 		ImGui::ShowMetricsWindow();
 		ImGui::Begin("Settings");
 		ImGui::ColorEdit4("Square Color", glm::value_ptr(m_SquareColor));
+		ImGui::DragFloat("Exposure", &m_Exposure, 0.005f, 0.0f, 10.0f);
+		ImGui::DragFloat("Contrast", &m_Contrast, 0.005f, 0.0f, 3.0f);
 		for (auto& msg : m_MsgList)
 			ImGui::TextUnformatted(msg.c_str());
 		ImGui::End();
@@ -242,15 +281,20 @@ private:
 	Apex::Ref<Apex::Shader> m_FlatShader;
 	//Apex::Ref<Apex::Shader> m_TextureShader;
 	Apex::Ref<Apex::VertexArray> m_SquareVA;
-	Apex::Ref<Apex::Texture2D> m_PusheenTexture;
-	Apex::Ref<Apex::Texture2D> m_CheckerTexture;
+	Apex::Ref<Apex::Texture2D_HDR> m_PusheenTexture;
+	Apex::Ref<Apex::Texture2D_HDR> m_CheckerTexture;
 
 	/// Custom framebuffer objects ///
-	Apex::Ref<Apex::Texture2D> m_ScreenColorTexture;
 	Apex::Ref<Apex::VertexArray> m_ScreenVA;
-	Apex::Ref<Apex::Shader> m_ScreenShader;
+	Apex::Ref<Apex::Shader> m_BrightShader;
+	Apex::Ref<Apex::Shader> m_BlendShader;
+	Apex::Ref<Apex::Texture2D_HDR> m_ScreenColorTexture;
+	Apex::Ref<Apex::Texture2D_HDR> m_BrightColorTexture;
 	Apex::Ref<Apex::FrameBuffer> m_FrameBuffer;
-	
+	Apex::Ref<Apex::FrameBuffer> m_PostProcessFB;
+
+	Apex::Blur m_BlurEffect;
+
 	/// Camera ///
 	Apex::OrthographicCamera m_Camera;
 	glm::vec3 m_CameraPosition;
@@ -263,6 +307,11 @@ private:
 	glm::vec4 m_SquareColor;
 
 	std::list<std::string> m_MsgList;
+
+	std::vector<glm::mat4> m_InstancedModelMatrices;
+
+	float m_Exposure = 1.0f;
+	float m_Contrast = 0.0f;
 };
 
 class Sandbox : public Apex::Application

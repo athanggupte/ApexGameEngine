@@ -14,6 +14,7 @@ namespace Apex {
 
 		virtual void Draw(const Ref<VertexArray>& vertexArray) override;
 		virtual void DrawIndexed(const Ref<VertexArray>& vertexArray) override;
+		virtual void DrawInstanced(const Ref<VertexArray>& vertexArray, size_t count) override;
 
 		virtual void SetDepthTest(bool value) override;
 

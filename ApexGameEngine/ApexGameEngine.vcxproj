@@ -157,6 +157,7 @@
     <ClInclude Include="src\Apex\Log\Log.h" />
     <ClInclude Include="src\Apex\Material\Material.h" />
     <ClInclude Include="src\Apex\MathPrimitiveParser.h" />
+    <ClInclude Include="src\Apex\PostProcessing\Blur.h" />
     <ClInclude Include="src\Apex\Renderer\Buffer.h" />
     <ClInclude Include="src\Apex\Renderer\Camera.h" />
     <ClInclude Include="src\Apex\Renderer\FrameBuffer.h" />
@@ -570,6 +571,7 @@
     <ClCompile Include="src\Apex\Log\Log.cpp" />
     <ClCompile Include="src\Apex\Material\Material.cpp" />
     <ClCompile Include="src\Apex\MathPrimitiveParser.cpp" />
+    <ClCompile Include="src\Apex\PostProcessing\Blur.cpp" />
     <ClCompile Include="src\Apex\Renderer\Buffer.cpp" />
     <ClCompile Include="src\Apex\Renderer\Camera.cpp" />
     <ClCompile Include="src\Apex\Renderer\FrameBuffer.cpp" />

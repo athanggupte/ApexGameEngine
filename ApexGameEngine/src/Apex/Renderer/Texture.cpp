@@ -31,4 +31,28 @@ namespace Apex {
 		return nullptr;
 	}
 
+	Ref<Texture2D_HDR> Texture2D_HDR::Create(const std::string & path)
+	{
+		switch (Renderer::GetAPI())
+		{
+		case RendererAPI::API::None:	APEX_CORE_CRITICAL("No Rendering API selected"); return nullptr;
+		case RendererAPI::API::OpenGL:	return std::make_shared<OpenGLTexture2D_HDR>(path);
+
+		default:				APEX_CORE_CRITICAL("Unknown Rendering API"); return nullptr;
+		}
+		return nullptr;
+	}
+
+	Ref<Texture2D_HDR> Texture2D_HDR::Create()
+	{
+		switch (Renderer::GetAPI())
+		{
+		case RendererAPI::API::None:	APEX_CORE_CRITICAL("No Rendering API selected"); return nullptr;
+		case RendererAPI::API::OpenGL:	return std::make_shared<OpenGLTexture2D_HDR>();
+
+		default:				APEX_CORE_CRITICAL("Unknown Rendering API"); return nullptr;
+		}
+		return nullptr;
+	}
+
 }

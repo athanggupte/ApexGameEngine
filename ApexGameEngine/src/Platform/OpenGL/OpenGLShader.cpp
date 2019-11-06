@@ -32,15 +32,15 @@ namespace Apex {
 			APEX_CORE_ERROR("Could not open file : {0}", filepath);
 		}
 
-		auto& shaderSources = ParseSource(source);
-		Compile(shaderSources);
-
 		// Extract name from filepath
 		auto lastSlash = filepath.find_last_of("/\\");
 		lastSlash = lastSlash == std::string::npos ? 0 : lastSlash + 1;
 		auto lastDot = filepath.rfind('.');
 		auto count = lastDot == std::string::npos ? filepath.size() - lastSlash : lastDot - lastSlash;
 		m_Name = filepath.substr(lastSlash, count);
+
+		auto& shaderSources = ParseSource(source);
+		Compile(shaderSources);
 	}
 
 	OpenGLShader::OpenGLShader(const std::string & name, const std::string & vertexSrc, const std::string & fragmentSrc)
@@ -110,7 +110,7 @@ namespace Apex {
 				glGetShaderInfoLog(shader, maxLength, &maxLength, infoLog);
 				glDeleteShader(shader);
 
-				APEX_CORE_ERROR("{0}", infoLog);
+				APEX_CORE_ERROR("Shader \"{0}\" : {1}", m_Name, infoLog);
 				APEX_CORE_CRITICAL("Shader compilation failed");
 
 				glDeleteProgram(program);
@@ -139,7 +139,7 @@ namespace Apex {
 				glDeleteShader(id);
 			}
 
-			APEX_CORE_ERROR("{0}", infoLog);
+			APEX_CORE_ERROR("Shader \"{0}\" : {1}", m_Name, infoLog);
 			APEX_CORE_ASSERT(false, "Shader program linking failed");
 
 			return;
@@ -244,6 +244,15 @@ namespace Apex {
 	{
 	#ifdef SHADER_UNIFORMS_NO_CACHE
 		glUniformMatrix4fv(glGetUniformLocation(m_RendererID, name.c_str()), 1, GL_FALSE, glm::value_ptr(matrix));
+	#else
+		glUniformMatrix4fv(m_UniformLocations.at(name), 1, GL_FALSE, glm::value_ptr(matrix));
+	#endif
+	}
+
+	void OpenGLShader::SetUniMat4v(const std::string& name, glm::mat4 matrices[], size_t count)
+	{
+	#ifdef SHADER_UNIFORMS_NO_CACHE
+			glUniformMatrix4fv(glGetUniformLocation(m_RendererID, name.c_str()), count, GL_FALSE, glm::value_ptr(matrices[0]));
 	#else
 		glUniformMatrix4fv(m_UniformLocations.at(name), 1, GL_FALSE, glm::value_ptr(matrix));
 	#endif

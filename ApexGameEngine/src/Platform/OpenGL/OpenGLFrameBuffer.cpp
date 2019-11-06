@@ -5,17 +5,42 @@
 
 namespace Apex {
 
-	OpenGLFrameBuffer::OpenGLFrameBuffer()
+	static GLenum GetColorAttachment(size_t id)
+	{
+		switch (id)
+		{
+		case 0: return GL_COLOR_ATTACHMENT0;
+		case 1: return GL_COLOR_ATTACHMENT1;
+		case 2: return GL_COLOR_ATTACHMENT2;
+		case 3: return GL_COLOR_ATTACHMENT3;
+		case 4: return GL_COLOR_ATTACHMENT4;
+		case 5: return GL_COLOR_ATTACHMENT5;
+		default: return GL_COLOR_ATTACHMENT0;
+		}
+	}
+
+
+	OpenGLFrameBuffer::OpenGLFrameBuffer(bool depth)
 	{
 		glGenFramebuffers(1, &m_RendererID);
 		glBindFramebuffer(GL_FRAMEBUFFER, m_RendererID);
 
-		glGenRenderbuffers(1, &m_RenderBuffer);
-		glBindRenderbuffer(GL_RENDERBUFFER, m_RenderBuffer);
-		glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, 1280, 720);
+		if (depth) {
+			glGenRenderbuffers(1, &m_RenderBuffer);
+			glBindRenderbuffer(GL_RENDERBUFFER, m_RenderBuffer);
+			glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, 1280, 720);
 
-		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, m_RenderBuffer);
-		glBindRenderbuffer(GL_RENDERBUFFER, 0);
+			glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, m_RenderBuffer);
+			glBindRenderbuffer(GL_RENDERBUFFER, 0);
+			glBindFramebuffer(GL_FRAMEBUFFER, 0);
+		}
+
+		GLenum attachments[6] = {
+			GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2,
+			GL_COLOR_ATTACHMENT3, GL_COLOR_ATTACHMENT4, GL_COLOR_ATTACHMENT5
+		};
+
+		glDrawBuffers(6, attachments);
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	}
 
@@ -27,8 +52,6 @@ namespace Apex {
 	void OpenGLFrameBuffer::Bind() const
 	{
 		if(!IsComplete())
-		//	glBindFramebuffer(GL_FRAMEBUFFER, m_RendererID);
-		//else
 			glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	}
 	
@@ -37,11 +60,12 @@ namespace Apex {
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	}
 	
-	void OpenGLFrameBuffer::AttachTexture(const Ref<Texture2D> texture)
+	void OpenGLFrameBuffer::AttachTexture(const Ref<Texture2D>& texture)
 	{
 		glBindFramebuffer(GL_FRAMEBUFFER, m_RendererID);
-		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texture->GetID(), 0);
+		glFramebufferTexture2D(GL_FRAMEBUFFER, GetColorAttachment(m_Textures.size()), GL_TEXTURE_2D, texture->GetID(), 0);
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+		m_Textures.push_back(texture);
 	}
 
 	bool OpenGLFrameBuffer::IsComplete() const

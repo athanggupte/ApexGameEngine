@@ -17,6 +17,7 @@ namespace Apex {
 		static void EndScene();
 
 		static void Submit(const Ref<Shader>& shader, const Ref<VertexArray>& vertexArray, const glm::mat4& modelMatrix = glm::mat4(1.0f));
+		static void SubmitArray(const Ref<Shader>& shader, const Ref<VertexArray>& vertexArray, glm::mat4 modelMatrices[], size_t count);
 
 		inline static RendererAPI::API GetAPI() { return RendererAPI::GetAPI(); }
 

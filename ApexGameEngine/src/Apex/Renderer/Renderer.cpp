@@ -30,6 +30,16 @@ namespace Apex {
 		RenderCommands::DrawIndexed(vertexArray);
 	}
 
+	void Renderer::SubmitArray(const Ref<Shader>& shader, const Ref<VertexArray>& vertexArray, glm::mat4 modelMatrices[], size_t count)
+	{
+		shader->Bind();
+		shader->SetUniMat4("u_ViewProjection", s_SceneData->ViewProjectionMatrix);
+		shader->SetUniMat4v("u_Model", modelMatrices, count);
+
+		vertexArray->Bind();
+		RenderCommands::DrawInstanced(vertexArray, count);
+	}
+
 	/*--------------------------------------------------------------------------------------------------*/
 	void Renderer::SubmitPostProcess(const Ref<Shader>& shader, const Ref<VertexArray>& vertexArray)
 	{

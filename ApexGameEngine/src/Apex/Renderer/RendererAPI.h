@@ -22,6 +22,7 @@ namespace Apex {
 
 		virtual void Draw(const Ref<VertexArray>& vertexArray) = 0;
 		virtual void DrawIndexed(const Ref<VertexArray>& vertexArray) = 0;
+		virtual void DrawInstanced(const Ref<VertexArray>& vertexArray, size_t count) = 0;
 
 		virtual void SetDepthTest(bool value) = 0;
 

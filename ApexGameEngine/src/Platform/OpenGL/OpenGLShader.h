@@ -27,6 +27,7 @@ namespace Apex {
 		virtual void SetUniFloat3(const std::string & name, const glm::vec3 & value) override;
 		virtual void SetUniFloat4(const std::string & name, const glm::vec4 & value) override;
 		virtual void SetUniMat4(const std::string & name, const glm::mat4 & matrix) override;
+		virtual void OpenGLShader::SetUniMat4v(const std::string& name, glm::mat4 matrices[], size_t count) override;
 
 	private:
 		std::unordered_map<GLenum, std::string> ParseSource(const std::string& source);
