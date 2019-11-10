@@ -6,6 +6,8 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #include "Apex/Material/Material.h"
+#include "Apex/Model/Model.h"
+
 
 class SandboxLayer : public Apex::Layer
 {
@@ -27,7 +29,7 @@ public:
 		squareVB->SetLayout({
 			{ Apex::ShaderDataType::Float3, "a_Position" },
 			{ Apex::ShaderDataType::Float2, "a_TexCoord" }
-			});
+		});
 		m_SquareVA->AddVertexBuffer(squareVB);
 
 		Apex::Ref<Apex::IndexBuffer> squareIB;
@@ -314,12 +316,73 @@ private:
 	float m_Contrast = 0.0f;
 };
 
+class ModelLayer : public Apex::Layer
+{
+public:
+	ModelLayer()
+		: Layer("Model"), m_Camera(-1.6f, 1.6f, -0.9f, 0.9f), m_CameraPosition(0.0f, 0.0f, 2.0f)
+	{
+		m_Model = std::make_shared<Apex::Model>("assets/models/crysis-nano-suit-2/source/scene.fbx");
+		m_Shader = Apex::Shader::Create("assets/shaders/Texture.glsl");
+		m_Texture = Apex::Texture2D::Create("assets/textures/Checkerboard.png");
+
+		Apex::RenderCommands::SetCulling(true);
+	}
+	
+	virtual void OnAttach() override {}
+	
+	virtual void OnDetach() override {}
+	
+	virtual void OnUpdate() override
+	{
+		if (Apex::Input::IsKeyPressed(APEX_KEY_S))
+			m_CameraPosition.z += m_CameraMoveSpeed * Apex::Timer::GetSeconds();
+		if (Apex::Input::IsKeyPressed(APEX_KEY_W))
+			m_CameraPosition.z -= m_CameraMoveSpeed * Apex::Timer::GetSeconds();
+		if (Apex::Input::IsKeyPressed(APEX_KEY_A))
+			m_CameraPosition.x -= m_CameraMoveSpeed * Apex::Timer::GetSeconds();
+		if (Apex::Input::IsKeyPressed(APEX_KEY_D))
+			m_CameraPosition.x += m_CameraMoveSpeed * Apex::Timer::GetSeconds();
+
+		m_Camera.SetPosition(m_CameraPosition);
+
+		Apex::RenderCommands::SetClearColor({0.0f, 0.0f, 0.0f, 1.0f});
+		Apex::RenderCommands::Clear();
+		Apex::Renderer::BeginScene(m_Camera);
+
+		m_Texture->Bind();
+		Apex::Renderer::SubmitModel(m_Shader, m_Model, glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -40.0f)));
+
+		Apex::Renderer::EndScene();
+	}
+	
+	virtual void OnImGuiRender() override
+	{
+		ImGui::Begin("Stats");
+		std::stringstream ss;
+		ss << "CameraPosition : " << m_Camera.GetPosition().x << "," << m_Camera.GetPosition().y << "," << m_Camera.GetPosition().z;
+		ImGui::TextUnformatted(ss.str().c_str());
+		ImGui::DragFloat("Camera Move Speed", &m_CameraMoveSpeed, 1.0f, 2.0f, 100.0f);
+		ImGui::End();
+	}
+
+private:
+	Apex::OrthographicCamera m_Camera;
+	Apex::Ref<Apex::Model> m_Model;
+	Apex::Ref<Apex::Shader> m_Shader;
+	Apex::Ref<Apex::Texture2D> m_Texture;
+
+	glm::vec3 m_CameraPosition;
+	float m_CameraMoveSpeed = 10.0f;
+};
+
 class Sandbox : public Apex::Application
 {
 public:
 	Sandbox()
 	{
 		PushLayer(new SandboxLayer());
+		//PushLayer(new ModelLayer());
 	}
 
 	~Sandbox()

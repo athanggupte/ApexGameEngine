@@ -1,0 +1,13 @@
+# CMake generation dependency list for this directory.
+E:/Athang_Work/ApexGameEngine/ApexGameEngine/vendor/Assimp/build/CMakeFiles/CheckTypeSize/OFF64_T.c
+E:/Athang_Work/ApexGameEngine/ApexGameEngine/vendor/Assimp/src/contrib/zlib/CMakeLists.txt
+E:/Athang_Work/ApexGameEngine/ApexGameEngine/vendor/Assimp/src/contrib/zlib/zconf.h.cmakein
+E:/Athang_Work/ApexGameEngine/ApexGameEngine/vendor/Assimp/src/contrib/zlib/zlib.pc.cmakein
+H:/Local Disc E/Downloads/cmake-3.14.4-win64-x64/cmake-3.14.4-win64-x64/share/cmake-3.14/Modules/CheckCSourceCompiles.cmake
+H:/Local Disc E/Downloads/cmake-3.14.4-win64-x64/cmake-3.14.4-win64-x64/share/cmake-3.14/Modules/CheckFunctionExists.c
+H:/Local Disc E/Downloads/cmake-3.14.4-win64-x64/cmake-3.14.4-win64-x64/share/cmake-3.14/Modules/CheckFunctionExists.cmake
+H:/Local Disc E/Downloads/cmake-3.14.4-win64-x64/cmake-3.14.4-win64-x64/share/cmake-3.14/Modules/CheckIncludeFile.c.in
+H:/Local Disc E/Downloads/cmake-3.14.4-win64-x64/cmake-3.14.4-win64-x64/share/cmake-3.14/Modules/CheckIncludeFile.cmake
+H:/Local Disc E/Downloads/cmake-3.14.4-win64-x64/cmake-3.14.4-win64-x64/share/cmake-3.14/Modules/CheckIncludeFileCXX.cmake
+H:/Local Disc E/Downloads/cmake-3.14.4-win64-x64/cmake-3.14.4-win64-x64/share/cmake-3.14/Modules/CheckTypeSize.c.in
+H:/Local Disc E/Downloads/cmake-3.14.4-win64-x64/cmake-3.14.4-win64-x64/share/cmake-3.14/Modules/CheckTypeSize.cmake

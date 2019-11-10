@@ -17,6 +17,7 @@ IncludeDirs["Glad"] = "ApexGameEngine/vendor/Glad/include"
 IncludeDirs["ImGui"] = "ApexGameEngine/vendor/imgui"
 IncludeDirs["glm"] = "ApexGameEngine/vendor/glm"
 IncludeDirs["stb_image"] = "ApexGameEngine/vendor/stb_image"
+IncludeDirs["Assimp"] = "ApexGameEngine/vendor/Assimp/src/include/"
 
 include "ApexGameEngine/vendor/GLFW"
 include "ApexGameEngine/vendor/Glad"
@@ -26,7 +27,7 @@ include "ApexGameEngine/vendor/imgui"
 -- Apex Game Engine Project
 project "ApexGameEngine"
 	location "ApexGameEngine"
-	kind "StaticLib"	--DLL
+	kind "StaticLib"	--LIB /SharedLib - DLL
 	language "C++"
 	cppdialect "C++17"
 	staticruntime "on"
@@ -54,14 +55,25 @@ project "ApexGameEngine"
 		"%{IncludeDirs.Glad}",
 		"%{IncludeDirs.ImGui}",
 		"%{IncludeDirs.glm}",
-		"%{IncludeDirs.stb_image}"
+		"%{IncludeDirs.stb_image}",
+		"%{prj.name}/vendor/Assimp/build/include",
+		"%{IncludeDirs.Assimp}"
+	}
+
+	libdirs {
+		"ApexGameEngine/vendor/Assimp/build/code/Debug"
+		--"ApexGameEngine/vendor/Assimp/build/contrib/zlib/Debug",
+		--"ApexGameEngine/vendor/Assimp/build/contrib/irrXML/Debug"
 	}
 
 	links {
 		"GLFW",
 		"Glad",
 		"ImGui",
-		"opengl32.lib"
+		"opengl32.lib",
+		"assimp-vc141-mtd"
+		--"zlibd",
+		--"IrrXMLd"
 	}
 
 	filter "system:windows"
@@ -112,12 +124,18 @@ project "Sandbox"
 		"ApexGameEngine/src",
 		"%{IncludeDirs.spdlog}",
 		"%{IncludeDirs.ImGui}",
-		"%{IncludeDirs.glm}"
-
+		"%{IncludeDirs.glm}",
+		"ApexGameEngine/vendor/Assimp/build/include",
+		"%{IncludeDirs.Assimp}"
+	}
+	
+	libdirs {
+		"ApexGameEngine/vendor/Assimp/build/code/Debug"
 	}
 
 	links {
-		"ApexGameEngine"
+		"ApexGameEngine",
+		"assimp-vc141-mtd"
 	}
 
 	filter "system:windows"

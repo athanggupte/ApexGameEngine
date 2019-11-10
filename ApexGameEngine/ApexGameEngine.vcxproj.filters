@@ -7,6 +7,9 @@
     <Filter Include="src\Apex">
       <UniqueIdentifier>{8ABD1BCF-768A-76DA-9FA3-64828BCFAB68}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Apex\AssetManager">
+      <UniqueIdentifier>{54323B6C-C09E-F666-8992-8EC4F5BD18CF}</UniqueIdentifier>
+    </Filter>
     <Filter Include="src\Apex\Events">
       <UniqueIdentifier>{2E8AD723-9A15-45E8-A326-C8DC0F31A1E8}</UniqueIdentifier>
     </Filter>
@@ -24,6 +27,12 @@
     </Filter>
     <Filter Include="src\Apex\Material">
       <UniqueIdentifier>{68C7C3AB-D4DD-C141-1D55-4D6389AA92C9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Apex\Model">
+      <UniqueIdentifier>{4AA66C28-3674-602E-1F08-D1540B753C93}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Apex\PostProcessing">
+      <UniqueIdentifier>{3C43155F-A87A-5DF6-B184-C1191D3B84EF}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\Apex\Renderer">
       <UniqueIdentifier>{70DCDD6E-DCF2-DB04-256A-672691BFAC8C}</UniqueIdentifier>
@@ -64,9 +73,6 @@
     <Filter Include="vendor\stb_image">
       <UniqueIdentifier>{0DA0BA59-F998-D9AB-22CB-BE300E23B9B7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\Apex\AssetManager">
-      <UniqueIdentifier>{8ee8dfab-6ebc-41e8-9cbd-85536ccabc30}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Apex.h">
@@ -74,6 +80,9 @@
     </ClInclude>
     <ClInclude Include="src\Apex\Application.h">
       <Filter>src\Apex</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Apex\AssetManager\AssetManager.h">
+      <Filter>src\Apex\AssetManager</Filter>
     </ClInclude>
     <ClInclude Include="src\Apex\Core.h">
       <Filter>src\Apex</Filter>
@@ -111,13 +120,28 @@
     <ClInclude Include="src\Apex\Log\Log.h">
       <Filter>src\Apex\Log</Filter>
     </ClInclude>
+    <ClInclude Include="src\Apex\Material\Material.h">
+      <Filter>src\Apex\Material</Filter>
+    </ClInclude>
     <ClInclude Include="src\Apex\MathPrimitiveParser.h">
       <Filter>src\Apex</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Apex\Model\Mesh.h">
+      <Filter>src\Apex\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Apex\Model\Model.h">
+      <Filter>src\Apex\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Apex\PostProcessing\Blur.h">
+      <Filter>src\Apex\PostProcessing</Filter>
     </ClInclude>
     <ClInclude Include="src\Apex\Renderer\Buffer.h">
       <Filter>src\Apex\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\Apex\Renderer\Camera.h">
+      <Filter>src\Apex\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Apex\Renderer\FrameBuffer.h">
       <Filter>src\Apex\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\Apex\Renderer\RenderCommands.h">
@@ -154,6 +178,9 @@
       <Filter>src\Platform\OpenGL</Filter>
     </ClInclude>
     <ClInclude Include="src\Platform\OpenGL\OpenGLContext.h">
+      <Filter>src\Platform\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Platform\OpenGL\OpenGLFrameBuffer.h">
       <Filter>src\Platform\OpenGL</Filter>
     </ClInclude>
     <ClInclude Include="src\Platform\OpenGL\OpenGLRendererAPI.h">
@@ -1314,17 +1341,13 @@
     <ClInclude Include="vendor\stb_image\stb_image.h">
       <Filter>vendor\stb_image</Filter>
     </ClInclude>
-    <ClInclude Include="src\Apex\Material\Material.h">
-      <Filter>src\Apex\Material</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Apex\AssetManager\AssetManager.h" />
-    <ClInclude Include="src\Apex\Renderer\FrameBuffer.h" />
-    <ClInclude Include="src\Platform\OpenGL\OpenGLFrameBuffer.h" />
-    <ClInclude Include="src\Apex\PostProcessing\Blur.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Apex\Application.cpp">
       <Filter>src\Apex</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Apex\AssetManager\AssetManager.cpp">
+      <Filter>src\Apex\AssetManager</Filter>
     </ClCompile>
     <ClCompile Include="src\Apex\ImGui\ImGuiBuild.cpp">
       <Filter>src\Apex\ImGui</Filter>
@@ -1341,13 +1364,28 @@
     <ClCompile Include="src\Apex\Log\Log.cpp">
       <Filter>src\Apex\Log</Filter>
     </ClCompile>
+    <ClCompile Include="src\Apex\Material\Material.cpp">
+      <Filter>src\Apex\Material</Filter>
+    </ClCompile>
     <ClCompile Include="src\Apex\MathPrimitiveParser.cpp">
       <Filter>src\Apex</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Apex\Model\Mesh.cpp">
+      <Filter>src\Apex\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Apex\Model\Model.cpp">
+      <Filter>src\Apex\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Apex\PostProcessing\Blur.cpp">
+      <Filter>src\Apex\PostProcessing</Filter>
     </ClCompile>
     <ClCompile Include="src\Apex\Renderer\Buffer.cpp">
       <Filter>src\Apex\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\Apex\Renderer\Camera.cpp">
+      <Filter>src\Apex\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Apex\Renderer\FrameBuffer.cpp">
       <Filter>src\Apex\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\Apex\Renderer\RenderCommands.cpp">
@@ -1377,6 +1415,9 @@
     <ClCompile Include="src\Platform\OpenGL\OpenGLContext.cpp">
       <Filter>src\Platform\OpenGL</Filter>
     </ClCompile>
+    <ClCompile Include="src\Platform\OpenGL\OpenGLFrameBuffer.cpp">
+      <Filter>src\Platform\OpenGL</Filter>
+    </ClCompile>
     <ClCompile Include="src\Platform\OpenGL\OpenGLRendererAPI.cpp">
       <Filter>src\Platform\OpenGL</Filter>
     </ClCompile>
@@ -1404,12 +1445,5 @@
     <ClCompile Include="vendor\stb_image\stb_image.cpp">
       <Filter>vendor\stb_image</Filter>
     </ClCompile>
-    <ClCompile Include="src\Apex\Material\Material.cpp">
-      <Filter>src\Apex\Material</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Apex\AssetManager\AssetManager.cpp" />
-    <ClCompile Include="src\Apex\Renderer\FrameBuffer.cpp" />
-    <ClCompile Include="src\Platform\OpenGL\OpenGLFrameBuffer.cpp" />
-    <ClCompile Include="src\Apex\PostProcessing\Blur.cpp" />
   </ItemGroup>
 </Project>

@@ -1,0 +1,101 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\zlib\adler32.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\zlib\compress.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\zlib\crc32.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\zlib\deflate.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\zlib\gzclose.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\zlib\gzlib.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\zlib\gzread.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\zlib\gzwrite.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\zlib\inflate.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\zlib\infback.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\zlib\inftrees.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\zlib\inffast.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\zlib\trees.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\zlib\uncompr.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\zlib\zutil.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\contrib\zlib\zconf.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\zlib\zlib.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\zlib\crc32.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\zlib\deflate.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\zlib\gzguts.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\zlib\inffast.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\zlib\inffixed.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\zlib\inflate.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\zlib\inftrees.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\zlib\trees.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\zlib\zutil.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\zlib\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\zlib\win32\zlib1.rc">
+      <Filter>Source Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{515CF84F-26CC-3EDE-9D5B-61573B5E1E55}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{5D08554A-E0D8-36CB-B3B1-3E3CF4627BF0}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

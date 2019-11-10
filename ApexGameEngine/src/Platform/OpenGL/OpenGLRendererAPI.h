@@ -18,6 +18,8 @@ namespace Apex {
 
 		virtual void SetDepthTest(bool value) override;
 
+		virtual void SetCulling(bool value) override;
+
 	};
 
 }

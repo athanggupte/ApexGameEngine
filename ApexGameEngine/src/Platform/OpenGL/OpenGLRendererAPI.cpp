@@ -43,4 +43,15 @@ namespace Apex {
 			glDisable(GL_DEPTH_TEST);
 	}
 
+	void OpenGLRendererAPI::SetCulling(bool value)
+	{
+		if (value) {
+			glEnable(GL_CULL_FACE);
+			glCullFace(GL_BACK);
+		}
+		else {
+			glDisable(GL_CULL_FACE);
+		}
+	}
+
 }

@@ -15,6 +15,7 @@ namespace Apex {
 		inline static void SetClearColor(const glm::vec4& color) { s_RendererAPI->SetClearColor(color); }
 		inline static void Clear() { s_RendererAPI->Clear(); }
 		inline static void SetDepthTest(bool value) { s_RendererAPI->SetDepthTest(value); }
+		inline static void SetCulling(bool value) { s_RendererAPI->SetCulling(value); }
 
 	private:
 		static RendererAPI* s_RendererAPI;

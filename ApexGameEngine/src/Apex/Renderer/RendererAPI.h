@@ -25,6 +25,7 @@ namespace Apex {
 		virtual void DrawInstanced(const Ref<VertexArray>& vertexArray, size_t count) = 0;
 
 		virtual void SetDepthTest(bool value) = 0;
+		virtual void SetCulling(bool value) = 0;
 
 		inline static API GetAPI() { return s_API; }
 
