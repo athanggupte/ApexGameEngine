@@ -37,7 +37,11 @@ namespace Apex {
 
 		GLenum internalFormat = 0, dataFormat = 0;
 
-		if (channels == 3) {
+		if (channels == 1) {
+			internalFormat = GL_R8;
+			dataFormat = GL_RED;
+		}
+		else if (channels == 3) {
 			internalFormat = GL_RGB8;
 			dataFormat = GL_RGB;
 		}
@@ -46,7 +50,7 @@ namespace Apex {
 			dataFormat = GL_RGBA;
 		}
 
-		APEX_CORE_ASSERT(internalFormat && dataFormat, "Image format not supported");
+		APEX_CORE_ASSERT(internalFormat && dataFormat, "Image format not supported : " + path + "\nChannels : " + std::to_string(channels));
 
 		glCreateTextures(GL_TEXTURE_2D, 1, &m_RendererID);
 		glTextureStorage2D(m_RendererID, 1, internalFormat, m_Width, m_Height);
@@ -62,11 +66,6 @@ namespace Apex {
 	OpenGLTexture2D::~OpenGLTexture2D()
 	{
 		glDeleteTextures(1, &m_RendererID);
-	}
-	
-	uint32_t OpenGLTexture2D::GetID() const
-	{
-		return m_RendererID;
 	}
 	
 	void OpenGLTexture2D::Bind(uint32_t slot) const
@@ -106,6 +105,7 @@ namespace Apex {
 
 		GLenum internalFormat = 0, dataFormat = 0;
 
+		
 		if (channels == 3) {
 			internalFormat = GL_SRGB;
 			dataFormat = GL_RGB;
@@ -133,11 +133,6 @@ namespace Apex {
 	OpenGLTexture2D_HDR::~OpenGLTexture2D_HDR()
 	{
 		glDeleteTextures(1, &m_RendererID);
-	}
-
-	uint32_t OpenGLTexture2D_HDR::GetID() const
-	{
-		return m_RendererID;
 	}
 
 	void OpenGLTexture2D_HDR::Bind(uint32_t slot) const

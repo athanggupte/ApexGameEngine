@@ -6,18 +6,22 @@
 #include "Apex/MathPrimitiveParser.h"
 
 namespace Apex {
+	
+	static bool s_LoadTextures = true;
 
-	Model::Model(const std::string & path)
-	{
-		LoadModel(path);
+	Ref<Model> Model::LoadModel(const std::string & path, bool loadTextures) {
+		s_LoadTextures = loadTextures;
+		return std::make_shared<Model>(path);
 	}
 
-	void Model::LoadModel(const std::string & path)
+	Model::Model(const std::string & path)
 	{
 		Assimp::Importer importer;
 		const aiScene* scene = importer.ReadFile(path, aiProcess_JoinIdenticalVertices | aiProcess_Triangulate | aiProcess_FlipUVs);
 
 		APEX_CORE_ASSERT(!(!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode), importer.GetErrorString());
+
+		m_Directory = path.substr(0, path.find_last_of('/'));
 
 		ProcessNode(scene->mRootNode, scene);
 	}
@@ -26,7 +30,12 @@ namespace Apex {
 	{
 		for (uint32_t i = 0; i < node->mNumMeshes; i++) {
 			aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
-			m_Meshes.push_back(ProcessMesh(mesh, scene));
+			APEX_CORE_DEBUG("Mesh Loaded : {0}", mesh->mName.C_Str());
+			if (mesh->mName.length) {
+				m_Meshes[mesh->mName.C_Str() + std::to_string(m_Meshes.size())] = std::make_shared<Mesh>(ProcessMesh(mesh, scene));
+			}
+			else
+				m_Meshes["mesh-" + std::to_string(m_Meshes.size())] = std::make_shared<Mesh>(ProcessMesh(mesh, scene));
 		}
 
 		for (uint32_t i = 0; i < node->mNumChildren; i++) {
@@ -71,7 +80,32 @@ namespace Apex {
 			APEX_CORE_TRACE("{0},{1},{2}", indices.at(i), indices.at(i + 1), indices.at(i + 2));
 		}*/
 
-		return Mesh(vertices.data(), vertices.size(), indices.data(), indices.size());
+		aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
+
+		Mesh _mesh(vertices.data(), vertices.size(), indices.data(), indices.size());
+		if(s_LoadTextures)
+			_mesh.SetTextures(ProcessMaterial(material, aiTextureType_DIFFUSE, "TextureDiffuse"));
+
+		return _mesh;
+	}
+
+	std::unordered_map<std::string, Ref<Texture>> Model::ProcessMaterial(aiMaterial * material, aiTextureType type, std::string typeName)
+	{
+		std::unordered_map<std::string, Ref<Texture>> textures;
+		for (uint32_t i = 0; i < material->GetTextureCount(type); i++) {
+			aiString str;
+			material->GetTexture(type, i, &str);
+			
+			std::string filepath = m_Directory + "/" + std::string(str.C_Str());
+
+			if (std::find(m_LoadedTexturePaths.begin(), m_LoadedTexturePaths.end(), filepath) == m_LoadedTexturePaths.end()) {
+				Ref<Texture2D> texture = Texture2D::Create(filepath);
+				textures[typeName] = texture;
+				m_LoadedTexturePaths.push_back(filepath);
+			}
+		}
+
+		return textures;
 	}
 
 }

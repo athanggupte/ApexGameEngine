@@ -11,7 +11,7 @@ namespace Apex {
 		APEX_CORE_TRACE("Apex::Renderer initialized successfully!");
 	}
 
-	void Renderer::BeginScene(OrthographicCamera& camera)
+	void Renderer::BeginScene(Camera& camera)
 	{
 		s_SceneData->ViewProjectionMatrix = camera.GetViewProjectionMatrix();
 	}
@@ -42,13 +42,23 @@ namespace Apex {
 
 	void Renderer::SubmitModel(const Ref<Shader>& shader, const Ref<Model>& model, const glm::mat4 & modelMatrix)
 	{
+		model->ApplyModelMatrix(modelMatrix);
 		shader->Bind();
 		shader->SetUniMat4("u_ViewProjection", s_SceneData->ViewProjectionMatrix);
-		shader->SetUniMat4("u_Model", modelMatrix);
+		shader->SetUniMat4("u_Model", model->GetModelMatrix());
 
-		for (auto mesh : model->GetMeshes()) {
-			mesh.Bind();
-			RenderCommands::DrawIndexed(mesh.GetVAO());
+		for (auto&[name, mesh] : model->GetMeshes()) {
+			if (mesh->Show()) {
+				uint32_t i = 0;
+				//APEX_CORE_INFO("Mesh textures ->");
+				for (auto[name, texture] : mesh->GetTextures()) {
+					//APEX_CORE_INFO("{0} : {1} : {2}", name, texture->GetPath(), i);
+					shader->SetUniInt("u_" + name, i);
+					texture->Bind(i);
+				}
+				mesh->GetVAO()->Bind();
+				RenderCommands::DrawIndexed(mesh->GetVAO());
+			}
 		}
 	}
 

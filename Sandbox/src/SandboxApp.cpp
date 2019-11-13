@@ -320,13 +320,32 @@ class ModelLayer : public Apex::Layer
 {
 public:
 	ModelLayer()
-		: Layer("Model"), m_Camera(-1.6f, 1.6f, -0.9f, 0.9f), m_CameraPosition(0.0f, 0.0f, 2.0f)
+		: Layer("Model"), m_Camera(63.5f, 16.f / 9.f)
 	{
-		m_Model = std::make_shared<Apex::Model>("assets/models/crysis-nano-suit-2/source/scene.fbx");
-		m_Shader = Apex::Shader::Create("assets/shaders/Texture.glsl");
-		m_Texture = Apex::Texture2D::Create("assets/textures/Checkerboard.png");
+		m_Camera.SetPosition({0.f, 0.f, 10.f});
 
+		m_Model = Apex::Model::LoadModel(m_ModelFilePath);
+		m_Shader = Apex::Shader::Create("assets/shaders/Texture.glsl");
+		m_Shader->SetUniInt("u_TextureDiffuse", 0);
+		//m_Texture = Apex::Texture2D::Create("assets/models/Baseball/Baseball_diffuse.jpg");
+		m_Texture = Apex::Texture2D::Create(m_TextureFilePath);
+
+		auto& meshes = m_Model->GetMeshes();
+		meshes.find("body_low1")->second->AddTexture(std::pair<std::string, Apex::Ref<Apex::Texture>>("TextureDiffuse",
+				Apex::Texture2D::Create("assets/models/sci-fi-lasergun-gameready/textures/low_body_Reflection.png")));
+		meshes.find("body_low2")->second->AddTexture(std::pair<std::string, Apex::Ref<Apex::Texture>>("TextureDiffuse",
+				Apex::Texture2D::Create("assets/models/sci-fi-lasergun-gameready/textures/low_metal_Diffuse.png")));
+		meshes.find("chick_low0")->second->AddTexture(std::pair<std::string, Apex::Ref<Apex::Texture>>("TextureDiffuse",
+			Apex::Texture2D::Create("assets/models/sci-fi-lasergun-gameready/textures/low_metal_Diffuse.png")));
+		meshes.find("mag_low3")->second->AddTexture(std::pair<std::string, Apex::Ref<Apex::Texture>>("TextureDiffuse",
+			Apex::Texture2D::Create("assets/models/sci-fi-lasergun-gameready/textures/low_mag_Diffuse.png")));
+		
 		Apex::RenderCommands::SetCulling(true);
+		Apex::RenderCommands::SetDepthTest(true);
+
+		auto& shaderUniforms = m_Shader->GetActiveUniformLocations();
+		for (auto[name, location] : shaderUniforms)
+			APEX_TRACE("{0} : {1}", name, location);
 	}
 	
 	virtual void OnAttach() override {}
@@ -335,23 +354,43 @@ public:
 	
 	virtual void OnUpdate() override
 	{
-		if (Apex::Input::IsKeyPressed(APEX_KEY_S))
-			m_CameraPosition.z += m_CameraMoveSpeed * Apex::Timer::GetSeconds();
-		if (Apex::Input::IsKeyPressed(APEX_KEY_W))
-			m_CameraPosition.z -= m_CameraMoveSpeed * Apex::Timer::GetSeconds();
-		if (Apex::Input::IsKeyPressed(APEX_KEY_A))
-			m_CameraPosition.x -= m_CameraMoveSpeed * Apex::Timer::GetSeconds();
-		if (Apex::Input::IsKeyPressed(APEX_KEY_D))
-			m_CameraPosition.x += m_CameraMoveSpeed * Apex::Timer::GetSeconds();
 
-		m_Camera.SetPosition(m_CameraPosition);
+		glm::vec3 cameraMovement(0.f);
+		std::pair<float, float> mouseDiff;
+		std::pair<float, float> mouseDiff1;
+		auto[mouseX, mouseY] = Apex::Input::GetMousePos();
+		if (!ImGui::IsAnyItemActive() && !ImGui::IsAnyWindowFocused()) {
+			if (Apex::Input::IsKeyPressed(APEX_KEY_S))
+				cameraMovement.z += m_CameraMoveSpeed * Apex::Timer::GetSeconds();
+			if (Apex::Input::IsKeyPressed(APEX_KEY_W))
+				cameraMovement.z -= m_CameraMoveSpeed * Apex::Timer::GetSeconds();
+			if (Apex::Input::IsKeyPressed(APEX_KEY_A))
+				cameraMovement.x -= m_CameraMoveSpeed * Apex::Timer::GetSeconds();
+			if (Apex::Input::IsKeyPressed(APEX_KEY_D))
+				cameraMovement.x += m_CameraMoveSpeed * Apex::Timer::GetSeconds();
 
-		Apex::RenderCommands::SetClearColor({0.0f, 0.0f, 0.0f, 1.0f});
+			mouseDiff = {
+				 Apex::Input::IsMouseButtonPressed(APEX_MOUSE_BUTTON_LEFT) ? (mouseX - m_MousePos.first) : 0.0f,
+				 Apex::Input::IsMouseButtonPressed(APEX_MOUSE_BUTTON_LEFT) ? (mouseY - m_MousePos.second) : 0.0f
+			};
+			
+			mouseDiff1 = {
+				 Apex::Input::IsMouseButtonPressed(APEX_MOUSE_BUTTON_RIGHT) ? (mouseX - m_MousePos.first) : 0.0f,
+				 Apex::Input::IsMouseButtonPressed(APEX_MOUSE_BUTTON_RIGHT) ? (mouseY - m_MousePos.second) : 0.0f
+			};
+		}
+		m_MousePos = { mouseX, mouseY };
+
+		m_Camera.Rotate(-mouseDiff.second * m_CameraRotateSpeed, mouseDiff.first * m_CameraRotateSpeed, 0.f);
+		m_Camera.Move(cameraMovement);
+
+		Apex::RenderCommands::SetClearColor({0.0f, 0.0f, 0.3f, 1.0f});
 		Apex::RenderCommands::Clear();
 		Apex::Renderer::BeginScene(m_Camera);
 
 		m_Texture->Bind();
-		Apex::Renderer::SubmitModel(m_Shader, m_Model, glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -40.0f)));
+		Apex::Renderer::SubmitModel(m_Shader, m_Model,
+			glm::rotate(glm::mat4(1.0f), mouseDiff1.first * 0.1f, m_Camera.GetUp()) * glm::rotate(glm::mat4(1.0f), mouseDiff1.second * 0.1f, m_Camera.GetRight()));
 
 		Apex::Renderer::EndScene();
 	}
@@ -361,28 +400,68 @@ public:
 		ImGui::Begin("Stats");
 		std::stringstream ss;
 		ss << "CameraPosition : " << m_Camera.GetPosition().x << "," << m_Camera.GetPosition().y << "," << m_Camera.GetPosition().z;
-		ImGui::TextUnformatted(ss.str().c_str());
+		ImGui::BulletText(ss.str().c_str());
+		std::stringstream ss1;
+		ss1 << "CameraRotation : " << m_Camera.GetRotation().x << "," << m_Camera.GetRotation().y << "," << m_Camera.GetRotation().z;
+		ImGui::BulletText(ss1.str().c_str());
 		ImGui::DragFloat("Camera Move Speed", &m_CameraMoveSpeed, 1.0f, 2.0f, 100.0f);
+		ImGui::InputText("Model File Path", m_ModelFilePath, 1024);
+		if (ImGui::Button("Change Model")) {
+			ChangeModel();
+		}
+		ImGui::InputText("Texture File Path", m_TextureFilePath, 1024);
+		if (ImGui::Button("Change Texture")) {
+			ChangeTexture();
+		}
+		ImGui::TextUnformatted(("Meshes Loaded :"));
+		for (auto[name, mesh] : m_Model->GetMeshes()) {
+			ImGui::Checkbox(name.c_str(), &(mesh->Show()));
+		}
+		ImGui::TextUnformatted("Textures Loaded :");
+		for (auto[meshName, mesh] : m_Model->GetMeshes()) {
+			for (auto[texName, texture] : mesh->GetTextures()) {
+				ImGui::BulletText((meshName + " [" + texName + "] : " + texture->GetPath()).c_str());
+			}
+		}
 		ImGui::End();
 	}
 
+	void ChangeModel()
+	{
+		Apex::Ref<Apex::Model> newModel = Apex::Model::LoadModel(m_ModelFilePath);
+		m_Model = newModel;
+	}
+
+	void ChangeTexture()
+	{
+		Apex::Ref<Apex::Texture2D> newTexture = Apex::Texture2D::Create(m_TextureFilePath);
+		m_Texture = newTexture;
+	}
+
 private:
-	Apex::OrthographicCamera m_Camera;
+	Apex::PerspectiveCamera m_Camera;
 	Apex::Ref<Apex::Model> m_Model;
 	Apex::Ref<Apex::Shader> m_Shader;
 	Apex::Ref<Apex::Texture2D> m_Texture;
 
-	glm::vec3 m_CameraPosition;
 	float m_CameraMoveSpeed = 10.0f;
+
+	float m_CameraRotateSpeed = 0.6f;
+
+	char m_ModelFilePath[1024] = "assets/models/sci-fi-lasergun-gameready/source/low.fbx";
+	char m_TextureFilePath[1024] = "assets/textures/Checkerboard.png";
+
+	std::pair<float, float> m_MousePos;
 };
+
 
 class Sandbox : public Apex::Application
 {
 public:
 	Sandbox()
 	{
-		PushLayer(new SandboxLayer());
-		//PushLayer(new ModelLayer());
+		//PushLayer(new SandboxLayer());
+		PushLayer(new ModelLayer());
 	}
 
 	~Sandbox()
