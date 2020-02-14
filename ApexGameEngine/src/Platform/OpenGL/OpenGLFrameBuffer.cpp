@@ -20,6 +20,10 @@ namespace Apex {
 	}
 
 
+	//////////////////////////////////////////////////////////////////////
+	/*--------------------------Frame Buffer----------------------------*/
+	//////////////////////////////////////////////////////////////////////
+
 	OpenGLFrameBuffer::OpenGLFrameBuffer(bool depth)
 	{
 		glGenFramebuffers(1, &m_RendererID);
@@ -73,5 +77,40 @@ namespace Apex {
 		glBindFramebuffer(GL_FRAMEBUFFER, m_RendererID);
 		return glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE;
 	}
-	
+
+
+	//////////////////////////////////////////////////////////////////////
+	/*--------------------------Depth Buffer----------------------------*/
+	//////////////////////////////////////////////////////////////////////
+
+	OpenGLDepthBuffer::OpenGLDepthBuffer()
+	{
+		glGenFramebuffers(1, &m_RendererID);
+		glBindFramebuffer(GL_FRAMEBUFFER, m_RendererID);
+
+		m_DepthTexture = TextureDepth2D::Create();
+
+		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, m_DepthTexture->GetID(), 0);
+
+		glDrawBuffer(GL_NONE);
+		glReadBuffer(GL_NONE);
+
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	}
+
+	OpenGLDepthBuffer::~OpenGLDepthBuffer()
+	{
+		glDeleteFramebuffers(1, &m_RendererID);
+	}
+
+	void OpenGLDepthBuffer::Bind() const
+	{
+		glBindFramebuffer(GL_FRAMEBUFFER, m_RendererID);
+	}
+
+	void OpenGLDepthBuffer::Unbind() const
+	{
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	}
+
 }

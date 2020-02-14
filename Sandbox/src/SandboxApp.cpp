@@ -320,32 +320,154 @@ class ModelLayer : public Apex::Layer
 {
 public:
 	ModelLayer()
-		: Layer("Model"), m_Camera(63.5f, 16.f / 9.f)
+		: Layer("Model"), m_Camera(63.5f, 16.f / 9.f), m_LightCamera(-150.f, 150.f, -150.f, 150.f, 100.0f, 410.0f)
 	{
 		m_Camera.SetPosition({0.f, 0.f, 10.f});
 
 		m_Model = Apex::Model::LoadModel(m_ModelFilePath);
-		m_Shader = Apex::Shader::Create("assets/shaders/Texture.glsl");
-		m_Shader->SetUniInt("u_TextureDiffuse", 0);
+		m_Shader = Apex::Shader::Create("assets/shaders/PBR.glsl");
+		m_Shader->Bind();
+		m_Shader->SetUniInt("u_TextureAlbedo",    0);
+		m_Shader->SetUniInt("u_TextureNormal",    1);
+		m_Shader->SetUniInt("u_TextureMetallic",  2);
+		m_Shader->SetUniInt("u_TextureRoughness", 3);
 		//m_Texture = Apex::Texture2D::Create("assets/models/Baseball/Baseball_diffuse.jpg");
 		m_Texture = Apex::Texture2D::Create(m_TextureFilePath);
 
 		auto& meshes = m_Model->GetMeshes();
-		meshes.find("body_low1")->second->AddTexture(std::pair<std::string, Apex::Ref<Apex::Texture>>("TextureDiffuse",
+		auto& meshBody1 = meshes.find("body_low1")->second;
+		meshBody1->AddTexture(std::pair<std::string, Apex::Ref<Apex::Texture>>("TextureAlbedo",
 				Apex::Texture2D::Create("assets/models/sci-fi-lasergun-gameready/textures/low_body_Reflection.png")));
-		meshes.find("body_low2")->second->AddTexture(std::pair<std::string, Apex::Ref<Apex::Texture>>("TextureDiffuse",
-				Apex::Texture2D::Create("assets/models/sci-fi-lasergun-gameready/textures/low_metal_Diffuse.png")));
-		meshes.find("chick_low0")->second->AddTexture(std::pair<std::string, Apex::Ref<Apex::Texture>>("TextureDiffuse",
+		meshBody1->AddTexture(std::pair<std::string, Apex::Ref<Apex::Texture>>("TextureNormal",
+				Apex::Texture2D::Create("assets/models/sci-fi-lasergun-gameready/textures/low_body_Normal.png")));
+		meshBody1->AddTexture(std::pair<std::string, Apex::Ref<Apex::Texture>>("TextureMetallic",
+				Apex::Texture2D::Create("assets/models/sci-fi-lasergun-gameready/textures/low_body_Metallic.png")));
+		meshBody1->AddTexture(std::pair<std::string, Apex::Ref<Apex::Texture>>("TextureRoughness",
+				Apex::Texture2D::Create("assets/models/sci-fi-lasergun-gameready/textures/low_body_Roughness.png")));
+
+		auto& meshBody2 = meshes.find("body_low2")->second;
+		meshBody2->AddTexture(std::pair<std::string, Apex::Ref<Apex::Texture>>("TextureAlbedo",
 			Apex::Texture2D::Create("assets/models/sci-fi-lasergun-gameready/textures/low_metal_Diffuse.png")));
+		meshBody2->AddTexture(std::pair<std::string, Apex::Ref<Apex::Texture>>("TextureNormal",
+			Apex::Texture2D::Create("assets/models/sci-fi-lasergun-gameready/textures/low_metal_Normal.png")));
+		meshBody2->AddTexture(std::pair<std::string, Apex::Ref<Apex::Texture>>("TextureMetallic",
+			Apex::Texture2D::Create("assets/models/sci-fi-lasergun-gameready/textures/low_metal_Reflection.png")));
+		meshBody2->AddTexture(std::pair<std::string, Apex::Ref<Apex::Texture>>("TextureRoughness",
+			Apex::Texture2D::Create("assets/models/sci-fi-lasergun-gameready/textures/low_metal_Roughness.png")));		
+
+		meshes.find("chick_low0")->second->Show() = false;
+		meshes.find("mag_low3")->second->Show() = false;
+
+		/*
+		meshes.find("chick_low0")->second->AddTexture(std::pair<std::string, Apex::Ref<Apex::Texture>>("TextureDiffuse",
+			Apex::Texture2D::Create("assets/models/sci-fi-lasergun-gameready/textures/low_mag_Diffuse.png")));
 		meshes.find("mag_low3")->second->AddTexture(std::pair<std::string, Apex::Ref<Apex::Texture>>("TextureDiffuse",
 			Apex::Texture2D::Create("assets/models/sci-fi-lasergun-gameready/textures/low_mag_Diffuse.png")));
+		*/
 		
 		Apex::RenderCommands::SetCulling(true);
 		Apex::RenderCommands::SetDepthTest(true);
 
-		auto& shaderUniforms = m_Shader->GetActiveUniformLocations();
+		/*auto& shaderUniforms = m_Shader->GetActiveUniformLocations();
 		for (auto[name, location] : shaderUniforms)
-			APEX_TRACE("{0} : {1}", name, location);
+			APEX_TRACE("{0} : {1}", name, location);*/
+
+		auto& shaderUniforms = m_Shader->GetActiveUniformData();
+		for (auto[name, type, size] : shaderUniforms)
+			APEX_TRACE("{0} : {1} [{2}]", name, type, size);
+
+		glm::vec3 lightPositions[] = {
+			{ 200.0f,  200.0f,  150.0f },
+			{-200.0f, -200.0f, -150.0f }
+		};
+
+		glm::vec3 lightColors[] = {
+			{ 3.3f, 3.1f, 2.4f },
+			{ 3.3f, 3.1f, 2.4f }
+		};
+
+		m_Shader->SetUniFloat3v("u_LightPositions", lightPositions, 2);
+		m_Shader->SetUniFloat3v("u_LightColors", lightColors, 2);
+
+		m_LightCamera.SetPosition(lightPositions[0]);
+		m_LightCamera.LookAt(glm::vec3(0.0f));
+
+		m_DepthBuffer = Apex::DepthBuffer::Create();
+
+		std::string depthShaderVertexSrc = R"(
+			#version 450
+
+			layout(location = 0) in vec3 a_Position;
+
+			uniform mat4 u_ViewProjection;
+			uniform mat4 u_Model;
+
+			void main()
+			{
+				gl_Position = u_ViewProjection * u_Model * vec4(a_Position, 1.0);
+			}
+		)";
+
+		std::string depthShaderFragmentSrc = R"(
+			#version 450
+
+			void main() {}
+		)";
+
+		auto depthShader = Apex::Shader::Create("DepthShader", depthShaderVertexSrc, depthShaderFragmentSrc);
+		Apex::AssetManager::GetShaderLibrary().Add(depthShader);
+
+		Apex::AssetManager::GetShaderLibrary().Load("assets/shaders/Screen.glsl");
+
+		m_ScreenVA = Apex::VertexArray::Create();
+		Apex::Ref<Apex::VertexBuffer> screenVB;
+		float screenVertices[] = {
+			 0.6f,  1.0f,  0.0f, 1.0f,
+			 0.6f,  0.6f,  0.0f, 0.0f,
+			 1.0f,  0.6f,  1.0f, 0.0f,
+
+			 0.6f,  1.0f,  0.0f, 1.0f,
+			 1.0f,  0.6f,  1.0f, 0.0f,
+			 1.0f,  1.0f,  1.0f, 1.0f
+		};
+		screenVB = Apex::VertexBuffer::Create(screenVertices, sizeof(screenVertices));
+		screenVB->SetLayout({
+			{ Apex::ShaderDataType::Float2, "a_Position" },
+			{ Apex::ShaderDataType::Float2, "a_TexCoord" }
+			});
+		m_ScreenVA->AddVertexBuffer(screenVB);
+		m_ScreenVA->Unbind();
+
+
+		m_SquareVA = Apex::VertexArray::Create();
+
+		Apex::Ref<Apex::VertexBuffer> squareVB;
+		float squareVertices[] = {
+			-100.0f, 0.0f, -100.0f, 0.0f, 0.0f,
+			-100.0f, 0.0f,  100.0f, 1.0f, 0.0f,
+			 100.0f, 0.0f,  100.0f, 1.0f, 1.0f,
+			 100.0f, 0.0f, -100.0f, 0.0f, 1.0f
+		};
+		squareVB = Apex::VertexBuffer::Create(squareVertices, sizeof(squareVertices));
+		squareVB->SetLayout({
+			{ Apex::ShaderDataType::Float3, "a_Position" },
+			{ Apex::ShaderDataType::Float2, "a_TexCoord" }
+			});
+		m_SquareVA->AddVertexBuffer(squareVB);
+
+		Apex::Ref<Apex::IndexBuffer> squareIB;
+		uint32_t squareIndices[] = {
+			0, 1, 2,
+			0, 2, 3
+		};
+		squareIB = Apex::IndexBuffer::Create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t));
+		m_SquareVA->AddIndexBuffer(squareIB);
+
+		m_SquareVA->Unbind();
+
+		auto textureShader = Apex::AssetManager::GetShaderLibrary().Load("assets/shaders/Texture.glsl");
+		textureShader->Bind();
+		textureShader->SetUniInt("u_Texture", 0);
 	}
 	
 	virtual void OnAttach() override {}
@@ -380,17 +502,51 @@ public:
 			};
 		}
 		m_MousePos = { mouseX, mouseY };
-
-		m_Camera.Rotate(-mouseDiff.second * m_CameraRotateSpeed, mouseDiff.first * m_CameraRotateSpeed, 0.f);
+		if (m_MouseSelectMode)
+			GetPicker();
+		else
+			m_Camera.Rotate(-mouseDiff.second * m_CameraRotateSpeed, mouseDiff.first * m_CameraRotateSpeed, 0.f);
 		m_Camera.Move(cameraMovement);
+		m_Shader->SetUniFloat3("u_CameraPosition", m_Camera.GetPosition());
 
+		auto depthShader = Apex::AssetManager::GetShaderLibrary().GetShader("DepthShader");
+		auto screenShader = Apex::AssetManager::GetShaderLibrary().GetShader("Screen");
+		auto textureShader = Apex::AssetManager::GetShaderLibrary().GetShader("Texture");
+
+		/*---------First Pass------------*/
+		Apex::RenderCommands::SetViewport(0, 0, 2048, 2048);
+		m_DepthBuffer->Bind();
+		Apex::RenderCommands::Clear();
+		Apex::Renderer::BeginScene(m_LightCamera);
+		//Apex::Renderer::Submit(textureShader, m_SquareVA, glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, -12.0f, 0.0f)));
+		Apex::Renderer::SubmitModel(depthShader, m_Model,
+			glm::rotate(glm::mat4(1.0f), mouseDiff1.first * 0.02f, m_Camera.GetUp()) * glm::rotate(glm::mat4(1.0f), mouseDiff1.second * 0.02f, m_Camera.GetRight()));
+		Apex::Renderer::EndScene();
+
+		m_DepthBuffer->Unbind();
+		Apex::RenderCommands::SetViewport(0, 0, 1280, 720);
 		Apex::RenderCommands::SetClearColor({0.0f, 0.0f, 0.3f, 1.0f});
 		Apex::RenderCommands::Clear();
 		Apex::Renderer::BeginScene(m_Camera);
 
-		m_Texture->Bind();
-		Apex::Renderer::SubmitModel(m_Shader, m_Model,
-			glm::rotate(glm::mat4(1.0f), mouseDiff1.first * 0.1f, m_Camera.GetUp()) * glm::rotate(glm::mat4(1.0f), mouseDiff1.second * 0.1f, m_Camera.GetRight()));
+		m_Texture->Bind(0);
+		m_DepthBuffer->GetDepthTexture()->Bind(1);
+		textureShader->Bind();
+		textureShader->SetUniMat4("u_LightSpace", m_LightCamera.GetViewProjectionMatrix());
+		textureShader->SetUniInt("u_TextureLightDepth", 1);
+		Apex::Renderer::Submit(textureShader, m_SquareVA, glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, -22.0f, 0.0f)));
+
+		m_DepthBuffer->GetDepthTexture()->Bind(0);
+		m_Shader->Bind();
+		m_Shader->SetUniMat4("u_LightSpace", m_LightCamera.GetViewProjectionMatrix());
+		m_Shader->SetUniInt("u_TextureLightDepth", 0);
+		Apex::Renderer::SubmitModel(m_Shader, m_Model);
+
+		screenShader->Bind();
+		screenShader->SetUniInt("u_Texture", 0);
+		Apex::Renderer::SubmitPostProcess(screenShader, m_ScreenVA);
+		//Apex::Renderer::SubmitModel(m_Shader, m_Model,
+		//	glm::rotate(glm::mat4(1.0f), mouseDiff1.first * 0.02f, m_Camera.GetUp()) * glm::rotate(glm::mat4(1.0f), mouseDiff1.second * 0.02f, m_Camera.GetRight()));
 
 		Apex::Renderer::EndScene();
 	}
@@ -404,6 +560,7 @@ public:
 		std::stringstream ss1;
 		ss1 << "CameraRotation : " << m_Camera.GetRotation().x << "," << m_Camera.GetRotation().y << "," << m_Camera.GetRotation().z;
 		ImGui::BulletText(ss1.str().c_str());
+		ImGui::Checkbox("Select Mode", &m_MouseSelectMode);
 		ImGui::DragFloat("Camera Move Speed", &m_CameraMoveSpeed, 1.0f, 2.0f, 100.0f);
 		ImGui::InputText("Model File Path", m_ModelFilePath, 1024);
 		if (ImGui::Button("Change Model")) {
@@ -423,6 +580,9 @@ public:
 				ImGui::BulletText((meshName + " [" + texName + "] : " + texture->GetPath()).c_str());
 			}
 		}
+		std::stringstream ss2;
+		ss2 << "Selected Mesh : ";
+		ImGui::TextUnformatted(ss2.str().c_str());
 		ImGui::End();
 	}
 
@@ -438,20 +598,33 @@ public:
 		m_Texture = newTexture;
 	}
 
+	void GetPicker()
+	{
+
+	}
+
 private:
 	Apex::PerspectiveCamera m_Camera;
 	Apex::Ref<Apex::Model> m_Model;
 	Apex::Ref<Apex::Shader> m_Shader;
 	Apex::Ref<Apex::Texture2D> m_Texture;
 
-	float m_CameraMoveSpeed = 10.0f;
+	Apex::Ref<Apex::DepthBuffer> m_DepthBuffer;
+	Apex::OrthographicCamera m_LightCamera;
+
+	Apex::Ref<Apex::VertexArray> m_ScreenVA;
+	Apex::Ref<Apex::VertexArray> m_SquareVA;
+
+	float m_CameraMoveSpeed = 30.0f;
 
 	float m_CameraRotateSpeed = 0.6f;
 
-	char m_ModelFilePath[1024] = "assets/models/sci-fi-lasergun-gameready/source/low.fbx";
+	char m_ModelFilePath[1024] = "assets/models/sci-fi-lasergun-gameready/source/low.fbx";//"assets/models/sci-fi-rifle-m13-gaus/source/Gaus_M13_export.fbx";
 	char m_TextureFilePath[1024] = "assets/textures/Checkerboard.png";
 
 	std::pair<float, float> m_MousePos;
+
+	bool m_MouseSelectMode = false;
 };
 
 

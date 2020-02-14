@@ -17,9 +17,9 @@ namespace Apex {
 		virtual void DrawInstanced(const Ref<VertexArray>& vertexArray, size_t count) override;
 
 		virtual void SetDepthTest(bool value) override;
-
 		virtual void SetCulling(bool value) override;
 
+		virtual void SetViewport(uint32_t x, uint32_t y, size_t width, size_t height) override;
 	};
 
 }

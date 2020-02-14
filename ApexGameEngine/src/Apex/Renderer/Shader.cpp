@@ -75,7 +75,7 @@ namespace Apex {
 
 	Ref<Shader> ShaderLibrary::GetShader(const std::string & name)
 	{
-		APEX_CORE_ASSERT(Exists(name), "Shader not found");
+		APEX_CORE_ASSERT(Exists(name), "Shader not found: " + name);
 		return m_Shaders[name];
 	}
 

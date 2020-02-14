@@ -190,6 +190,37 @@ namespace Apex {
 
 		return m_UniformLocations;
 	}
+
+	const std::vector<std::tuple<std::string, uint32_t, size_t>>& OpenGLShader::GetActiveUniformData()
+	{
+		std::vector<std::tuple<std::string, uint32_t, size_t>> uniformData;
+		int numUniforms = -1;
+		glGetProgramiv(m_RendererID, GL_ACTIVE_UNIFORMS, &numUniforms);
+
+		for (int i = 0; i < numUniforms; i++) {
+
+			int namelen = -1, num = -1;
+			GLenum type = GL_ZERO;
+			char name[512];
+
+			glGetActiveUniform(m_RendererID,
+				static_cast<uint32_t>(i),
+				sizeof(name) - 1,
+				&namelen,
+				&num,
+				&type,
+				name
+			);
+			name[namelen] = 0;
+
+			uint32_t location = glGetUniformLocation(m_RendererID, name);
+
+			std::tuple<std::string, uint32_t, size_t> data = { std::string(name), type, num };
+			uniformData.push_back(data);
+		}
+		
+		return uniformData;
+	}
 	
 #ifndef SHADER_UNIFORMS_NO_CACHE
 #define SHADER_UNIFORMS_NO_CACHE
@@ -231,6 +262,15 @@ namespace Apex {
 	#endif
 	}
 
+	void OpenGLShader::SetUniFloat3v(const std::string & name, glm::vec3 values[], size_t count)
+	{
+	#ifdef SHADER_UNIFORMS_NO_CACHE
+		glUniform3fv(glGetUniformLocation(m_RendererID, name.c_str()), count, glm::value_ptr(values[0]));
+	#else
+		glUniform3fv(m_UniformLocations.at(name), 1, glm::value_ptr(value));
+	#endif
+	}
+
 	void OpenGLShader::SetUniFloat4(const std::string & name, const glm::vec4 & value)
 	{
 	#ifdef SHADER_UNIFORMS_NO_CACHE
@@ -254,7 +294,7 @@ namespace Apex {
 	#ifdef SHADER_UNIFORMS_NO_CACHE
 			glUniformMatrix4fv(glGetUniformLocation(m_RendererID, name.c_str()), count, GL_FALSE, glm::value_ptr(matrices[0]));
 	#else
-		glUniformMatrix4fv(m_UniformLocations.at(name), 1, GL_FALSE, glm::value_ptr(matrix));
+		glUniformMatrix4fv(m_UniformLocations.at(name), count, GL_FALSE, glm::value_ptr(matrices[0]));
 	#endif
 	}
 

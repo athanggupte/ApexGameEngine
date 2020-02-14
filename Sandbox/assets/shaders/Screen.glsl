@@ -23,6 +23,6 @@ in vec2 v_TexCoord;
 
 void main()
 {
-	o_Color = texture(u_Texture, v_TexCoord);
+	o_Color = vec4(vec3(texture(u_Texture, v_TexCoord).r), 1.0);
 	//o_Color = vec4(0.83, 0.28, 0.23, 1.0);
 }

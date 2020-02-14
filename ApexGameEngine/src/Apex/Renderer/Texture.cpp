@@ -55,4 +55,15 @@ namespace Apex {
 		return nullptr;
 	}
 
+	Ref<TextureDepth2D> TextureDepth2D::Create()
+	{
+		switch (Renderer::GetAPI())
+		{
+		case RendererAPI::API::None:	APEX_CORE_CRITICAL("No Rendering API selected"); return nullptr;
+		case RendererAPI::API::OpenGL:	return std::make_shared<OpenGLTextureDepth2D>();
+
+		default:				APEX_CORE_CRITICAL("Unknown Rendering API"); return nullptr;
+		}
+		return nullptr;
+	}
 }

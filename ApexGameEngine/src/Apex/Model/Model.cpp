@@ -59,6 +59,9 @@ namespace Apex {
 				vertices.push_back(0.0f);
 				vertices.push_back(0.0f);
 			}
+			vertices.push_back(mesh->mNormals[i].x);
+			vertices.push_back(mesh->mNormals[i].y);
+			vertices.push_back(mesh->mNormals[i].z);
 		}
 
 		/*APEX_CORE_TRACE("Vertices ->");

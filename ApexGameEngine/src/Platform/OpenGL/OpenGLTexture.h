@@ -48,4 +48,24 @@ namespace Apex {
 		uint32_t m_RendererID;
 	};
 
+	class OpenGLTextureDepth2D : public TextureDepth2D
+	{
+	public:
+		OpenGLTextureDepth2D();
+		virtual ~OpenGLTextureDepth2D();
+
+		inline virtual uint32_t GetWidth() const override { return m_Width; }
+		inline virtual uint32_t GetHeight() const override { return m_Height; }
+
+		inline virtual uint32_t GetID() const override { return m_RendererID; }
+
+		virtual void Bind(uint32_t slot = 0) const override;
+
+	private:
+		virtual const std::string& GetPath() const { return ""; }
+
+	private:
+		uint32_t m_Width, m_Height;
+		uint32_t m_RendererID;
+	};
 }

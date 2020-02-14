@@ -8,6 +8,7 @@ namespace Apex {
 	{
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		glEnable(GL_MULTISAMPLE);
 		APEX_CORE_TRACE("RendererAPI (OpenGL) initialized successfully!");
 	}
 	void OpenGLRendererAPI::SetClearColor(const glm::vec4 & color)
@@ -52,6 +53,11 @@ namespace Apex {
 		else {
 			glDisable(GL_CULL_FACE);
 		}
+	}
+
+	void OpenGLRendererAPI::SetViewport(uint32_t x, uint32_t y, size_t width, size_t height)
+	{
+		glViewport(x, y, width, height);
 	}
 
 }

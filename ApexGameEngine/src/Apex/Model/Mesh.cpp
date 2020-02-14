@@ -13,8 +13,8 @@ namespace Apex {
 
 		vbo->SetLayout({
 			{ Apex::ShaderDataType::Float3, "a_Position" },
-			{ Apex::ShaderDataType::Float2, "a_TexCoord" }
-			//{ Apex::ShaderDataType::Float3, "a_Normal" }
+			{ Apex::ShaderDataType::Float2, "a_TexCoord" },
+			{ Apex::ShaderDataType::Float3, "a_Normal" }
 		});
 
 		m_VAO->AddVertexBuffer(vbo);

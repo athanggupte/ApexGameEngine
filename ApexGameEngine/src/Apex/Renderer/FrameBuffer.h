@@ -19,4 +19,17 @@ namespace Apex {
 		static Ref<FrameBuffer> Create(bool depth);
 	};
 
+	class DepthBuffer
+	{
+	public:
+		virtual ~DepthBuffer() = default;
+
+		virtual void Bind() const = 0;
+		virtual void Unbind() const = 0;
+
+		virtual const Ref<TextureDepth2D>& GetDepthTexture() const = 0;
+
+		static Ref<DepthBuffer> Create();
+	};
+
 }

@@ -18,7 +18,9 @@ namespace Apex {
 	class OrthographicCamera : public Camera
 	{
 	public:
-		OrthographicCamera(float left, float right, float bottom, float top);
+		OrthographicCamera(float left, float right, float bottom, float top, float nearZ = -1.0f, float farZ = 10.0f);
+
+		void LookAt(const glm::vec3& center);
 
 		void SetPosition(const glm::vec3& position) { m_Position = position; RecalculateViewMatrix(); }
 		void SetRotation(float rotation) { m_Rotation = rotation; RecalculateViewMatrix();  }
@@ -48,7 +50,7 @@ namespace Apex {
 		PerspectiveCamera(float fovAngle, float aspectRatio, float nearZ = 0.5f, float farZ = 500.0f);
 
 		void SetPosition(const glm::vec3& position) { m_Position = position; RecalculateViewMatrix(); }
-		//void LookAt(const glm::vec3& lookAt) { m_LookAt = lookAt; consistent = false; }
+		void LookAt(glm::vec3 center);
 		//void SetWorldUp(const glm::vec3& worldUp) { m_WorldUp = worldUp; consistent = false; }
 
 		void Move(const glm::vec3& movement);

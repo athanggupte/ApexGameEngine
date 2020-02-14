@@ -49,12 +49,13 @@ namespace Apex {
 
 		for (auto&[name, mesh] : model->GetMeshes()) {
 			if (mesh->Show()) {
-				uint32_t i = 0;
+				uint32_t i = 1;
 				//APEX_CORE_INFO("Mesh textures ->");
 				for (auto[name, texture] : mesh->GetTextures()) {
 					//APEX_CORE_INFO("{0} : {1} : {2}", name, texture->GetPath(), i);
 					shader->SetUniInt("u_" + name, i);
 					texture->Bind(i);
+					i++;
 				}
 				mesh->GetVAO()->Bind();
 				RenderCommands::DrawIndexed(mesh->GetVAO());

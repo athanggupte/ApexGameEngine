@@ -27,6 +27,8 @@ namespace Apex {
 		virtual void SetDepthTest(bool value) = 0;
 		virtual void SetCulling(bool value) = 0;
 
+		virtual void SetViewport(uint32_t x, uint32_t y, size_t width, size_t height) = 0;
+
 		inline static API GetAPI() { return s_API; }
 
 	private:
