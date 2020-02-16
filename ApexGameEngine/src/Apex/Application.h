@@ -4,7 +4,7 @@
 #include "Apex/Layers/LayerStack.h"
 #include "Apex/Events/Event.h"
 #include "Apex/Events/ApplicationEvent.h"
-#include "Timer.h"
+#include "Apex/Utils/Timer.h"
 
 #include "Apex/ImGui/ImGuiLayer.h"
 

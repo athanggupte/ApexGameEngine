@@ -3,7 +3,7 @@
 
 #include "assimp/Importer.hpp"
 #include "assimp/postprocess.h"
-#include "Apex/MathPrimitiveParser.h"
+#include "Apex/Utils/MathPrimitiveParser.h"
 
 namespace Apex {
 	
