@@ -1,9 +1,9 @@
 #pragma once
 
-#include "Apex/Renderer/Texture.h"
-#include "Apex/Renderer/VertexArray.h"
-#include "Apex/Renderer/Shader.h"
-#include "Apex/Renderer/FrameBuffer.h"
+#include "Apex/RenderPrimitives/Texture.h"
+#include "Apex/RenderPrimitives/VertexArray.h"
+#include "Apex/RenderPrimitives/Shader.h"
+#include "Apex/RenderPrimitives/FrameBuffer.h"
 
 namespace Apex {
 

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Apex/Renderer/VertexArray.h"
+#include "Apex/RenderPrimitives/VertexArray.h"
 
 namespace Apex {
 

@@ -1,8 +1,8 @@
 #pragma once
 
 #include "glm/glm.hpp"
-#include "Apex/Renderer/VertexArray.h"
-#include "Apex/Renderer/Texture.h"
+#include "Apex/RenderPrimitives/VertexArray.h"
+#include "Apex/RenderPrimitives/Texture.h"
 
 namespace Apex {
 

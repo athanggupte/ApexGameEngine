@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Apex/Renderer/Shader.h"
-#include "Apex/Renderer/Texture.h"
+#include "Apex/RenderPrimitives/Shader.h"
+#include "Apex/RenderPrimitives/Texture.h"
 
 namespace Apex {
 

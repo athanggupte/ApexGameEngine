@@ -2,8 +2,8 @@
 
 #include "RenderCommands.h"
 
-#include "Camera.h"
-#include "Shader.h"
+#include "Apex/RenderPrimitives/Camera.h"
+#include "Apex/RenderPrimitives/Shader.h"
 #include "Apex/Model/Model.h"
 
 #include <glm/glm.hpp>

@@ -1,7 +1,7 @@
 #include "apex_pch.h"
 #include "VertexArray.h"
 
-#include "Renderer.h"
+#include "Apex/Renderer/Renderer.h"
 
 #include "Platform/OpenGL/OpenGLVertexArray.h"
 

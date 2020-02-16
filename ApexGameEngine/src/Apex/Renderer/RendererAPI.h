@@ -2,7 +2,7 @@
 
 #include <glm/glm.hpp>
 
-#include "VertexArray.h"
+#include "Apex/RenderPrimitives/VertexArray.h"
 
 namespace Apex {
 
