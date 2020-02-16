@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Apex/Renderer/FrameBuffer.h"
+#include "Apex/RenderPrimitives/FrameBuffer.h"
 
 namespace Apex {
 

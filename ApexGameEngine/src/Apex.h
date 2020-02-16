@@ -22,13 +22,15 @@
 //-----Renderer-------------------------
 #include "Apex/Renderer/Renderer.h"
 #include "Apex/Renderer/RenderCommands.h"
+#include "Apex/Renderer/RenderQueue.h"
+#include "Apex/Renderer/RenderThread.h"
 
-#include "Apex/Renderer/Shader.h"
-#include "Apex/Renderer/Texture.h"
-#include "Apex/Renderer/Buffer.h"
-#include "Apex/Renderer/VertexArray.h"
-#include "Apex/Renderer/FrameBuffer.h"
-#include "Apex/Renderer/Camera.h"
+#include "Apex/RenderPrimitives/Shader.h"
+#include "Apex/RenderPrimitives/Texture.h"
+#include "Apex/RenderPrimitives/Buffer.h"
+#include "Apex/RenderPrimitives/VertexArray.h"
+#include "Apex/RenderPrimitives/FrameBuffer.h"
+#include "Apex/RenderPrimitives/Camera.h"
 //------------------------------------//
 
 //-----PostProcessing-------------------

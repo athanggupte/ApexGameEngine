@@ -454,6 +454,33 @@ private:
 	std::pair<float, float> m_MousePos;
 };
 
+class QueueLayer : public Apex::Layer
+{
+public:
+	QueueLayer() 
+	{	
+	}
+	void OnAttach() override {}
+	void OnDetach() override {}
+
+	void OnUpdate() override
+	{
+		std::srand(std::time(0));
+
+		Apex::RenderQueue::AttainLock([] { return true; });
+		Apex::RenderQueue::Push(Apex::RenderCommandType::StartScene);
+		for (int i = 0; i < 5; i++) {
+			Apex::RenderCommandType type = (Apex::RenderCommandType)(1 + (std::rand() % 6));
+			Apex::RenderQueue::Push(type);
+			APEX_TRACE("{0} | Pushed: {1}", i, (int)type);
+		}
+		Apex::RenderQueue::Push(Apex::RenderCommandType::EndScene);
+		Apex::RenderThread::ExecuteQueue();
+		Apex::RenderQueue::Notify();
+	}
+
+	void OnImGuiRender() override {}
+};
 
 class Sandbox : public Apex::Application
 {
@@ -461,7 +488,8 @@ public:
 	Sandbox()
 	{
 		//PushLayer(new SandboxLayer());
-		PushLayer(new ModelLayer());
+		//PushLayer(new ModelLayer());
+		PushLayer(new QueueLayer());
 	}
 
 	~Sandbox()

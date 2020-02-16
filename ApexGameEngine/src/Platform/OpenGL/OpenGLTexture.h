@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Apex/Renderer/Texture.h"
+#include "Apex/RenderPrimitives/Texture.h"
 
 namespace Apex {
 

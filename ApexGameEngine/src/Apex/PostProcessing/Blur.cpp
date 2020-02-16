@@ -2,6 +2,7 @@
 #include "Blur.h"
 
 #include "Apex/Renderer/Renderer.h"
+#include "Apex/Renderer/RenderCommands.h"
 
 namespace Apex {
 

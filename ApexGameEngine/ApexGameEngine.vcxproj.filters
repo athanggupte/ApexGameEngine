@@ -73,6 +73,9 @@
     <Filter Include="vendor\stb_image">
       <UniqueIdentifier>{0DA0BA59-F998-D9AB-22CB-BE300E23B9B7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Apex\RenderPrimitives">
+      <UniqueIdentifier>{d0b1c59b-2999-41a8-92ca-58edc623f098}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Apex.h">
@@ -135,15 +138,6 @@
     <ClInclude Include="src\Apex\PostProcessing\Blur.h">
       <Filter>src\Apex\PostProcessing</Filter>
     </ClInclude>
-    <ClInclude Include="src\Apex\Renderer\Buffer.h">
-      <Filter>src\Apex\Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Apex\Renderer\Camera.h">
-      <Filter>src\Apex\Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Apex\Renderer\FrameBuffer.h">
-      <Filter>src\Apex\Renderer</Filter>
-    </ClInclude>
     <ClInclude Include="src\Apex\Renderer\RenderCommands.h">
       <Filter>src\Apex\Renderer</Filter>
     </ClInclude>
@@ -154,15 +148,6 @@
       <Filter>src\Apex\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\Apex\Renderer\RenderingContext.h">
-      <Filter>src\Apex\Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Apex\Renderer\Shader.h">
-      <Filter>src\Apex\Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Apex\Renderer\Texture.h">
-      <Filter>src\Apex\Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Apex\Renderer\VertexArray.h">
       <Filter>src\Apex\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\Apex\StartUp.h">
@@ -1341,6 +1326,28 @@
     <ClInclude Include="vendor\stb_image\stb_image.h">
       <Filter>vendor\stb_image</Filter>
     </ClInclude>
+    <ClInclude Include="src\Apex\RenderPrimitives\Buffer.h">
+      <Filter>src\Apex\RenderPrimitives</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Apex\RenderPrimitives\Camera.h">
+      <Filter>src\Apex\RenderPrimitives</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Apex\RenderPrimitives\FrameBuffer.h">
+      <Filter>src\Apex\RenderPrimitives</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Apex\RenderPrimitives\Shader.h">
+      <Filter>src\Apex\RenderPrimitives</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Apex\RenderPrimitives\Texture.h">
+      <Filter>src\Apex\RenderPrimitives</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Apex\RenderPrimitives\VertexArray.h">
+      <Filter>src\Apex\RenderPrimitives</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Apex\Renderer\RenderQueue.h">
+      <Filter>src\Apex\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Apex\Renderer\RenderThread.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Apex\Application.cpp">
@@ -1379,15 +1386,6 @@
     <ClCompile Include="src\Apex\PostProcessing\Blur.cpp">
       <Filter>src\Apex\PostProcessing</Filter>
     </ClCompile>
-    <ClCompile Include="src\Apex\Renderer\Buffer.cpp">
-      <Filter>src\Apex\Renderer</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Apex\Renderer\Camera.cpp">
-      <Filter>src\Apex\Renderer</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Apex\Renderer\FrameBuffer.cpp">
-      <Filter>src\Apex\Renderer</Filter>
-    </ClCompile>
     <ClCompile Include="src\Apex\Renderer\RenderCommands.cpp">
       <Filter>src\Apex\Renderer</Filter>
     </ClCompile>
@@ -1395,15 +1393,6 @@
       <Filter>src\Apex\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\Apex\Renderer\RendererAPI.cpp">
-      <Filter>src\Apex\Renderer</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Apex\Renderer\Shader.cpp">
-      <Filter>src\Apex\Renderer</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Apex\Renderer\Texture.cpp">
-      <Filter>src\Apex\Renderer</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Apex\Renderer\VertexArray.cpp">
       <Filter>src\Apex\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\Apex\Timer.cpp">
@@ -1445,5 +1434,27 @@
     <ClCompile Include="vendor\stb_image\stb_image.cpp">
       <Filter>vendor\stb_image</Filter>
     </ClCompile>
+    <ClCompile Include="src\Apex\RenderPrimitives\Buffer.cpp">
+      <Filter>src\Apex\RenderPrimitives</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Apex\RenderPrimitives\Camera.cpp">
+      <Filter>src\Apex\RenderPrimitives</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Apex\RenderPrimitives\FrameBuffer.cpp">
+      <Filter>src\Apex\RenderPrimitives</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Apex\RenderPrimitives\Shader.cpp">
+      <Filter>src\Apex\RenderPrimitives</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Apex\RenderPrimitives\Texture.cpp">
+      <Filter>src\Apex\RenderPrimitives</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Apex\RenderPrimitives\VertexArray.cpp">
+      <Filter>src\Apex\RenderPrimitives</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Apex\Renderer\RenderQueue.cpp">
+      <Filter>src\Apex\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Apex\Renderer\RenderThread.cpp" />
   </ItemGroup>
 </Project>

@@ -1,6 +1,10 @@
 #include "apex_pch.h"
 #include "Renderer.h"
 
+#include "RenderCommands.h"
+#include "RenderQueue.h"
+#include "RenderThread.h"
+
 namespace Apex {
 
 	Renderer::SceneData* Renderer::s_SceneData = new Renderer::SceneData;
@@ -8,6 +12,8 @@ namespace Apex {
 	void Renderer::Init()
 	{
 		RenderCommands::Init();
+		RenderQueue::Init();
+		RenderThread::Init();
 		APEX_CORE_TRACE("Apex::Renderer initialized successfully!");
 	}
 

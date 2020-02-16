@@ -4,6 +4,13 @@
 
 namespace Apex {
 
+	enum class RenderCommandType {
+		Clear = 0,
+		Draw, DrawIndexed, DrawInstanced,
+		SetClearColor, SetDepthTest, SetCulling,
+		StartScene, EndScene
+	};
+
 	class RenderCommands
 	{
 	public:

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Apex/Renderer/Shader.h"
+#include "Apex/RenderPrimitives/Shader.h"
 
 namespace Apex {
 

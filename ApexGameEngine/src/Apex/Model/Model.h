@@ -2,7 +2,7 @@
 
 #include "assimp/scene.h"
 #include "Mesh.h"
-#include "Apex/Renderer/Texture.h"
+#include "Apex/RenderPrimitives/Texture.h"
 
 namespace Apex {
 
