@@ -23,7 +23,6 @@
 #include "Apex/Renderer/Renderer.h"
 #include "Apex/Renderer/RenderCommands.h"
 #include "Apex/Renderer/RenderQueue.h"
-#include "Apex/Renderer/RenderThread.h"
 
 #include "Apex/RenderPrimitives/Shader.h"
 #include "Apex/RenderPrimitives/Texture.h"

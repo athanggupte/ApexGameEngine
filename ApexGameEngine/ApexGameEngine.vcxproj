@@ -164,7 +164,6 @@
     <ClInclude Include="src\Apex\Model\Mesh.h" />
     <ClInclude Include="src\Apex\Model\Model.h" />
     <ClInclude Include="src\Apex\PostProcessing\Blur.h" />
-    <ClInclude Include="src\Apex\Renderer\RenderThread.h" />
     <ClInclude Include="src\Apex\RenderPrimitives\Buffer.h" />
     <ClInclude Include="src\Apex\RenderPrimitives\Camera.h" />
     <ClInclude Include="src\Apex\RenderPrimitives\FrameBuffer.h" />
@@ -582,7 +581,6 @@
     <ClCompile Include="src\Apex\Model\Mesh.cpp" />
     <ClCompile Include="src\Apex\Model\Model.cpp" />
     <ClCompile Include="src\Apex\PostProcessing\Blur.cpp" />
-    <ClCompile Include="src\Apex\Renderer\RenderThread.cpp" />
     <ClCompile Include="src\Apex\RenderPrimitives\Buffer.cpp" />
     <ClCompile Include="src\Apex\RenderPrimitives\Camera.cpp" />
     <ClCompile Include="src\Apex\RenderPrimitives\FrameBuffer.cpp" />

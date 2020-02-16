@@ -1347,7 +1347,6 @@
     <ClInclude Include="src\Apex\Renderer\RenderQueue.h">
       <Filter>src\Apex\Renderer</Filter>
     </ClInclude>
-    <ClInclude Include="src\Apex\Renderer\RenderThread.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Apex\Application.cpp">
@@ -1455,6 +1454,5 @@
     <ClCompile Include="src\Apex\Renderer\RenderQueue.cpp">
       <Filter>src\Apex\Renderer</Filter>
     </ClCompile>
-    <ClCompile Include="src\Apex\Renderer\RenderThread.cpp" />
   </ItemGroup>
 </Project>

@@ -3,7 +3,6 @@
 
 #include "RenderCommands.h"
 #include "RenderQueue.h"
-#include "RenderThread.h"
 
 namespace Apex {
 
@@ -13,7 +12,6 @@ namespace Apex {
 	{
 		RenderCommands::Init();
 		RenderQueue::Init();
-		RenderThread::Init();
 		APEX_CORE_TRACE("Apex::Renderer initialized successfully!");
 	}
 

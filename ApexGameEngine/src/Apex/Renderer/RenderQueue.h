@@ -35,22 +35,26 @@ namespace Apex {
 		static const Ref<RenderQueueItem>& Back() { return s_Instance->m_Queue->back(); }
 		static bool IsEmpty() { return s_Instance->m_Queue->empty(); }
 
-		static void AttainLock(std::function<bool(void)>&& fun);
+		//static void AttainLock(std::function<bool(void)>&& fun);
+		static std::unique_lock<std::mutex>& Lock();
 		static void Notify() { s_Instance->condition_variable.notify_one(); }
+		
+		inline static void Wait(std::unique_lock<std::mutex>& lock, std::function<bool(void)>&& fun)
+		{
+			s_Instance->condition_variable.wait(lock, std::forward<std::function<bool(void)>>(fun));
+		}
+
 	private:
 		RenderQueue();
 
-		static std::unique_lock<std::mutex>& Lock();
-		static void Wait(std::unique_lock<std::mutex>& lock, std::function<bool(void)>&& fun);
-
-	public:
-		std::mutex mutex;
-		std::condition_variable condition_variable;
+		static void Execute();
 
 	private:
 		static RenderQueue* s_Instance;
 		std::queue<Ref<RenderQueueItem>>* m_Queue;
-
+		std::thread* m_Thread;
+		std::mutex mutex;
+		std::condition_variable condition_variable;
 	};
 
 }

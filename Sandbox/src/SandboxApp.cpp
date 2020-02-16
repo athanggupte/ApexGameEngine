@@ -345,7 +345,7 @@ public:
 
 		auto& shaderUniforms = m_Shader->GetActiveUniformLocations();
 		for (auto[name, location] : shaderUniforms)
-			APEX_TRACE("{0} : {1}", name, location);
+			APEX_LOG_TRACE("{0} : {1}", name, location);
 	}
 	
 	virtual void OnAttach() override {}
@@ -467,15 +467,24 @@ public:
 	{
 		std::srand(std::time(0));
 
-		Apex::RenderQueue::AttainLock([] { return true; });
+		//Apex::RenderQueue::AttainLock([] { return true; });
+		std::unique_lock<std::mutex>& lock = Apex::RenderQueue::Lock();
+		/*Apex::RenderQueue::Wait(lock, [] {
+			if (Apex::RenderQueue::IsEmpty())
+				return true;
+			else {
+				return Apex::RenderQueue::Back()->type == RenderCommandType::EndScene;
+				APEX_CORE_DEBUG("\t| WAIT : RenderQueue::Back() = {0}", (int)RenderQueue::Back()->type);
+			}
+		});*/
 		Apex::RenderQueue::Push(Apex::RenderCommandType::StartScene);
 		for (int i = 0; i < 5; i++) {
 			Apex::RenderCommandType type = (Apex::RenderCommandType)(1 + (std::rand() % 6));
 			Apex::RenderQueue::Push(type);
-			APEX_TRACE("{0} | Pushed: {1}", i, (int)type);
+			APEX_LOG_TRACE("{0} | Pushed: {1}", i, (int)type);
 		}
 		Apex::RenderQueue::Push(Apex::RenderCommandType::EndScene);
-		Apex::RenderThread::ExecuteQueue();
+		APEX_LOG_DEBUG("");
 		Apex::RenderQueue::Notify();
 	}
 
