@@ -51,8 +51,8 @@ namespace Apex {
 		uint32_t m_PoolIndex;
 		uint32_t m_BatchSize;
 
-		Scope<VertexArray> m_QuadVA;
-		Scope<Shader> m_Shader;
+		Ref<VertexArray> m_QuadVA;
+		Ref<Shader> m_Shader;
 	};
 
 }

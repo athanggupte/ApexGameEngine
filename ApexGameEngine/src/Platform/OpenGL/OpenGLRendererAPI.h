@@ -18,8 +18,9 @@ namespace Apex {
 
 		virtual void SetDepthTest(bool value) override;
 		virtual void SetCulling(bool value) override;
-
+		virtual void SetBlendMode(BlendingMode sourceMode, BlendingMode destMode) override;
 		virtual void SetViewport(uint32_t x, uint32_t y, size_t width, size_t height) override;
+
 	};
 
 }

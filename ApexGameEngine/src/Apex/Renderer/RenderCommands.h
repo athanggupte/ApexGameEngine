@@ -18,7 +18,7 @@ namespace Apex {
 		
 		inline static void SetDepthTest(bool value) { s_RendererAPI->SetDepthTest(value); }
 		inline static void SetCulling(bool value) { s_RendererAPI->SetCulling(value); }
-
+		inline static void SetBlendMode(RendererAPI::BlendingMode sourceMode, RendererAPI::BlendingMode destMode) { s_RendererAPI->SetBlendMode(sourceMode, destMode); }
 		inline static void SetViewport(uint32_t x, uint32_t y, size_t width, size_t height) { s_RendererAPI->SetViewport(x, y, width, height); }
 
 	private:

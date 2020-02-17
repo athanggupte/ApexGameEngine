@@ -6,8 +6,8 @@
 #include "Apex/AssetManager/AssetManager.h"
 #include "Apex/Layers/Layer.h"
 #include "Apex/Log/Log.h"
-#include "Apex/MathPrimitiveParser.h"
-#include "Apex/Timer.h"
+#include "Apex/Utils/MathPrimitiveParser.h"
+#include "Apex/Utils/Timer.h"
 
 //-----Input----------------------------
 #include "Apex/Input/Input.h"

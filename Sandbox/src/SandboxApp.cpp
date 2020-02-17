@@ -7,7 +7,7 @@
 
 #include "Apex/Material/Material.h"
 #include "Apex/Model/Model.h"
-
+#include "Apex/Physics/ParticleSystem/ParticleSystem2D.h"
 
 class SandboxLayer : public Apex::Layer
 {
@@ -627,6 +627,111 @@ private:
 	bool m_MouseSelectMode = false;
 };
 
+class ParticleLayer : public Apex::Layer
+{
+public:
+	ParticleLayer()
+		: m_Camera(-1.6f, 1.6f, -0.9f, 0.9f), m_CameraPosition({ 0.0f, 0.0f, 0.0f })
+	{
+		m_Camera.SetPosition({ 0.0f, 0.0f, 0.0f });
+		m_Camera.SetRotation(0.0f);
+
+		// Position and Lifetime
+		m_ParticleProps.position = { 0.0f, 0.0f };
+		m_ParticleProps.lifetime = 1.0f;
+
+		// Movement
+		m_ParticleProps.velocity = { 0.0f, 1.0f };
+		m_ParticleProps.velocityVariation = { 0.45f, 0.36f };
+		m_ParticleProps.rotationSpeed = 2.0f;
+		m_ParticleProps.rotationSpeedVariation = 1.0f;
+
+		// Size
+		m_ParticleProps.sizeBegin = 0.08f;
+		m_ParticleProps.sizeEnd = 0.0085f;
+		m_ParticleProps.sizeVariation = 0.3f;
+		
+		// Color
+		m_ParticleProps.colorBegin = { 0.85f, 0.64f, 0.0f, 1.0f };
+		m_ParticleProps.colorEnd = { 0.1f, 0.1f, 0.1f, 1.0f };
+
+		Apex::RenderCommands::SetBlendMode(Apex::RendererAPI::BlendingMode::SRC_ALPHA, Apex::RendererAPI::BlendingMode::ONE_MINUS_DST_ALPHA);
+	}
+
+	void OnAttach() override {}
+	void OnDetach() override {}
+	
+	void OnUpdate() override
+	{
+		auto[mouseX, mouseY] = Apex::Input::GetMousePos();
+		if (!ImGui::IsAnyItemActive() && !ImGui::IsAnyWindowFocused()) {
+			if (Apex::Input::IsKeyPressed(APEX_KEY_S))
+				m_ParticleProps.position.y -= m_ParticleSystemMoveSpeed * Apex::Timer::GetSeconds();
+			if (Apex::Input::IsKeyPressed(APEX_KEY_W))
+				m_ParticleProps.position.y += m_ParticleSystemMoveSpeed * Apex::Timer::GetSeconds();
+			if (Apex::Input::IsKeyPressed(APEX_KEY_A))
+				m_ParticleProps.position.x -= m_ParticleSystemMoveSpeed * Apex::Timer::GetSeconds();
+			if (Apex::Input::IsKeyPressed(APEX_KEY_D))
+				m_ParticleProps.position.x += m_ParticleSystemMoveSpeed * Apex::Timer::GetSeconds();
+
+			std::pair<float, float> mouseDiff = {
+				 Apex::Input::IsMouseButtonPressed(APEX_MOUSE_BUTTON_LEFT) ? (mouseX - m_MousePos.first) : 0.0f,
+				 Apex::Input::IsMouseButtonPressed(APEX_MOUSE_BUTTON_LEFT) ? (mouseY - m_MousePos.second) : 0.0f
+			};
+			//m_CameraRotation += Apex::Input::IsMouseButtonPressed(APEX_MOUSE_BUTTON_RIGHT) ? ((mouseY - m_MousePos.second) * m_CameraRotateSpeed * Apex::Timer::GetSeconds()) : 0.0f;
+			m_CameraPosition.x -= mouseDiff.first * m_CameraMoveSpeed;
+			m_CameraPosition.y += mouseDiff.second * m_CameraMoveSpeed;
+		}
+		m_MousePos = { mouseX, mouseY };
+		m_Camera.SetPosition(m_CameraPosition);
+
+		for(int i=0; i<5; i++)
+			m_ParticleSystem.Emit(m_ParticleProps);
+
+		Apex::RenderCommands::Clear();
+		Apex::Renderer::BeginScene(m_Camera);
+		m_ParticleSystem.OnUpdate();
+		m_ParticleSystem.OnRender();
+		Apex::Renderer::EndScene();
+	}
+	
+	void OnImGuiRender() override
+	{
+		ImGui::Begin("Particle System 2D");
+		ImGui::DragFloat2("Position", &m_ParticleProps.position.x, 0.05f, -1.0f, 1.0f);
+		ImGui::DragFloat("Lifetime", &m_ParticleProps.lifetime, 0.01f, 0.0f, 5.0f);
+		ImGui::DragFloat2("Velocity", &m_ParticleProps.velocity.x, 0.005f);
+		ImGui::DragFloat2("Velocity Variation", &m_ParticleProps.velocityVariation.x, 0.005f);
+		ImGui::DragFloat("Size Begin", &m_ParticleProps.sizeBegin, 0.005f, 0.0f, 1.0f);
+		ImGui::ColorPicker4("Color Begin", &m_ParticleProps.colorBegin.x);
+		ImGui::ColorPicker4("Color End", &m_ParticleProps.colorEnd.x);
+		ImGui::End();
+	}
+
+	void OnEvent(Apex::Event& event) override
+	{
+		Apex::EventDispatcher dispatcher(event);
+		dispatcher.Dispatch<Apex::MouseScrolledEvent>(APEX_BIND_EVENT_FN(ParticleLayer::OnMouseScrolled));
+	}
+
+	bool OnMouseScrolled(Apex::MouseScrolledEvent& event)
+	{
+		return false;
+	}
+
+private:
+	Apex::ParticleSystem2D m_ParticleSystem;
+	Apex::ParticleProps2D m_ParticleProps;
+	Apex::OrthographicCamera m_Camera;
+	glm::vec3 m_CameraPosition;
+	float m_CameraRotation = 0.0f;
+	float m_CameraMoveSpeed = 0.0025f;
+	float m_CameraRotateSpeed = 30.0f;
+
+	float m_ParticleSystemMoveSpeed = 0.75f;
+
+	std::pair<float, float> m_MousePos = { 0.0f, 0.0f };
+};
 
 class Sandbox : public Apex::Application
 {
@@ -634,7 +739,8 @@ public:
 	Sandbox()
 	{
 		//PushLayer(new SandboxLayer());
-		PushLayer(new ModelLayer());
+		//PushLayer(new ModelLayer());
+		PushLayer(new ParticleLayer());
 	}
 
 	~Sandbox()

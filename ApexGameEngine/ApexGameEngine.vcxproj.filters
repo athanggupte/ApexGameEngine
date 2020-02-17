@@ -1451,5 +1451,6 @@
       <Filter>src\Apex</Filter>
     </ClCompile>
     <ClCompile Include="src\Apex\Physics\ParticleSystem\ParticleSystem2D.cpp" />
+    <ClCompile Include="src\Apex\Utils\Random.cpp" />
   </ItemGroup>
 </Project>

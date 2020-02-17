@@ -14,6 +14,26 @@ namespace Apex {
 			None = 0, OpenGL = 1
 		};
 
+		enum class BlendingMode
+		{
+			ZERO = 0, ONE = 1,
+
+			SRC_COLOR = 0x0300,
+			ONE_MINUS_SRC_COLOR,
+			SRC_ALPHA,
+			ONE_MINUS_SRC_ALPHA,
+			DST_ALPHA,
+			ONE_MINUS_DST_ALPHA,
+			DST_COLOR,
+			ONE_MINUS_DST_COLOR,
+			SRC_ALPHA_SATURATE,
+
+			CONSTANT_COLOR = 0x8001,
+			ONE_MINUS_CONSTANT_COLOR,
+			CONSTANT_ALPHA,
+			ONE_MINUS_CONSTANT_ALPHA
+		};
+
 	public:
 		virtual void Init() = 0;
 
@@ -26,7 +46,7 @@ namespace Apex {
 
 		virtual void SetDepthTest(bool value) = 0;
 		virtual void SetCulling(bool value) = 0;
-
+		virtual void SetBlendMode(BlendingMode sourceMode, BlendingMode destMode) = 0;
 		virtual void SetViewport(uint32_t x, uint32_t y, size_t width, size_t height) = 0;
 
 		inline static API GetAPI() { return s_API; }

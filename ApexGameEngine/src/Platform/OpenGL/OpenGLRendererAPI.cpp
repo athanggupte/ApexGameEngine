@@ -4,6 +4,7 @@
 #include <glad/glad.h>
 
 namespace Apex {
+
 	void OpenGLRendererAPI::Init()
 	{
 		glEnable(GL_BLEND);
@@ -55,9 +56,14 @@ namespace Apex {
 		}
 	}
 
+	void OpenGLRendererAPI::SetBlendMode(BlendingMode sourceMode, BlendingMode destMode)
+	{
+		glBlendFunc((GLenum)sourceMode, (GLenum)destMode);
+	}
+
 	void OpenGLRendererAPI::SetViewport(uint32_t x, uint32_t y, size_t width, size_t height)
 	{
 		glViewport(x, y, width, height);
 	}
-
+	
 }
