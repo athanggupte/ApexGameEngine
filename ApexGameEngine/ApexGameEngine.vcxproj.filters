@@ -31,11 +31,29 @@
     <Filter Include="src\Apex\Model">
       <UniqueIdentifier>{4AA66C28-3674-602E-1F08-D1540B753C93}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Apex\Physics">
+      <UniqueIdentifier>{FCAA4DCE-E8A3-6C20-11D6-51A5FD2D4C2C}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Apex\Physics\Collision">
+      <UniqueIdentifier>{17CB65D2-03DB-11A3-6C94-76C158C3003C}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Apex\Physics\Interaction">
+      <UniqueIdentifier>{EBBCA2D7-D777-9283-802F-0BCE6CC9DC13}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Apex\Physics\ParticleSystem">
+      <UniqueIdentifier>{64F91817-D0DC-2757-D9DF-55934542EEA7}</UniqueIdentifier>
+    </Filter>
     <Filter Include="src\Apex\PostProcessing">
       <UniqueIdentifier>{3C43155F-A87A-5DF6-B184-C1191D3B84EF}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Apex\RenderPrimitives">
+      <UniqueIdentifier>{E5EE7539-51B1-A9C3-9A61-3850066382A1}</UniqueIdentifier>
+    </Filter>
     <Filter Include="src\Apex\Renderer">
       <UniqueIdentifier>{70DCDD6E-DCF2-DB04-256A-672691BFAC8C}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Apex\Utils">
+      <UniqueIdentifier>{6A3E0029-560C-F42E-3FA0-64552B0DD093}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\Platform">
       <UniqueIdentifier>{21CA02E5-0D2D-9289-B6B2-CA3FA2F45D0C}</UniqueIdentifier>
@@ -72,9 +90,6 @@
     </Filter>
     <Filter Include="vendor\stb_image">
       <UniqueIdentifier>{0DA0BA59-F998-D9AB-22CB-BE300E23B9B7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="src\Apex\RenderPrimitives">
-      <UniqueIdentifier>{7cc0dcc5-9864-43e7-86af-13216acb5e92}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -132,8 +147,35 @@
     <ClInclude Include="src\Apex\Model\Model.h">
       <Filter>src\Apex\Model</Filter>
     </ClInclude>
+    <ClInclude Include="src\Apex\Physics\Collision\Collider.h">
+      <Filter>src\Apex\Physics\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Apex\Physics\Interaction\MousePicker.h">
+      <Filter>src\Apex\Physics\Interaction</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Apex\Physics\ParticleSystem\ParticleSystem2D.h">
+      <Filter>src\Apex\Physics\ParticleSystem</Filter>
+    </ClInclude>
     <ClInclude Include="src\Apex\PostProcessing\Blur.h">
       <Filter>src\Apex\PostProcessing</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Apex\RenderPrimitives\Buffer.h">
+      <Filter>src\Apex\RenderPrimitives</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Apex\RenderPrimitives\Camera.h">
+      <Filter>src\Apex\RenderPrimitives</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Apex\RenderPrimitives\FrameBuffer.h">
+      <Filter>src\Apex\RenderPrimitives</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Apex\RenderPrimitives\Shader.h">
+      <Filter>src\Apex\RenderPrimitives</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Apex\RenderPrimitives\Texture.h">
+      <Filter>src\Apex\RenderPrimitives</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Apex\RenderPrimitives\VertexArray.h">
+      <Filter>src\Apex\RenderPrimitives</Filter>
     </ClInclude>
     <ClInclude Include="src\Apex\Renderer\RenderCommands.h">
       <Filter>src\Apex\Renderer</Filter>
@@ -149,6 +191,15 @@
     </ClInclude>
     <ClInclude Include="src\Apex\StartUp.h">
       <Filter>src\Apex</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Apex\Utils\MathPrimitiveParser.h">
+      <Filter>src\Apex\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Apex\Utils\Random.h">
+      <Filter>src\Apex\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Apex\Utils\Timer.h">
+      <Filter>src\Apex\Utils</Filter>
     </ClInclude>
     <ClInclude Include="src\Apex\Window.h">
       <Filter>src\Apex</Filter>
@@ -1320,32 +1371,6 @@
     <ClInclude Include="vendor\stb_image\stb_image.h">
       <Filter>vendor\stb_image</Filter>
     </ClInclude>
-    <ClInclude Include="src\Apex\RenderPrimitives\Shader.h">
-      <Filter>src\Apex\RenderPrimitives</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Apex\RenderPrimitives\Texture.h">
-      <Filter>src\Apex\RenderPrimitives</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Apex\RenderPrimitives\VertexArray.h">
-      <Filter>src\Apex\RenderPrimitives</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Apex\RenderPrimitives\Buffer.h">
-      <Filter>src\Apex\RenderPrimitives</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Apex\RenderPrimitives\Camera.h">
-      <Filter>src\Apex\RenderPrimitives</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Apex\RenderPrimitives\FrameBuffer.h">
-      <Filter>src\Apex\RenderPrimitives</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Apex\Physics\ParticleSystem\ParticleSystem2D.h" />
-    <ClInclude Include="src\Apex\Utils\MathPrimitiveParser.h">
-      <Filter>src\Apex</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Apex\Utils\Timer.h">
-      <Filter>src\Apex</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Apex\Utils\Random.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Apex\Application.cpp">
@@ -1378,8 +1403,29 @@
     <ClCompile Include="src\Apex\Model\Model.cpp">
       <Filter>src\Apex\Model</Filter>
     </ClCompile>
+    <ClCompile Include="src\Apex\Physics\ParticleSystem\ParticleSystem2D.cpp">
+      <Filter>src\Apex\Physics\ParticleSystem</Filter>
+    </ClCompile>
     <ClCompile Include="src\Apex\PostProcessing\Blur.cpp">
       <Filter>src\Apex\PostProcessing</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Apex\RenderPrimitives\Buffer.cpp">
+      <Filter>src\Apex\RenderPrimitives</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Apex\RenderPrimitives\Camera.cpp">
+      <Filter>src\Apex\RenderPrimitives</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Apex\RenderPrimitives\FrameBuffer.cpp">
+      <Filter>src\Apex\RenderPrimitives</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Apex\RenderPrimitives\Shader.cpp">
+      <Filter>src\Apex\RenderPrimitives</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Apex\RenderPrimitives\Texture.cpp">
+      <Filter>src\Apex\RenderPrimitives</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Apex\RenderPrimitives\VertexArray.cpp">
+      <Filter>src\Apex\RenderPrimitives</Filter>
     </ClCompile>
     <ClCompile Include="src\Apex\Renderer\RenderCommands.cpp">
       <Filter>src\Apex\Renderer</Filter>
@@ -1389,6 +1435,15 @@
     </ClCompile>
     <ClCompile Include="src\Apex\Renderer\RendererAPI.cpp">
       <Filter>src\Apex\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Apex\Utils\MathPrimitiveParser.cpp">
+      <Filter>src\Apex\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Apex\Utils\Random.cpp">
+      <Filter>src\Apex\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Apex\Utils\Timer.cpp">
+      <Filter>src\Apex\Utils</Filter>
     </ClCompile>
     <ClCompile Include="src\Platform\OpenGL\OpenGLBuffer.cpp">
       <Filter>src\Platform\OpenGL</Filter>
@@ -1426,31 +1481,5 @@
     <ClCompile Include="vendor\stb_image\stb_image.cpp">
       <Filter>vendor\stb_image</Filter>
     </ClCompile>
-    <ClCompile Include="src\Apex\RenderPrimitives\Shader.cpp">
-      <Filter>src\Apex\RenderPrimitives</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Apex\RenderPrimitives\Texture.cpp">
-      <Filter>src\Apex\RenderPrimitives</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Apex\RenderPrimitives\VertexArray.cpp">
-      <Filter>src\Apex\RenderPrimitives</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Apex\RenderPrimitives\Buffer.cpp">
-      <Filter>src\Apex\RenderPrimitives</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Apex\RenderPrimitives\Camera.cpp">
-      <Filter>src\Apex\RenderPrimitives</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Apex\RenderPrimitives\FrameBuffer.cpp">
-      <Filter>src\Apex\RenderPrimitives</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Apex\Utils\MathPrimitiveParser.cpp">
-      <Filter>src\Apex</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Apex\Utils\Timer.cpp">
-      <Filter>src\Apex</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Apex\Physics\ParticleSystem\ParticleSystem2D.cpp" />
-    <ClCompile Include="src\Apex\Utils\Random.cpp" />
   </ItemGroup>
 </Project>

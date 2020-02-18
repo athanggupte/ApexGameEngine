@@ -1,13 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="16.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <CustomBuild Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\CMakeFiles\779d6c2330f740ca200fb0b613c7834c\INSTALL_force.rule">
+    <CustomBuild Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\CMakeFiles\3af9993302a89c02be22fa26e319265f\INSTALL_force.rule">
       <Filter>CMake Rules</Filter>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="CMake Rules">
-      <UniqueIdentifier>{0A33A739-006D-360A-9FA9-80669C65C4E2}</UniqueIdentifier>
+      <UniqueIdentifier>{D234E1C6-9DAD-3527-9E34-1713C4E84241}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

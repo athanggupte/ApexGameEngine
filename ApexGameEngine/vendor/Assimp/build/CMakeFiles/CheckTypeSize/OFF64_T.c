@@ -21,7 +21,7 @@
 #endif
 
 #define SIZE (sizeof(off64_t))
-char info_size[] =  {'I', 'N', 'F', 'O', ':', 's','i','z','e','[',
+static char info_size[] =  {'I', 'N', 'F', 'O', ':', 's','i','z','e','[',
   ('0' + ((SIZE / 10000)%10)),
   ('0' + ((SIZE / 1000)%10)),
   ('0' + ((SIZE / 100)%10)),

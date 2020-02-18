@@ -1,8 +1,8 @@
-# Install script for directory: E:/Athang_Work/ApexGameEngine/ApexGameEngine/vendor/Assimp/src/test/headercheck
+# Install script for directory: E:/Athang-Work/ApexGameEngine/ApexGameEngine/vendor/Assimp/src/test/headercheck
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "C:/Program Files/Assimp")
+  set(CMAKE_INSTALL_PREFIX "C:/Program Files (x86)/Assimp")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 

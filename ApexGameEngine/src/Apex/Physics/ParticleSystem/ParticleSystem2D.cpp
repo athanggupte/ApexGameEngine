@@ -44,7 +44,7 @@ namespace Apex {
 		m_QuadVA->Unbind();
 
 		std::string flatVertexSrc = R"(
-			#version 450
+			#version 430
 
 			layout(location = 0) in vec3 a_Position;
 
@@ -61,7 +61,7 @@ namespace Apex {
 		)";
 
 		std::string flatFragmentSrc = R"(
-			#version 450
+			#version 430
 
 			layout(location = 0) out vec4 o_Color;
 

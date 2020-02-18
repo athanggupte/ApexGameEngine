@@ -25,6 +25,7 @@ namespace Apex {
 	//////////////////////////////////////////////////////////////////////
 
 	OpenGLFrameBuffer::OpenGLFrameBuffer(bool depth)
+		: m_HDR(false)
 	{
 		glGenFramebuffers(1, &m_RendererID);
 		glBindFramebuffer(GL_FRAMEBUFFER, m_RendererID);

@@ -19,26 +19,27 @@
     <IgnoreWarnCompileDuplicatedFilename>true</IgnoreWarnCompileDuplicatedFilename>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>ApexGameEngine</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>
+    </WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>Unicode</CharacterSet>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <CharacterSet>Unicode</CharacterSet>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Dist|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <CharacterSet>Unicode</CharacterSet>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -88,7 +89,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Lib>
-      <AdditionalDependencies>opengl32.lib;assimp-vc141-mtd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;assimp-vc142-mtd.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>vendor\Assimp\build\code\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
   </ItemDefinitionGroup>
@@ -159,22 +160,24 @@
     <ClInclude Include="src\Apex\Layers\LayerStack.h" />
     <ClInclude Include="src\Apex\Log\Log.h" />
     <ClInclude Include="src\Apex\Material\Material.h" />
-    <ClInclude Include="src\Apex\Utils\MathPrimitiveParser.h" />
     <ClInclude Include="src\Apex\Model\Mesh.h" />
     <ClInclude Include="src\Apex\Model\Model.h" />
+    <ClInclude Include="src\Apex\Physics\Collision\Collider.h" />
+    <ClInclude Include="src\Apex\Physics\Interaction\MousePicker.h" />
     <ClInclude Include="src\Apex\Physics\ParticleSystem\ParticleSystem2D.h" />
     <ClInclude Include="src\Apex\PostProcessing\Blur.h" />
     <ClInclude Include="src\Apex\RenderPrimitives\Buffer.h" />
     <ClInclude Include="src\Apex\RenderPrimitives\Camera.h" />
     <ClInclude Include="src\Apex\RenderPrimitives\FrameBuffer.h" />
+    <ClInclude Include="src\Apex\RenderPrimitives\Shader.h" />
+    <ClInclude Include="src\Apex\RenderPrimitives\Texture.h" />
+    <ClInclude Include="src\Apex\RenderPrimitives\VertexArray.h" />
     <ClInclude Include="src\Apex\Renderer\RenderCommands.h" />
     <ClInclude Include="src\Apex\Renderer\Renderer.h" />
     <ClInclude Include="src\Apex\Renderer\RendererAPI.h" />
     <ClInclude Include="src\Apex\Renderer\RenderingContext.h" />
-    <ClInclude Include="src\Apex\RenderPrimitives\Shader.h" />
-    <ClInclude Include="src\Apex\RenderPrimitives\Texture.h" />
-    <ClInclude Include="src\Apex\RenderPrimitives\VertexArray.h" />
     <ClInclude Include="src\Apex\StartUp.h" />
+    <ClInclude Include="src\Apex\Utils\MathPrimitiveParser.h" />
     <ClInclude Include="src\Apex\Utils\Random.h" />
     <ClInclude Include="src\Apex\Utils\Timer.h" />
     <ClInclude Include="src\Apex\Window.h" />
@@ -577,20 +580,20 @@
     <ClCompile Include="src\Apex\Layers\LayerStack.cpp" />
     <ClCompile Include="src\Apex\Log\Log.cpp" />
     <ClCompile Include="src\Apex\Material\Material.cpp" />
-    <ClCompile Include="src\Apex\Physics\ParticleSystem\ParticleSystem2D.cpp" />
-    <ClCompile Include="src\Apex\Utils\MathPrimitiveParser.cpp" />
     <ClCompile Include="src\Apex\Model\Mesh.cpp" />
     <ClCompile Include="src\Apex\Model\Model.cpp" />
+    <ClCompile Include="src\Apex\Physics\ParticleSystem\ParticleSystem2D.cpp" />
     <ClCompile Include="src\Apex\PostProcessing\Blur.cpp" />
     <ClCompile Include="src\Apex\RenderPrimitives\Buffer.cpp" />
     <ClCompile Include="src\Apex\RenderPrimitives\Camera.cpp" />
     <ClCompile Include="src\Apex\RenderPrimitives\FrameBuffer.cpp" />
-    <ClCompile Include="src\Apex\Renderer\RenderCommands.cpp" />
-    <ClCompile Include="src\Apex\Renderer\Renderer.cpp" />
-    <ClCompile Include="src\Apex\Renderer\RendererAPI.cpp" />
     <ClCompile Include="src\Apex\RenderPrimitives\Shader.cpp" />
     <ClCompile Include="src\Apex\RenderPrimitives\Texture.cpp" />
     <ClCompile Include="src\Apex\RenderPrimitives\VertexArray.cpp" />
+    <ClCompile Include="src\Apex\Renderer\RenderCommands.cpp" />
+    <ClCompile Include="src\Apex\Renderer\Renderer.cpp" />
+    <ClCompile Include="src\Apex\Renderer\RendererAPI.cpp" />
+    <ClCompile Include="src\Apex\Utils\MathPrimitiveParser.cpp" />
     <ClCompile Include="src\Apex\Utils\Random.cpp" />
     <ClCompile Include="src\Apex\Utils\Timer.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLBuffer.cpp" />
