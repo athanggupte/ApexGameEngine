@@ -16,7 +16,12 @@ namespace Apex {
 		
 		glm::vec4 colorBegin, colorEnd;
 		float sizeBegin, sizeEnd, sizeVariation;
-		
+
+		bool useTexure = false;
+
+		uint32_t textureNumRows = 1;
+		uint32_t textureIndex = 0;
+
 		float lifetime = 1.0f;
 	};
 
@@ -41,6 +46,11 @@ namespace Apex {
 			
 			glm::vec4 colorBegin, colorEnd;
 			float sizeBegin, sizeEnd;
+			
+			bool useTexture = false;
+
+			uint32_t textureNumRows = 1;
+			uint32_t textureIndex = 0;
 			
 			float lifetime = 1.0f, lifeRemaining = 0.0f;
 

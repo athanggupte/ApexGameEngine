@@ -148,6 +148,7 @@
     <ClInclude Include="src\Apex\Application.h" />
     <ClInclude Include="src\Apex\AssetManager\AssetManager.h" />
     <ClInclude Include="src\Apex\Core.h" />
+    <ClInclude Include="src\Apex\Entity\GameObject.h" />
     <ClInclude Include="src\Apex\Events\ApplicationEvent.h" />
     <ClInclude Include="src\Apex\Events\Event.h" />
     <ClInclude Include="src\Apex\Events\KeyEvent.h" />
@@ -162,9 +163,12 @@
     <ClInclude Include="src\Apex\Material\Material.h" />
     <ClInclude Include="src\Apex\Model\Mesh.h" />
     <ClInclude Include="src\Apex\Model\Model.h" />
+    <ClInclude Include="src\Apex\Physics\Collision\Collidable.h" />
     <ClInclude Include="src\Apex\Physics\Collision\Collider.h" />
     <ClInclude Include="src\Apex\Physics\Interaction\MousePicker.h" />
     <ClInclude Include="src\Apex\Physics\ParticleSystem\ParticleSystem2D.h" />
+    <ClInclude Include="src\Apex\Physics\PhysicsTimer\PhysicsTimer.h" />
+    <ClInclude Include="src\Apex\Physics\Movement\RigidBody.h" />
     <ClInclude Include="src\Apex\PostProcessing\Blur.h" />
     <ClInclude Include="src\Apex\RenderPrimitives\Buffer.h" />
     <ClInclude Include="src\Apex\RenderPrimitives\Camera.h" />
@@ -582,7 +586,11 @@
     <ClCompile Include="src\Apex\Material\Material.cpp" />
     <ClCompile Include="src\Apex\Model\Mesh.cpp" />
     <ClCompile Include="src\Apex\Model\Model.cpp" />
+    <ClCompile Include="src\Apex\Physics\Collision\Collidable.cpp" />
+    <ClCompile Include="src\Apex\Physics\Collision\Collider.cpp" />
     <ClCompile Include="src\Apex\Physics\ParticleSystem\ParticleSystem2D.cpp" />
+    <ClCompile Include="src\Apex\Physics\PhysicsTimer\PhysicsTimer.cpp" />
+    <ClCompile Include="src\Apex\Physics\Movement\RigidBody.cpp" />
     <ClCompile Include="src\Apex\PostProcessing\Blur.cpp" />
     <ClCompile Include="src\Apex\RenderPrimitives\Buffer.cpp" />
     <ClCompile Include="src\Apex\RenderPrimitives\Camera.cpp" />

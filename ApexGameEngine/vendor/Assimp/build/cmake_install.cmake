@@ -1,4 +1,4 @@
-# Install script for directory: E:/Athang-Work/ApexGameEngine/ApexGameEngine/vendor/Assimp/src
+# Install script for directory: E:/Athang_Work/ApexGameEngine/ApexGameEngine/vendor/Assimp/src
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -34,25 +34,25 @@ endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xlibassimp5.0.0-devx" OR NOT CMAKE_INSTALL_COMPONENT)
   file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/cmake/assimp-5.0" TYPE FILE FILES
-    "E:/Athang-Work/ApexGameEngine/ApexGameEngine/vendor/Assimp/build/assimp-config.cmake"
-    "E:/Athang-Work/ApexGameEngine/ApexGameEngine/vendor/Assimp/build/assimp-config-version.cmake"
-    "E:/Athang-Work/ApexGameEngine/ApexGameEngine/vendor/Assimp/build/assimpTargets.cmake"
-    "E:/Athang-Work/ApexGameEngine/ApexGameEngine/vendor/Assimp/build/assimpTargets-debug.cmake"
-    "E:/Athang-Work/ApexGameEngine/ApexGameEngine/vendor/Assimp/build/assimpTargets-release.cmake"
+    "E:/Athang_Work/ApexGameEngine/ApexGameEngine/vendor/Assimp/build/assimp-config.cmake"
+    "E:/Athang_Work/ApexGameEngine/ApexGameEngine/vendor/Assimp/build/assimp-config-version.cmake"
+    "E:/Athang_Work/ApexGameEngine/ApexGameEngine/vendor/Assimp/build/assimpTargets.cmake"
+    "E:/Athang_Work/ApexGameEngine/ApexGameEngine/vendor/Assimp/build/assimpTargets-debug.cmake"
+    "E:/Athang_Work/ApexGameEngine/ApexGameEngine/vendor/Assimp/build/assimpTargets-release.cmake"
     )
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xlibassimp5.0.0-devx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig" TYPE FILE FILES "E:/Athang-Work/ApexGameEngine/ApexGameEngine/vendor/Assimp/build/assimp.pc")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig" TYPE FILE FILES "E:/Athang_Work/ApexGameEngine/ApexGameEngine/vendor/Assimp/build/assimp.pc")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
-  include("E:/Athang-Work/ApexGameEngine/ApexGameEngine/vendor/Assimp/build/contrib/zlib/cmake_install.cmake")
-  include("E:/Athang-Work/ApexGameEngine/ApexGameEngine/vendor/Assimp/build/contrib/cmake_install.cmake")
-  include("E:/Athang-Work/ApexGameEngine/ApexGameEngine/vendor/Assimp/build/code/cmake_install.cmake")
-  include("E:/Athang-Work/ApexGameEngine/ApexGameEngine/vendor/Assimp/build/tools/assimp_cmd/cmake_install.cmake")
-  include("E:/Athang-Work/ApexGameEngine/ApexGameEngine/vendor/Assimp/build/test/cmake_install.cmake")
+  include("E:/Athang_Work/ApexGameEngine/ApexGameEngine/vendor/Assimp/build/contrib/zlib/cmake_install.cmake")
+  include("E:/Athang_Work/ApexGameEngine/ApexGameEngine/vendor/Assimp/build/contrib/cmake_install.cmake")
+  include("E:/Athang_Work/ApexGameEngine/ApexGameEngine/vendor/Assimp/build/code/cmake_install.cmake")
+  include("E:/Athang_Work/ApexGameEngine/ApexGameEngine/vendor/Assimp/build/tools/assimp_cmd/cmake_install.cmake")
+  include("E:/Athang_Work/ApexGameEngine/ApexGameEngine/vendor/Assimp/build/test/cmake_install.cmake")
 
 endif()
 
@@ -64,5 +64,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "E:/Athang-Work/ApexGameEngine/ApexGameEngine/vendor/Assimp/build/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "E:/Athang_Work/ApexGameEngine/ApexGameEngine/vendor/Assimp/build/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

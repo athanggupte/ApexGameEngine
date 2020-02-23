@@ -28,6 +28,8 @@
 
 #define APEX_BIND_EVENT_FN(fn) std::bind(&fn, this, std::placeholders::_1)
 
+#define _ENABLE_ATOMIC_ALIGNMENT_FIX	// Works only on VS 2015 Update 2 and above
+
 namespace Apex {
 
 	template<typename T>

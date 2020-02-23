@@ -22,7 +22,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{AD594E49-9F2B-37B6-9C07-F277C86921CA}</ProjectGuid>
+    <ProjectGuid>{A709C2CE-0014-3843-B665-27F5F95A5B6A}</ProjectGuid>
     <WindowsTargetPlatformVersion>10.0.18362.0</WindowsTargetPlatformVersion>
     <Keyword>Win32Proj</Keyword>
     <Platform>x64</Platform>
@@ -59,25 +59,25 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
     <_ProjectFileVersion>10.0.20506.1</_ProjectFileVersion>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\code\Debug\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\code\Debug\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">assimp.dir\Debug\</IntDir>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">assimp-vc142-mtd</TargetName>
     <TargetExt Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.dll</TargetExt>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</LinkIncremental>
     <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</GenerateManifest>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\code\Release\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\code\Release\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">assimp.dir\Release\</IntDir>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">assimp-vc142-mt</TargetName>
     <TargetExt Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.dll</TargetExt>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkIncremental>
     <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</GenerateManifest>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\code\MinSizeRel\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\code\MinSizeRel\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">assimp.dir\MinSizeRel\</IntDir>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">assimp-vc142-mt</TargetName>
     <TargetExt Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">.dll</TargetExt>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">false</LinkIncremental>
     <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">true</GenerateManifest>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\code\RelWithDebInfo\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\code\RelWithDebInfo\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">assimp.dir\RelWithDebInfo\</IntDir>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">assimp-vc142-mt</TargetName>
     <TargetExt Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">.dll</TargetExt>
@@ -86,7 +86,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\include;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\.;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\zlib;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\contrib\zlib;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..\contrib\rapidjson\include;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..\contrib;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..\contrib\unzip;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\irrXML;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..\contrib\openddlparser\include;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..\include;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\code\..\include;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\include;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\.;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\zlib;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\contrib\zlib;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..\contrib\rapidjson\include;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..\contrib;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..\contrib\unzip;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\irrXML;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..\contrib\openddlparser\include;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..\include;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\code\..\include;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>%(AdditionalOptions) /bigobj</AdditionalOptions>
       <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
       <CompileAs>CompileAsCpp</CompileAs>
@@ -104,10 +104,10 @@
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;EBUG:FULL;WIN32_LEAN_AND_MEAN;UNICODE;_UNICODE;ASSIMP_BUILD_NO_C4D_IMPORTER;MINIZ_USE_UNALIGNED_LOADS_AND_STORES=0;ASSIMP_IMPORTER_GLTF_USE_OPEN3DGC=1;ASSIMP_BUILD_DLL_EXPORT;_SCL_SECURE_NO_WARNINGS;_CRT_SECURE_NO_WARNINGS;OPENDDLPARSER_BUILD;CMAKE_INTDIR=\"Debug\";assimp_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\include;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\.;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\zlib;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\contrib\zlib;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..\contrib\rapidjson\include;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..\contrib;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..\contrib\unzip;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\irrXML;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..\contrib\openddlparser\include;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..\include;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\code\..\include;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\include;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\.;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\zlib;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\contrib\zlib;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..\contrib\rapidjson\include;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..\contrib;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..\contrib\unzip;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\irrXML;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..\contrib\openddlparser\include;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..\include;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\code\..\include;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Midl>
-      <AdditionalIncludeDirectories>E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\include;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\.;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\zlib;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\contrib\zlib;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..\contrib\rapidjson\include;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..\contrib;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..\contrib\unzip;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\irrXML;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..\contrib\openddlparser\include;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..\include;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\code\..\include;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\include;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\.;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\zlib;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\contrib\zlib;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..\contrib\rapidjson\include;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..\contrib;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..\contrib\unzip;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\irrXML;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..\contrib\openddlparser\include;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..\include;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\code\..\include;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -120,8 +120,8 @@
       <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
-      <ImportLibrary>E:/Athang-Work/ApexGameEngine/ApexGameEngine/vendor/Assimp/build/code/Debug/assimp-vc142-mtd.lib</ImportLibrary>
-      <ProgramDataBaseFile>E:/Athang-Work/ApexGameEngine/ApexGameEngine/vendor/Assimp/build/code/Debug/assimp-vc142-mtd.pdb</ProgramDataBaseFile>
+      <ImportLibrary>E:/Athang_Work/ApexGameEngine/ApexGameEngine/vendor/Assimp/build/code/Debug/assimp-vc142-mtd.lib</ImportLibrary>
+      <ProgramDataBaseFile>E:/Athang_Work/ApexGameEngine/ApexGameEngine/vendor/Assimp/build/code/Debug/assimp-vc142-mtd.pdb</ProgramDataBaseFile>
       <SubSystem>Console</SubSystem>
     </Link>
     <ProjectReference>
@@ -130,7 +130,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\include;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\.;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\zlib;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\contrib\zlib;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..\contrib\rapidjson\include;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..\contrib;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..\contrib\unzip;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\irrXML;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..\contrib\openddlparser\include;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..\include;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\code\..\include;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\include;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\.;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\zlib;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\contrib\zlib;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..\contrib\rapidjson\include;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..\contrib;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..\contrib\unzip;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\irrXML;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..\contrib\openddlparser\include;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..\include;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\code\..\include;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>%(AdditionalOptions) /bigobj</AdditionalOptions>
       <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
       <CompileAs>CompileAsCpp</CompileAs>
@@ -150,10 +150,10 @@
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;WIN32_LEAN_AND_MEAN;UNICODE;_UNICODE;ASSIMP_BUILD_NO_C4D_IMPORTER;MINIZ_USE_UNALIGNED_LOADS_AND_STORES=0;ASSIMP_IMPORTER_GLTF_USE_OPEN3DGC=1;ASSIMP_BUILD_DLL_EXPORT;_SCL_SECURE_NO_WARNINGS;_CRT_SECURE_NO_WARNINGS;OPENDDLPARSER_BUILD;CMAKE_INTDIR=\"Release\";assimp_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\include;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\.;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\zlib;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\contrib\zlib;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..\contrib\rapidjson\include;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..\contrib;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..\contrib\unzip;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\irrXML;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..\contrib\openddlparser\include;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..\include;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\code\..\include;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\include;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\.;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\zlib;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\contrib\zlib;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..\contrib\rapidjson\include;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..\contrib;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..\contrib\unzip;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\irrXML;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..\contrib\openddlparser\include;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..\include;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\code\..\include;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Midl>
-      <AdditionalIncludeDirectories>E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\include;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\.;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\zlib;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\contrib\zlib;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..\contrib\rapidjson\include;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..\contrib;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..\contrib\unzip;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\irrXML;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..\contrib\openddlparser\include;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..\include;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\code\..\include;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\include;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\.;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\zlib;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\contrib\zlib;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..\contrib\rapidjson\include;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..\contrib;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..\contrib\unzip;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\irrXML;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..\contrib\openddlparser\include;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..\include;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\code\..\include;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -166,8 +166,8 @@
       <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
-      <ImportLibrary>E:/Athang-Work/ApexGameEngine/ApexGameEngine/vendor/Assimp/build/code/Release/assimp-vc142-mt.lib</ImportLibrary>
-      <ProgramDataBaseFile>E:/Athang-Work/ApexGameEngine/ApexGameEngine/vendor/Assimp/build/code/Release/assimp-vc142-mt.pdb</ProgramDataBaseFile>
+      <ImportLibrary>E:/Athang_Work/ApexGameEngine/ApexGameEngine/vendor/Assimp/build/code/Release/assimp-vc142-mt.lib</ImportLibrary>
+      <ProgramDataBaseFile>E:/Athang_Work/ApexGameEngine/ApexGameEngine/vendor/Assimp/build/code/Release/assimp-vc142-mt.pdb</ProgramDataBaseFile>
       <SubSystem>Console</SubSystem>
     </Link>
     <ProjectReference>
@@ -176,7 +176,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\include;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\.;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\zlib;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\contrib\zlib;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..\contrib\rapidjson\include;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..\contrib;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..\contrib\unzip;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\irrXML;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..\contrib\openddlparser\include;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..\include;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\code\..\include;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\include;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\.;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\zlib;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\contrib\zlib;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..\contrib\rapidjson\include;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..\contrib;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..\contrib\unzip;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\irrXML;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..\contrib\openddlparser\include;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..\include;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\code\..\include;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>%(AdditionalOptions) /bigobj</AdditionalOptions>
       <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
       <CompileAs>CompileAsCpp</CompileAs>
@@ -196,10 +196,10 @@
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;WIN32_LEAN_AND_MEAN;UNICODE;_UNICODE;ASSIMP_BUILD_NO_C4D_IMPORTER;MINIZ_USE_UNALIGNED_LOADS_AND_STORES=0;ASSIMP_IMPORTER_GLTF_USE_OPEN3DGC=1;ASSIMP_BUILD_DLL_EXPORT;_SCL_SECURE_NO_WARNINGS;_CRT_SECURE_NO_WARNINGS;OPENDDLPARSER_BUILD;CMAKE_INTDIR=\"MinSizeRel\";assimp_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\include;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\.;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\zlib;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\contrib\zlib;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..\contrib\rapidjson\include;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..\contrib;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..\contrib\unzip;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\irrXML;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..\contrib\openddlparser\include;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..\include;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\code\..\include;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\include;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\.;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\zlib;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\contrib\zlib;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..\contrib\rapidjson\include;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..\contrib;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..\contrib\unzip;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\irrXML;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..\contrib\openddlparser\include;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..\include;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\code\..\include;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Midl>
-      <AdditionalIncludeDirectories>E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\include;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\.;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\zlib;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\contrib\zlib;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..\contrib\rapidjson\include;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..\contrib;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..\contrib\unzip;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\irrXML;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..\contrib\openddlparser\include;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..\include;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\code\..\include;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\include;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\.;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\zlib;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\contrib\zlib;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..\contrib\rapidjson\include;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..\contrib;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..\contrib\unzip;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\irrXML;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..\contrib\openddlparser\include;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..\include;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\code\..\include;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -212,8 +212,8 @@
       <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
-      <ImportLibrary>E:/Athang-Work/ApexGameEngine/ApexGameEngine/vendor/Assimp/build/code/MinSizeRel/assimp-vc142-mt.lib</ImportLibrary>
-      <ProgramDataBaseFile>E:/Athang-Work/ApexGameEngine/ApexGameEngine/vendor/Assimp/build/code/MinSizeRel/assimp-vc142-mt.pdb</ProgramDataBaseFile>
+      <ImportLibrary>E:/Athang_Work/ApexGameEngine/ApexGameEngine/vendor/Assimp/build/code/MinSizeRel/assimp-vc142-mt.lib</ImportLibrary>
+      <ProgramDataBaseFile>E:/Athang_Work/ApexGameEngine/ApexGameEngine/vendor/Assimp/build/code/MinSizeRel/assimp-vc142-mt.pdb</ProgramDataBaseFile>
       <SubSystem>Console</SubSystem>
     </Link>
     <ProjectReference>
@@ -222,7 +222,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\include;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\.;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\zlib;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\contrib\zlib;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..\contrib\rapidjson\include;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..\contrib;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..\contrib\unzip;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\irrXML;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..\contrib\openddlparser\include;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..\include;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\code\..\include;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\include;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\.;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\zlib;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\contrib\zlib;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..\contrib\rapidjson\include;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..\contrib;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..\contrib\unzip;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\irrXML;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..\contrib\openddlparser\include;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..\include;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\code\..\include;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>%(AdditionalOptions) /bigobj</AdditionalOptions>
       <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
       <CompileAs>CompileAsCpp</CompileAs>
@@ -241,10 +241,10 @@
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;WIN32_LEAN_AND_MEAN;UNICODE;_UNICODE;ASSIMP_BUILD_NO_C4D_IMPORTER;MINIZ_USE_UNALIGNED_LOADS_AND_STORES=0;ASSIMP_IMPORTER_GLTF_USE_OPEN3DGC=1;ASSIMP_BUILD_DLL_EXPORT;_SCL_SECURE_NO_WARNINGS;_CRT_SECURE_NO_WARNINGS;OPENDDLPARSER_BUILD;CMAKE_INTDIR=\"RelWithDebInfo\";assimp_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\include;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\.;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\zlib;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\contrib\zlib;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..\contrib\rapidjson\include;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..\contrib;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..\contrib\unzip;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\irrXML;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..\contrib\openddlparser\include;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..\include;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\code\..\include;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\include;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\.;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\zlib;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\contrib\zlib;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..\contrib\rapidjson\include;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..\contrib;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..\contrib\unzip;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\irrXML;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..\contrib\openddlparser\include;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..\include;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\code\..\include;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Midl>
-      <AdditionalIncludeDirectories>E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\include;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\.;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\zlib;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\contrib\zlib;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..\contrib\rapidjson\include;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..\contrib;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..\contrib\unzip;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\irrXML;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..\contrib\openddlparser\include;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..\include;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\code\..\include;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\include;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\.;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\zlib;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\contrib\zlib;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..\contrib\rapidjson\include;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..\contrib;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..\contrib\unzip;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\irrXML;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..\contrib\openddlparser\include;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..\include;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\code\..\include;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -257,8 +257,8 @@
       <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
-      <ImportLibrary>E:/Athang-Work/ApexGameEngine/ApexGameEngine/vendor/Assimp/build/code/RelWithDebInfo/assimp-vc142-mt.lib</ImportLibrary>
-      <ProgramDataBaseFile>E:/Athang-Work/ApexGameEngine/ApexGameEngine/vendor/Assimp/build/code/RelWithDebInfo/assimp-vc142-mt.pdb</ProgramDataBaseFile>
+      <ImportLibrary>E:/Athang_Work/ApexGameEngine/ApexGameEngine/vendor/Assimp/build/code/RelWithDebInfo/assimp-vc142-mt.lib</ImportLibrary>
+      <ProgramDataBaseFile>E:/Athang_Work/ApexGameEngine/ApexGameEngine/vendor/Assimp/build/code/RelWithDebInfo/assimp-vc142-mt.pdb</ProgramDataBaseFile>
       <SubSystem>Console</SubSystem>
     </Link>
     <ProjectReference>
@@ -266,10 +266,10 @@
     </ProjectReference>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <CustomBuild Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\CMakeLists.txt">
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Building Custom Rule E:/Athang-Work/ApexGameEngine/ApexGameEngine/vendor/Assimp/src/code/CMakeLists.txt</Message>
+    <CustomBuild Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\CMakeLists.txt">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Building Custom Rule E:/Athang_Work/ApexGameEngine/ApexGameEngine/vendor/Assimp/src/code/CMakeLists.txt</Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">setlocal
-E:\Athang-Work\cmake-3.17.0-rc1-win64-x64\bin\cmake.exe -SE:/Athang-Work/ApexGameEngine/ApexGameEngine/vendor/Assimp/src -BE:/Athang-Work/ApexGameEngine/ApexGameEngine/vendor/Assimp/build --check-stamp-file E:/Athang-Work/ApexGameEngine/ApexGameEngine/vendor/Assimp/build/code/CMakeFiles/generate.stamp
+E:\CMake\cmake-3.17.0-rc1-win64-x64\bin\cmake.exe -SE:/Athang_Work/ApexGameEngine/ApexGameEngine/vendor/Assimp/src -BE:/Athang_Work/ApexGameEngine/ApexGameEngine/vendor/Assimp/build --check-stamp-file E:/Athang_Work/ApexGameEngine/ApexGameEngine/vendor/Assimp/build/code/CMakeFiles/generate.stamp
 if %errorlevel% neq 0 goto :cmEnd
 :cmEnd
 endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
@@ -277,12 +277,12 @@ endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
 exit /b %1
 :cmDone
 if %errorlevel% neq 0 goto :VCEnd</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\cmake-modules\FindRT.cmake;E:\Athang-Work\cmake-3.17.0-rc1-win64-x64\share\cmake-3.17\Modules\FindPackageHandleStandardArgs.cmake;E:\Athang-Work\cmake-3.17.0-rc1-win64-x64\share\cmake-3.17\Modules\FindPackageMessage.cmake;%(AdditionalInputs)</AdditionalInputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\code\CMakeFiles\generate.stamp</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\cmake-modules\FindRT.cmake;E:\CMake\cmake-3.17.0-rc1-win64-x64\share\cmake-3.17\Modules\FindPackageHandleStandardArgs.cmake;E:\CMake\cmake-3.17.0-rc1-win64-x64\share\cmake-3.17\Modules\FindPackageMessage.cmake;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\code\CMakeFiles\generate.stamp</Outputs>
       <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkObjects>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Building Custom Rule E:/Athang-Work/ApexGameEngine/ApexGameEngine/vendor/Assimp/src/code/CMakeLists.txt</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Building Custom Rule E:/Athang_Work/ApexGameEngine/ApexGameEngine/vendor/Assimp/src/code/CMakeLists.txt</Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">setlocal
-E:\Athang-Work\cmake-3.17.0-rc1-win64-x64\bin\cmake.exe -SE:/Athang-Work/ApexGameEngine/ApexGameEngine/vendor/Assimp/src -BE:/Athang-Work/ApexGameEngine/ApexGameEngine/vendor/Assimp/build --check-stamp-file E:/Athang-Work/ApexGameEngine/ApexGameEngine/vendor/Assimp/build/code/CMakeFiles/generate.stamp
+E:\CMake\cmake-3.17.0-rc1-win64-x64\bin\cmake.exe -SE:/Athang_Work/ApexGameEngine/ApexGameEngine/vendor/Assimp/src -BE:/Athang_Work/ApexGameEngine/ApexGameEngine/vendor/Assimp/build --check-stamp-file E:/Athang_Work/ApexGameEngine/ApexGameEngine/vendor/Assimp/build/code/CMakeFiles/generate.stamp
 if %errorlevel% neq 0 goto :cmEnd
 :cmEnd
 endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
@@ -290,12 +290,12 @@ endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
 exit /b %1
 :cmDone
 if %errorlevel% neq 0 goto :VCEnd</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\cmake-modules\FindRT.cmake;E:\Athang-Work\cmake-3.17.0-rc1-win64-x64\share\cmake-3.17\Modules\FindPackageHandleStandardArgs.cmake;E:\Athang-Work\cmake-3.17.0-rc1-win64-x64\share\cmake-3.17\Modules\FindPackageMessage.cmake;%(AdditionalInputs)</AdditionalInputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\code\CMakeFiles\generate.stamp</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\cmake-modules\FindRT.cmake;E:\CMake\cmake-3.17.0-rc1-win64-x64\share\cmake-3.17\Modules\FindPackageHandleStandardArgs.cmake;E:\CMake\cmake-3.17.0-rc1-win64-x64\share\cmake-3.17\Modules\FindPackageMessage.cmake;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\code\CMakeFiles\generate.stamp</Outputs>
       <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkObjects>
-      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">Building Custom Rule E:/Athang-Work/ApexGameEngine/ApexGameEngine/vendor/Assimp/src/code/CMakeLists.txt</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">Building Custom Rule E:/Athang_Work/ApexGameEngine/ApexGameEngine/vendor/Assimp/src/code/CMakeLists.txt</Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">setlocal
-E:\Athang-Work\cmake-3.17.0-rc1-win64-x64\bin\cmake.exe -SE:/Athang-Work/ApexGameEngine/ApexGameEngine/vendor/Assimp/src -BE:/Athang-Work/ApexGameEngine/ApexGameEngine/vendor/Assimp/build --check-stamp-file E:/Athang-Work/ApexGameEngine/ApexGameEngine/vendor/Assimp/build/code/CMakeFiles/generate.stamp
+E:\CMake\cmake-3.17.0-rc1-win64-x64\bin\cmake.exe -SE:/Athang_Work/ApexGameEngine/ApexGameEngine/vendor/Assimp/src -BE:/Athang_Work/ApexGameEngine/ApexGameEngine/vendor/Assimp/build --check-stamp-file E:/Athang_Work/ApexGameEngine/ApexGameEngine/vendor/Assimp/build/code/CMakeFiles/generate.stamp
 if %errorlevel% neq 0 goto :cmEnd
 :cmEnd
 endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
@@ -303,12 +303,12 @@ endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
 exit /b %1
 :cmDone
 if %errorlevel% neq 0 goto :VCEnd</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\cmake-modules\FindRT.cmake;E:\Athang-Work\cmake-3.17.0-rc1-win64-x64\share\cmake-3.17\Modules\FindPackageHandleStandardArgs.cmake;E:\Athang-Work\cmake-3.17.0-rc1-win64-x64\share\cmake-3.17\Modules\FindPackageMessage.cmake;%(AdditionalInputs)</AdditionalInputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\code\CMakeFiles\generate.stamp</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\cmake-modules\FindRT.cmake;E:\CMake\cmake-3.17.0-rc1-win64-x64\share\cmake-3.17\Modules\FindPackageHandleStandardArgs.cmake;E:\CMake\cmake-3.17.0-rc1-win64-x64\share\cmake-3.17\Modules\FindPackageMessage.cmake;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\code\CMakeFiles\generate.stamp</Outputs>
       <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">false</LinkObjects>
-      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">Building Custom Rule E:/Athang-Work/ApexGameEngine/ApexGameEngine/vendor/Assimp/src/code/CMakeLists.txt</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">Building Custom Rule E:/Athang_Work/ApexGameEngine/ApexGameEngine/vendor/Assimp/src/code/CMakeLists.txt</Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">setlocal
-E:\Athang-Work\cmake-3.17.0-rc1-win64-x64\bin\cmake.exe -SE:/Athang-Work/ApexGameEngine/ApexGameEngine/vendor/Assimp/src -BE:/Athang-Work/ApexGameEngine/ApexGameEngine/vendor/Assimp/build --check-stamp-file E:/Athang-Work/ApexGameEngine/ApexGameEngine/vendor/Assimp/build/code/CMakeFiles/generate.stamp
+E:\CMake\cmake-3.17.0-rc1-win64-x64\bin\cmake.exe -SE:/Athang_Work/ApexGameEngine/ApexGameEngine/vendor/Assimp/src -BE:/Athang_Work/ApexGameEngine/ApexGameEngine/vendor/Assimp/build --check-stamp-file E:/Athang_Work/ApexGameEngine/ApexGameEngine/vendor/Assimp/build/code/CMakeFiles/generate.stamp
 if %errorlevel% neq 0 goto :cmEnd
 :cmEnd
 endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
@@ -316,581 +316,581 @@ endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
 exit /b %1
 :cmDone
 if %errorlevel% neq 0 goto :VCEnd</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\cmake-modules\FindRT.cmake;E:\Athang-Work\cmake-3.17.0-rc1-win64-x64\share\cmake-3.17\Modules\FindPackageHandleStandardArgs.cmake;E:\Athang-Work\cmake-3.17.0-rc1-win64-x64\share\cmake-3.17\Modules\FindPackageMessage.cmake;%(AdditionalInputs)</AdditionalInputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\code\CMakeFiles\generate.stamp</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\cmake-modules\FindRT.cmake;E:\CMake\cmake-3.17.0-rc1-win64-x64\share\cmake-3.17\Modules\FindPackageHandleStandardArgs.cmake;E:\CMake\cmake-3.17.0-rc1-win64-x64\share\cmake-3.17\Modules\FindPackageMessage.cmake;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\code\CMakeFiles\generate.stamp</Outputs>
       <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">false</LinkObjects>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Common\Assimp.cpp" />
-    <ResourceCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\res\assimp.rc" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\CApi\CInterfaceIOWrapper.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\CApi\CInterfaceIOWrapper.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Common\BaseImporter.cpp" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Common\BaseProcess.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Common\BaseProcess.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Common\Importer.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Common\ScenePrivate.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Common\PostStepRegistry.cpp" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Common\ImporterRegistry.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Common\DefaultProgressHandler.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Common\DefaultIOStream.cpp" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Common\DefaultIOSystem.cpp" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Common\ZipArchiveIOSystem.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Common\PolyTools.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Common\Importer.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Common\IFF.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Common\SGSpatialSort.cpp" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Common\VertexTriangleAdjacency.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Common\VertexTriangleAdjacency.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Common\SpatialSort.cpp" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Common\SceneCombiner.cpp" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Common\ScenePreprocessor.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Common\ScenePreprocessor.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Common\SkeletonMeshBuilder.cpp" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Common\SplitByBoneCountProcess.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Common\SplitByBoneCountProcess.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Common\StandardShapes.cpp" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Common\TargetAnimation.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Common\TargetAnimation.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Common\RemoveComments.cpp" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Common\Subdivision.cpp" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Common\scene.cpp" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Common\Bitmap.cpp" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Common\Version.cpp" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Common\CreateAnimMesh.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Common\simd.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Common\simd.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\DefaultLogger.hpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\LogStream.hpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\Logger.hpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\NullLogger.hpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Common\Win32DebugLogStream.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Common\DefaultLogger.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Common\FileLogStream.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Common\StdOStreamLogStream.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Common\Exporter.cpp" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\CApi\AssimpCExport.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\BlobIOSystem.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\PostProcessing\CalcTangentsProcess.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\PostProcessing\CalcTangentsProcess.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\PostProcessing\ComputeUVMappingProcess.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\PostProcessing\ComputeUVMappingProcess.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\PostProcessing\ConvertToLHProcess.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\PostProcessing\ConvertToLHProcess.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\PostProcessing\EmbedTexturesProcess.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\PostProcessing\EmbedTexturesProcess.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\PostProcessing\FindDegenerates.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\PostProcessing\FindDegenerates.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\PostProcessing\FindInstancesProcess.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\PostProcessing\FindInstancesProcess.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\PostProcessing\FindInvalidDataProcess.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\PostProcessing\FindInvalidDataProcess.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\PostProcessing\FixNormalsStep.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\PostProcessing\FixNormalsStep.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\PostProcessing\DropFaceNormalsProcess.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\PostProcessing\DropFaceNormalsProcess.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\PostProcessing\GenFaceNormalsProcess.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\PostProcessing\GenFaceNormalsProcess.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\PostProcessing\GenVertexNormalsProcess.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\PostProcessing\GenVertexNormalsProcess.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\PostProcessing\PretransformVertices.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\PostProcessing\PretransformVertices.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\PostProcessing\ImproveCacheLocality.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\PostProcessing\ImproveCacheLocality.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\PostProcessing\JoinVerticesProcess.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\PostProcessing\JoinVerticesProcess.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\PostProcessing\LimitBoneWeightsProcess.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\PostProcessing\LimitBoneWeightsProcess.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\PostProcessing\RemoveRedundantMaterials.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\PostProcessing\RemoveRedundantMaterials.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\PostProcessing\RemoveVCProcess.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\PostProcessing\RemoveVCProcess.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\PostProcessing\SortByPTypeProcess.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\PostProcessing\SortByPTypeProcess.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\PostProcessing\SplitLargeMeshes.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\PostProcessing\SplitLargeMeshes.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\PostProcessing\TextureTransform.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\PostProcessing\TextureTransform.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\PostProcessing\TriangulateProcess.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\PostProcessing\TriangulateProcess.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\PostProcessing\ValidateDataStructure.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\PostProcessing\ValidateDataStructure.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\PostProcessing\OptimizeGraph.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\PostProcessing\OptimizeGraph.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\PostProcessing\OptimizeMeshes.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\PostProcessing\OptimizeMeshes.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\PostProcessing\DeboneProcess.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\PostProcessing\DeboneProcess.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\PostProcessing\ProcessHelper.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\PostProcessing\ProcessHelper.cpp" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\PostProcessing\MakeVerboseFormat.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\PostProcessing\MakeVerboseFormat.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\PostProcessing\ScaleProcess.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\PostProcessing\ScaleProcess.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\PostProcessing\GenBoundingBoxesProcess.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\PostProcessing\GenBoundingBoxesProcess.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Material\MaterialSystem.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Material\MaterialSystem.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Importer\STEPParser\STEPFileReader.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Importer\STEPParser\STEPFileReader.cpp" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Importer\STEPParser\STEPFileEncoding.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Importer\STEPParser\STEPFileEncoding.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\AMF\AMFImporter.hpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\AMF\AMFImporter_Macro.hpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\AMF\AMFImporter_Node.hpp" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\AMF\AMFImporter.cpp" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\AMF\AMFImporter_Geometry.cpp" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\AMF\AMFImporter_Material.cpp" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\AMF\AMFImporter_Postprocess.cpp" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\3DS\3DSConverter.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\3DS\3DSHelper.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\3DS\3DSLoader.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\3DS\3DSLoader.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\AC\ACLoader.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\AC\ACLoader.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\ASE\ASELoader.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\ASE\ASELoader.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\ASE\ASEParser.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\ASE\ASEParser.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Assbin\AssbinLoader.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Assbin\AssbinLoader.cpp" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\B3D\B3DImporter.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\B3D\B3DImporter.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\BVH\BVHLoader.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\BVH\BVHLoader.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Collada\ColladaHelper.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Collada\ColladaLoader.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Collada\ColladaLoader.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Collada\ColladaParser.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Collada\ColladaParser.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\DXF\DXFLoader.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\DXF\DXFLoader.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\DXF\DXFHelper.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\CSM\CSMLoader.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\CSM\CSMLoader.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\HMP\HMPFileData.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\HMP\HMPLoader.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\HMP\HMPLoader.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\HMP\HalfLifeFileData.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Irr\IRRMeshLoader.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Irr\IRRMeshLoader.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Irr\IRRShared.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Irr\IRRShared.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Irr\IRRLoader.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Irr\IRRLoader.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\LWO\LWOAnimation.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\LWO\LWOAnimation.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\LWO\LWOBLoader.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\LWO\LWOFileData.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\LWO\LWOLoader.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\LWO\LWOLoader.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\LWO\LWOMaterial.cpp" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\LWS\LWSLoader.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\LWS\LWSLoader.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\MD2\MD2FileData.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\MD2\MD2Loader.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\MD2\MD2Loader.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\MD2\MD2NormalTable.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\MD3\MD3FileData.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\MD3\MD3Loader.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\MD3\MD3Loader.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\MD5\MD5Loader.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\MD5\MD5Loader.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\MD5\MD5Parser.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\MD5\MD5Parser.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\MDC\MDCFileData.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\MDC\MDCLoader.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\MDC\MDCLoader.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\MDC\MDCNormalTable.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\MDL\MDLDefaultColorMap.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\MDL\MDLFileData.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\MDL\MDLLoader.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\MDL\MDLLoader.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\MDL\MDLMaterialLoader.cpp" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\NFF\NFFLoader.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\NFF\NFFLoader.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\NDO\NDOLoader.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\NDO\NDOLoader.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\OFF\OFFLoader.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\OFF\OFFLoader.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Obj\ObjFileData.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Obj\ObjFileImporter.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Obj\ObjFileImporter.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Obj\ObjFileMtlImporter.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Obj\ObjFileMtlImporter.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Obj\ObjFileParser.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Obj\ObjFileParser.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Obj\ObjTools.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Ogre\OgreImporter.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Ogre\OgreStructs.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Ogre\OgreParsingUtils.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Ogre\OgreBinarySerializer.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Ogre\OgreXmlSerializer.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Ogre\OgreImporter.cpp" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Ogre\OgreStructs.cpp" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Ogre\OgreBinarySerializer.cpp" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Ogre\OgreXmlSerializer.cpp" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Ogre\OgreMaterial.cpp" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\OpenGEX\OpenGEXImporter.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\OpenGEX\OpenGEXImporter.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\OpenGEX\OpenGEXStructs.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Ply\PlyLoader.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Ply\PlyLoader.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Ply\PlyParser.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Ply\PlyParser.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\MS3D\MS3DLoader.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\MS3D\MS3DLoader.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\COB\COBLoader.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\COB\COBLoader.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\COB\COBScene.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Blender\BlenderLoader.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Blender\BlenderLoader.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Blender\BlenderDNA.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Blender\BlenderDNA.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Blender\BlenderDNA.inl" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Blender\BlenderScene.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Blender\BlenderScene.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Blender\BlenderSceneGen.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Blender\BlenderIntermediate.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Blender\BlenderModifier.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Blender\BlenderModifier.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Blender\BlenderBMesh.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Blender\BlenderBMesh.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Blender\BlenderTessellator.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Blender\BlenderTessellator.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Blender\BlenderCustomData.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Blender\BlenderCustomData.cpp" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Importer\IFC\IFCLoader.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Importer\IFC\IFCLoader.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Importer\IFC\IFCReaderGen1_2x3.cpp" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Importer\IFC\IFCReaderGen2_2x3.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Importer\IFC\IFCReaderGen_2x3.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Importer\IFC\IFCUtil.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Importer\IFC\IFCUtil.cpp" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Importer\IFC\IFCGeometry.cpp" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Importer\IFC\IFCMaterial.cpp" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Importer\IFC\IFCProfile.cpp" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Importer\IFC\IFCCurve.cpp" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Importer\IFC\IFCBoolean.cpp" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Importer\IFC\IFCOpenings.cpp" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\XGL\XGLLoader.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\XGL\XGLLoader.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\FBX\FBXImporter.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\FBX\FBXCompileConfig.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\FBX\FBXImporter.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\FBX\FBXParser.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\FBX\FBXParser.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\FBX\FBXTokenizer.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\FBX\FBXTokenizer.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\FBX\FBXImportSettings.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\FBX\FBXConverter.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\FBX\FBXConverter.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\FBX\FBXUtil.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\FBX\FBXUtil.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\FBX\FBXDocument.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\FBX\FBXDocument.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\FBX\FBXProperties.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\FBX\FBXProperties.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\FBX\FBXMeshGeometry.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\FBX\FBXMeshGeometry.cpp" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\FBX\FBXMaterial.cpp" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\FBX\FBXModel.cpp" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\FBX\FBXAnimation.cpp" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\FBX\FBXNodeAttribute.cpp" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\FBX\FBXDeformer.cpp" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\FBX\FBXBinaryTokenizer.cpp" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\FBX\FBXDocumentUtil.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\FBX\FBXCommon.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Q3D\Q3DLoader.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Q3D\Q3DLoader.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Q3BSP\Q3BSPFileData.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Q3BSP\Q3BSPFileParser.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Q3BSP\Q3BSPFileParser.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Q3BSP\Q3BSPFileImporter.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Q3BSP\Q3BSPFileImporter.cpp" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Raw\RawLoader.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Raw\RawLoader.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\SIB\SIBImporter.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\SIB\SIBImporter.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\SMD\SMDLoader.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\SMD\SMDLoader.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\STL\STLLoader.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\STL\STLLoader.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Terragen\TerragenLoader.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Terragen\TerragenLoader.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Unreal\UnrealLoader.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Unreal\UnrealLoader.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\X\XFileHelper.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\X\XFileImporter.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\X\XFileImporter.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\X\XFileParser.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\X\XFileParser.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\X3D\X3DImporter.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\X3D\X3DImporter.hpp" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\X3D\X3DImporter_Geometry2D.cpp" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\X3D\X3DImporter_Geometry3D.cpp" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\X3D\X3DImporter_Group.cpp" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\X3D\X3DImporter_Light.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\X3D\X3DImporter_Macro.hpp" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\X3D\X3DImporter_Metadata.cpp" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\X3D\X3DImporter_Networking.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\X3D\X3DImporter_Node.hpp" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\X3D\X3DImporter_Postprocess.cpp" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\X3D\X3DImporter_Rendering.cpp" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\X3D\X3DImporter_Shape.cpp" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\X3D\X3DImporter_Texturing.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\X3D\FIReader.hpp" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\X3D\FIReader.cpp" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\X3D\X3DVocabulary.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\glTF\glTFCommon.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\glTF\glTFCommon.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\glTF\glTFAsset.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\glTF\glTFAsset.inl" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\glTF\glTFAssetWriter.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\glTF\glTFAssetWriter.inl" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\glTF\glTFImporter.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\glTF\glTFImporter.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\glTF2\glTF2Asset.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\glTF2\glTF2Asset.inl" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\glTF2\glTF2AssetWriter.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\glTF2\glTF2AssetWriter.inl" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\glTF2\glTF2Importer.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\glTF2\glTF2Importer.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\3MF\D3MFImporter.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\3MF\D3MFImporter.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\3MF\D3MFOpcPackage.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\3MF\D3MFOpcPackage.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\3MF\3MFXmlTags.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\MMD\MMDCpp14.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\MMD\MMDImporter.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\MMD\MMDImporter.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\MMD\MMDPmdParser.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\MMD\MMDPmxParser.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\MMD\MMDPmxParser.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\MMD\MMDVmdParser.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Step\STEPFile.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Importer\StepFile\StepFileImporter.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Importer\StepFile\StepFileImporter.cpp" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Importer\StepFile\StepFileGen1.cpp" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Importer\StepFile\StepFileGen2.cpp" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Importer\StepFile\StepFileGen3.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Importer\StepFile\StepReaderGen.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\3DS\3DSExporter.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\3DS\3DSExporter.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Assbin\AssbinExporter.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Assbin\AssbinExporter.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Assxml\AssxmlExporter.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Assxml\AssxmlExporter.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Collada\ColladaExporter.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Collada\ColladaExporter.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Obj\ObjExporter.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Obj\ObjExporter.cpp" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\OpenGEX\OpenGEXExporter.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\OpenGEX\OpenGEXExporter.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Ply\PlyExporter.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Ply\PlyExporter.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\FBX\FBXExporter.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\FBX\FBXExporter.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\FBX\FBXExportNode.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\FBX\FBXExportNode.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\FBX\FBXExportProperty.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\FBX\FBXExportProperty.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\STL\STLExporter.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\STL\STLExporter.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\X\XFileExporter.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\X\XFileExporter.cpp" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\X3D\X3DExporter.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\X3D\X3DExporter.hpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\glTF\glTFExporter.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\glTF\glTFExporter.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\glTF2\glTF2Exporter.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\glTF2\glTF2Exporter.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\3MF\D3MFExporter.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\3MF\D3MFExporter.cpp" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Assjson\cencode.c">
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Common\Assimp.cpp" />
+    <ResourceCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\res\assimp.rc" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\CApi\CInterfaceIOWrapper.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\CApi\CInterfaceIOWrapper.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Common\BaseImporter.cpp" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Common\BaseProcess.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Common\BaseProcess.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Common\Importer.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Common\ScenePrivate.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Common\PostStepRegistry.cpp" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Common\ImporterRegistry.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Common\DefaultProgressHandler.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Common\DefaultIOStream.cpp" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Common\DefaultIOSystem.cpp" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Common\ZipArchiveIOSystem.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Common\PolyTools.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Common\Importer.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Common\IFF.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Common\SGSpatialSort.cpp" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Common\VertexTriangleAdjacency.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Common\VertexTriangleAdjacency.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Common\SpatialSort.cpp" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Common\SceneCombiner.cpp" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Common\ScenePreprocessor.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Common\ScenePreprocessor.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Common\SkeletonMeshBuilder.cpp" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Common\SplitByBoneCountProcess.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Common\SplitByBoneCountProcess.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Common\StandardShapes.cpp" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Common\TargetAnimation.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Common\TargetAnimation.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Common\RemoveComments.cpp" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Common\Subdivision.cpp" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Common\scene.cpp" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Common\Bitmap.cpp" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Common\Version.cpp" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Common\CreateAnimMesh.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Common\simd.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Common\simd.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\DefaultLogger.hpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\LogStream.hpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\Logger.hpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\NullLogger.hpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Common\Win32DebugLogStream.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Common\DefaultLogger.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Common\FileLogStream.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Common\StdOStreamLogStream.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Common\Exporter.cpp" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\CApi\AssimpCExport.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\BlobIOSystem.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\PostProcessing\CalcTangentsProcess.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\PostProcessing\CalcTangentsProcess.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\PostProcessing\ComputeUVMappingProcess.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\PostProcessing\ComputeUVMappingProcess.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\PostProcessing\ConvertToLHProcess.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\PostProcessing\ConvertToLHProcess.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\PostProcessing\EmbedTexturesProcess.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\PostProcessing\EmbedTexturesProcess.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\PostProcessing\FindDegenerates.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\PostProcessing\FindDegenerates.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\PostProcessing\FindInstancesProcess.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\PostProcessing\FindInstancesProcess.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\PostProcessing\FindInvalidDataProcess.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\PostProcessing\FindInvalidDataProcess.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\PostProcessing\FixNormalsStep.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\PostProcessing\FixNormalsStep.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\PostProcessing\DropFaceNormalsProcess.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\PostProcessing\DropFaceNormalsProcess.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\PostProcessing\GenFaceNormalsProcess.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\PostProcessing\GenFaceNormalsProcess.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\PostProcessing\GenVertexNormalsProcess.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\PostProcessing\GenVertexNormalsProcess.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\PostProcessing\PretransformVertices.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\PostProcessing\PretransformVertices.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\PostProcessing\ImproveCacheLocality.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\PostProcessing\ImproveCacheLocality.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\PostProcessing\JoinVerticesProcess.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\PostProcessing\JoinVerticesProcess.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\PostProcessing\LimitBoneWeightsProcess.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\PostProcessing\LimitBoneWeightsProcess.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\PostProcessing\RemoveRedundantMaterials.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\PostProcessing\RemoveRedundantMaterials.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\PostProcessing\RemoveVCProcess.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\PostProcessing\RemoveVCProcess.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\PostProcessing\SortByPTypeProcess.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\PostProcessing\SortByPTypeProcess.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\PostProcessing\SplitLargeMeshes.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\PostProcessing\SplitLargeMeshes.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\PostProcessing\TextureTransform.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\PostProcessing\TextureTransform.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\PostProcessing\TriangulateProcess.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\PostProcessing\TriangulateProcess.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\PostProcessing\ValidateDataStructure.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\PostProcessing\ValidateDataStructure.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\PostProcessing\OptimizeGraph.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\PostProcessing\OptimizeGraph.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\PostProcessing\OptimizeMeshes.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\PostProcessing\OptimizeMeshes.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\PostProcessing\DeboneProcess.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\PostProcessing\DeboneProcess.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\PostProcessing\ProcessHelper.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\PostProcessing\ProcessHelper.cpp" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\PostProcessing\MakeVerboseFormat.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\PostProcessing\MakeVerboseFormat.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\PostProcessing\ScaleProcess.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\PostProcessing\ScaleProcess.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\PostProcessing\GenBoundingBoxesProcess.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\PostProcessing\GenBoundingBoxesProcess.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Material\MaterialSystem.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Material\MaterialSystem.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Importer\STEPParser\STEPFileReader.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Importer\STEPParser\STEPFileReader.cpp" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Importer\STEPParser\STEPFileEncoding.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Importer\STEPParser\STEPFileEncoding.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\AMF\AMFImporter.hpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\AMF\AMFImporter_Macro.hpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\AMF\AMFImporter_Node.hpp" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\AMF\AMFImporter.cpp" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\AMF\AMFImporter_Geometry.cpp" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\AMF\AMFImporter_Material.cpp" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\AMF\AMFImporter_Postprocess.cpp" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\3DS\3DSConverter.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\3DS\3DSHelper.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\3DS\3DSLoader.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\3DS\3DSLoader.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\AC\ACLoader.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\AC\ACLoader.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\ASE\ASELoader.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\ASE\ASELoader.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\ASE\ASEParser.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\ASE\ASEParser.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Assbin\AssbinLoader.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Assbin\AssbinLoader.cpp" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\B3D\B3DImporter.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\B3D\B3DImporter.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\BVH\BVHLoader.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\BVH\BVHLoader.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Collada\ColladaHelper.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Collada\ColladaLoader.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Collada\ColladaLoader.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Collada\ColladaParser.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Collada\ColladaParser.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\DXF\DXFLoader.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\DXF\DXFLoader.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\DXF\DXFHelper.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\CSM\CSMLoader.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\CSM\CSMLoader.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\HMP\HMPFileData.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\HMP\HMPLoader.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\HMP\HMPLoader.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\HMP\HalfLifeFileData.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Irr\IRRMeshLoader.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Irr\IRRMeshLoader.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Irr\IRRShared.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Irr\IRRShared.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Irr\IRRLoader.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Irr\IRRLoader.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\LWO\LWOAnimation.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\LWO\LWOAnimation.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\LWO\LWOBLoader.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\LWO\LWOFileData.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\LWO\LWOLoader.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\LWO\LWOLoader.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\LWO\LWOMaterial.cpp" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\LWS\LWSLoader.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\LWS\LWSLoader.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\MD2\MD2FileData.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\MD2\MD2Loader.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\MD2\MD2Loader.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\MD2\MD2NormalTable.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\MD3\MD3FileData.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\MD3\MD3Loader.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\MD3\MD3Loader.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\MD5\MD5Loader.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\MD5\MD5Loader.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\MD5\MD5Parser.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\MD5\MD5Parser.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\MDC\MDCFileData.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\MDC\MDCLoader.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\MDC\MDCLoader.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\MDC\MDCNormalTable.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\MDL\MDLDefaultColorMap.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\MDL\MDLFileData.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\MDL\MDLLoader.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\MDL\MDLLoader.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\MDL\MDLMaterialLoader.cpp" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\NFF\NFFLoader.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\NFF\NFFLoader.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\NDO\NDOLoader.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\NDO\NDOLoader.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\OFF\OFFLoader.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\OFF\OFFLoader.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Obj\ObjFileData.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Obj\ObjFileImporter.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Obj\ObjFileImporter.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Obj\ObjFileMtlImporter.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Obj\ObjFileMtlImporter.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Obj\ObjFileParser.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Obj\ObjFileParser.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Obj\ObjTools.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Ogre\OgreImporter.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Ogre\OgreStructs.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Ogre\OgreParsingUtils.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Ogre\OgreBinarySerializer.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Ogre\OgreXmlSerializer.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Ogre\OgreImporter.cpp" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Ogre\OgreStructs.cpp" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Ogre\OgreBinarySerializer.cpp" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Ogre\OgreXmlSerializer.cpp" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Ogre\OgreMaterial.cpp" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\OpenGEX\OpenGEXImporter.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\OpenGEX\OpenGEXImporter.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\OpenGEX\OpenGEXStructs.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Ply\PlyLoader.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Ply\PlyLoader.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Ply\PlyParser.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Ply\PlyParser.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\MS3D\MS3DLoader.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\MS3D\MS3DLoader.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\COB\COBLoader.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\COB\COBLoader.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\COB\COBScene.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Blender\BlenderLoader.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Blender\BlenderLoader.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Blender\BlenderDNA.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Blender\BlenderDNA.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Blender\BlenderDNA.inl" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Blender\BlenderScene.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Blender\BlenderScene.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Blender\BlenderSceneGen.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Blender\BlenderIntermediate.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Blender\BlenderModifier.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Blender\BlenderModifier.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Blender\BlenderBMesh.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Blender\BlenderBMesh.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Blender\BlenderTessellator.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Blender\BlenderTessellator.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Blender\BlenderCustomData.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Blender\BlenderCustomData.cpp" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Importer\IFC\IFCLoader.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Importer\IFC\IFCLoader.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Importer\IFC\IFCReaderGen1_2x3.cpp" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Importer\IFC\IFCReaderGen2_2x3.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Importer\IFC\IFCReaderGen_2x3.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Importer\IFC\IFCUtil.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Importer\IFC\IFCUtil.cpp" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Importer\IFC\IFCGeometry.cpp" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Importer\IFC\IFCMaterial.cpp" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Importer\IFC\IFCProfile.cpp" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Importer\IFC\IFCCurve.cpp" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Importer\IFC\IFCBoolean.cpp" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Importer\IFC\IFCOpenings.cpp" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\XGL\XGLLoader.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\XGL\XGLLoader.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\FBX\FBXImporter.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\FBX\FBXCompileConfig.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\FBX\FBXImporter.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\FBX\FBXParser.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\FBX\FBXParser.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\FBX\FBXTokenizer.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\FBX\FBXTokenizer.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\FBX\FBXImportSettings.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\FBX\FBXConverter.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\FBX\FBXConverter.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\FBX\FBXUtil.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\FBX\FBXUtil.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\FBX\FBXDocument.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\FBX\FBXDocument.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\FBX\FBXProperties.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\FBX\FBXProperties.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\FBX\FBXMeshGeometry.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\FBX\FBXMeshGeometry.cpp" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\FBX\FBXMaterial.cpp" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\FBX\FBXModel.cpp" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\FBX\FBXAnimation.cpp" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\FBX\FBXNodeAttribute.cpp" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\FBX\FBXDeformer.cpp" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\FBX\FBXBinaryTokenizer.cpp" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\FBX\FBXDocumentUtil.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\FBX\FBXCommon.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Q3D\Q3DLoader.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Q3D\Q3DLoader.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Q3BSP\Q3BSPFileData.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Q3BSP\Q3BSPFileParser.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Q3BSP\Q3BSPFileParser.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Q3BSP\Q3BSPFileImporter.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Q3BSP\Q3BSPFileImporter.cpp" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Raw\RawLoader.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Raw\RawLoader.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\SIB\SIBImporter.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\SIB\SIBImporter.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\SMD\SMDLoader.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\SMD\SMDLoader.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\STL\STLLoader.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\STL\STLLoader.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Terragen\TerragenLoader.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Terragen\TerragenLoader.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Unreal\UnrealLoader.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Unreal\UnrealLoader.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\X\XFileHelper.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\X\XFileImporter.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\X\XFileImporter.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\X\XFileParser.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\X\XFileParser.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\X3D\X3DImporter.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\X3D\X3DImporter.hpp" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\X3D\X3DImporter_Geometry2D.cpp" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\X3D\X3DImporter_Geometry3D.cpp" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\X3D\X3DImporter_Group.cpp" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\X3D\X3DImporter_Light.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\X3D\X3DImporter_Macro.hpp" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\X3D\X3DImporter_Metadata.cpp" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\X3D\X3DImporter_Networking.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\X3D\X3DImporter_Node.hpp" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\X3D\X3DImporter_Postprocess.cpp" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\X3D\X3DImporter_Rendering.cpp" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\X3D\X3DImporter_Shape.cpp" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\X3D\X3DImporter_Texturing.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\X3D\FIReader.hpp" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\X3D\FIReader.cpp" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\X3D\X3DVocabulary.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\glTF\glTFCommon.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\glTF\glTFCommon.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\glTF\glTFAsset.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\glTF\glTFAsset.inl" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\glTF\glTFAssetWriter.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\glTF\glTFAssetWriter.inl" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\glTF\glTFImporter.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\glTF\glTFImporter.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\glTF2\glTF2Asset.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\glTF2\glTF2Asset.inl" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\glTF2\glTF2AssetWriter.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\glTF2\glTF2AssetWriter.inl" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\glTF2\glTF2Importer.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\glTF2\glTF2Importer.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\3MF\D3MFImporter.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\3MF\D3MFImporter.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\3MF\D3MFOpcPackage.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\3MF\D3MFOpcPackage.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\3MF\3MFXmlTags.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\MMD\MMDCpp14.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\MMD\MMDImporter.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\MMD\MMDImporter.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\MMD\MMDPmdParser.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\MMD\MMDPmxParser.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\MMD\MMDPmxParser.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\MMD\MMDVmdParser.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Step\STEPFile.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Importer\StepFile\StepFileImporter.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Importer\StepFile\StepFileImporter.cpp" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Importer\StepFile\StepFileGen1.cpp" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Importer\StepFile\StepFileGen2.cpp" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Importer\StepFile\StepFileGen3.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Importer\StepFile\StepReaderGen.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\3DS\3DSExporter.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\3DS\3DSExporter.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Assbin\AssbinExporter.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Assbin\AssbinExporter.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Assxml\AssxmlExporter.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Assxml\AssxmlExporter.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Collada\ColladaExporter.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Collada\ColladaExporter.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Obj\ObjExporter.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Obj\ObjExporter.cpp" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\OpenGEX\OpenGEXExporter.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\OpenGEX\OpenGEXExporter.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Ply\PlyExporter.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Ply\PlyExporter.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\FBX\FBXExporter.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\FBX\FBXExporter.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\FBX\FBXExportNode.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\FBX\FBXExportNode.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\FBX\FBXExportProperty.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\FBX\FBXExportProperty.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\STL\STLExporter.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\STL\STLExporter.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\X\XFileExporter.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\X\XFileExporter.cpp" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\X3D\X3DExporter.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\X3D\X3DExporter.hpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\glTF\glTFExporter.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\glTF\glTFExporter.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\glTF2\glTF2Exporter.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\glTF2\glTF2Exporter.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\3MF\D3MFExporter.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\3MF\D3MFExporter.cpp" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Assjson\cencode.c">
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">CompileAsC</CompileAs>
     </ClCompile>
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Assjson\cencode.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Assjson\json_exporter.cpp" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Assjson\mesh_splitter.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Assjson\mesh_splitter.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Step\StepExporter.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Step\StepExporter.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\irrXMLWrapper.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\unzip\crypt.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\unzip\ioapi.c">
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Assjson\cencode.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Assjson\json_exporter.cpp" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Assjson\mesh_splitter.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Assjson\mesh_splitter.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Step\StepExporter.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Step\StepExporter.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\irrXMLWrapper.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\unzip\crypt.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\unzip\ioapi.c">
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">CompileAsC</CompileAs>
     </ClCompile>
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\unzip\ioapi.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\unzip\unzip.c">
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\unzip\ioapi.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\unzip\unzip.c">
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">CompileAsC</CompileAs>
     </ClCompile>
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\unzip\unzip.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\poly2tri\poly2tri\common\shapes.cc" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\poly2tri\poly2tri\common\shapes.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\poly2tri\poly2tri\common\utils.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\poly2tri\poly2tri\sweep\advancing_front.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\poly2tri\poly2tri\sweep\advancing_front.cc" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\poly2tri\poly2tri\sweep\cdt.cc" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\poly2tri\poly2tri\sweep\cdt.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\poly2tri\poly2tri\sweep\sweep.cc" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\poly2tri\poly2tri\sweep\sweep.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\poly2tri\poly2tri\sweep\sweep_context.cc" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\poly2tri\poly2tri\sweep\sweep_context.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\clipper\clipper.hpp" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\clipper\clipper.cpp" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\openddlparser\code\OpenDDLParser.cpp" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\openddlparser\code\DDLNode.cpp" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\openddlparser\code\OpenDDLCommon.cpp" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\openddlparser\code\OpenDDLExport.cpp" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\openddlparser\code\Value.cpp" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\openddlparser\code\OpenDDLStream.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\openddlparser\include\openddlparser\OpenDDLParser.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\openddlparser\include\openddlparser\OpenDDLParserUtils.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\openddlparser\include\openddlparser\OpenDDLCommon.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\openddlparser\include\openddlparser\OpenDDLExport.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\openddlparser\include\openddlparser\OpenDDLStream.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\openddlparser\include\openddlparser\DDLNode.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\openddlparser\include\openddlparser\Value.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\Open3DGC\o3dgcAdjacencyInfo.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\Open3DGC\o3dgcArithmeticCodec.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\Open3DGC\o3dgcArithmeticCodec.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\Open3DGC\o3dgcBinaryStream.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\Open3DGC\o3dgcCommon.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\Open3DGC\o3dgcDVEncodeParams.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\Open3DGC\o3dgcDynamicVectorDecoder.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\Open3DGC\o3dgcDynamicVectorDecoder.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\Open3DGC\o3dgcDynamicVectorEncoder.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\Open3DGC\o3dgcDynamicVectorEncoder.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\Open3DGC\o3dgcDynamicVector.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\Open3DGC\o3dgcFIFO.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\Open3DGC\o3dgcIndexedFaceSet.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\Open3DGC\o3dgcIndexedFaceSet.inl" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\Open3DGC\o3dgcSC3DMCDecoder.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\Open3DGC\o3dgcSC3DMCDecoder.inl" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\Open3DGC\o3dgcSC3DMCEncodeParams.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\Open3DGC\o3dgcSC3DMCEncoder.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\Open3DGC\o3dgcSC3DMCEncoder.inl" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\Open3DGC\o3dgcTimer.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\Open3DGC\o3dgcTools.cpp" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\Open3DGC\o3dgcTriangleFans.cpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\Open3DGC\o3dgcTriangleFans.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\Open3DGC\o3dgcTriangleListDecoder.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\Open3DGC\o3dgcTriangleListDecoder.inl" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\Open3DGC\o3dgcTriangleListEncoder.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\Open3DGC\o3dgcTriangleListEncoder.inl" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\Open3DGC\o3dgcVector.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\Open3DGC\o3dgcVector.inl" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\zip\src\miniz.h" />
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\zip\src\zip.c">
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\unzip\unzip.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\poly2tri\poly2tri\common\shapes.cc" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\poly2tri\poly2tri\common\shapes.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\poly2tri\poly2tri\common\utils.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\poly2tri\poly2tri\sweep\advancing_front.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\poly2tri\poly2tri\sweep\advancing_front.cc" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\poly2tri\poly2tri\sweep\cdt.cc" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\poly2tri\poly2tri\sweep\cdt.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\poly2tri\poly2tri\sweep\sweep.cc" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\poly2tri\poly2tri\sweep\sweep.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\poly2tri\poly2tri\sweep\sweep_context.cc" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\poly2tri\poly2tri\sweep\sweep_context.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\clipper\clipper.hpp" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\clipper\clipper.cpp" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\openddlparser\code\OpenDDLParser.cpp" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\openddlparser\code\DDLNode.cpp" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\openddlparser\code\OpenDDLCommon.cpp" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\openddlparser\code\OpenDDLExport.cpp" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\openddlparser\code\Value.cpp" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\openddlparser\code\OpenDDLStream.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\openddlparser\include\openddlparser\OpenDDLParser.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\openddlparser\include\openddlparser\OpenDDLParserUtils.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\openddlparser\include\openddlparser\OpenDDLCommon.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\openddlparser\include\openddlparser\OpenDDLExport.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\openddlparser\include\openddlparser\OpenDDLStream.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\openddlparser\include\openddlparser\DDLNode.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\openddlparser\include\openddlparser\Value.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\Open3DGC\o3dgcAdjacencyInfo.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\Open3DGC\o3dgcArithmeticCodec.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\Open3DGC\o3dgcArithmeticCodec.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\Open3DGC\o3dgcBinaryStream.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\Open3DGC\o3dgcCommon.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\Open3DGC\o3dgcDVEncodeParams.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\Open3DGC\o3dgcDynamicVectorDecoder.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\Open3DGC\o3dgcDynamicVectorDecoder.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\Open3DGC\o3dgcDynamicVectorEncoder.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\Open3DGC\o3dgcDynamicVectorEncoder.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\Open3DGC\o3dgcDynamicVector.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\Open3DGC\o3dgcFIFO.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\Open3DGC\o3dgcIndexedFaceSet.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\Open3DGC\o3dgcIndexedFaceSet.inl" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\Open3DGC\o3dgcSC3DMCDecoder.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\Open3DGC\o3dgcSC3DMCDecoder.inl" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\Open3DGC\o3dgcSC3DMCEncodeParams.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\Open3DGC\o3dgcSC3DMCEncoder.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\Open3DGC\o3dgcSC3DMCEncoder.inl" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\Open3DGC\o3dgcTimer.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\Open3DGC\o3dgcTools.cpp" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\Open3DGC\o3dgcTriangleFans.cpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\Open3DGC\o3dgcTriangleFans.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\Open3DGC\o3dgcTriangleListDecoder.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\Open3DGC\o3dgcTriangleListDecoder.inl" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\Open3DGC\o3dgcTriangleListEncoder.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\Open3DGC\o3dgcTriangleListEncoder.inl" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\Open3DGC\o3dgcVector.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\Open3DGC\o3dgcVector.inl" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\zip\src\miniz.h" />
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\zip\src\zip.c">
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">CompileAsC</CompileAs>
     </ClCompile>
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\zip\src\zip.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\anim.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\aabb.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\ai_assert.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\camera.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\color4.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\color4.inl" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\include\assimp\config.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\defs.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\Defines.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\cfileio.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\light.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\material.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\material.inl" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\matrix3x3.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\matrix3x3.inl" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\matrix4x4.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\matrix4x4.inl" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\mesh.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\pbrmaterial.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\postprocess.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\quaternion.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\quaternion.inl" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\scene.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\metadata.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\texture.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\types.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\vector2.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\vector2.inl" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\vector3.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\vector3.inl" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\version.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\cimport.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\importerdesc.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\Importer.hpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\ProgressHandler.hpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\IOStream.hpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\IOSystem.hpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\cexport.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\Exporter.hpp" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\DefaultIOStream.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\DefaultIOSystem.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\ZipArchiveIOSystem.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\SceneCombiner.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\fast_atof.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\qnan.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\BaseImporter.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\Hash.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\MemoryIOWrapper.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\ParsingUtils.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\StreamReader.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\StreamWriter.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\StringComparison.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\StringUtils.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\SGSpatialSort.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\GenericProperty.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\SpatialSort.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\SkeletonMeshBuilder.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\SmoothingGroups.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\SmoothingGroups.inl" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\StandardShapes.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\RemoveComments.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\Subdivision.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\Vertex.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\LineSplitter.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\TinyFormatter.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\Profiler.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\LogAux.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\Bitmap.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\XMLTools.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\IOStreamBuffer.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\CreateAnimMesh.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\MathFunctions.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\Macros.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\Exceptional.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\ByteSwapper.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\Compiler\pushpack1.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\Compiler\poppack1.h" />
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\Compiler\pstdint.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\zip\src\zip.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\anim.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\aabb.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\ai_assert.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\camera.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\color4.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\color4.inl" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\include\assimp\config.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\defs.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\Defines.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\cfileio.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\light.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\material.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\material.inl" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\matrix3x3.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\matrix3x3.inl" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\matrix4x4.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\matrix4x4.inl" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\mesh.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\pbrmaterial.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\postprocess.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\quaternion.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\quaternion.inl" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\scene.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\metadata.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\texture.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\types.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\vector2.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\vector2.inl" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\vector3.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\vector3.inl" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\version.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\cimport.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\importerdesc.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\Importer.hpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\ProgressHandler.hpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\IOStream.hpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\IOSystem.hpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\cexport.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\Exporter.hpp" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\DefaultIOStream.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\DefaultIOSystem.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\ZipArchiveIOSystem.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\SceneCombiner.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\fast_atof.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\qnan.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\BaseImporter.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\Hash.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\MemoryIOWrapper.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\ParsingUtils.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\StreamReader.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\StreamWriter.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\StringComparison.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\StringUtils.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\SGSpatialSort.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\GenericProperty.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\SpatialSort.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\SkeletonMeshBuilder.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\SmoothingGroups.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\SmoothingGroups.inl" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\StandardShapes.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\RemoveComments.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\Subdivision.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\Vertex.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\LineSplitter.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\TinyFormatter.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\Profiler.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\LogAux.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\Bitmap.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\XMLTools.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\IOStreamBuffer.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\CreateAnimMesh.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\MathFunctions.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\Macros.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\Exceptional.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\ByteSwapper.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\Compiler\pushpack1.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\Compiler\poppack1.h" />
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include\assimp\Compiler\pstdint.h" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\ZERO_CHECK.vcxproj">
-      <Project>{8C73A773-7034-3B5A-BCC5-B33D62BF3893}</Project>
+    <ProjectReference Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\ZERO_CHECK.vcxproj">
+      <Project>{6B793F9C-1A0D-352D-AAFF-DD4B505C2337}</Project>
       <Name>ZERO_CHECK</Name>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </ProjectReference>
-    <ProjectReference Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\contrib\irrXML\IrrXML.vcxproj">
-      <Project>{8A8B3D68-FC1F-3D67-B4FA-0B36817F0E48}</Project>
+    <ProjectReference Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\contrib\irrXML\IrrXML.vcxproj">
+      <Project>{3BEAEC32-C578-3795-9871-53A0F9891CB8}</Project>
       <Name>IrrXML</Name>
     </ProjectReference>
-    <ProjectReference Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\contrib\zlib\zlibstatic.vcxproj">
-      <Project>{B7A34C7A-90D5-3E86-9910-49F9EDAB414A}</Project>
+    <ProjectReference Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\contrib\zlib\zlibstatic.vcxproj">
+      <Project>{36A95FB2-7DEE-3866-BD01-C8F05A2033BA}</Project>
       <Name>zlibstatic</Name>
     </ProjectReference>
   </ItemGroup>

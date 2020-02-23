@@ -1,333 +1,333 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="16.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\gtest\src\gtest-all.cc">
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\gtest\src\gtest-all.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\CCompilerTest.c">
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\CCompilerTest.c">
       <Filter>UnitTests\Compiler</Filter>
     </ClCompile>
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\Main.cpp">
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\Main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Common\Version.cpp">
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code\Common\Version.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utSimd.cpp">
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utSimd.cpp">
       <Filter>UnitTests\Common</Filter>
     </ClCompile>
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utIOSystem.cpp">
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utIOSystem.cpp">
       <Filter>UnitTests\Common</Filter>
     </ClCompile>
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utIOStreamBuffer.cpp">
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utIOStreamBuffer.cpp">
       <Filter>UnitTests\Common</Filter>
     </ClCompile>
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utIssues.cpp">
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utIssues.cpp">
       <Filter>UnitTests\Common</Filter>
     </ClCompile>
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utAnim.cpp">
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utAnim.cpp">
       <Filter>UnitTests\Common</Filter>
     </ClCompile>
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\AssimpAPITest.cpp">
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\AssimpAPITest.cpp">
       <Filter>UnitTests\Common</Filter>
     </ClCompile>
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utBatchLoader.cpp">
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utBatchLoader.cpp">
       <Filter>UnitTests\Common</Filter>
     </ClCompile>
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utDefaultIOStream.cpp">
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utDefaultIOStream.cpp">
       <Filter>UnitTests\Common</Filter>
     </ClCompile>
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utFastAtof.cpp">
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utFastAtof.cpp">
       <Filter>UnitTests\Common</Filter>
     </ClCompile>
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utMetadata.cpp">
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utMetadata.cpp">
       <Filter>UnitTests\Common</Filter>
     </ClCompile>
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\SceneDiffer.cpp">
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\SceneDiffer.cpp">
       <Filter>UnitTests\Common</Filter>
     </ClCompile>
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\AbstractImportExportBase.cpp">
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\AbstractImportExportBase.cpp">
       <Filter>UnitTests\Common</Filter>
     </ClCompile>
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utTypes.cpp">
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utTypes.cpp">
       <Filter>UnitTests\Common</Filter>
     </ClCompile>
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utVersion.cpp">
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utVersion.cpp">
       <Filter>UnitTests\Common</Filter>
     </ClCompile>
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utProfiler.cpp">
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utProfiler.cpp">
       <Filter>UnitTests\Common</Filter>
     </ClCompile>
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utSharedPPData.cpp">
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utSharedPPData.cpp">
       <Filter>UnitTests\Common</Filter>
     </ClCompile>
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utStringUtils.cpp">
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utStringUtils.cpp">
       <Filter>UnitTests\Common</Filter>
     </ClCompile>
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\Common\utLineSplitter.cpp">
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\Common\utLineSplitter.cpp">
       <Filter>UnitTests\Common</Filter>
     </ClCompile>
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utLWSImportExport.cpp">
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utLWSImportExport.cpp">
       <Filter>UnitTests\ImportExport</Filter>
     </ClCompile>
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utLWOImportExport.cpp">
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utLWOImportExport.cpp">
       <Filter>UnitTests\ImportExport</Filter>
     </ClCompile>
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utSMDImportExport.cpp">
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utSMDImportExport.cpp">
       <Filter>UnitTests\ImportExport</Filter>
     </ClCompile>
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utglTFImportExport.cpp">
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utglTFImportExport.cpp">
       <Filter>UnitTests\ImportExport</Filter>
     </ClCompile>
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utglTF2ImportExport.cpp">
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utglTF2ImportExport.cpp">
       <Filter>UnitTests\ImportExport</Filter>
     </ClCompile>
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utHMPImportExport.cpp">
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utHMPImportExport.cpp">
       <Filter>UnitTests\ImportExport</Filter>
     </ClCompile>
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utIFCImportExport.cpp">
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utIFCImportExport.cpp">
       <Filter>UnitTests\ImportExport</Filter>
     </ClCompile>
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utFBXImporterExporter.cpp">
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utFBXImporterExporter.cpp">
       <Filter>UnitTests\ImportExport</Filter>
     </ClCompile>
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utImporter.cpp">
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utImporter.cpp">
       <Filter>UnitTests\ImportExport</Filter>
     </ClCompile>
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\ImportExport\utExporter.cpp">
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\ImportExport\utExporter.cpp">
       <Filter>UnitTests\ImportExport</Filter>
     </ClCompile>
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\ut3DImportExport.cpp">
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\ut3DImportExport.cpp">
       <Filter>UnitTests\ImportExport</Filter>
     </ClCompile>
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\ut3DSImportExport.cpp">
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\ut3DSImportExport.cpp">
       <Filter>UnitTests\ImportExport</Filter>
     </ClCompile>
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utACImportExport.cpp">
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utACImportExport.cpp">
       <Filter>UnitTests\ImportExport</Filter>
     </ClCompile>
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utAMFImportExport.cpp">
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utAMFImportExport.cpp">
       <Filter>UnitTests\ImportExport</Filter>
     </ClCompile>
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utASEImportExport.cpp">
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utASEImportExport.cpp">
       <Filter>UnitTests\ImportExport</Filter>
     </ClCompile>
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utD3MFImportExport.cpp">
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utD3MFImportExport.cpp">
       <Filter>UnitTests\ImportExport</Filter>
     </ClCompile>
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utQ3DImportExport.cpp">
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utQ3DImportExport.cpp">
       <Filter>UnitTests\ImportExport</Filter>
     </ClCompile>
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utSTLImportExport.cpp">
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utSTLImportExport.cpp">
       <Filter>UnitTests\ImportExport</Filter>
     </ClCompile>
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utXImporterExporter.cpp">
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utXImporterExporter.cpp">
       <Filter>UnitTests\ImportExport</Filter>
     </ClCompile>
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utX3DImportExport.cpp">
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utX3DImportExport.cpp">
       <Filter>UnitTests\ImportExport</Filter>
     </ClCompile>
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utDXFImporterExporter.cpp">
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utDXFImporterExporter.cpp">
       <Filter>UnitTests\ImportExport</Filter>
     </ClCompile>
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utPMXImporter.cpp">
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utPMXImporter.cpp">
       <Filter>UnitTests\ImportExport</Filter>
     </ClCompile>
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utPLYImportExport.cpp">
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utPLYImportExport.cpp">
       <Filter>UnitTests\ImportExport</Filter>
     </ClCompile>
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utObjImportExport.cpp">
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utObjImportExport.cpp">
       <Filter>UnitTests\ImportExport</Filter>
     </ClCompile>
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utObjTools.cpp">
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utObjTools.cpp">
       <Filter>UnitTests\ImportExport</Filter>
     </ClCompile>
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utOpenGEXImportExport.cpp">
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utOpenGEXImportExport.cpp">
       <Filter>UnitTests\ImportExport</Filter>
     </ClCompile>
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utSIBImporter.cpp">
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utSIBImporter.cpp">
       <Filter>UnitTests\ImportExport</Filter>
     </ClCompile>
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utBlenderIntermediate.cpp">
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utBlenderIntermediate.cpp">
       <Filter>UnitTests\ImportExport</Filter>
     </ClCompile>
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utBlendImportAreaLight.cpp">
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utBlendImportAreaLight.cpp">
       <Filter>UnitTests\ImportExport</Filter>
     </ClCompile>
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utBlenderImportExport.cpp">
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utBlenderImportExport.cpp">
       <Filter>UnitTests\ImportExport</Filter>
     </ClCompile>
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utBlendImportMaterials.cpp">
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utBlendImportMaterials.cpp">
       <Filter>UnitTests\ImportExport</Filter>
     </ClCompile>
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utBlenderWork.cpp">
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utBlenderWork.cpp">
       <Filter>UnitTests\ImportExport</Filter>
     </ClCompile>
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utBVHImportExport.cpp">
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utBVHImportExport.cpp">
       <Filter>UnitTests\ImportExport</Filter>
     </ClCompile>
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utColladaExportCamera.cpp">
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utColladaExportCamera.cpp">
       <Filter>UnitTests\ImportExport</Filter>
     </ClCompile>
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utColladaExportLight.cpp">
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utColladaExportLight.cpp">
       <Filter>UnitTests\ImportExport</Filter>
     </ClCompile>
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utColladaImportExport.cpp">
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utColladaImportExport.cpp">
       <Filter>UnitTests\ImportExport</Filter>
     </ClCompile>
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utCSMImportExport.cpp">
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utCSMImportExport.cpp">
       <Filter>UnitTests\ImportExport</Filter>
     </ClCompile>
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utB3DImportExport.cpp">
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utB3DImportExport.cpp">
       <Filter>UnitTests\ImportExport</Filter>
     </ClCompile>
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utMDCImportExport.cpp">
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utMDCImportExport.cpp">
       <Filter>UnitTests\ImportExport</Filter>
     </ClCompile>
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utAssbinImportExport.cpp">
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utAssbinImportExport.cpp">
       <Filter>UnitTests\ImportExport</Filter>
     </ClCompile>
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\ImportExport\utAssjsonImportExport.cpp">
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\ImportExport\utAssjsonImportExport.cpp">
       <Filter>UnitTests\ImportExport</Filter>
     </ClCompile>
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\ImportExport\utCOBImportExport.cpp">
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\ImportExport\utCOBImportExport.cpp">
       <Filter>UnitTests\ImportExport</Filter>
     </ClCompile>
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\ImportExport\utOgreImportExport.cpp">
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\ImportExport\utOgreImportExport.cpp">
       <Filter>UnitTests\ImportExport</Filter>
     </ClCompile>
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\ImportExport\utQ3BSPFileImportExport.cpp">
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\ImportExport\utQ3BSPFileImportExport.cpp">
       <Filter>UnitTests\ImportExport</Filter>
     </ClCompile>
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\ImportExport\utOFFImportExport.cpp">
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\ImportExport\utOFFImportExport.cpp">
       <Filter>UnitTests\ImportExport</Filter>
     </ClCompile>
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\ImportExport\utNFFImportExport.cpp">
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\ImportExport\utNFFImportExport.cpp">
       <Filter>UnitTests\ImportExport</Filter>
     </ClCompile>
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\ImportExport\utXGLImportExport.cpp">
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\ImportExport\utXGLImportExport.cpp">
       <Filter>UnitTests\ImportExport</Filter>
     </ClCompile>
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utMaterialSystem.cpp">
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utMaterialSystem.cpp">
       <Filter>UnitTests\Material</Filter>
     </ClCompile>
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utMatrix3x3.cpp">
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utMatrix3x3.cpp">
       <Filter>UnitTests\Math</Filter>
     </ClCompile>
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utMatrix4x4.cpp">
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utMatrix4x4.cpp">
       <Filter>UnitTests\Math</Filter>
     </ClCompile>
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utVector3.cpp">
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utVector3.cpp">
       <Filter>UnitTests\Math</Filter>
     </ClCompile>
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utImproveCacheLocality.cpp">
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utImproveCacheLocality.cpp">
       <Filter>UnitTests\PostProcess</Filter>
     </ClCompile>
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utFixInfacingNormals.cpp">
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utFixInfacingNormals.cpp">
       <Filter>UnitTests\PostProcess</Filter>
     </ClCompile>
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utGenNormals.cpp">
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utGenNormals.cpp">
       <Filter>UnitTests\PostProcess</Filter>
     </ClCompile>
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utTriangulate.cpp">
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utTriangulate.cpp">
       <Filter>UnitTests\PostProcess</Filter>
     </ClCompile>
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utTextureTransform.cpp">
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utTextureTransform.cpp">
       <Filter>UnitTests\PostProcess</Filter>
     </ClCompile>
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utRemoveRedundantMaterials.cpp">
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utRemoveRedundantMaterials.cpp">
       <Filter>UnitTests\PostProcess</Filter>
     </ClCompile>
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utRemoveVCProcess.cpp">
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utRemoveVCProcess.cpp">
       <Filter>UnitTests\PostProcess</Filter>
     </ClCompile>
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utScaleProcess.cpp">
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utScaleProcess.cpp">
       <Filter>UnitTests\PostProcess</Filter>
     </ClCompile>
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utJoinVertices.cpp">
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utJoinVertices.cpp">
       <Filter>UnitTests\PostProcess</Filter>
     </ClCompile>
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utRemoveComments.cpp">
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utRemoveComments.cpp">
       <Filter>UnitTests\PostProcess</Filter>
     </ClCompile>
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utRemoveComponent.cpp">
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utRemoveComponent.cpp">
       <Filter>UnitTests\PostProcess</Filter>
     </ClCompile>
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utVertexTriangleAdjacency.cpp">
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utVertexTriangleAdjacency.cpp">
       <Filter>UnitTests\PostProcess</Filter>
     </ClCompile>
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utSplitLargeMeshes.cpp">
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utSplitLargeMeshes.cpp">
       <Filter>UnitTests\PostProcess</Filter>
     </ClCompile>
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utFindDegenerates.cpp">
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utFindDegenerates.cpp">
       <Filter>UnitTests\PostProcess</Filter>
     </ClCompile>
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utFindInvalidData.cpp">
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utFindInvalidData.cpp">
       <Filter>UnitTests\PostProcess</Filter>
     </ClCompile>
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utLimitBoneWeights.cpp">
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utLimitBoneWeights.cpp">
       <Filter>UnitTests\PostProcess</Filter>
     </ClCompile>
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utPretransformVertices.cpp">
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utPretransformVertices.cpp">
       <Filter>UnitTests\PostProcess</Filter>
     </ClCompile>
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utScenePreprocessor.cpp">
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utScenePreprocessor.cpp">
       <Filter>UnitTests\PostProcess</Filter>
     </ClCompile>
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utTargetAnimation.cpp">
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utTargetAnimation.cpp">
       <Filter>UnitTests\PostProcess</Filter>
     </ClCompile>
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utSortByPType.cpp">
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utSortByPType.cpp">
       <Filter>UnitTests\PostProcess</Filter>
     </ClCompile>
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utSceneCombiner.cpp">
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utSceneCombiner.cpp">
       <Filter>UnitTests\PostProcess</Filter>
     </ClCompile>
-    <ClCompile Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utGenBoundingBoxesProcess.cpp">
+    <ClCompile Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\utGenBoundingBoxesProcess.cpp">
       <Filter>UnitTests\PostProcess</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\SceneDiffer.h">
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\SceneDiffer.h">
       <Filter>UnitTests\Common</Filter>
     </ClInclude>
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\UTLogStream.h">
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\UTLogStream.h">
       <Filter>UnitTests\Common</Filter>
     </ClInclude>
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\TestIOSystem.h">
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\TestIOSystem.h">
       <Filter>UnitTests\Common</Filter>
     </ClInclude>
-    <ClInclude Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\TestModelFactory.h">
+    <ClInclude Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\unit\TestModelFactory.h">
       <Filter>UnitTests\Common</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\CMakeLists.txt" />
+    <CustomBuild Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\test\CMakeLists.txt" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Source Files">
-      <UniqueIdentifier>{627C6D3C-6BB6-3F21-9D47-C64EF6C2E502}</UniqueIdentifier>
+      <UniqueIdentifier>{5D08554A-E0D8-36CB-B3B1-3E3CF4627BF0}</UniqueIdentifier>
     </Filter>
     <Filter Include="UnitTests">
-      <UniqueIdentifier>{8A3F2161-C332-35D1-A29A-7D42AA115331}</UniqueIdentifier>
+      <UniqueIdentifier>{78574938-8D91-3DE0-94BF-6233F12DA0D7}</UniqueIdentifier>
     </Filter>
     <Filter Include="UnitTests\Common">
-      <UniqueIdentifier>{EF60F1DF-EC5D-3DAB-BDC0-B989A00CF4B7}</UniqueIdentifier>
+      <UniqueIdentifier>{A21CADB5-562E-3972-BA8A-AE7545DFB6C6}</UniqueIdentifier>
     </Filter>
     <Filter Include="UnitTests\Compiler">
-      <UniqueIdentifier>{981F8199-7696-3DAD-A1D5-E7E9D171075B}</UniqueIdentifier>
+      <UniqueIdentifier>{7921DAD4-F678-38B5-BFE1-B4E613EF1EE4}</UniqueIdentifier>
     </Filter>
     <Filter Include="UnitTests\ImportExport">
-      <UniqueIdentifier>{5F70BDE4-8E3F-36F1-B990-B57D0CF1C713}</UniqueIdentifier>
+      <UniqueIdentifier>{DDDACC3A-4E7B-30C7-B639-EB233AF5143F}</UniqueIdentifier>
     </Filter>
     <Filter Include="UnitTests\Material">
-      <UniqueIdentifier>{75449012-A479-3A83-B98D-0E4D4D277CDD}</UniqueIdentifier>
+      <UniqueIdentifier>{BC2E3718-40F1-3F3E-B0CD-53C76EF8C5B9}</UniqueIdentifier>
     </Filter>
     <Filter Include="UnitTests\Math">
-      <UniqueIdentifier>{F0E44512-E445-3F5A-A839-0A43BF78BC0B}</UniqueIdentifier>
+      <UniqueIdentifier>{739676F4-AA7D-35A1-8F0C-E418F208392E}</UniqueIdentifier>
     </Filter>
     <Filter Include="UnitTests\PostProcess">
-      <UniqueIdentifier>{4598DA30-A81B-30AB-91B9-1BBF36581FDB}</UniqueIdentifier>
+      <UniqueIdentifier>{178FC21A-2399-35EA-9EA8-A0AA41BA6062}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

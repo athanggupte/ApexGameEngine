@@ -1,4 +1,4 @@
-# Install script for directory: E:/Athang-Work/ApexGameEngine/ApexGameEngine/vendor/Assimp/src/test
+# Install script for directory: E:/Athang_Work/ApexGameEngine/ApexGameEngine/vendor/Assimp/src/test
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -34,7 +34,7 @@ endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
-  include("E:/Athang-Work/ApexGameEngine/ApexGameEngine/vendor/Assimp/build/test/headercheck/cmake_install.cmake")
+  include("E:/Athang_Work/ApexGameEngine/ApexGameEngine/vendor/Assimp/build/test/headercheck/cmake_install.cmake")
 
 endif()
 

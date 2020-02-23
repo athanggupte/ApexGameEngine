@@ -14,6 +14,14 @@ namespace Apex {
 		virtual void Bind(uint32_t slot = 0) const = 0;
 
 		virtual const std::string& GetPath() const = 0;
+
+		virtual void SetRows(uint32_t rows) { this->m_NumberOfRows = rows; this->m_MaxIndex = rows * rows; }
+		virtual uint32_t GetRows() { return this->m_NumberOfRows; }
+		virtual uint32_t GetMaxIndex() { return this->m_MaxIndex; }
+
+	private:
+		uint32_t m_NumberOfRows = 1;// , n_NumberOfCols = 1;
+		uint32_t m_MaxIndex = 1;
 	};
 
 	class Texture2D : public Texture

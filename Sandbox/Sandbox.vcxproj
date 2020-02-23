@@ -143,6 +143,11 @@
       <Project>{63028D86-4FD0-808C-3864-F1B224D15CF1}</Project>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\Games\DXBall\Ball.h" />
+    <ClInclude Include="src\Games\DXBall\DXBall.h" />
+    <ClInclude Include="src\Games\DXBall\Paddle.h" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

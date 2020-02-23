@@ -9,6 +9,8 @@
 #include "Apex/Model/Model.h"
 #include "Apex/Physics/ParticleSystem/ParticleSystem2D.h"
 
+#include "Games/DXBall/DXBall.h"
+
 class SandboxLayer : public Apex::Layer
 {
 public:
@@ -216,7 +218,7 @@ public:
 		auto textureShader = Apex::AssetManager::GetShaderLibrary().GetShader("Texture");
 
 		m_CheckerTexture->Bind();
-		Apex::Renderer::Submit(textureShader, m_SquareVA, glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -1.7f)));
+		Apex::Renderer::Submit(textureShader, m_SquareVA, glm::translate(glm::mat4(1.0f), glm::vec3(0.3f, 0.1f, -1.7f)));
 		m_PusheenTexture->Bind();
 		Apex::Renderer::Submit(textureShader, m_SquareVA, glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -1.0f)));
 
@@ -374,7 +376,7 @@ public:
 
 		auto& shaderUniforms = m_Shader->GetActiveUniformData();
 		for (auto[name, type, size] : shaderUniforms)
-			APEX_TRACE("{0} : {1} [{2}]", name, type, size);
+			APEX_LOG_TRACE("{0} : {1} [{2}]", name, type, size);
 
 		glm::vec3 lightPositions[] = {
 			{ 200.0f,  200.0f,  150.0f },
@@ -631,7 +633,7 @@ class ParticleLayer : public Apex::Layer
 {
 public:
 	ParticleLayer()
-		: m_Camera(-1.6f, 1.6f, -0.9f, 0.9f), m_CameraPosition({ 0.0f, 0.0f, 0.0f })
+		: m_Camera(-1.6f, 1.6f, -0.9f, 0.9f), m_CameraPosition({ 0.0f, 0.0f, 0.0f }), m_ParticleSystem(5, 10000)
 	{
 		m_Camera.SetPosition({ 0.0f, 0.0f, 0.0f });
 		m_Camera.SetRotation(0.0f);
@@ -647,7 +649,7 @@ public:
 		m_ParticleProps.rotationSpeedVariation = 1.0f;
 
 		// Size
-		m_ParticleProps.sizeBegin = 0.08f;
+		m_ParticleProps.sizeBegin = 0.7f;
 		m_ParticleProps.sizeEnd = 0.0085f;
 		m_ParticleProps.sizeVariation = 0.3f;
 		
@@ -655,7 +657,12 @@ public:
 		m_ParticleProps.colorBegin = { 0.85f, 0.64f, 0.0f, 1.0f };
 		m_ParticleProps.colorEnd = { 0.1f, 0.1f, 0.1f, 1.0f };
 
-		Apex::RenderCommands::SetBlendMode(Apex::RendererAPI::BlendingMode::SRC_ALPHA, Apex::RendererAPI::BlendingMode::ONE_MINUS_DST_ALPHA);
+		m_ParticleTexture = Apex::Texture2D_HDR::Create("assets/textures/smoke.png");
+		m_ParticleTexture->SetRows(2);
+		m_ParticleProps.textureNumRows = m_ParticleTexture->GetRows();
+		//Apex::RenderCommands::SetBlendMode(Apex::RendererAPI::BlendingMode::SRC_ALPHA, Apex::RendererAPI::BlendingMode::ONE_MINUS_DST_ALPHA);
+
+		m_ParticleSystem.Emit(m_ParticleProps);
 	}
 
 	void OnAttach() override {}
@@ -685,26 +692,35 @@ public:
 		m_MousePos = { mouseX, mouseY };
 		m_Camera.SetPosition(m_CameraPosition);
 
-		for(int i=0; i<5; i++)
-			m_ParticleSystem.Emit(m_ParticleProps);
+		/*m_ParticleProps.textureIndex = Apex::Random::Int() % m_ParticleTexture->GetMaxIndex();
+		for (int i = 0; i < m_ParticleGenerationSpeed; i++) {
+			if(Apex::Random::Float() < 0.002)
+				m_ParticleSystem.Emit(m_ParticleProps);
+		}*/
 
+		Apex::RenderCommands::SetClearColor({ 1.0f, 1.0f, 1.0f, 1.0f });
 		Apex::RenderCommands::Clear();
 		Apex::Renderer::BeginScene(m_Camera);
 		m_ParticleSystem.OnUpdate();
+		m_ParticleTexture->Bind(0);
 		m_ParticleSystem.OnRender();
 		Apex::Renderer::EndScene();
 	}
 	
 	void OnImGuiRender() override
 	{
+		ImGui::ShowMetricsWindow();
 		ImGui::Begin("Particle System 2D");
 		ImGui::DragFloat2("Position", &m_ParticleProps.position.x, 0.05f, -1.0f, 1.0f);
 		ImGui::DragFloat("Lifetime", &m_ParticleProps.lifetime, 0.01f, 0.0f, 5.0f);
+		ImGui::SliderInt("Particle Generation Speed", (int*)&m_ParticleGenerationSpeed, 1, 10);
 		ImGui::DragFloat2("Velocity", &m_ParticleProps.velocity.x, 0.005f);
 		ImGui::DragFloat2("Velocity Variation", &m_ParticleProps.velocityVariation.x, 0.005f);
-		ImGui::DragFloat("Size Begin", &m_ParticleProps.sizeBegin, 0.005f, 0.0f, 1.0f);
-		ImGui::ColorPicker4("Color Begin", &m_ParticleProps.colorBegin.x);
-		ImGui::ColorPicker4("Color End", &m_ParticleProps.colorEnd.x);
+		ImGui::DragFloat("Start Size", &m_ParticleProps.sizeBegin, 0.005f, 0.0f, 1.0f);
+		ImGui::DragFloat("End Size", &m_ParticleProps.sizeEnd, 0.005f, 0.0f, 1.0f);
+		ImGui::ColorPicker4("Start Color", &m_ParticleProps.colorBegin.x);
+		ImGui::ColorPicker4("End Color", &m_ParticleProps.colorEnd.x);
+		ImGui::Image((void*)(intptr_t)m_ParticleTexture->GetID(), ImVec2(256, 256));
 		ImGui::End();
 	}
 
@@ -716,6 +732,11 @@ public:
 
 	bool OnMouseScrolled(Apex::MouseScrolledEvent& event)
 	{
+		if(event.GetOffsetY() < 0)
+			m_ParticleProps.textureIndex = m_ParticleTexture->GetMaxIndex() - ((m_ParticleTexture->GetMaxIndex() - m_ParticleProps.textureIndex--) % m_ParticleTexture->GetMaxIndex()) - 1;
+		else
+			m_ParticleProps.textureIndex = m_ParticleTexture->GetMaxIndex() - ((m_ParticleTexture->GetMaxIndex() - m_ParticleProps.textureIndex++) % m_ParticleTexture->GetMaxIndex()) - 1;
+		m_ParticleSystem.Emit(m_ParticleProps);
 		return false;
 	}
 
@@ -729,6 +750,9 @@ private:
 	float m_CameraRotateSpeed = 30.0f;
 
 	float m_ParticleSystemMoveSpeed = 0.75f;
+	uint32_t m_ParticleGenerationSpeed = 5;
+
+	Apex::Ref<Apex::Texture2D_HDR> m_ParticleTexture;
 
 	std::pair<float, float> m_MousePos = { 0.0f, 0.0f };
 };
@@ -740,7 +764,8 @@ public:
 	{
 		//PushLayer(new SandboxLayer());
 		//PushLayer(new ModelLayer());
-		PushLayer(new ParticleLayer());
+		//PushLayer(new ParticleLayer());
+		PushLayer(new DXBall::GameLayer());
 	}
 
 	~Sandbox()

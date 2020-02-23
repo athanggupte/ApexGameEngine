@@ -68,10 +68,10 @@ void main()
 
 	float shadow = ShadowCalculation(vec3(0.0, 1.0, 0.0), L);
 
-	vec3 albedo = texture(u_TextureDiffuse, v_TexCoord).rgb;
+	vec4 albedo = texture(u_TextureDiffuse, v_TexCoord).rgba;
 
-	vec3 color = vec3(max(1.0 - shadow, 0.3)) * albedo;
+	vec3 color = vec3(max(1.0 - shadow, 0.3)) * albedo.rgb;
 
-	o_Color = vec4(color, 1.0);
+	o_Color = vec4(color, albedo.a);
 	//o_Color = vec4(v_TexCoord, 0.0, 1.0);
 }
