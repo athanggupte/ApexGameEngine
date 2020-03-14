@@ -5,13 +5,16 @@
 
 namespace DXBall {
 
-	class Ball : public Apex::Collidable, public Apex::RigidBody2D
+	class Brick : public Apex::Collidable
 	{
 	public:
-		Ball(glm::vec2 position, float radius, glm::vec2 velocity = { 0.0f, 0.0f }, glm::vec2 acceleration = { 0.0f, 0.0f })
-			: Apex::Collidable(std::make_shared<Apex::CircleCollider>(position, radius)),
-			Apex::RigidBody2D(position, velocity, acceleration)
-		{	
+		Brick(glm::vec2 topLeft, glm::vec2 bottomRight)
+			: Apex::Collidable(std::make_shared<Apex::AABBCollider>(topLeft, bottomRight))
+		{
+			m_Position = std::dynamic_pointer_cast<Apex::AABBCollider>(this->GetCollider())->GetCenter();
+
+			APEX_LOG_INFO("Brick position : {0} , {1}", m_Position.x, m_Position.y);
+
 			m_QuadVA = Apex::VertexArray::Create();
 
 			Apex::Ref<Apex::VertexBuffer> squareVB;
@@ -78,39 +81,39 @@ namespace DXBall {
 
 				void main()
 				{
-					vec4 texColor = texture(u_Texture, v_TexCoord).rgba;
 					if(u_UseColor) {
-						o_Color = u_Color * texColor;
+						o_Color = u_Color;
 					} else {
-						o_Color = texColor;
+						vec4 texColor = texture(u_Texture, v_TexCoord).rgba;
+						o_Color = vec4(texColor);
 					}	
 				}
 			)";
 
-			m_Shader = Apex::Shader::Create("BallShader", flatVertexSrc, flatFragmentSrc);
+			m_Shader = Apex::Shader::Create("BrickShader", flatVertexSrc, flatFragmentSrc);
 			m_Shader->Bind();
 			m_Shader->SetUniInt("u_Texture", 0);
 		}
 
 		void Update()
 		{
-			this->UpdateRigidBody();
-			std::dynamic_pointer_cast<Apex::CircleCollider>(m_Collider)->SetCenter(m_Position);
+			auto collider = std::dynamic_pointer_cast<Apex::AABBCollider>(m_Collider);
+			collider->SetCenter(m_Position);
 		}
 
 		void Render()
 		{
-			auto collider = std::dynamic_pointer_cast<Apex::CircleCollider>(m_Collider);
+			auto collider = std::dynamic_pointer_cast<Apex::AABBCollider>(m_Collider);
 
-			glm::mat4 transform = glm::translate(glm::mat4(1.0f), { m_Position.load(), 0.0f })
+			glm::mat4 transform = glm::translate(glm::mat4(1.0f), { m_Position, 0.0f })
 				//* glm::rotate(glm::mat4(1.0f), particle.rotation, { 0.0f, 0.0f, 1.0f })
-				* glm::scale(glm::mat4(1.0f), { collider->GetRadius() * 2.0f, collider->GetRadius() * 2.0f, 1.0 });
+				* glm::scale(glm::mat4(1.0f), { collider->GetHalfDimensions() * 2.0f, 1.0f });
 
 			/*glm::vec2 texOffset({ particle.textureIndex % particle.textureNumRows, glm::floor(particle.textureIndex / particle.textureNumRows) });
 			texOffset = texOffset / (float)particle.textureNumRows;*/
 
 			m_Shader->Bind();
-			m_Shader->SetUniFloat4("u_Color", u_Color);
+			m_Shader->SetUniFloat4("u_Color", m_Color);
 			m_Shader->SetUniFloat1("u_NumRows", 1.0f);
 			m_Shader->SetUniFloat2("u_TexOffset", { 0.0f, 0.0f });
 			m_Shader->SetUniInt("u_UseColor", m_UseColor);
@@ -119,13 +122,14 @@ namespace DXBall {
 		}
 
 	public:
-		bool m_UseColor = false;
-		glm::vec4 u_Color = { 1.0f, 0.0f, 0.0f, 1.0f };
+		bool m_UseColor = true;
+		const glm::vec4 c_Color = { 0.13f, 0.35f, 1.0f, 1.0f };
+		glm::vec4 m_Color = c_Color;
+		glm::vec2 m_Position;
 
 	private:
 		Apex::Ref<Apex::VertexArray> m_QuadVA;
 		Apex::Ref<Apex::Shader> m_Shader;
-
 	};
 
 }

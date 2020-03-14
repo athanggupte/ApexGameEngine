@@ -99,7 +99,7 @@ namespace Apex {
 				element.e_Offset = offset;
 				offset += element.e_Size;
 				m_Stride += element.e_Size;
-				APEX_CORE_TRACE("Element::{0} | Type::{1} | Offset::{2} | Stride::{3}", element.e_Name, (uint32_t)element.e_Type, element.e_Offset, m_Stride);
+				//APEX_CORE_TRACE("Element::{0} | Type::{1} | Offset::{2} | Stride::{3}", element.e_Name, (uint32_t)element.e_Type, element.e_Offset, m_Stride);
 			}
 		}
 

@@ -163,6 +163,8 @@
     <ClInclude Include="src\Apex\Material\Material.h" />
     <ClInclude Include="src\Apex\Model\Mesh.h" />
     <ClInclude Include="src\Apex\Model\Model.h" />
+    <ClInclude Include="src\Apex\Networking\NetworkManager.h" />
+    <ClInclude Include="src\Apex\Networking\Socket.h" />
     <ClInclude Include="src\Apex\Physics\Collision\Collidable.h" />
     <ClInclude Include="src\Apex\Physics\Collision\Collider.h" />
     <ClInclude Include="src\Apex\Physics\Interaction\MousePicker.h" />
@@ -586,6 +588,8 @@
     <ClCompile Include="src\Apex\Material\Material.cpp" />
     <ClCompile Include="src\Apex\Model\Mesh.cpp" />
     <ClCompile Include="src\Apex\Model\Model.cpp" />
+    <ClCompile Include="src\Apex\Networking\NetworkManager.cpp" />
+    <ClCompile Include="src\Apex\Networking\Socket.cpp" />
     <ClCompile Include="src\Apex\Physics\Collision\Collidable.cpp" />
     <ClCompile Include="src\Apex\Physics\Collision\Collider.cpp" />
     <ClCompile Include="src\Apex\Physics\ParticleSystem\ParticleSystem2D.cpp" />

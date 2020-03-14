@@ -76,14 +76,14 @@ namespace Apex {
 
 			uniform vec4 u_Color;
 			uniform sampler2D u_Texture;
-			uniform bool u_UseTexure;
+			uniform bool u_UseTexture;
 			
 			in vec3 v_Position;
 			in vec2 v_TexCoord;
 
 			void main()
 			{
-				if(u_UseTexure) {
+				if(u_UseTexture) {
 					vec4 texColor = texture(u_Texture, v_TexCoord).rgba;
 					o_Color = vec4(texColor * u_Color);
 					//o_Color = vec4(1.0, 0.0, 0.0, 1.0);
@@ -111,6 +111,7 @@ namespace Apex {
 
 			particle.lifeRemaining -= Timer::GetSeconds();
 			particle.position += particle.velocity * Timer::GetSeconds();
+			particle.velocity += particle.acceleration * Timer::GetSeconds();
 			particle.rotation += particle.rotationSpeed * Timer::GetSeconds();
 		}
 	}
@@ -133,21 +134,24 @@ namespace Apex {
 			glm::vec4 color = glm::lerp(particle.colorEnd, particle.colorBegin, life);
 			color.a = color.a * life;
 
-			float size = glm::lerp(particle.sizeEnd, particle.sizeBegin, life);
+			glm::vec2 size = glm::lerp(particle.sizeEnd, particle.sizeBegin, life);
 
 			// Render
 			glm::mat4 transform = glm::translate(glm::mat4(1.0f), { particle.position, 0.0f })
 				* glm::rotate(glm::mat4(1.0f), particle.rotation, { 0.0f, 0.0f, 1.0f })
-				* glm::scale(glm::mat4(1.0f), { size, size, 1.0 });
-
-			glm::vec2 texOffset({ particle.textureIndex % particle.textureNumRows, glm::floor(particle.textureIndex / particle.textureNumRows) });
-			texOffset = texOffset / (float)particle.textureNumRows;
+				* glm::scale(glm::mat4(1.0f), { size, 1.0 });
 
 			m_Shader->Bind();
+			
+			if (particle.useTexture) {
+				glm::vec2 texOffset({ particle.textureIndex % particle.textureNumRows, glm::floor(particle.textureIndex / particle.textureNumRows) });
+				texOffset = texOffset / (float)particle.textureNumRows;
+				m_Shader->SetUniFloat2("u_TexOffset", texOffset);
+			}
+
 			m_Shader->SetUniFloat4("u_Color", color);
 			m_Shader->SetUniFloat1("u_NumRows", particle.textureNumRows);
-			m_Shader->SetUniFloat2("u_TexOffset", texOffset);
-			m_Shader->SetUniInt("u_UseTexure", particle.useTexture);
+			m_Shader->SetUniInt("u_UseTexture", particle.useTexture);
 
 			Renderer::Submit(m_Shader, m_QuadVA, transform);
 			//APEX_CORE_DEBUG("Submitted Particle @ {0}", i);
@@ -160,7 +164,9 @@ namespace Apex {
 		Particle& particle = m_ParticlePool[m_PoolIndex];
 		particle.active = true;
 		particle.position = particleProps.position;
-		particle.rotation = Random::Float() * 2.0f * glm::pi<float>();
+		//particle.rotation = Random::Float() * 2.0f * glm::pi<float>();
+
+		particle.acceleration = particleProps.acceleration;
 
 		// Velocity
 		particle.velocity = particleProps.velocity;
@@ -168,6 +174,7 @@ namespace Apex {
 		particle.velocity.y += particleProps.velocityVariation.y * (Random::Float() - 0.5f);
 
 		// Rotation Speed
+		particle.rotation = particleProps.rotation;
 		particle.rotationSpeed = particleProps.rotationSpeed;
 		particle.rotationSpeed += particleProps.rotationSpeedVariation * (Random::Float() - 0.5f);
 
@@ -180,11 +187,11 @@ namespace Apex {
 		particle.lifeRemaining = particleProps.lifetime;
 
 		// Size
-		particle.sizeBegin = particleProps.sizeBegin + particleProps.sizeVariation * (Random::Float() - 0.5f);
-		particle.sizeEnd = particleProps.sizeEnd - particleProps.sizeVariation * (Random::Float() - 0.5f);
+		particle.sizeBegin = particleProps.sizeBegin + particleProps.sizeVariation * glm::vec2(Random::Float() - 0.5f) * 0.5f;
+		particle.sizeEnd = particleProps.sizeEnd - particleProps.sizeVariation * glm::vec2(Random::Float() - 0.5f) * 0.5f;
 
 		// Texture
-		particle.useTexture = particleProps.useTexure;
+		particle.useTexture = particleProps.useTexture;
 		particle.textureNumRows = particleProps.textureNumRows;
 		particle.textureIndex = particleProps.textureIndex;
 

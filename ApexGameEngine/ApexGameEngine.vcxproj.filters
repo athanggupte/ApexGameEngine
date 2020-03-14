@@ -1375,6 +1375,8 @@
     </ClInclude>
     <ClInclude Include="src\Apex\Entity\GameObject.h" />
     <ClInclude Include="src\Apex\Physics\Movement\RigidBody.h" />
+    <ClInclude Include="src\Apex\Networking\Socket.h" />
+    <ClInclude Include="src\Apex\Networking\NetworkManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Apex\Application.cpp">
@@ -1489,5 +1491,7 @@
     <ClCompile Include="src\Apex\Physics\PhysicsTimer\PhysicsTimer.cpp" />
     <ClCompile Include="src\Apex\Physics\Collision\Collider.cpp" />
     <ClCompile Include="src\Apex\Physics\Movement\RigidBody.cpp" />
+    <ClCompile Include="src\Apex\Networking\Socket.cpp" />
+    <ClCompile Include="src\Apex\Networking\NetworkManager.cpp" />
   </ItemGroup>
 </Project>
