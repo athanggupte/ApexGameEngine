@@ -41,7 +41,7 @@ namespace Apex {
 		uint32_t e_Offset;
 		bool e_Normalized;
 
-		BufferElement() {}
+		//BufferElement() {}
 
 		BufferElement(ShaderDataType type, const std::string name, bool normalized = false)
 			: e_Name(name), e_Type(type), e_Size(ShaderDataTypeSize(type)), e_Offset(0), e_Normalized(normalized)
@@ -99,6 +99,7 @@ namespace Apex {
 				element.e_Offset = offset;
 				offset += element.e_Size;
 				m_Stride += element.e_Size;
+				//APEX_CORE_TRACE("Element::{0} | Type::{1} | Offset::{2} | Stride::{3}", element.e_Name, (uint32_t)element.e_Type, element.e_Offset, m_Stride);
 			}
 		}
 

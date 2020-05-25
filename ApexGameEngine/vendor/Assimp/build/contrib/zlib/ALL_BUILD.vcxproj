@@ -22,7 +22,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{EEFB4156-8142-37FB-BB72-BAA37894BE87}</ProjectGuid>
+    <ProjectGuid>{1D4F1345-1DD1-32D8-8E90-9CBCED7217B7}</ProjectGuid>
     <WindowsTargetPlatformVersion>10.0.18362.0</WindowsTargetPlatformVersion>
     <Keyword>Win32Proj</Keyword>
     <Platform>x64</Platform>
@@ -66,7 +66,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Midl>
-      <AdditionalIncludeDirectories>E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\include;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\.;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\zlib;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\contrib\zlib;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\include;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\.;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\zlib;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\contrib\zlib;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -76,7 +76,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Midl>
-      <AdditionalIncludeDirectories>E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\include;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\.;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\zlib;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\contrib\zlib;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\include;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\.;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\zlib;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\contrib\zlib;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -86,7 +86,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">
     <Midl>
-      <AdditionalIncludeDirectories>E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\include;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\.;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\zlib;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\contrib\zlib;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\include;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\.;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\zlib;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\contrib\zlib;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -96,7 +96,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">
     <Midl>
-      <AdditionalIncludeDirectories>E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\include;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\.;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\zlib;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\contrib\zlib;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\include;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\include;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\code;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\.;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\zlib;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\contrib\zlib;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -105,10 +105,10 @@
     </Midl>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <CustomBuild Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\zlib\CMakeLists.txt">
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Building Custom Rule E:/Athang-Work/ApexGameEngine/ApexGameEngine/vendor/Assimp/src/contrib/zlib/CMakeLists.txt</Message>
+    <CustomBuild Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\zlib\CMakeLists.txt">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Building Custom Rule E:/Athang_Work/ApexGameEngine/ApexGameEngine/vendor/Assimp/src/contrib/zlib/CMakeLists.txt</Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">setlocal
-E:\Athang-Work\cmake-3.17.0-rc1-win64-x64\bin\cmake.exe -SE:/Athang-Work/ApexGameEngine/ApexGameEngine/vendor/Assimp/src -BE:/Athang-Work/ApexGameEngine/ApexGameEngine/vendor/Assimp/build --check-stamp-file E:/Athang-Work/ApexGameEngine/ApexGameEngine/vendor/Assimp/build/contrib/zlib/CMakeFiles/generate.stamp
+E:\CMake\cmake-3.17.0-rc1-win64-x64\bin\cmake.exe -SE:/Athang_Work/ApexGameEngine/ApexGameEngine/vendor/Assimp/src -BE:/Athang_Work/ApexGameEngine/ApexGameEngine/vendor/Assimp/build --check-stamp-file E:/Athang_Work/ApexGameEngine/ApexGameEngine/vendor/Assimp/build/contrib/zlib/CMakeFiles/generate.stamp
 if %errorlevel% neq 0 goto :cmEnd
 :cmEnd
 endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
@@ -116,12 +116,12 @@ endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
 exit /b %1
 :cmDone
 if %errorlevel% neq 0 goto :VCEnd</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\zlib\zconf.h.cmakein;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\zlib\zlib.pc.cmakein;E:\Athang-Work\cmake-3.17.0-rc1-win64-x64\share\cmake-3.17\Modules\CheckCSourceCompiles.cmake;E:\Athang-Work\cmake-3.17.0-rc1-win64-x64\share\cmake-3.17\Modules\CheckFunctionExists.cmake;E:\Athang-Work\cmake-3.17.0-rc1-win64-x64\share\cmake-3.17\Modules\CheckIncludeFile.cmake;E:\Athang-Work\cmake-3.17.0-rc1-win64-x64\share\cmake-3.17\Modules\CheckIncludeFileCXX.cmake;E:\Athang-Work\cmake-3.17.0-rc1-win64-x64\share\cmake-3.17\Modules\CheckTypeSize.cmake;%(AdditionalInputs)</AdditionalInputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\contrib\zlib\CMakeFiles\generate.stamp</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\CMakeFiles\CheckTypeSize\OFF64_T.c;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\zlib\zconf.h.cmakein;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\zlib\zlib.pc.cmakein;E:\CMake\cmake-3.17.0-rc1-win64-x64\share\cmake-3.17\Modules\CheckCSourceCompiles.cmake;E:\CMake\cmake-3.17.0-rc1-win64-x64\share\cmake-3.17\Modules\CheckFunctionExists.c;E:\CMake\cmake-3.17.0-rc1-win64-x64\share\cmake-3.17\Modules\CheckFunctionExists.cmake;E:\CMake\cmake-3.17.0-rc1-win64-x64\share\cmake-3.17\Modules\CheckIncludeFile.c.in;E:\CMake\cmake-3.17.0-rc1-win64-x64\share\cmake-3.17\Modules\CheckIncludeFile.cmake;E:\CMake\cmake-3.17.0-rc1-win64-x64\share\cmake-3.17\Modules\CheckIncludeFileCXX.cmake;E:\CMake\cmake-3.17.0-rc1-win64-x64\share\cmake-3.17\Modules\CheckTypeSize.c.in;E:\CMake\cmake-3.17.0-rc1-win64-x64\share\cmake-3.17\Modules\CheckTypeSize.cmake;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\contrib\zlib\CMakeFiles\generate.stamp</Outputs>
       <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkObjects>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Building Custom Rule E:/Athang-Work/ApexGameEngine/ApexGameEngine/vendor/Assimp/src/contrib/zlib/CMakeLists.txt</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Building Custom Rule E:/Athang_Work/ApexGameEngine/ApexGameEngine/vendor/Assimp/src/contrib/zlib/CMakeLists.txt</Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">setlocal
-E:\Athang-Work\cmake-3.17.0-rc1-win64-x64\bin\cmake.exe -SE:/Athang-Work/ApexGameEngine/ApexGameEngine/vendor/Assimp/src -BE:/Athang-Work/ApexGameEngine/ApexGameEngine/vendor/Assimp/build --check-stamp-file E:/Athang-Work/ApexGameEngine/ApexGameEngine/vendor/Assimp/build/contrib/zlib/CMakeFiles/generate.stamp
+E:\CMake\cmake-3.17.0-rc1-win64-x64\bin\cmake.exe -SE:/Athang_Work/ApexGameEngine/ApexGameEngine/vendor/Assimp/src -BE:/Athang_Work/ApexGameEngine/ApexGameEngine/vendor/Assimp/build --check-stamp-file E:/Athang_Work/ApexGameEngine/ApexGameEngine/vendor/Assimp/build/contrib/zlib/CMakeFiles/generate.stamp
 if %errorlevel% neq 0 goto :cmEnd
 :cmEnd
 endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
@@ -129,12 +129,12 @@ endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
 exit /b %1
 :cmDone
 if %errorlevel% neq 0 goto :VCEnd</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\zlib\zconf.h.cmakein;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\zlib\zlib.pc.cmakein;E:\Athang-Work\cmake-3.17.0-rc1-win64-x64\share\cmake-3.17\Modules\CheckCSourceCompiles.cmake;E:\Athang-Work\cmake-3.17.0-rc1-win64-x64\share\cmake-3.17\Modules\CheckFunctionExists.cmake;E:\Athang-Work\cmake-3.17.0-rc1-win64-x64\share\cmake-3.17\Modules\CheckIncludeFile.cmake;E:\Athang-Work\cmake-3.17.0-rc1-win64-x64\share\cmake-3.17\Modules\CheckIncludeFileCXX.cmake;E:\Athang-Work\cmake-3.17.0-rc1-win64-x64\share\cmake-3.17\Modules\CheckTypeSize.cmake;%(AdditionalInputs)</AdditionalInputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\contrib\zlib\CMakeFiles\generate.stamp</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\CMakeFiles\CheckTypeSize\OFF64_T.c;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\zlib\zconf.h.cmakein;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\zlib\zlib.pc.cmakein;E:\CMake\cmake-3.17.0-rc1-win64-x64\share\cmake-3.17\Modules\CheckCSourceCompiles.cmake;E:\CMake\cmake-3.17.0-rc1-win64-x64\share\cmake-3.17\Modules\CheckFunctionExists.c;E:\CMake\cmake-3.17.0-rc1-win64-x64\share\cmake-3.17\Modules\CheckFunctionExists.cmake;E:\CMake\cmake-3.17.0-rc1-win64-x64\share\cmake-3.17\Modules\CheckIncludeFile.c.in;E:\CMake\cmake-3.17.0-rc1-win64-x64\share\cmake-3.17\Modules\CheckIncludeFile.cmake;E:\CMake\cmake-3.17.0-rc1-win64-x64\share\cmake-3.17\Modules\CheckIncludeFileCXX.cmake;E:\CMake\cmake-3.17.0-rc1-win64-x64\share\cmake-3.17\Modules\CheckTypeSize.c.in;E:\CMake\cmake-3.17.0-rc1-win64-x64\share\cmake-3.17\Modules\CheckTypeSize.cmake;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\contrib\zlib\CMakeFiles\generate.stamp</Outputs>
       <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkObjects>
-      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">Building Custom Rule E:/Athang-Work/ApexGameEngine/ApexGameEngine/vendor/Assimp/src/contrib/zlib/CMakeLists.txt</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">Building Custom Rule E:/Athang_Work/ApexGameEngine/ApexGameEngine/vendor/Assimp/src/contrib/zlib/CMakeLists.txt</Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">setlocal
-E:\Athang-Work\cmake-3.17.0-rc1-win64-x64\bin\cmake.exe -SE:/Athang-Work/ApexGameEngine/ApexGameEngine/vendor/Assimp/src -BE:/Athang-Work/ApexGameEngine/ApexGameEngine/vendor/Assimp/build --check-stamp-file E:/Athang-Work/ApexGameEngine/ApexGameEngine/vendor/Assimp/build/contrib/zlib/CMakeFiles/generate.stamp
+E:\CMake\cmake-3.17.0-rc1-win64-x64\bin\cmake.exe -SE:/Athang_Work/ApexGameEngine/ApexGameEngine/vendor/Assimp/src -BE:/Athang_Work/ApexGameEngine/ApexGameEngine/vendor/Assimp/build --check-stamp-file E:/Athang_Work/ApexGameEngine/ApexGameEngine/vendor/Assimp/build/contrib/zlib/CMakeFiles/generate.stamp
 if %errorlevel% neq 0 goto :cmEnd
 :cmEnd
 endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
@@ -142,12 +142,12 @@ endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
 exit /b %1
 :cmDone
 if %errorlevel% neq 0 goto :VCEnd</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\zlib\zconf.h.cmakein;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\zlib\zlib.pc.cmakein;E:\Athang-Work\cmake-3.17.0-rc1-win64-x64\share\cmake-3.17\Modules\CheckCSourceCompiles.cmake;E:\Athang-Work\cmake-3.17.0-rc1-win64-x64\share\cmake-3.17\Modules\CheckFunctionExists.cmake;E:\Athang-Work\cmake-3.17.0-rc1-win64-x64\share\cmake-3.17\Modules\CheckIncludeFile.cmake;E:\Athang-Work\cmake-3.17.0-rc1-win64-x64\share\cmake-3.17\Modules\CheckIncludeFileCXX.cmake;E:\Athang-Work\cmake-3.17.0-rc1-win64-x64\share\cmake-3.17\Modules\CheckTypeSize.cmake;%(AdditionalInputs)</AdditionalInputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\contrib\zlib\CMakeFiles\generate.stamp</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\CMakeFiles\CheckTypeSize\OFF64_T.c;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\zlib\zconf.h.cmakein;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\zlib\zlib.pc.cmakein;E:\CMake\cmake-3.17.0-rc1-win64-x64\share\cmake-3.17\Modules\CheckCSourceCompiles.cmake;E:\CMake\cmake-3.17.0-rc1-win64-x64\share\cmake-3.17\Modules\CheckFunctionExists.c;E:\CMake\cmake-3.17.0-rc1-win64-x64\share\cmake-3.17\Modules\CheckFunctionExists.cmake;E:\CMake\cmake-3.17.0-rc1-win64-x64\share\cmake-3.17\Modules\CheckIncludeFile.c.in;E:\CMake\cmake-3.17.0-rc1-win64-x64\share\cmake-3.17\Modules\CheckIncludeFile.cmake;E:\CMake\cmake-3.17.0-rc1-win64-x64\share\cmake-3.17\Modules\CheckIncludeFileCXX.cmake;E:\CMake\cmake-3.17.0-rc1-win64-x64\share\cmake-3.17\Modules\CheckTypeSize.c.in;E:\CMake\cmake-3.17.0-rc1-win64-x64\share\cmake-3.17\Modules\CheckTypeSize.cmake;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\contrib\zlib\CMakeFiles\generate.stamp</Outputs>
       <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">false</LinkObjects>
-      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">Building Custom Rule E:/Athang-Work/ApexGameEngine/ApexGameEngine/vendor/Assimp/src/contrib/zlib/CMakeLists.txt</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">Building Custom Rule E:/Athang_Work/ApexGameEngine/ApexGameEngine/vendor/Assimp/src/contrib/zlib/CMakeLists.txt</Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">setlocal
-E:\Athang-Work\cmake-3.17.0-rc1-win64-x64\bin\cmake.exe -SE:/Athang-Work/ApexGameEngine/ApexGameEngine/vendor/Assimp/src -BE:/Athang-Work/ApexGameEngine/ApexGameEngine/vendor/Assimp/build --check-stamp-file E:/Athang-Work/ApexGameEngine/ApexGameEngine/vendor/Assimp/build/contrib/zlib/CMakeFiles/generate.stamp
+E:\CMake\cmake-3.17.0-rc1-win64-x64\bin\cmake.exe -SE:/Athang_Work/ApexGameEngine/ApexGameEngine/vendor/Assimp/src -BE:/Athang_Work/ApexGameEngine/ApexGameEngine/vendor/Assimp/build --check-stamp-file E:/Athang_Work/ApexGameEngine/ApexGameEngine/vendor/Assimp/build/contrib/zlib/CMakeFiles/generate.stamp
 if %errorlevel% neq 0 goto :cmEnd
 :cmEnd
 endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
@@ -155,26 +155,26 @@ endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
 exit /b %1
 :cmDone
 if %errorlevel% neq 0 goto :VCEnd</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\zlib\zconf.h.cmakein;E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\zlib\zlib.pc.cmakein;E:\Athang-Work\cmake-3.17.0-rc1-win64-x64\share\cmake-3.17\Modules\CheckCSourceCompiles.cmake;E:\Athang-Work\cmake-3.17.0-rc1-win64-x64\share\cmake-3.17\Modules\CheckFunctionExists.cmake;E:\Athang-Work\cmake-3.17.0-rc1-win64-x64\share\cmake-3.17\Modules\CheckIncludeFile.cmake;E:\Athang-Work\cmake-3.17.0-rc1-win64-x64\share\cmake-3.17\Modules\CheckIncludeFileCXX.cmake;E:\Athang-Work\cmake-3.17.0-rc1-win64-x64\share\cmake-3.17\Modules\CheckTypeSize.cmake;%(AdditionalInputs)</AdditionalInputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\contrib\zlib\CMakeFiles\generate.stamp</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\CMakeFiles\CheckTypeSize\OFF64_T.c;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\zlib\zconf.h.cmakein;E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\src\contrib\zlib\zlib.pc.cmakein;E:\CMake\cmake-3.17.0-rc1-win64-x64\share\cmake-3.17\Modules\CheckCSourceCompiles.cmake;E:\CMake\cmake-3.17.0-rc1-win64-x64\share\cmake-3.17\Modules\CheckFunctionExists.c;E:\CMake\cmake-3.17.0-rc1-win64-x64\share\cmake-3.17\Modules\CheckFunctionExists.cmake;E:\CMake\cmake-3.17.0-rc1-win64-x64\share\cmake-3.17\Modules\CheckIncludeFile.c.in;E:\CMake\cmake-3.17.0-rc1-win64-x64\share\cmake-3.17\Modules\CheckIncludeFile.cmake;E:\CMake\cmake-3.17.0-rc1-win64-x64\share\cmake-3.17\Modules\CheckIncludeFileCXX.cmake;E:\CMake\cmake-3.17.0-rc1-win64-x64\share\cmake-3.17\Modules\CheckTypeSize.c.in;E:\CMake\cmake-3.17.0-rc1-win64-x64\share\cmake-3.17\Modules\CheckTypeSize.cmake;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\contrib\zlib\CMakeFiles\generate.stamp</Outputs>
       <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">false</LinkObjects>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\ZERO_CHECK.vcxproj">
-      <Project>{8C73A773-7034-3B5A-BCC5-B33D62BF3893}</Project>
+    <ProjectReference Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\ZERO_CHECK.vcxproj">
+      <Project>{6B793F9C-1A0D-352D-AAFF-DD4B505C2337}</Project>
       <Name>ZERO_CHECK</Name>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </ProjectReference>
-    <ProjectReference Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\contrib\zlib\zlib.vcxproj">
-      <Project>{0F1FB6AA-664C-3ED5-989C-6986BD5AA675}</Project>
+    <ProjectReference Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\contrib\zlib\zlib.vcxproj">
+      <Project>{A2D2F21A-FD04-3466-BF2C-98DED72A294C}</Project>
       <Name>zlib</Name>
     </ProjectReference>
-    <ProjectReference Include="E:\Athang-Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\contrib\zlib\zlibstatic.vcxproj">
-      <Project>{B7A34C7A-90D5-3E86-9910-49F9EDAB414A}</Project>
+    <ProjectReference Include="E:\Athang_Work\ApexGameEngine\ApexGameEngine\vendor\Assimp\build\contrib\zlib\zlibstatic.vcxproj">
+      <Project>{36A95FB2-7DEE-3866-BD01-C8F05A2033BA}</Project>
       <Name>zlibstatic</Name>
     </ProjectReference>
   </ItemGroup>

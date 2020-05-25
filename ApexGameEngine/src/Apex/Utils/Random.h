@@ -9,7 +9,13 @@ namespace Apex {
 	public:
 		static void Init()
 		{
-			s_RandomEngine.seed(std::random_device()());
+			if (std::random_device().entropy()) {
+				s_RandomEngine.seed(std::random_device()());
+			}
+			else {
+				APEX_CORE_WARN("True Random Device NOT AVAILABLE");
+				s_RandomEngine.seed(std::time(nullptr));
+			}
 		}
 
 		static float Float()
@@ -19,7 +25,7 @@ namespace Apex {
 
 		static int Int()
 		{
-			return 0;
+			return s_Distribution(s_RandomEngine);
 		}
 
 	private:

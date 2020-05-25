@@ -3,4 +3,10 @@
   <ItemGroup>
     <ClCompile Include="src\SandboxApp.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\Games\DXBall\DXBall.h" />
+    <ClInclude Include="src\Games\DXBall\Paddle.h" />
+    <ClInclude Include="src\Games\DXBall\Ball.h" />
+    <ClInclude Include="src\Games\DXBall\Brick.h" />
+  </ItemGroup>
 </Project>

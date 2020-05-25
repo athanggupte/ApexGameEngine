@@ -12,11 +12,17 @@ namespace Apex {
 	{
 		glm::vec2 position;
 		glm::vec2 velocity, velocityVariation;
-		float rotationSpeed, rotationSpeedVariation;
+		glm::vec2 acceleration;
+		float rotation, rotationSpeed, rotationSpeedVariation;
 		
 		glm::vec4 colorBegin, colorEnd;
-		float sizeBegin, sizeEnd, sizeVariation;
-		
+		glm::vec2 sizeBegin, sizeEnd, sizeVariation;
+
+		bool useTexture = false;
+
+		uint32_t textureNumRows = 1;
+		uint32_t textureIndex = 0;
+
 		float lifetime = 1.0f;
 	};
 
@@ -36,11 +42,17 @@ namespace Apex {
 		{
 			glm::vec2 position;
 			glm::vec2 velocity;
+			glm::vec2 acceleration;
 			float rotation;
 			float rotationSpeed;
 			
 			glm::vec4 colorBegin, colorEnd;
-			float sizeBegin, sizeEnd;
+			glm::vec2 sizeBegin, sizeEnd;
+			
+			bool useTexture = false;
+
+			uint32_t textureNumRows = 1;
+			uint32_t textureIndex = 0;
 			
 			float lifetime = 1.0f, lifeRemaining = 0.0f;
 

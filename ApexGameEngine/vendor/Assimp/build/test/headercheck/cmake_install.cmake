@@ -1,4 +1,4 @@
-# Install script for directory: E:/Athang-Work/ApexGameEngine/ApexGameEngine/vendor/Assimp/src/test/headercheck
+# Install script for directory: E:/Athang_Work/ApexGameEngine/ApexGameEngine/vendor/Assimp/src/test/headercheck
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)

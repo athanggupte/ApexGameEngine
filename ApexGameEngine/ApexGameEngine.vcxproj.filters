@@ -147,9 +147,6 @@
     <ClInclude Include="src\Apex\Model\Model.h">
       <Filter>src\Apex\Model</Filter>
     </ClInclude>
-    <ClInclude Include="src\Apex\Physics\Collision\Collider.h">
-      <Filter>src\Apex\Physics\Collision</Filter>
-    </ClInclude>
     <ClInclude Include="src\Apex\Physics\Interaction\MousePicker.h">
       <Filter>src\Apex\Physics\Interaction</Filter>
     </ClInclude>
@@ -1371,6 +1368,16 @@
     <ClInclude Include="vendor\stb_image\stb_image.h">
       <Filter>vendor\stb_image</Filter>
     </ClInclude>
+    <ClInclude Include="src\Apex\Physics\Collision\Collidable.h" />
+    <ClInclude Include="src\Apex\Physics\PhysicsTimer\PhysicsTimer.h" />
+    <ClInclude Include="src\Apex\Physics\Collision\Collider.h">
+      <Filter>src\Apex\Physics\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Apex\Entity\GameObject.h" />
+    <ClInclude Include="src\Apex\Physics\Movement\RigidBody.h" />
+    <ClInclude Include="src\Apex\Networking\Socket.h" />
+    <ClInclude Include="src\Apex\Networking\NetworkManager.h" />
+    <ClInclude Include="src\Apex\Utils\Profiler.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Apex\Application.cpp">
@@ -1481,5 +1488,12 @@
     <ClCompile Include="vendor\stb_image\stb_image.cpp">
       <Filter>vendor\stb_image</Filter>
     </ClCompile>
+    <ClCompile Include="src\Apex\Physics\Collision\Collidable.cpp" />
+    <ClCompile Include="src\Apex\Physics\PhysicsTimer\PhysicsTimer.cpp" />
+    <ClCompile Include="src\Apex\Physics\Collision\Collider.cpp" />
+    <ClCompile Include="src\Apex\Physics\Movement\RigidBody.cpp" />
+    <ClCompile Include="src\Apex\Networking\Socket.cpp" />
+    <ClCompile Include="src\Apex\Networking\NetworkManager.cpp" />
+    <ClCompile Include="src\Apex\Utils\Profiler.cpp" />
   </ItemGroup>
 </Project>

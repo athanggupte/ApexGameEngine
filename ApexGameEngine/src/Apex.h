@@ -8,6 +8,7 @@
 #include "Apex/Log/Log.h"
 #include "Apex/Utils/MathPrimitiveParser.h"
 #include "Apex/Utils/Timer.h"
+#include "Apex/Utils/Random.h"
 
 //-----Input----------------------------
 #include "Apex/Input/Input.h"
