@@ -5,6 +5,8 @@
 #include "Apex/Renderer/Renderer.h"
 #include "Apex/Input/Input.h"
 
+#include "Apex/Utils/Profiler.h"
+
 #include <GLFW/glfw3.h>
 
 namespace Apex {
@@ -36,6 +38,8 @@ namespace Apex {
 
 	void Application::Run()
 	{
+		Instrumentor::Get().BeginSession(__FUNCTION__);
+
 		while (m_Running) {
 
 			Timer::UpdateTime();
@@ -51,6 +55,8 @@ namespace Apex {
 
 			m_Window->OnUpdate();
 		}
+
+		Instrumentor::Get().EndSession();
 	}
 
 	// Event Handlers

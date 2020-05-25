@@ -1377,6 +1377,7 @@
     <ClInclude Include="src\Apex\Physics\Movement\RigidBody.h" />
     <ClInclude Include="src\Apex\Networking\Socket.h" />
     <ClInclude Include="src\Apex\Networking\NetworkManager.h" />
+    <ClInclude Include="src\Apex\Utils\Profiler.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Apex\Application.cpp">
@@ -1493,5 +1494,6 @@
     <ClCompile Include="src\Apex\Physics\Movement\RigidBody.cpp" />
     <ClCompile Include="src\Apex\Networking\Socket.cpp" />
     <ClCompile Include="src\Apex\Networking\NetworkManager.cpp" />
+    <ClCompile Include="src\Apex\Utils\Profiler.cpp" />
   </ItemGroup>
 </Project>

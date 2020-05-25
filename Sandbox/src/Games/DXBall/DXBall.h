@@ -11,9 +11,11 @@
 #include "Apex/Physics/PhysicsTimer/PhysicsTimer.h"
 #include "Apex/Networking/NetworkManager.h"
 
-#include "Ball.h"
-#include "Paddle.h"
-#include "Brick.h"
+#include "GameObjects/Ball.h"
+#include "GameObjects/Paddle.h"
+#include "GameObjects/Brick.h"
+
+#include "Gameplay/Lobby.h"
 
 namespace DXBall {
 
@@ -371,10 +373,7 @@ namespace DXBall {
 		TestLayer() 
 			: m_Camera(-1.6f, 1.6f, -0.9f, 0.9f)
 		{
-			m_Brick1 = std::make_unique<Brick>(glm::vec2(-0.20f, 0.10f), glm::vec2(0.20f, -0.10f));
-			m_Brick1->m_Color = { 0.0f, 0.0f, 1.0f, 1.0f };
-			m_Brick2 = std::make_unique<Brick>(glm::vec2(-0.20f, 0.10f), glm::vec2(0.20f, -0.10f));
-			m_Brick2->m_Color = { 1.0f, 0.0f, 0.0f, 1.0f };
+			m_Lobby = std::make_unique<Lobby>();
 		}
 
 		void OnAttach() override {}
@@ -385,8 +384,8 @@ namespace DXBall {
 		{
 			Apex::Renderer::BeginScene(m_Camera);
 			Apex::RenderCommands::Clear();
-			m_Brick1->Render();
-			m_Brick2->Render();
+			for (auto& brick : m_Bricks)
+				brick->Render();
 			Apex::Renderer::EndScene();
 		}
 		
@@ -394,26 +393,57 @@ namespace DXBall {
 		{
 			static bool unselected = true;
 			ImGui::Begin("Brick");
-			ImGui::DragFloat2("Position", &m_Brick1->m_Position.x, 0.05f, -1.6f, 1.6f);
+			//ImGui::DragFloat2("Position", &m_Lobby->GetPlayer(m_PlayerIndex)->GetPosition().x, 0.05f, -1.6f, 1.6f);
+
 			if (unselected) {
 				
-				auto fun = [this](const Apex::Ref<Apex::TCPClientSocket>& socket, Apex::CommunicationPacket& packet) {
-					MyCommunicationPacket sendPacket, recvPacket;
-					sendPacket = { packet, m_Brick1->m_Position };
+				/* CLIENT */
+
+				auto clientFun = [this](const Apex::Ref<Apex::TCPClientSocket>& socket, Apex::CommunicationPacket& packet) {
+					MyClientPacket sendPacket;
+					MyServerPacket recvPacket;
+					sendPacket = { packet, m_PlayerIndex, m_Lobby->GetPlayer(m_PlayerIndex)->GetPosition() };
 					//APEX_LOG_TRACE("[Send] Position :: {0} , {1}", sendPacket.position.x, sendPacket.position.y);
 					if(socket->Send(sendPacket, sizeof(sendPacket)) < 1) return false;
 					if(socket->Recv(recvPacket, sizeof(recvPacket)) < 1) return false;
-					m_Brick2->m_Position = recvPacket.position;
+					{
+						uint32_t i = 0;
+						for (auto& position : recvPacket.positions) {
+							if (i != m_PlayerIndex)
+								m_Bricks.at(i)->m_Position = position;
+						}
+					}
 					//APEX_LOG_TRACE("[Recv] Position :: {0} , {1}", recvPacket.position.x, recvPacket.position.y);
 					return true;
 				};
 
 				if (ImGui::Button("Client")) {
-					Apex::NetworkManager::StartClientWorkerThread(std::make_shared<Apex::TCPClientSocket>("localhost", "27015"), fun, std::chrono::microseconds(25));
+					Apex::NetworkManager::StartClientWorkerThread(std::make_shared<Apex::TCPClientSocket>("localhost", "27015"), clientFun, std::chrono::microseconds(25));
 					unselected = false;
 				}
+
+				/* SERVER */
+
+				auto serverFun = [this](const Apex::Ref<Apex::TCPClientSocket>& socket, Apex::CommunicationPacket& packet) {
+					MyClientPacket sendPacket;
+					MyServerPacket recvPacket;
+					sendPacket = { packet, m_PlayerIndex, m_Lobby->GetPlayer(m_PlayerIndex)->GetPosition() };
+					//APEX_LOG_TRACE("[Send] Position :: {0} , {1}", sendPacket.position.x, sendPacket.position.y);
+					if (socket->Send(sendPacket, sizeof(sendPacket)) < 1) return false;
+					if (socket->Recv(recvPacket, sizeof(recvPacket)) < 1) return false;
+					{
+						uint32_t i = 0;
+						for (auto& position : recvPacket.positions) {
+							if (i != m_PlayerIndex)
+								m_Bricks.at(i)->m_Position = position;
+						}
+					}
+					//APEX_LOG_TRACE("[Recv] Position :: {0} , {1}", recvPacket.position.x, recvPacket.position.y);
+					return true;
+				};
+
 				if (ImGui::Button("Server")) {
-					Apex::NetworkManager::StartServerWorkerThread(fun, std::chrono::microseconds(25));
+					Apex::NetworkManager::StartServerWorkerThread(serverFun, std::chrono::microseconds(25));
 					unselected = false;
 				}
 			}
@@ -421,14 +451,10 @@ namespace DXBall {
 		}
 
 	private:
-		Apex::Scope<Brick> m_Brick1;
-		Apex::Scope<Brick> m_Brick2;
-		Apex::OrthographicCamera m_Camera;
+		uint32_t m_PlayerIndex;
+		Apex::Scope<Lobby> m_Lobby;
 
-		class MyCommunicationPacket : public Apex::CommunicationPacket
-		{
-		public:
-			glm::vec2 position;
-		};
+		std::vector<Apex::Scope<Brick>> m_Bricks;
+		Apex::OrthographicCamera m_Camera;
 	};
 }

@@ -9,6 +9,8 @@
 #include "Apex/Model/Model.h"
 #include "Apex/Physics/ParticleSystem/ParticleSystem2D.h"
 
+#include "Apex/Utils/Profiler.h"
+
 #include "Games/DXBall/DXBall.h"
 
 // Networking
@@ -481,6 +483,7 @@ public:
 	
 	virtual void OnUpdate() override
 	{
+		PROFILE_FUNC;
 
 		glm::vec3 cameraMovement(0.f);
 		std::pair<float, float> mouseDiff;
@@ -519,15 +522,17 @@ public:
 		auto textureShader = Apex::AssetManager::GetShaderLibrary().GetShader("Texture");
 
 		/*---------First Pass------------*/
-		Apex::RenderCommands::SetViewport(0, 0, 2048, 2048);
-		m_DepthBuffer->Bind();
-		Apex::RenderCommands::Clear();
-		Apex::Renderer::BeginScene(m_LightCamera);
-		//Apex::Renderer::Submit(textureShader, m_SquareVA, glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, -12.0f, 0.0f)));
-		Apex::Renderer::SubmitModel(depthShader, m_Model,
-			glm::rotate(glm::mat4(1.0f), mouseDiff1.first * 0.02f, m_Camera.GetUp()) * glm::rotate(glm::mat4(1.0f), mouseDiff1.second * 0.02f, m_Camera.GetRight()));
-		Apex::Renderer::EndScene();
-
+		{
+			PROFILE_SCOPE("First-Pass");
+			Apex::RenderCommands::SetViewport(0, 0, 2048, 2048);
+			m_DepthBuffer->Bind();
+			Apex::RenderCommands::Clear();
+			Apex::Renderer::BeginScene(m_LightCamera);
+			//Apex::Renderer::Submit(textureShader, m_SquareVA, glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, -12.0f, 0.0f)));
+			Apex::Renderer::SubmitModel(depthShader, m_Model,
+				glm::rotate(glm::mat4(1.0f), mouseDiff1.first * 0.02f, m_Camera.GetUp()) * glm::rotate(glm::mat4(1.0f), mouseDiff1.second * 0.02f, m_Camera.GetRight()));
+			Apex::Renderer::EndScene();
+		}
 		m_DepthBuffer->Unbind();
 		Apex::RenderCommands::SetViewport(0, 0, 1280, 720);
 		Apex::RenderCommands::SetClearColor({0.0f, 0.0f, 0.3f, 1.0f});
@@ -558,6 +563,8 @@ public:
 	
 	virtual void OnImGuiRender() override
 	{
+		ImGui::ShowMetricsWindow();
+
 		ImGui::Begin("Stats");
 		std::stringstream ss;
 		ss << "CameraPosition : " << m_Camera.GetPosition().x << "," << m_Camera.GetPosition().y << "," << m_Camera.GetPosition().z;
@@ -804,9 +811,9 @@ public:
 		Apex::NetworkManager::Startup();
 
 		//PushLayer(new SandboxLayer());
-		//PushLayer(new ModelLayer());
+		PushLayer(new ModelLayer());
 		//PushLayer(new ParticleLayer());
-		PushLayer(new DXBall::TestLayer());
+		//PushLayer(new DXBall::TestLayer());
 	}
 
 	~Sandbox()

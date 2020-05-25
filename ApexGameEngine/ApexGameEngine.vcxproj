@@ -184,6 +184,7 @@
     <ClInclude Include="src\Apex\Renderer\RenderingContext.h" />
     <ClInclude Include="src\Apex\StartUp.h" />
     <ClInclude Include="src\Apex\Utils\MathPrimitiveParser.h" />
+    <ClInclude Include="src\Apex\Utils\Profiler.h" />
     <ClInclude Include="src\Apex\Utils\Random.h" />
     <ClInclude Include="src\Apex\Utils\Timer.h" />
     <ClInclude Include="src\Apex\Window.h" />
@@ -606,6 +607,7 @@
     <ClCompile Include="src\Apex\Renderer\Renderer.cpp" />
     <ClCompile Include="src\Apex\Renderer\RendererAPI.cpp" />
     <ClCompile Include="src\Apex\Utils\MathPrimitiveParser.cpp" />
+    <ClCompile Include="src\Apex\Utils\Profiler.cpp" />
     <ClCompile Include="src\Apex\Utils\Random.cpp" />
     <ClCompile Include="src\Apex\Utils\Timer.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLBuffer.cpp" />
