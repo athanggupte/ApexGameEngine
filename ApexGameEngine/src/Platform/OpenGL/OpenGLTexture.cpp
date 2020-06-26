@@ -10,14 +10,14 @@ namespace Apex {
 	/*---------------------------Texture 2D-----------------------------*/
 	//////////////////////////////////////////////////////////////////////
 
-	OpenGLTexture2D::OpenGLTexture2D()
-		: m_Width(1280), m_Height(720)
+	OpenGLTexture2D::OpenGLTexture2D(uint32_t width, uint32_t height)
+		: m_Width(width), m_Height(height)
 	{
 		glGenTextures(1, &m_RendererID);
 		glBindTexture(GL_TEXTURE_2D, m_RendererID);
 		//glTextureStorage2D(m_RendererID, 1, GL_RGB8, m_Width, m_Height);
 		
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB8, m_Width, m_Height, 0, GL_RGB, GL_UNSIGNED_BYTE, nullptr);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, m_Width, m_Height, 0, GL_RGB, GL_UNSIGNED_BYTE, nullptr);
 		//glTextureSubImage2D(m_RendererID, 0, 0, 0, m_Width, m_Height, GL_RGB, GL_UNSIGNED_BYTE, nullptr);
 
 		glTextureParameteri(m_RendererID, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -78,7 +78,7 @@ namespace Apex {
 	/*------------------------Texture 2D HDR----------------------------*/
 	//////////////////////////////////////////////////////////////////////
 
-	OpenGLTexture2D_HDR::OpenGLTexture2D_HDR()
+	OpenGLTexture2D_HDR::OpenGLTexture2D_HDR(uint32_t width, uint32_t height)
 		: m_Width(1280), m_Height(720)
 	{
 		glGenTextures(1, &m_RendererID);
@@ -107,11 +107,11 @@ namespace Apex {
 
 		
 		if (channels == 3) {
-			internalFormat = GL_SRGB;
+			internalFormat = GL_RGB16F;
 			dataFormat = GL_RGB;
 		}
 		else if (channels == 4) {
-			internalFormat = GL_SRGB_ALPHA;
+			internalFormat = GL_RGBA16F;
 			dataFormat = GL_RGBA;
 		}
 
@@ -119,13 +119,13 @@ namespace Apex {
 
 		glGenTextures(1, &m_RendererID);
 		glBindTexture(GL_TEXTURE_2D, m_RendererID);
-		//glTextureStorage2D(m_RendererID, 1, internalFormat, m_Width, m_Height);
-		glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, m_Width, m_Height, 0, dataFormat, GL_UNSIGNED_BYTE, data);
+		glTextureStorage2D(m_RendererID, 1, internalFormat, m_Width, m_Height);
+		//glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, m_Width, m_Height, 0, dataFormat, GL_UNSIGNED_BYTE, data);
 
 		glTextureParameteri(m_RendererID, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		glTextureParameteri(m_RendererID, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
-		//glTextureSubImage2D(m_RendererID, 0, 0, 0, m_Width, m_Height, dataFormat, GL_UNSIGNED_BYTE, data);
+		glTextureSubImage2D(m_RendererID, 0, 0, 0, m_Width, m_Height, dataFormat, GL_FLOAT, data);
 
 		stbi_image_free(data);
 	}

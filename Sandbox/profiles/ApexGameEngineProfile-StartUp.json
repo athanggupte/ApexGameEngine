@@ -1,0 +1,3 @@
+{"_Timestamp_":"2020-06-10 19:18:16","otherData":{},"traceEvents":[
+{"cat":"function","dur":4112395,"name":"void __cdecl ModelLayer::OnAttach(void)","ph":"X","pid":0,"tid":1119296784,"ts":196975641929}
+]}

@@ -10,6 +10,12 @@
     <Filter Include="src\Apex\AssetManager">
       <UniqueIdentifier>{54323B6C-C09E-F666-8992-8EC4F5BD18CF}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Apex\Camera">
+      <UniqueIdentifier>{C272B51D-2EFE-22E2-370F-A6D6A3197FE2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Apex\Entity">
+      <UniqueIdentifier>{96EA4E23-0276-BCE7-0B87-3FDC779118E8}</UniqueIdentifier>
+    </Filter>
     <Filter Include="src\Apex\Events">
       <UniqueIdentifier>{2E8AD723-9A15-45E8-A326-C8DC0F31A1E8}</UniqueIdentifier>
     </Filter>
@@ -31,6 +37,9 @@
     <Filter Include="src\Apex\Model">
       <UniqueIdentifier>{4AA66C28-3674-602E-1F08-D1540B753C93}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Apex\Networking">
+      <UniqueIdentifier>{61BC10E5-CD1D-EEF2-568B-34A5C2EB24B2}</UniqueIdentifier>
+    </Filter>
     <Filter Include="src\Apex\Physics">
       <UniqueIdentifier>{FCAA4DCE-E8A3-6C20-11D6-51A5FD2D4C2C}</UniqueIdentifier>
     </Filter>
@@ -40,8 +49,14 @@
     <Filter Include="src\Apex\Physics\Interaction">
       <UniqueIdentifier>{EBBCA2D7-D777-9283-802F-0BCE6CC9DC13}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Apex\Physics\Movement">
+      <UniqueIdentifier>{B6CB7B21-228E-AFAB-6B3E-3E38D73F8889}</UniqueIdentifier>
+    </Filter>
     <Filter Include="src\Apex\Physics\ParticleSystem">
       <UniqueIdentifier>{64F91817-D0DC-2757-D9DF-55934542EEA7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Apex\Physics\PhysicsTimer">
+      <UniqueIdentifier>{6F1A2CE4-DB32-130E-A4DF-A2A710B7A7A7}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\Apex\PostProcessing">
       <UniqueIdentifier>{3C43155F-A87A-5DF6-B184-C1191D3B84EF}</UniqueIdentifier>
@@ -102,8 +117,14 @@
     <ClInclude Include="src\Apex\AssetManager\AssetManager.h">
       <Filter>src\Apex\AssetManager</Filter>
     </ClInclude>
+    <ClInclude Include="src\Apex\Camera\Camera.h">
+      <Filter>src\Apex\Camera</Filter>
+    </ClInclude>
     <ClInclude Include="src\Apex\Core.h">
       <Filter>src\Apex</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Apex\Entity\GameObject.h">
+      <Filter>src\Apex\Entity</Filter>
     </ClInclude>
     <ClInclude Include="src\Apex\Events\ApplicationEvent.h">
       <Filter>src\Apex\Events</Filter>
@@ -147,19 +168,34 @@
     <ClInclude Include="src\Apex\Model\Model.h">
       <Filter>src\Apex\Model</Filter>
     </ClInclude>
+    <ClInclude Include="src\Apex\Networking\NetworkManager.h">
+      <Filter>src\Apex\Networking</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Apex\Networking\Socket.h">
+      <Filter>src\Apex\Networking</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Apex\Physics\Collision\Collidable.h">
+      <Filter>src\Apex\Physics\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Apex\Physics\Collision\Collider.h">
+      <Filter>src\Apex\Physics\Collision</Filter>
+    </ClInclude>
     <ClInclude Include="src\Apex\Physics\Interaction\MousePicker.h">
       <Filter>src\Apex\Physics\Interaction</Filter>
     </ClInclude>
+    <ClInclude Include="src\Apex\Physics\Movement\RigidBody.h">
+      <Filter>src\Apex\Physics\Movement</Filter>
+    </ClInclude>
     <ClInclude Include="src\Apex\Physics\ParticleSystem\ParticleSystem2D.h">
       <Filter>src\Apex\Physics\ParticleSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Apex\Physics\PhysicsTimer\PhysicsTimer.h">
+      <Filter>src\Apex\Physics\PhysicsTimer</Filter>
     </ClInclude>
     <ClInclude Include="src\Apex\PostProcessing\Blur.h">
       <Filter>src\Apex\PostProcessing</Filter>
     </ClInclude>
     <ClInclude Include="src\Apex\RenderPrimitives\Buffer.h">
-      <Filter>src\Apex\RenderPrimitives</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Apex\RenderPrimitives\Camera.h">
       <Filter>src\Apex\RenderPrimitives</Filter>
     </ClInclude>
     <ClInclude Include="src\Apex\RenderPrimitives\FrameBuffer.h">
@@ -190,6 +226,9 @@
       <Filter>src\Apex</Filter>
     </ClInclude>
     <ClInclude Include="src\Apex\Utils\MathPrimitiveParser.h">
+      <Filter>src\Apex\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Apex\Utils\Profiler.h">
       <Filter>src\Apex\Utils</Filter>
     </ClInclude>
     <ClInclude Include="src\Apex\Utils\Random.h">
@@ -1368,16 +1407,6 @@
     <ClInclude Include="vendor\stb_image\stb_image.h">
       <Filter>vendor\stb_image</Filter>
     </ClInclude>
-    <ClInclude Include="src\Apex\Physics\Collision\Collidable.h" />
-    <ClInclude Include="src\Apex\Physics\PhysicsTimer\PhysicsTimer.h" />
-    <ClInclude Include="src\Apex\Physics\Collision\Collider.h">
-      <Filter>src\Apex\Physics\Collision</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Apex\Entity\GameObject.h" />
-    <ClInclude Include="src\Apex\Physics\Movement\RigidBody.h" />
-    <ClInclude Include="src\Apex\Networking\Socket.h" />
-    <ClInclude Include="src\Apex\Networking\NetworkManager.h" />
-    <ClInclude Include="src\Apex\Utils\Profiler.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Apex\Application.cpp">
@@ -1385,6 +1414,9 @@
     </ClCompile>
     <ClCompile Include="src\Apex\AssetManager\AssetManager.cpp">
       <Filter>src\Apex\AssetManager</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Apex\Camera\Camera.cpp">
+      <Filter>src\Apex\Camera</Filter>
     </ClCompile>
     <ClCompile Include="src\Apex\ImGui\ImGuiBuild.cpp">
       <Filter>src\Apex\ImGui</Filter>
@@ -1410,16 +1442,31 @@
     <ClCompile Include="src\Apex\Model\Model.cpp">
       <Filter>src\Apex\Model</Filter>
     </ClCompile>
+    <ClCompile Include="src\Apex\Networking\NetworkManager.cpp">
+      <Filter>src\Apex\Networking</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Apex\Networking\Socket.cpp">
+      <Filter>src\Apex\Networking</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Apex\Physics\Collision\Collidable.cpp">
+      <Filter>src\Apex\Physics\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Apex\Physics\Collision\Collider.cpp">
+      <Filter>src\Apex\Physics\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Apex\Physics\Movement\RigidBody.cpp">
+      <Filter>src\Apex\Physics\Movement</Filter>
+    </ClCompile>
     <ClCompile Include="src\Apex\Physics\ParticleSystem\ParticleSystem2D.cpp">
       <Filter>src\Apex\Physics\ParticleSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Apex\Physics\PhysicsTimer\PhysicsTimer.cpp">
+      <Filter>src\Apex\Physics\PhysicsTimer</Filter>
     </ClCompile>
     <ClCompile Include="src\Apex\PostProcessing\Blur.cpp">
       <Filter>src\Apex\PostProcessing</Filter>
     </ClCompile>
     <ClCompile Include="src\Apex\RenderPrimitives\Buffer.cpp">
-      <Filter>src\Apex\RenderPrimitives</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Apex\RenderPrimitives\Camera.cpp">
       <Filter>src\Apex\RenderPrimitives</Filter>
     </ClCompile>
     <ClCompile Include="src\Apex\RenderPrimitives\FrameBuffer.cpp">
@@ -1444,6 +1491,9 @@
       <Filter>src\Apex\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\Apex\Utils\MathPrimitiveParser.cpp">
+      <Filter>src\Apex\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Apex\Utils\Profiler.cpp">
       <Filter>src\Apex\Utils</Filter>
     </ClCompile>
     <ClCompile Include="src\Apex\Utils\Random.cpp">
@@ -1488,12 +1538,5 @@
     <ClCompile Include="vendor\stb_image\stb_image.cpp">
       <Filter>vendor\stb_image</Filter>
     </ClCompile>
-    <ClCompile Include="src\Apex\Physics\Collision\Collidable.cpp" />
-    <ClCompile Include="src\Apex\Physics\PhysicsTimer\PhysicsTimer.cpp" />
-    <ClCompile Include="src\Apex\Physics\Collision\Collider.cpp" />
-    <ClCompile Include="src\Apex\Physics\Movement\RigidBody.cpp" />
-    <ClCompile Include="src\Apex\Networking\Socket.cpp" />
-    <ClCompile Include="src\Apex\Networking\NetworkManager.cpp" />
-    <ClCompile Include="src\Apex\Utils\Profiler.cpp" />
   </ItemGroup>
 </Project>

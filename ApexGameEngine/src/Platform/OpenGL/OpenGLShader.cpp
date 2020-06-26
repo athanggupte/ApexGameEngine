@@ -13,6 +13,8 @@ namespace Apex {
 			return GL_VERTEX_SHADER;
 		if (type == "fragment" || type == "pixel")
 			return GL_FRAGMENT_SHADER;
+		if (type == "geometry")
+			return GL_GEOMETRY_SHADER;
 
 		return 0;
 	}
@@ -213,7 +215,7 @@ namespace Apex {
 			);
 			name[namelen] = 0;
 
-			uint32_t location = glGetUniformLocation(m_RendererID, name);
+			//uint32_t location = glGetUniformLocation(m_RendererID, name);
 
 			std::tuple<std::string, uint32_t, size_t> data = { std::string(name), type, num };
 			uniformData.push_back(data);

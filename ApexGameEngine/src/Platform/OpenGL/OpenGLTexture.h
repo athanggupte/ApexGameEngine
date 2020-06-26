@@ -7,7 +7,7 @@ namespace Apex {
 	class OpenGLTexture2D : public Texture2D
 	{
 	public:
-		OpenGLTexture2D();
+		OpenGLTexture2D(uint32_t width, uint32_t height);
 		OpenGLTexture2D(const std::string& path);
 		virtual ~OpenGLTexture2D();
 
@@ -29,7 +29,7 @@ namespace Apex {
 	class OpenGLTexture2D_HDR : public Texture2D_HDR
 	{
 	public:
-		OpenGLTexture2D_HDR();
+		OpenGLTexture2D_HDR(uint32_t width, uint32_t height);
 		OpenGLTexture2D_HDR(const std::string& path);
 		virtual ~OpenGLTexture2D_HDR();
 

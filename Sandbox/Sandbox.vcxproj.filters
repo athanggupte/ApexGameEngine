@@ -1,12 +1,43 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="src\SandboxApp.cpp" />
+    <Filter Include="Games">
+      <UniqueIdentifier>{D2D93A0D-3EEE-62BE-0770-061E73435FEF}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Games\DXBall">
+      <UniqueIdentifier>{18945B0A-04F7-EAAE-AD7C-236599BEB631}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Games\DXBall\GameObjects">
+      <UniqueIdentifier>{0B8326CB-F7A7-754B-20F3-5ADB0C777469}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Games\DXBall\Gameplay">
+      <UniqueIdentifier>{17B83077-8324-EC71-4C18-84CFB8430EDA}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\Games\DXBall\DXBall.h" />
-    <ClInclude Include="src\Games\DXBall\Paddle.h" />
-    <ClInclude Include="src\Games\DXBall\Ball.h" />
-    <ClInclude Include="src\Games\DXBall\Brick.h" />
+    <ClInclude Include="src\ChildProcess.h" />
+    <ClInclude Include="src\Games\DXBall\DXBall.h">
+      <Filter>Games\DXBall</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Games\DXBall\GameObjects\Ball.h">
+      <Filter>Games\DXBall\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Games\DXBall\GameObjects\Brick.h">
+      <Filter>Games\DXBall\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Games\DXBall\GameObjects\Paddle.h">
+      <Filter>Games\DXBall\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Games\DXBall\Gameplay\Lobby.h">
+      <Filter>Games\DXBall\Gameplay</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Games\DXBall\Gameplay\Player.h">
+      <Filter>Games\DXBall\Gameplay</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Terminal.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\SandboxApp.cpp" />
+    <ClCompile Include="src\TerminalWindows.cpp" />
   </ItemGroup>
 </Project>
