@@ -222,9 +222,6 @@
     <ClInclude Include="src\Platform\OpenGL\OpenGLVertexArray.h">
       <Filter>src\Platform\OpenGL</Filter>
     </ClInclude>
-    <ClInclude Include="src\Platform\Windows\WindowsInput.h">
-      <Filter>src\Platform\Windows</Filter>
-    </ClInclude>
     <ClInclude Include="src\Platform\Windows\WindowsTimer.h">
       <Filter>src\Platform\Windows</Filter>
     </ClInclude>
@@ -1378,6 +1375,7 @@
     <ClInclude Include="src\Apex\Networking\Socket.h" />
     <ClInclude Include="src\Apex\Networking\NetworkManager.h" />
     <ClInclude Include="src\Apex\Utils\Profiler.h" />
+    <ClInclude Include="src\Apex\ComputeShader\ComputeShader.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Apex\Application.cpp">
@@ -1495,5 +1493,6 @@
     <ClCompile Include="src\Apex\Networking\Socket.cpp" />
     <ClCompile Include="src\Apex\Networking\NetworkManager.cpp" />
     <ClCompile Include="src\Apex\Utils\Profiler.cpp" />
+    <ClCompile Include="src\Apex\ComputeShader\ComputeShader.cpp" />
   </ItemGroup>
 </Project>
