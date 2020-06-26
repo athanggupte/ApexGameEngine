@@ -56,8 +56,10 @@ namespace Apex {
 
 	void OpenGLFrameBuffer::Bind() const
 	{
-		if(!IsComplete())
+		if (!IsComplete()) {
 			glBindFramebuffer(GL_FRAMEBUFFER, 0);
+			APEX_CORE_ERROR("Framebuffer not complete");
+		}
 	}
 	
 	void OpenGLFrameBuffer::Unbind() const

@@ -28,14 +28,14 @@ namespace Apex {
 	{
 	public:
 		static Ref<Texture2D> Create(const std::string& path);
-		static Ref<Texture2D> Create();
+		static Ref<Texture2D> Create(uint32_t width = 1280, uint32_t height = 720);
 	};
 
 	class Texture2D_HDR : public Texture2D
 	{
 	public:
 		static Ref<Texture2D_HDR> Create(const std::string& path);
-		static Ref<Texture2D_HDR> Create();
+		static Ref<Texture2D_HDR> Create(uint32_t width = 1280, uint32_t height = 720);
 	};
 
 	class TextureDepth2D : public Texture

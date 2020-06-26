@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|x64">
       <Configuration>Debug</Configuration>
@@ -19,8 +19,7 @@
     <IgnoreWarnCompileDuplicatedFilename>true</IgnoreWarnCompileDuplicatedFilename>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>ApexGameEngine</RootNamespace>
-    <WindowsTargetPlatformVersion>
-    </WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
@@ -77,8 +76,8 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>apex_pch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>APEX_PLATFORM_WINDOWS;APEX_BUILD_DLL;GLFW_INCLUDE_NONE;APEX_DEBUG;APEX_ENABLE_ASSERTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\GLFW\include;vendor\Glad\include;vendor\imgui;vendor\glm;vendor\stb_image;vendor\Assimp\build\include;vendor\Assimp\src\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>APEX_PLATFORM_WINDOWS;APEX_BUILD_DLL;GLFW_INCLUDE_NONE;APEX_DEBUG;APEX_ENABLE_ASSERTS;APEX_PROFILER_ENABLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\GLFW\include;vendor\Glad\include;vendor\imgui;vendor\glm;vendor\stb_image;vendor\Assimp\build\include;vendor\Assimp\src\include;vendor\irrKlang\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -89,8 +88,8 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Lib>
-      <AdditionalDependencies>opengl32.lib;assimp-vc142-mtd.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>vendor\Assimp\build\code\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opengl32.lib;assimp-vc142-mtd.lib;irrKlang.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>vendor\Assimp\build\code\Debug;vendor\irrKlang\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -98,8 +97,8 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>apex_pch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>APEX_PLATFORM_WINDOWS;APEX_BUILD_DLL;GLFW_INCLUDE_NONE;APEX_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\GLFW\include;vendor\Glad\include;vendor\imgui;vendor\glm;vendor\stb_image;vendor\Assimp\build\include;vendor\Assimp\src\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>APEX_PLATFORM_WINDOWS;APEX_BUILD_DLL;GLFW_INCLUDE_NONE;APEX_RELEASE;APEX_PROFILER_ENABLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\GLFW\include;vendor\Glad\include;vendor\imgui;vendor\glm;vendor\stb_image;vendor\Assimp\build\include;vendor\Assimp\src\include;vendor\irrKlang\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -114,8 +113,8 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <Lib>
-      <AdditionalDependencies>opengl32.lib;assimp-vc141-mtd.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>vendor\Assimp\build\code\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opengl32.lib;assimp-vc142-mtd.lib;irrKlang.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>vendor\Assimp\build\code\Debug;vendor\irrKlang\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Dist|x64'">
@@ -124,7 +123,7 @@
       <PrecompiledHeaderFile>apex_pch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>APEX_PLATFORM_WINDOWS;APEX_BUILD_DLL;GLFW_INCLUDE_NONE;APEX_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\GLFW\include;vendor\Glad\include;vendor\imgui;vendor\glm;vendor\stb_image;vendor\Assimp\build\include;vendor\Assimp\src\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\GLFW\include;vendor\Glad\include;vendor\imgui;vendor\glm;vendor\stb_image;vendor\Assimp\build\include;vendor\Assimp\src\include;vendor\irrKlang\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -139,8 +138,8 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <Lib>
-      <AdditionalDependencies>opengl32.lib;assimp-vc141-mtd.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>vendor\Assimp\build\code\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opengl32.lib;assimp-vc142-mtd.lib;irrKlang.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>vendor\Assimp\build\code\Debug;vendor\irrKlang\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -148,6 +147,7 @@
     <ClInclude Include="src\Apex.h" />
     <ClInclude Include="src\Apex\Application.h" />
     <ClInclude Include="src\Apex\AssetManager\AssetManager.h" />
+    <ClInclude Include="src\Apex\Camera\Camera.h" />
     <ClInclude Include="src\Apex\Core.h" />
     <ClInclude Include="src\Apex\Entity\GameObject.h" />
     <ClInclude Include="src\Apex\Events\ApplicationEvent.h" />
@@ -169,12 +169,11 @@
     <ClInclude Include="src\Apex\Physics\Collision\Collidable.h" />
     <ClInclude Include="src\Apex\Physics\Collision\Collider.h" />
     <ClInclude Include="src\Apex\Physics\Interaction\MousePicker.h" />
+    <ClInclude Include="src\Apex\Physics\Movement\RigidBody.h" />
     <ClInclude Include="src\Apex\Physics\ParticleSystem\ParticleSystem2D.h" />
     <ClInclude Include="src\Apex\Physics\PhysicsTimer\PhysicsTimer.h" />
-    <ClInclude Include="src\Apex\Physics\Movement\RigidBody.h" />
     <ClInclude Include="src\Apex\PostProcessing\Blur.h" />
     <ClInclude Include="src\Apex\RenderPrimitives\Buffer.h" />
-    <ClInclude Include="src\Apex\RenderPrimitives\Camera.h" />
     <ClInclude Include="src\Apex\RenderPrimitives\FrameBuffer.h" />
     <ClInclude Include="src\Apex\RenderPrimitives\Shader.h" />
     <ClInclude Include="src\Apex\RenderPrimitives\Texture.h" />
@@ -582,6 +581,7 @@
     <ClCompile Include="src\Apex\ComputeShader\ComputeShader.cpp" />
     <ClCompile Include="src\Apex\Application.cpp" />
     <ClCompile Include="src\Apex\AssetManager\AssetManager.cpp" />
+    <ClCompile Include="src\Apex\Camera\Camera.cpp" />
     <ClCompile Include="src\Apex\ImGui\ImGuiBuild.cpp" />
     <ClCompile Include="src\Apex\ImGui\ImGuiLayer.cpp" />
     <ClCompile Include="src\Apex\Layers\Layer.cpp" />
@@ -594,12 +594,11 @@
     <ClCompile Include="src\Apex\Networking\Socket.cpp" />
     <ClCompile Include="src\Apex\Physics\Collision\Collidable.cpp" />
     <ClCompile Include="src\Apex\Physics\Collision\Collider.cpp" />
+    <ClCompile Include="src\Apex\Physics\Movement\RigidBody.cpp" />
     <ClCompile Include="src\Apex\Physics\ParticleSystem\ParticleSystem2D.cpp" />
     <ClCompile Include="src\Apex\Physics\PhysicsTimer\PhysicsTimer.cpp" />
-    <ClCompile Include="src\Apex\Physics\Movement\RigidBody.cpp" />
     <ClCompile Include="src\Apex\PostProcessing\Blur.cpp" />
     <ClCompile Include="src\Apex\RenderPrimitives\Buffer.cpp" />
-    <ClCompile Include="src\Apex\RenderPrimitives\Camera.cpp" />
     <ClCompile Include="src\Apex\RenderPrimitives\FrameBuffer.cpp" />
     <ClCompile Include="src\Apex\RenderPrimitives\Shader.cpp" />
     <ClCompile Include="src\Apex\RenderPrimitives\Texture.cpp" />

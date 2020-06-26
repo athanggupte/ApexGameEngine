@@ -5,8 +5,6 @@
 #include "Apex/Renderer/Renderer.h"
 #include "Apex/Input/Input.h"
 
-#include "Apex/Utils/Profiler.h"
-
 #include <GLFW/glfw3.h>
 
 namespace Apex {
@@ -38,14 +36,15 @@ namespace Apex {
 
 	void Application::Run()
 	{
-		Instrumentor::Get().BeginSession(__FUNCTION__);
 
 		while (m_Running) {
 
 			Timer::UpdateTime();
 
-			for (Layer* layer : m_LayerStack)
-				layer->OnUpdate();
+			if (!m_Minimized) {
+				for (Layer* layer : m_LayerStack)
+					layer->OnUpdate();
+			}
 
 			//Render ImGui
 			m_ImGuiLayer->Begin();
@@ -53,10 +52,16 @@ namespace Apex {
 				layer->OnImGuiRender();
 			m_ImGuiLayer->End();
 
-			m_Window->OnUpdate();
+			//if (!m_Minimized) {
+				m_Window->OnUpdate();
+			//}
 		}
 
-		Instrumentor::Get().EndSession();
+	}
+
+	void Application::Close()
+	{
+		m_Running = false;
 	}
 
 	// Event Handlers
@@ -65,6 +70,14 @@ namespace Apex {
 	{
 		EventDispatcher dispatcher(e);
 		dispatcher.Dispatch<WindowCloseEvent>(BIND_CALLBACK_FN(OnWindowClose));
+		dispatcher.Dispatch<WindowResizeEvent>(BIND_CALLBACK_FN(OnWindowResize));
+
+#if 0
+		if (e.GetType() == EventType::WindowCloseEvent)
+		{
+			this->OnWindowClose(e);
+		}
+#endif
 
 		for (auto it = m_LayerStack.rbegin(); it != m_LayerStack.rend(); ++it) {
 			if (e.IsHandled())
@@ -88,6 +101,17 @@ namespace Apex {
 	bool Application::OnWindowClose(WindowCloseEvent & e)
 	{
 		m_Running = false;
+		return false;
+	}
+
+	bool Application::OnWindowResize(WindowResizeEvent& e)
+	{
+		if (e.GetWidth() == 0 || e.GetHeight() == 0) {
+			m_Minimized = true;
+			return false;
+		}
+		m_Minimized = false;
+
 		return false;
 	}
 

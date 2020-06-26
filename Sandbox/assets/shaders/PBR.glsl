@@ -18,7 +18,7 @@ void main()
 {
 	v_Position = vec3(u_Model * vec4(a_Position, 1.0));;
 	v_TexCoord = vec2(a_TexCoord.x, a_TexCoord.y * -1.0);
-	v_Normal   = mat3(u_Model) * a_Normal;
+	v_Normal   = vec4(u_ViewProjection * u_Model * vec4(a_Normal, 1.0)).rgb;
 	v_LightSpacePosition = u_LightSpace * vec4(v_Position, 1.0);
 	gl_Position = u_ViewProjection * u_Model * vec4(a_Position, 1.0);
 }
@@ -98,6 +98,7 @@ vec3 GetNormalFromMap()
 	vec2 st2 = dFdy(v_TexCoord);
 
 	vec3 N = normalize(v_Normal);
+
 	vec3 T = normalize(Q1 * st2.t - Q2 * st1.t);
 	vec3 B = -normalize(cross(N, T));
 	mat3 TBN = mat3(T, B, N);
@@ -168,6 +169,7 @@ void main()
 		//Lo += vec3(specular);
 		Lo += (kD * albedo / PI + specular) * radiance;
 	}
+	//o_Color = vec4(Lo, 1.0);
 	
 	vec3 ambient = vec3(0.03) * albedo; // * ao;
 	
@@ -182,4 +184,5 @@ void main()
 	color = pow(color, vec3(1.0/2.2));
 
 	o_Color = vec4(color, 1.0);
+	
 }
