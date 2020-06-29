@@ -18,7 +18,7 @@
 
 #ifdef APEX_ENABLE_ASSERTS
 	#define APEX_CORE_ASSERT(x, ...) { if(!(x)) { APEX_CORE_ERROR("Assertion Failed : {0}", __VA_ARGS__); __debugbreak(); } }
-	#define APEX_ASSERT(x, ...) { if(!(x)) { APEX_ERROR("Assertion Failed : {0}", __VA_ARGS__); __debugbreak(); } }
+	#define APEX_ASSERT(x, ...) { if(!(x)) { APEX_LOG_ERROR("Assertion Failed : {0}", __VA_ARGS__); __debugbreak(); } }
 #else
 	#define APEX_CORE_ASSERT(x, ...)
 	#define APEX_ASSERT(x, ...)

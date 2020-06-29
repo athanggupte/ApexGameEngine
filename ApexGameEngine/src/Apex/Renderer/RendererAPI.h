@@ -48,6 +48,7 @@ namespace Apex {
 		virtual void SetCulling(bool value) = 0;
 		virtual void SetBlendMode(BlendingMode sourceMode, BlendingMode destMode) = 0;
 		virtual void SetViewport(uint32_t x, uint32_t y, size_t width, size_t height) = 0;
+		virtual void ImageAccessBarrier() = 0;
 
 		inline static API GetAPI() { return s_API; }
 

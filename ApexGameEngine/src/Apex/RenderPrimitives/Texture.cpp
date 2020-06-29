@@ -19,12 +19,12 @@ namespace Apex {
 		return nullptr;
 	}
 
-	Ref<Texture2D> Texture2D::Create(uint32_t width, uint32_t height)
+	Ref<Texture2D> Texture2D::Create(uint32_t width, uint32_t height, const std::string& name)
 	{
 		switch (Renderer::GetAPI())
 		{
 		case RendererAPI::API::None:	APEX_CORE_CRITICAL("No Rendering API selected"); return nullptr;
-		case RendererAPI::API::OpenGL:	return std::make_shared<OpenGLTexture2D>(width, height);
+		case RendererAPI::API::OpenGL:	return std::make_shared<OpenGLTexture2D>(width, height, name);
 
 		default:				APEX_CORE_CRITICAL("Unknown Rendering API"); return nullptr;
 		}
@@ -43,12 +43,12 @@ namespace Apex {
 		return nullptr;
 	}
 
-	Ref<Texture2D_HDR> Texture2D_HDR::Create(uint32_t width, uint32_t height)
+	Ref<Texture2D_HDR> Texture2D_HDR::Create(uint32_t width, uint32_t height, const std::string& name)
 	{
 		switch (Renderer::GetAPI())
 		{
 		case RendererAPI::API::None:	APEX_CORE_CRITICAL("No Rendering API selected"); return nullptr;
-		case RendererAPI::API::OpenGL:	return std::make_shared<OpenGLTexture2D_HDR>(width, height);
+		case RendererAPI::API::OpenGL:	return std::make_shared<OpenGLTexture2D_HDR>(width, height, name);
 
 		default:				APEX_CORE_CRITICAL("Unknown Rendering API"); return nullptr;
 		}
@@ -66,4 +66,5 @@ namespace Apex {
 		}
 		return nullptr;
 	}
+
 }

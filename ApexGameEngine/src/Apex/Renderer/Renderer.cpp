@@ -18,6 +18,8 @@ namespace Apex {
 
 	void Renderer::EndScene()
 	{
+		if (s_SceneData->ImageAccess)
+			RenderCommands::ImageAccessBarrier();
 	}
 	
 	void Renderer::Submit(const Ref<Shader>& shader, const Ref<VertexArray>& vertexArray, const glm::mat4& modelMatrix)

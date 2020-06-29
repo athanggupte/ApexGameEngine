@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Node.h"
+#include "ShaderNodes.h"
 
 namespace Apex::EditorTools {
 
@@ -27,7 +27,7 @@ namespace Apex::EditorTools {
 		virtual void EndCanvas();	// Set canvas state for next frame, if any item selected/hovered take appropriate action
 									// for eg. show tooltips or set last_active_slot
 
-		virtual void CreateNode(uint32_t idx);
+		//virtual Node* CreateNode(uint32_t idx);
 		virtual bool DrawNode(Node& node, std::vector<Node*>::const_iterator idx);
 		virtual bool DrawSlot(Slot& slot);
 		virtual void DrawSlotInputBox(Slot& slot);
@@ -35,7 +35,32 @@ namespace Apex::EditorTools {
 
 		inline bool HasPendingConnection() { return m_Canvas.activeSlot != nullptr; }
 
-		void AddNode(Node* node, ImVec2 pos)
+		void AddNode(size_t idx, ImVec2 pos)
+		{
+			switch (idx)
+			{
+			case 0:
+			case 1:
+				m_Nodes.push_back(new TestNode());
+				break;
+			default:
+				return;
+			}
+
+			auto& curNode = m_Nodes.back();
+			curNode->pos = pos; // set position
+			curNode->id = m_Nodes.size(); // set id
+			for (auto& inSlot : curNode->inputSlots) {
+				inSlot->type = Slot::INPUT_SLOT;
+				inSlot->parentNode = curNode;
+			}
+			for (auto& outSlot : curNode->outputSlots) {
+				outSlot->type = Slot::OUTPUT_SLOT;
+				outSlot->parentNode = curNode;
+			}
+		}
+
+		/*void AddNode(Node* node, ImVec2 pos)
 		{
 			APEX_CORE_WARN(__FUNCTION__);
 			m_Nodes.push_back(node);
@@ -50,10 +75,10 @@ namespace Apex::EditorTools {
 				outSlot->type = Slot::OUTPUT_SLOT;
 				outSlot->parentNode = curNode;
 			}
-		}
+		}*/
 
 	private:
-		std::function<Node* (uint32_t)> m_CreateNodeCallback;
+		//std::function<Node* (uint32_t)> m_CreateNodeCallback;
 		std::vector<std::string> m_NodeTypes;
 		std::vector<std::string> m_DataTypes;
 

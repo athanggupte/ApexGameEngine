@@ -1,6 +1,8 @@
 #include <apex_pch.h>
 #include "ShaderGraph.h"
 
+#include "ShaderSlots.h"
+
 #ifndef IMGUI_DEFINE_MATH_OPERATORS
 #define IMGUI_DEFINE_MATH_OPERATORS
 #endif
@@ -9,7 +11,6 @@
 #include <imgui_internal.h>
 
 #include <regex>
-
 
 namespace Apex::EditorTools {
 
@@ -20,8 +21,9 @@ namespace Apex::EditorTools {
 	ShaderGraph::ShaderGraph()
 	{
 		m_Nodes.reserve(8);
-		m_DataTypes.push_back("auto");
-		AddNode(m_CreateNodeCallback(0), ImVec2{ 100.f, 100.f });
+		m_NodeTypes.push_back("Output");
+		m_NodeTypes.push_back("Test");
+		AddNode(0, { 200.f, 200.f });
 	}
 
 	bool ShaderGraph::RenderShaderGraph()
@@ -68,7 +70,7 @@ namespace Apex::EditorTools {
 			if (!visited_nodes[curNode]) {
 				// Assign values to the inputs
 				for (auto inSlot : curNode->inputSlots) {
-					auto value = (inSlot->connectedSlot == nullptr) ? inSlot->defaultValue :
+					auto value = (inSlot->connectedSlot == nullptr) ? inSlot->GetDefaultValue() :
 						(inSlot->connectedSlot->name + std::to_string(inSlot->connectedSlot->parentNode->id));
 					program += inSlot->name + std::to_string(curNode->id) + " = " + value + "\n";
 				}
@@ -96,6 +98,10 @@ namespace Apex::EditorTools {
 
 		auto font = io.Fonts->Fonts[0];
 		ImGui::PushFont(font);
+		auto curPadding = style.FramePadding;
+		ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, { curPadding.x, curPadding.y * m_Canvas.zoom });
+		auto curItemSpacing = style.ItemSpacing;
+		ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, { curItemSpacing.x, curItemSpacing.y * m_Canvas.zoom });
 
 		ImGui::PushID(&m_Canvas);
 		if (!ImGui::ItemAdd(w->ContentRegionRect, ImGui::GetID("canvas"))) {
@@ -121,6 +127,7 @@ namespace Apex::EditorTools {
 				float zoomFactor = (prevZoom - m_Canvas.zoom) / prevZoom;
 				m_Canvas.offset += (mouseRel - m_Canvas.offset) * zoomFactor;
 				font->Scale = m_Canvas.zoom;
+				//ImGui::SetWindowFontScale(m_Canvas.zoom);
 			}
 		}
 
@@ -150,7 +157,7 @@ namespace Apex::EditorTools {
 
 			for (uint32_t i = 1; i < m_NodeTypes.size(); i++) {
 				if (ImGui::MenuItem(m_NodeTypes.at(i).c_str())) {
-					AddNode(m_CreateNodeCallback(i), newNodePos);
+					AddNode(i, newNodePos);
 				}
 			}
 
@@ -166,12 +173,6 @@ namespace Apex::EditorTools {
 	{
 		if (HasPendingConnection()) {
 			RenderConnection(m_Canvas.activeSlot->pos, ImGui::GetIO().MousePos);
-		}
-
-		for (auto& node : m_Nodes) {
-			for (auto& inSlot : node->inputSlots)
-				if (inSlot->connectedSlot)
-					RenderConnection(inSlot->pos, inSlot->connectedSlot->pos);
 		}
 
 		if (m_ErrorState.errorNode || m_ErrorState.errorSlot) {
@@ -190,12 +191,9 @@ namespace Apex::EditorTools {
 
 		ImGui::PopID();
 
+		ImGui::PopStyleVar(2);
 		//ImGui::GetFont()->Scale = 1.f;
 		ImGui::PopFont();
-	}
-
-	void ShaderGraph::CreateNode(uint32_t idx)
-	{
 	}
 
 	////////////////////////////////////////////////////////////////
@@ -240,10 +238,13 @@ namespace Apex::EditorTools {
 			}
 		}
 
+		drawList->ChannelsSplit(2);
+
 		drawList->ChannelsSetCurrent(0); // Background
 		/* Draw node title bar */
+		//ImGui::CollapseButton(ImGui::GetID("##Collapse"), { titleRect.Max.x, titleRect.Min.y }, nullptr);
 		drawList->AddRectFilled(titleRect.Min, titleRect.Max, IM_COL32(84, 118, 176, 255), 8.f * m_Canvas.zoom, ImDrawCornerFlags_Top);
-		ImGui::CollapseButton(ImGui::GetID("##Collapse"), { titleRect.Max.x, titleRect.Min.y }, nullptr);
+		drawList->ChannelsSetCurrent(1); // Foreground
 		/* Draw node title text */
 		if (rename && m_Canvas.activeNode == &node) {
 			ImGui::SetCursorScreenPos(titleRect.Min + ImVec2{ 20.f, 1.f });
@@ -261,7 +262,6 @@ namespace Apex::EditorTools {
 
 		auto bodyPos = ImVec2{ titleRect.Min.x, titleRect.Max.y + style.ItemSpacing.y };
 
-		drawList->ChannelsSplit(2);
 
 		/* Draw foreground widgets of the node */
 		drawList->ChannelsSetCurrent(1); // Foreground
@@ -353,6 +353,8 @@ namespace Apex::EditorTools {
 	////////////////////        Slot            ////////////////////
 	////////////////////////////////////////////////////////////////
 
+	static uint32_t _GetDataInputSize(DataType dataType);
+
 	bool ShaderGraph::DrawSlot(Slot& slot)
 	{
 		bool isOutputType = slot.type == Slot::OUTPUT_SLOT;
@@ -407,9 +409,9 @@ namespace Apex::EditorTools {
 		drawList->AddCircleFilled(circleRect.GetCenter(), CIRCLE_RADIUS, hovered ? IM_COL32(111, 201, 252, 255) : IM_COL32(143, 143, 148, 200));
 		if (hovered) {
 			drawList->AddCircle(circleRect.GetCenter(), CIRCLE_RADIUS + 3.f, IM_COL32(111, 201, 252, 255));
-			ImGui::BeginTooltip();
-			ImGui::TextUnformatted(m_DataTypes[(m_DataTypes.size() - 1 < slot.dataType) ? 0 : slot.dataType].c_str());
-			ImGui::EndTooltip();
+			//ImGui::BeginTooltip();
+			//ImGui::TextUnformatted(m_DataTypes[(m_DataTypes.size() - 1 < slot.dataType) ? 0 : slot.dataType].c_str());
+			//ImGui::EndTooltip();
 		}
 
 		slot.pos = circleRect.GetCenter();
@@ -421,21 +423,27 @@ namespace Apex::EditorTools {
 		ImGui::ItemAdd(slot_rect, ImGui::GetID(id.c_str()));
 		ImGui::PopID();*/
 
-		if (slot.type == Slot::INPUT_SLOT && !slot.connectedSlot) {
-			auto center = circleRect.GetCenter();
-			center -= ImVec2{ 45.f, 0.f } *m_Canvas.zoom;
-			auto min = center - ImVec2{ 35.f, 14.f } *m_Canvas.zoom;
-			auto max = center + ImVec2{ 35.f, 14.f } *m_Canvas.zoom;
-			drawList->AddRectFilled(min, max, IM_COL32(84, 84, 88, 220), 1.2f);
-			//ImGui::PushID("##default");
-			//ImGui::ItemAdd({ center - ImVec2{ 35.f, 14.f }, center + ImVec2{ 35.f, 14.f } }, ImGui::GetID((slot.name + "-default").c_str()));
-			ImGui::SetCursorScreenPos({ center - ImVec2{ 30.f, 9.5f } *m_Canvas.zoom });
-			ImGui::SetNextItemWidth(60.f * m_Canvas.zoom);
-			ImGui::PushStyleColor(ImGuiCol_FrameBg, IM_COL32(102, 102, 106, 220));
-			//ImGui::InputDouble("", &slot.defaultValue, 0.0, 0.0, "%.3f");
-			
-			ImGui::PopStyleColor();
+		if (slot.type == Slot::INPUT_SLOT) {
+			if (!slot.connectedSlot) {
+				auto inputSize = _GetDataInputSize(slot.dataType);
+				auto center = circleRect.GetCenter();
+				auto max = center + ImVec2{ -10.f, 14.f } *m_Canvas.zoom;
+				auto min = max - ImVec2{ 10.f + (60.f + style.ItemInnerSpacing.x) * inputSize - style.ItemInnerSpacing.x, 28.f } *m_Canvas.zoom;
+				drawList->AddRectFilled(min, max, IM_COL32(84, 84, 88, 220), 1.2f);
+				//ImGui::PushID("##default");
+				//ImGui::ItemAdd({ center - ImVec2{ 35.f, 14.f }, center + ImVec2{ 35.f, 14.f } }, ImGui::GetID((slot.name + "-default").c_str()));
+				ImGui::SetCursorScreenPos({ min + ImVec2{ 5.f, 14.f - 9.5f } *m_Canvas.zoom });
+				ImGui::SetNextItemWidth(60.f * inputSize * m_Canvas.zoom);
+				ImGui::PushStyleColor(ImGuiCol_FrameBg, IM_COL32(102, 102, 106, 220));
+				//ImGui::InputDouble("", &slot.defaultValue, 0.0, 0.0, "%.3f");
+				DrawSlotInputBox(slot);
+				ImGui::PopStyleColor();
+			}
+			else {
+				RenderConnection(slot.pos, slot.connectedSlot->pos);
+			}
 		}
+		
 
 		if (selected) {
 			if (!HasPendingConnection()) { // Does not have pending connection i.e. make new connection
@@ -468,12 +476,12 @@ namespace Apex::EditorTools {
 		switch (slot.dataType)
 		{
 		case Apex::EditorTools::BOOL:
-			bool val;
-			ImGui::Checkbox("", );
 			break;
 		case Apex::EditorTools::INT:
+			ImGui::InputInt("", &((SlotInt*)&slot)->value);
 			break;
 		case Apex::EditorTools::FLOAT:
+			ImGui::InputFloat("", &((SlotFloat*)&slot)->value);
 			break;
 		case Apex::EditorTools::IVEC2:
 			break;
@@ -482,10 +490,13 @@ namespace Apex::EditorTools {
 		case Apex::EditorTools::IVEC4:
 			break;
 		case Apex::EditorTools::VEC2:
+			ImGui::InputFloat2("", &((SlotVec2*)&slot)->value[0]);
 			break;
 		case Apex::EditorTools::VEC3:
+			ImGui::InputFloat3("", &((SlotVec3*)&slot)->value[0]);
 			break;
 		case Apex::EditorTools::VEC4:
+			ImGui::InputFloat4("", &((SlotVec4*)&slot)->value[0]);
 			break;
 		case Apex::EditorTools::MAT2:
 			break;
@@ -515,8 +526,8 @@ namespace Apex::EditorTools {
 
 		float length = input_pos.x - output_pos.x;
 
-		ImVec2 p2 = input_pos - ImVec2{ length * m_Canvas.zoom, 0.f };
-		ImVec2 p3 = output_pos + ImVec2{ length * m_Canvas.zoom, 0.f };
+		ImVec2 p2 = input_pos - ImVec2{ length /** m_Canvas.zoom*/, 0.f };
+		ImVec2 p3 = output_pos + ImVec2{ length /** m_Canvas.zoom*/, 0.f };
 
 #define SQR(_x_) _x_ * _x_ 
 
@@ -525,6 +536,33 @@ namespace Apex::EditorTools {
 		bool is_close = min_square_distance <= SQR(thickness + 0.8);
 		draw_list->AddBezierCurve(input_pos, p2, p3, output_pos, is_close ? IM_COL32(111, 252, 151, 200) : IM_COL32(204, 56, 207, 250), is_close ? thickness + 0.5f : thickness, 0);
 		return is_close;
+	}
+
+	uint32_t _GetDataInputSize(DataType dataType)
+	{
+		switch (dataType)
+		{
+		case Apex::EditorTools::BOOL:
+		case Apex::EditorTools::INT:
+		case Apex::EditorTools::FLOAT:
+			return 1;
+		case Apex::EditorTools::IVEC2:
+		case Apex::EditorTools::VEC2:
+			return 2;
+		case Apex::EditorTools::IVEC3:
+		case Apex::EditorTools::VEC3:
+			return 3;
+		case Apex::EditorTools::IVEC4:
+		case Apex::EditorTools::VEC4:
+			return 4;
+		case Apex::EditorTools::MAT2:
+		case Apex::EditorTools::MAT3:
+		case Apex::EditorTools::MAT4:
+		case Apex::EditorTools::TEX2D:
+		case Apex::EditorTools::TEX3D:
+		default:
+			return 1;
+		}
 	}
 
 }

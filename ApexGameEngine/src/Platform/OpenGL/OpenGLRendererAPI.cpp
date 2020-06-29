@@ -65,5 +65,11 @@ namespace Apex {
 	{
 		glViewport(x, y, width, height);
 	}
+
+	void OpenGLRendererAPI::ImageAccessBarrier()
+	{
+		glMemoryBarrier(GL_SHADER_IMAGE_ACCESS_BARRIER_BIT);
+		//APEX_CORE_WARN("[OpenGL] :: `glMemoryBarrier` called on GL_SHADER_IMAGE_ACCESS_BARRIER_BIT");
+	}
 	
 }

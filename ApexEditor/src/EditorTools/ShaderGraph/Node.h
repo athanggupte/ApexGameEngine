@@ -36,11 +36,18 @@ namespace Apex::EditorTools {
 		Node* parentNode;
 		Slot* connectedSlot; // For input slots only
 
-		//std::string defaultValue;
-
 		// ImGui related attributes
-		//ImGuiID id;
 		ImVec2 pos;
+
+		Slot(const std::string& name, DataType dataType)
+		{
+			this->name = name;
+			this->dataType = dataType;
+			this->parentNode = nullptr;
+			this->connectedSlot = nullptr;
+		}
+
+		virtual std::string GetDefaultValue() = 0;
 	};
 
 	struct Node

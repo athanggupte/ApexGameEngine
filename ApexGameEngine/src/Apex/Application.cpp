@@ -5,7 +5,8 @@
 #include "Apex/Renderer/Renderer.h"
 #include "Apex/Input/Input.h"
 
-#include <GLFW/glfw3.h>
+//#include <GLFW/glfw3.h>
+#include <glad/glad.h>
 
 namespace Apex {
 
@@ -53,8 +54,10 @@ namespace Apex {
 			m_ImGuiLayer->End();
 
 			//if (!m_Minimized) {
-				m_Window->OnUpdate();
+			m_Window->OnUpdate();
 			//}
+			GLenum error = glGetError();
+			if (error != GL_NO_ERROR) APEX_CORE_ERROR("[OpenGL] :: {0}", error);
 		}
 
 	}
@@ -80,7 +83,7 @@ namespace Apex {
 #endif
 
 		for (auto it = m_LayerStack.rbegin(); it != m_LayerStack.rend(); ++it) {
-			if (e.IsHandled())
+			if (e.Handled)
 				break;
 			(*it)->OnEvent(e);
 		}

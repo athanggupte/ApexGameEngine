@@ -8,9 +8,9 @@ namespace Apex {
 	AssetManager::AssetManager()
 	{
 		//m_ShaderLib.reset();
-		m_TextureLib.reset();
-		m_MaterialLib.reset();
-		m_MeshLib.reset();
+		//m_TextureLib.reset();
+		//m_MaterialLib.reset();
+		//m_MeshLib.reset();
 	}
 
 	AssetManager::~AssetManager()

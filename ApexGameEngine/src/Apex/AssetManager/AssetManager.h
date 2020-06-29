@@ -4,9 +4,9 @@
 
 namespace Apex {
 
-	class TextureLibrary;
-	class MaterialLibrary;
-	class MeshLibrary;
+	class TextureLibrary {};
+	class MaterialLibrary {};
+	class MeshLibrary {};
 
 	class AssetManager
 	{
@@ -17,18 +17,18 @@ namespace Apex {
 
 		//static 
 		static ShaderLibrary& GetShaderLibrary() { return s_Instance->m_ShaderLib; }
-		static Ref<TextureLibrary> GetTextureLibrary() { return s_Instance->m_TextureLib; }
-		static Ref<MaterialLibrary> GetMaterialLibrary() { return s_Instance->m_MaterialLib; }
-		static Ref<MeshLibrary> GetMeshLibrary() { return s_Instance->m_MeshLib; }
+		static TextureLibrary& GetTextureLibrary() { return s_Instance->m_TextureLib; }
+		static MaterialLibrary& GetMaterialLibrary() { return s_Instance->m_MaterialLib; }
+		static MeshLibrary& GetMeshLibrary() { return s_Instance->m_MeshLib; }
 
 	private:
 		AssetManager();
 
 	private:
 		ShaderLibrary m_ShaderLib;
-		Ref<TextureLibrary> m_TextureLib;
-		Ref<MaterialLibrary> m_MaterialLib;
-		Ref<MeshLibrary> m_MeshLib;
+		TextureLibrary m_TextureLib;
+		MaterialLibrary m_MaterialLib;
+		MeshLibrary m_MeshLib;
 		
 		static AssetManager* s_Instance;
 	};

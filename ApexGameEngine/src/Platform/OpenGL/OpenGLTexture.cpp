@@ -1,6 +1,8 @@
 #include "apex_pch.h"
 #include "OpenGLTexture.h"
 
+#include "Apex/Renderer/Renderer.h"
+
 #include <glad/glad.h>
 #include <stb_image.h>
 
@@ -10,15 +12,20 @@ namespace Apex {
 	/*---------------------------Texture 2D-----------------------------*/
 	//////////////////////////////////////////////////////////////////////
 
-	OpenGLTexture2D::OpenGLTexture2D(uint32_t width, uint32_t height)
+	OpenGLTexture2D::OpenGLTexture2D(uint32_t width, uint32_t height, const std::string& name)
 		: m_Width(width), m_Height(height)
 	{
 		glGenTextures(1, &m_RendererID);
 		glBindTexture(GL_TEXTURE_2D, m_RendererID);
 		//glTextureStorage2D(m_RendererID, 1, GL_RGB8, m_Width, m_Height);
 		
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, m_Width, m_Height, 0, GL_RGB, GL_UNSIGNED_BYTE, nullptr);
+		//std::vector<std::tuple<GLubyte, GLubyte, GLubyte, GLubyte>> data(width * height);
+		//data.assign(width * height, { 255, 252, 3, 232 });
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, m_Width, m_Height, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
 		//glTextureSubImage2D(m_RendererID, 0, 0, 0, m_Width, m_Height, GL_RGB, GL_UNSIGNED_BYTE, nullptr);
+		
+		if(!name.empty())
+			glObjectLabel(GL_TEXTURE, m_RendererID, -1, name.c_str());
 
 		glTextureParameteri(m_RendererID, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		glTextureParameteri(m_RendererID, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
@@ -71,22 +78,31 @@ namespace Apex {
 	void OpenGLTexture2D::Bind(uint32_t slot) const
 	{
 		glBindTextureUnit(slot, m_RendererID);
+	}	
+
+	void OpenGLTexture2D::BindImage(uint32_t unit, bool read, bool write) const
+	{
+		APEX_CORE_ASSERT(read || write, "Image should be atleast readable or writable");
+		glBindImageTexture(unit, m_RendererID, 0, GL_FALSE, 0, (read && write) ? GL_READ_WRITE : (read) ? GL_READ_ONLY : GL_WRITE_ONLY, GL_RGBA8);
+		Renderer::SetImageAccessBit();
 	}
-	
 
 	//////////////////////////////////////////////////////////////////////
 	/*------------------------Texture 2D HDR----------------------------*/
 	//////////////////////////////////////////////////////////////////////
 
-	OpenGLTexture2D_HDR::OpenGLTexture2D_HDR(uint32_t width, uint32_t height)
+	OpenGLTexture2D_HDR::OpenGLTexture2D_HDR(uint32_t width, uint32_t height, const std::string& name)
 		: m_Width(1280), m_Height(720)
 	{
 		glGenTextures(1, &m_RendererID);
 		glBindTexture(GL_TEXTURE_2D, m_RendererID);
-		//glTextureStorage2D(m_RendererID, 1, GL_RGB8, m_Width, m_Height);
+		//glTextureStorage2D(m_RendererID, 1, GL_RGBA16F, m_Width, m_Height);
 
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, m_Width, m_Height, 0, GL_RGBA, GL_FLOAT, nullptr);
-		//glTextureSubImage2D(m_RendererID, 0, 0, 0, m_Width, m_Height, GL_RGB, GL_UNSIGNED_BYTE, nullptr);
+		//glTextureSubImage2D(m_RendererID, 0, 0, 0, m_Width, m_Height, GL_RGBA, GL_FLOAT, nullptr);
+		
+		if (!name.empty())
+			glObjectLabel(GL_TEXTURE, m_RendererID, -1, name.c_str());
 
 		glTextureParameteri(m_RendererID, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		glTextureParameteri(m_RendererID, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
@@ -140,6 +156,12 @@ namespace Apex {
 		glBindTextureUnit(slot, m_RendererID);
 	}
 
+	void OpenGLTexture2D_HDR::BindImage(uint32_t unit, bool read, bool write) const
+	{
+		APEX_CORE_ASSERT(read || write, "Image should be atleast readable or writable");
+		glBindImageTexture(unit, m_RendererID, 0, GL_FALSE, 0, (read && write) ? GL_READ_WRITE : (read) ? GL_READ_ONLY : GL_WRITE_ONLY, GL_RGBA16F);
+		Renderer::SetImageAccessBit();
+	}
 
 	//////////////////////////////////////////////////////////////////////
 	/*-----------------------Texture Depth 2D---------------------------*/
@@ -170,4 +192,44 @@ namespace Apex {
 	{
 		glBindTextureUnit(slot, m_RendererID);
 	}
+
+	//////////////////////////////////////////////////////////////////////
+	/*------------------------Image Store 2D----------------------------*/
+	//////////////////////////////////////////////////////////////////////
+#ifdef IMAGE_STORE_CLASS
+	OpenGLImageStore2D::OpenGLImageStore2D(uint32_t width, uint32_t height, const std::string& name)
+		: m_Width(width), m_Height(height)
+	{
+		glGenTextures(1, &m_RendererID);
+		glBindTexture(GL_TEXTURE_2D, m_RendererID);
+		
+		//glTextureStorage2D(m_RendererID, 1, GL_RGBA8, m_Width, m_Height);
+
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA32F, m_Width, m_Height, 0, GL_RGBA, GL_FLOAT, nullptr);
+		//glTextureSubImage2D(m_RendererID, 0, 0, 0, m_Width, m_Height, GL_RGB, GL_UNSIGNED_BYTE, nullptr);
+
+		if (!name.empty())
+			glObjectLabel(GL_TEXTURE, m_RendererID, -1, name.c_str());
+
+		glTextureParameteri(m_RendererID, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTextureParameteri(m_RendererID, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	}
+
+	OpenGLImageStore2D::~OpenGLImageStore2D()
+	{
+		glDeleteTextures(1, &m_RendererID);
+	}
+
+	void OpenGLImageStore2D::Bind(uint32_t slot) const
+	{
+		glBindTextureUnit(slot, m_RendererID);
+	}
+
+	void OpenGLImageStore2D::BindImage(uint32_t unit, bool read, bool write) const
+	{
+		APEX_CORE_ASSERT(read || write, "Image should be atleast readable or writable");
+		glBindImageTexture(unit, m_RendererID, 0, GL_FALSE, 0, (read && write) ? GL_READ_WRITE : (read) ? GL_READ_ONLY : GL_WRITE_ONLY, GL_RGB8);
+		Renderer::SetImageAccessBit();
+	}
+#endif
 }

@@ -141,7 +141,7 @@
     <ClInclude Include="src\EditorTools\ShaderGraph\Node.h" />
     <ClInclude Include="src\EditorTools\ShaderGraph\ShaderGraph.h" />
     <ClInclude Include="src\EditorTools\ShaderGraph\ShaderNodes.h" />
-    <ClInclude Include="src\EditorTools\ShaderGraph\Slots.h" />
+    <ClInclude Include="src\EditorTools\ShaderGraph\ShaderSlots.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\ApexEditor.cpp" />

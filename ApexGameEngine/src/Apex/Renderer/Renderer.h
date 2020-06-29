@@ -24,13 +24,16 @@ namespace Apex {
 		inline static RendererAPI::API GetAPI() { return RendererAPI::GetAPI(); }
 
 
-		/* Temporary */	static void SubmitPostProcess(const Ref<Shader>& shader, const Ref<VertexArray>& vertexArray);
+		/* Temporary */
+		static void SubmitPostProcess(const Ref<Shader>& shader, const Ref<VertexArray>& vertexArray);
+		static void SetImageAccessBit() { s_SceneData->ImageAccess = true; }
 
 
 	private:
 		struct SceneData
 		{
 			glm::mat4 ViewProjectionMatrix;
+			bool ImageAccess = false;
 		};
 
 		static SceneData* s_SceneData;
