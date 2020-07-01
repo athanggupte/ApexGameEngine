@@ -1376,6 +1376,7 @@
     <ClInclude Include="src\Apex\Networking\NetworkManager.h" />
     <ClInclude Include="src\Apex\Utils\Profiler.h" />
     <ClInclude Include="src\Apex\ComputeShader\ComputeShader.h" />
+    <ClInclude Include="src\Platform\OpenGL\OpenGLComputeShader.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Apex\Application.cpp">
@@ -1494,5 +1495,6 @@
     <ClCompile Include="src\Apex\Networking\NetworkManager.cpp" />
     <ClCompile Include="src\Apex\Utils\Profiler.cpp" />
     <ClCompile Include="src\Apex\ComputeShader\ComputeShader.cpp" />
+    <ClCompile Include="src\Platform\OpenGL\OpenGLComputeShader.cpp" />
   </ItemGroup>
 </Project>

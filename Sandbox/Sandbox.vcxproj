@@ -151,6 +151,9 @@
     <ClInclude Include="src\Games\DXBall\Gameplay\Lobby.h" />
     <ClInclude Include="src\Games\DXBall\Gameplay\Player.h" />
   </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="assets\compute\noise.compute" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

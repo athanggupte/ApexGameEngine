@@ -5,8 +5,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Games\DXBall\DXBall.h" />
-    <ClInclude Include="src\Games\DXBall\Paddle.h" />
-    <ClInclude Include="src\Games\DXBall\Ball.h" />
-    <ClInclude Include="src\Games\DXBall\Brick.h" />
+    <ClInclude Include="src\Games\DXBall\GameObjects\Ball.h" />
+    <ClInclude Include="src\Games\DXBall\GameObjects\Brick.h" />
+    <ClInclude Include="src\Games\DXBall\GameObjects\Paddle.h" />
+    <ClInclude Include="src\Games\DXBall\Gameplay\Lobby.h" />
+    <ClInclude Include="src\Games\DXBall\Gameplay\Player.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="assets\compute\noise.compute" />
   </ItemGroup>
 </Project>
