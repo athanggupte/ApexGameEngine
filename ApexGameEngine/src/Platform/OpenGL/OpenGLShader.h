@@ -18,8 +18,8 @@ namespace Apex {
 		virtual const std::string& GetName() const override { return m_Name; }
 
 		/* Get locations of all active Uniforms */
-		virtual const std::unordered_map<std::string, uint32_t>& GetActiveUniformLocations() override;
-		virtual const std::vector<std::tuple<std::string, uint32_t, size_t>>& GetActiveUniformData() override;
+		//virtual const std::unordered_map<std::string, uint32_t>& GetActiveUniformLocations() override;
+		//virtual const std::vector<std::tuple<std::string, uint32_t, size_t>>& GetActiveUniformData() override;
 
 		/* Uniform Setters */
 		virtual void SetUniInt(const std::string & name, int value) override;
@@ -38,7 +38,7 @@ namespace Apex {
 	private:
 		uint32_t m_RendererID;
 		std::string m_Name;
-		std::unordered_map<std::string, uint32_t> m_UniformLocations;
+		//std::unordered_map<std::string, uint32_t> m_UniformLocations;
 	};
 
 }

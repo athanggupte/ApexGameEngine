@@ -10,6 +10,7 @@
 
 #include "Apex/Material/Material.h"
 #include "Apex/Model/Model.h"
+#include "Apex/ComputeShader/ComputeShader.h"
 #include "Apex/Physics/ParticleSystem/ParticleSystem2D.h"
 
 #include "Games/DXBall/DXBall.h"
@@ -164,10 +165,17 @@ public:
 		auto screenShader = Apex::AssetManager::GetShaderLibrary().Load("assets/shaders/Screen.glsl");
 		screenShader->Bind();
 		screenShader->SetUniInt("u_ScreenTexture", 0);
+
+		m_NoiseTexture = Apex::Texture2D_HDR::Create();
+		m_ComputeShader = Apex::ComputeShader::Create("assets/compute/noise.compute");
 	}
 
 	// Inherited via Layer
-	void OnAttach() override {}
+	void OnAttach() override
+	{
+		m_ComputeShader->Bind();
+		m_ComputeShader->Dispatch(m_NoiseTexture->GetWidth(), m_NoiseTexture->GetHeight(), 1U);
+	}
 
 	void OnDetach() override {}
 
@@ -227,7 +235,8 @@ public:
 
 		auto textureShader = Apex::AssetManager::GetShaderLibrary().GetShader("Texture");
 
-		m_CheckerTexture->Bind();
+		//m_CheckerTexture->Bind();
+		m_NoiseTexture->Bind();
 		Apex::Renderer::Submit(textureShader, m_SquareVA, glm::translate(glm::mat4(1.0f), glm::vec3(0.3f, 0.1f, -1.7f)));
 		m_PusheenTexture->Bind();
 		Apex::Renderer::Submit(textureShader, m_SquareVA, glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -1.0f)));
@@ -301,6 +310,8 @@ private:
 	Apex::Ref<Apex::VertexArray> m_SquareVA;
 	Apex::Ref<Apex::Texture2D_HDR> m_PusheenTexture;
 	Apex::Ref<Apex::Texture2D_HDR> m_CheckerTexture;
+	Apex::Ref<Apex::Texture2D_HDR> m_NoiseTexture;
+	Apex::Ref<Apex::ComputeShader> m_ComputeShader;
 
 	/// Custom framebuffer objects ///
 	Apex::Ref<Apex::VertexArray> m_ScreenVA;
@@ -1027,8 +1038,8 @@ public:
 		Apex::Collision::Init();
 		Apex::NetworkManager::Startup();
 
-		//PushLayer(new SandboxLayer());
-		PushLayer(new ModelLayer());
+		PushLayer(new SandboxLayer());
+		//PushLayer(new ModelLayer());
 		//PushLayer(new ParticleLayer());
 		//PushLayer(new DXBall::TestLayer());
 		//PushLayer(new TerminalLayer());

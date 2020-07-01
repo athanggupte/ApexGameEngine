@@ -151,6 +151,7 @@ namespace Apex {
 
 		for (auto id : glShaderIDs) {
 			glDetachShader(program, id);
+			glDeleteShader(id);
 		}		
 
 	}
@@ -164,7 +165,7 @@ namespace Apex {
 	{
 	}
 
-	const std::unordered_map<std::string, uint32_t>& OpenGLShader::GetActiveUniformLocations()
+	/*const std::unordered_map<std::string, uint32_t>& OpenGLShader::GetActiveUniformLocations()
 	{
 		int numUniforms = -1;
 		glGetProgramiv(m_RendererID, GL_ACTIVE_UNIFORMS, &numUniforms);
@@ -191,9 +192,9 @@ namespace Apex {
 		}
 
 		return m_UniformLocations;
-	}
+	}*/
 
-	const std::vector<std::tuple<std::string, uint32_t, size_t>>& OpenGLShader::GetActiveUniformData()
+	/*const std::vector<std::tuple<std::string, uint32_t, size_t>>& OpenGLShader::GetActiveUniformData()
 	{
 		std::vector<std::tuple<std::string, uint32_t, size_t>> uniformData;
 		int numUniforms = -1;
@@ -222,7 +223,7 @@ namespace Apex {
 		}
 		
 		return uniformData;
-	}
+	}*/
 	
 #ifndef SHADER_UNIFORMS_NO_CACHE
 #define SHADER_UNIFORMS_NO_CACHE
