@@ -22,4 +22,18 @@ namespace Apex::EditorTools {
 		std::string GetFunction();
 	};
 
+	struct TextureNode : public EditorTools::Node
+	{
+		TextureNode();
+
+		std::string GetFunction() { return ""; }
+	};
+
+	struct BlurNode : public EditorTools::Node
+	{
+		BlurNode();
+
+		std::string GetFunction() { return ""; }
+	};
+
 }

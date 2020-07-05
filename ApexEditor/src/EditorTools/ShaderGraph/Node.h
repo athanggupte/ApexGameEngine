@@ -9,6 +9,9 @@
 #include <imgui.h>
 #include <imgui_internal.h>
 
+#include "Apex/RenderPrimitives/Texture.h"
+#include "Apex/ComputeShader/ComputeShader.h"
+
 namespace Apex::EditorTools {
 	
 	enum DataType
@@ -61,6 +64,9 @@ namespace Apex::EditorTools {
 		size_t id;
 		ImVec2 pos, size;
 		
+		Ref<ComputeShader> previewCompute;
+		Ref<Texture2D> previewTexture;
+
 		virtual std::string GetFunction() = 0;
 
 		virtual ~Node()

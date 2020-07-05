@@ -33,6 +33,14 @@ namespace Apex::EditorTools {
 		for (auto& node : m_Nodes)
 			DrawNode(*node, it++);
 		EndCanvas();
+
+		// Update Previews
+		if (m_Changed) {
+			for (auto& node : m_Nodes)
+				node->previewCompute->Dispatch(128U, 128U, 1U);
+			m_Changed = false;
+		}
+
 		return true;
 	}
 
@@ -75,9 +83,12 @@ namespace Apex::EditorTools {
 					program += inSlot->name + std::to_string(curNode->id) + " = " + value + "\n";
 				}
 				// Execute the function
-				auto operation = curNode->GetFunction();
-				operation = std::regex_replace(operation, std::regex("#"), std::to_string(curNode->id));
-				program += operation + "\n";
+				//auto operation = curNode->GetFunction();
+				//operation = std::regex_replace(operation, std::regex("#"), std::to_string(curNode->id));
+				//program += operation + "\n";
+				
+
+
 				visited_nodes[curNode] = true;
 			}
 		}
@@ -461,6 +472,7 @@ namespace Apex::EditorTools {
 					else {
 						slot.connectedSlot = m_Canvas.activeSlot;
 					}
+					m_Changed = true;
 				}
 
 				/* End connection for any result */

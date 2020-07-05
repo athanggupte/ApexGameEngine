@@ -85,6 +85,8 @@ namespace Apex::EditorTools {
 		NodeCanvas m_Canvas;
 		std::vector<Node*> m_Nodes;
 		ErrorState m_ErrorState;
+
+		bool m_Changed; // Set when the connections have changed - then invalidate textures
 	};
 
 }

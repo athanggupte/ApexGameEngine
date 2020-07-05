@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Node.h"
+#include "Apex/RenderPrimitives/Texture.h"
 
 namespace Apex::EditorTools {
 
@@ -86,6 +87,20 @@ namespace Apex::EditorTools {
 		virtual std::string GetDefaultValue() override
 		{
 			return "vec4(" + std::to_string(value.r) + "," + std::to_string(value.g) + "," + std::to_string(value.b) + "," + std::to_string(value.a) + ")";
+		}
+	};
+
+	struct SlotTexture2D : public Slot
+	{
+		SlotTexture2D(const std::string& name)
+			: Slot(name, DataType::TEX2D)
+		{
+		}
+		
+		// Inherited via Slot
+		virtual std::string GetDefaultValue() override
+		{
+			return name;
 		}
 	};
 
