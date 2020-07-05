@@ -21,7 +21,7 @@ void main()
 
 layout(location = 0) out vec4 o_Color;
 
-layout(binding = 1) uniform writeonly image2D u_Image;
+//layout(binding = 1) uniform writeonly image2D u_Image;
 uniform sampler2D u_Texture;
 
 in vec2 v_TexCoord;
@@ -29,6 +29,6 @@ in vec2 v_TexCoord;
 void main()
 {
 	o_Color = texture(u_Texture, v_TexCoord).rgba;
-	imageStore(u_Image, ivec2(gl_FragCoord.xy), vec4( gl_FragCoord.x, gl_FragCoord.y, 0.0, 1.0));
-	memoryBarrierImage();
+	//imageStore(u_Image, ivec2(gl_FragCoord.xy), vec4( gl_FragCoord.x, gl_FragCoord.y, 0.0, 1.0));
+	//memoryBarrierImage();
 }

@@ -115,4 +115,44 @@ namespace Apex {
 		glDeleteShader(shader);
 	}
 
+	void OpenGLComputeShader::SetUniInt(const std::string& name, int value)
+	{
+		glUniform1i(glGetUniformLocation(m_RendererID, name.c_str()), value);
+	}
+
+	void OpenGLComputeShader::SetUniFloat1(const std::string& name, float value)
+	{
+		glUniform1f(glGetUniformLocation(m_RendererID, name.c_str()), value);
+	}
+
+	void OpenGLComputeShader::SetUniFloat2(const std::string& name, const glm::vec2& value)
+	{
+		glUniform2fv(glGetUniformLocation(m_RendererID, name.c_str()), 1, glm::value_ptr(value));
+	}
+
+	void OpenGLComputeShader::SetUniFloat3(const std::string& name, const glm::vec3& value)
+	{
+		glUniform3fv(glGetUniformLocation(m_RendererID, name.c_str()), 1, glm::value_ptr(value));
+	}
+
+	void OpenGLComputeShader::SetUniFloat3v(const std::string& name, glm::vec3 values[], size_t count)
+	{
+		glUniform3fv(glGetUniformLocation(m_RendererID, name.c_str()), count, glm::value_ptr(values[0]));
+	}
+
+	void OpenGLComputeShader::SetUniFloat4(const std::string& name, const glm::vec4& value)
+	{
+		glUniform4fv(glGetUniformLocation(m_RendererID, name.c_str()), 1, glm::value_ptr(value));
+	}
+
+	void OpenGLComputeShader::SetUniMat4(const std::string& name, const glm::mat4& matrix)
+	{
+		glUniformMatrix4fv(glGetUniformLocation(m_RendererID, name.c_str()), 1, GL_FALSE, glm::value_ptr(matrix));
+	}
+
+	void OpenGLComputeShader::SetUniMat4v(const std::string& name, glm::mat4 matrices[], size_t count)
+	{
+		glUniformMatrix4fv(glGetUniformLocation(m_RendererID, name.c_str()), count, GL_FALSE, glm::value_ptr(matrices[0]));
+	}
+
 }

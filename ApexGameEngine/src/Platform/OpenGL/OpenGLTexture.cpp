@@ -35,7 +35,7 @@ namespace Apex {
 		: m_Path(path)
 	{
 		int width, height, channels;
-		stbi_set_flip_vertically_on_load(1);
+		stbi_set_flip_vertically_on_load(0);
 		stbi_uc* data = stbi_load(path.c_str(), &width, &height, &channels, 0);
 		APEX_CORE_ASSERT(data, std::string("Failed to load image : " + path));
 
@@ -92,7 +92,7 @@ namespace Apex {
 	//////////////////////////////////////////////////////////////////////
 
 	OpenGLTexture2D_HDR::OpenGLTexture2D_HDR(uint32_t width, uint32_t height, const std::string& name)
-		: m_Width(1280), m_Height(720)
+		: m_Width(width), m_Height(height)
 	{
 		glGenTextures(1, &m_RendererID);
 		glBindTexture(GL_TEXTURE_2D, m_RendererID);

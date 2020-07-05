@@ -79,9 +79,9 @@ namespace Apex {
 			textureShader->SetUniInt("u_Texture", 1);
 
 			m_ImageTexture = Texture2D_HDR::Create(128U, 128U, "Image");
+			m_ComputeShader = ComputeShader::Create("assets/Blur.compute");
 
-
-			m_Texture = Texture2D::Create("assets/Checkerboard.png");
+			m_Texture = Texture2D::Create("assets/pusheen-thug-life.png");
 
 			m_GameFrameBuffer = FrameBuffer::Create(false);
 			m_GameTexture = Texture2D::Create(800U, 600U);
@@ -112,8 +112,7 @@ namespace Apex {
 
 			auto textureShader = AssetManager::GetShaderLibrary().GetShader("SimpleTexture");
 			
-			m_ImageTexture->Bind(1);
-			m_ImageTexture->BindImage(1, false, true);
+			m_Texture->Bind(1);
 
 			Renderer::Submit(textureShader, m_TextureVA, glm::scale(glm::mat4(1.0f), glm::vec3(0.4f, 0.5f, 1.0f)));
 			Renderer::EndScene();
@@ -151,7 +150,34 @@ namespace Apex {
 			//if (!m_ShowNodeGraph) {
 			//	m_ShowNodeGraph = ImGui::Button("Show Node Graph");
 			//}
-			ImGui::Image((void*)(intptr_t)m_ImageTexture->GetID(), { 128, 128 },
+			if (ImGui::Button("Run-Basic-Texture")) {
+				m_ComputeShader->Bind();
+				m_ImageTexture->BindImage(0, false, true);
+
+				m_Texture->Bind(0);
+				m_ComputeShader->SetUniFloat2("u_BlurAmount", glm::vec2{ 0.f, 0.f });
+
+				m_ComputeShader->Dispatch(m_ImageTexture->GetWidth(), m_ImageTexture->GetHeight(), 1U);
+			}
+			if (ImGui::Button("Run-Blur-Texture")) {
+				m_ComputeShader->Bind();
+				m_ImageTexture->BindImage(0, false, true);
+				
+				m_Texture->Bind(0);				
+				m_ComputeShader->SetUniFloat2("u_BlurAmount", glm::vec2{ 4.f, 4.f });
+				
+				m_ComputeShader->Dispatch(m_ImageTexture->GetWidth(), m_ImageTexture->GetHeight(), 1U);
+			}
+			if (ImGui::Button("Run-Blur-Screen")) {
+				m_ComputeShader->Bind();
+				m_ImageTexture->BindImage(0, false, true);
+
+				m_GameTexture->Bind(0);
+				m_ComputeShader->SetUniFloat2("u_BlurAmount", glm::vec2{ 4.f, 4.f });
+
+				m_ComputeShader->Dispatch(m_ImageTexture->GetWidth(), m_ImageTexture->GetHeight(), 1U);
+			}
+			ImGui::Image((void*)(intptr_t)m_ImageTexture->GetID(), { (float)m_ImageTexture->GetWidth(), (float)m_ImageTexture->GetHeight() },
 				{ 0, 0 }, { 1, 1 }, { 1.f, 1.f, 1.f, 1.f }, { 1.f, 1.f, 1.f, 1.f });
 
 			//if (ImGui::Button("Parse Graph"))
@@ -228,6 +254,8 @@ namespace Apex {
 		Ref<FrameBuffer> m_GameFrameBuffer;
 		Ref<Texture2D> m_GameTexture, m_Texture;
 		Ref<Texture2D_HDR> m_ImageTexture;
+		
+		Ref<ComputeShader> m_ComputeShader;
 
 		irrklang::ISoundEngine* m_SoundEngine;
 		irrklang::ISound* m_Sound;
