@@ -105,47 +105,8 @@
     <ClInclude Include="src\Apex\Core.h">
       <Filter>src\Apex</Filter>
     </ClInclude>
-    <ClInclude Include="src\Apex\Events\ApplicationEvent.h">
-      <Filter>src\Apex\Events</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Apex\Events\Event.h">
-      <Filter>src\Apex\Events</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Apex\Events\KeyEvent.h">
-      <Filter>src\Apex\Events</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Apex\Events\MouseEvent.h">
-      <Filter>src\Apex\Events</Filter>
-    </ClInclude>
     <ClInclude Include="src\Apex\ImGui\ImGuiLayer.h">
       <Filter>src\Apex\ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Apex\Input\Input.h">
-      <Filter>src\Apex\Input</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Apex\Input\KeyCodes.h">
-      <Filter>src\Apex\Input</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Apex\Input\MouseCodes.h">
-      <Filter>src\Apex\Input</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Apex\Layers\Layer.h">
-      <Filter>src\Apex\Layers</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Apex\Layers\LayerStack.h">
-      <Filter>src\Apex\Layers</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Apex\Log\Log.h">
-      <Filter>src\Apex\Log</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Apex\Material\Material.h">
-      <Filter>src\Apex\Material</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Apex\Model\Mesh.h">
-      <Filter>src\Apex\Model</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Apex\Model\Model.h">
-      <Filter>src\Apex\Model</Filter>
     </ClInclude>
     <ClInclude Include="src\Apex\Physics\Interaction\MousePicker.h">
       <Filter>src\Apex\Physics\Interaction</Filter>
@@ -153,49 +114,10 @@
     <ClInclude Include="src\Apex\Physics\ParticleSystem\ParticleSystem2D.h">
       <Filter>src\Apex\Physics\ParticleSystem</Filter>
     </ClInclude>
-    <ClInclude Include="src\Apex\PostProcessing\Blur.h">
-      <Filter>src\Apex\PostProcessing</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Apex\RenderPrimitives\Buffer.h">
-      <Filter>src\Apex\RenderPrimitives</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Apex\RenderPrimitives\Camera.h">
-      <Filter>src\Apex\RenderPrimitives</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Apex\RenderPrimitives\FrameBuffer.h">
-      <Filter>src\Apex\RenderPrimitives</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Apex\RenderPrimitives\Shader.h">
-      <Filter>src\Apex\RenderPrimitives</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Apex\RenderPrimitives\Texture.h">
-      <Filter>src\Apex\RenderPrimitives</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Apex\RenderPrimitives\VertexArray.h">
-      <Filter>src\Apex\RenderPrimitives</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Apex\Renderer\RenderCommands.h">
-      <Filter>src\Apex\Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Apex\Renderer\Renderer.h">
-      <Filter>src\Apex\Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Apex\Renderer\RendererAPI.h">
-      <Filter>src\Apex\Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Apex\Renderer\RenderingContext.h">
-      <Filter>src\Apex\Renderer</Filter>
-    </ClInclude>
     <ClInclude Include="src\Apex\StartUp.h">
       <Filter>src\Apex</Filter>
     </ClInclude>
     <ClInclude Include="src\Apex\Utils\MathPrimitiveParser.h">
-      <Filter>src\Apex\Utils</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Apex\Utils\Random.h">
-      <Filter>src\Apex\Utils</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Apex\Utils\Timer.h">
       <Filter>src\Apex\Utils</Filter>
     </ClInclude>
     <ClInclude Include="src\Apex\Window.h">
@@ -1370,13 +1292,86 @@
     <ClInclude Include="src\Apex\Physics\Collision\Collider.h">
       <Filter>src\Apex\Physics\Collision</Filter>
     </ClInclude>
-    <ClInclude Include="src\Apex\Entity\GameObject.h" />
     <ClInclude Include="src\Apex\Physics\Movement\RigidBody.h" />
     <ClInclude Include="src\Apex\Networking\Socket.h" />
     <ClInclude Include="src\Apex\Networking\NetworkManager.h" />
     <ClInclude Include="src\Apex\Utils\Profiler.h" />
-    <ClInclude Include="src\Apex\ComputeShader\ComputeShader.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLComputeShader.h" />
+    <ClInclude Include="src\Apex\Core\Events\ApplicationEvent.h">
+      <Filter>src\Apex\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Apex\Core\Events\Event.h">
+      <Filter>src\Apex\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Apex\Core\Events\KeyEvent.h">
+      <Filter>src\Apex\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Apex\Core\Events\MouseEvent.h">
+      <Filter>src\Apex\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Apex\Core\Input\Input.h">
+      <Filter>src\Apex\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Apex\Core\Input\KeyCodes.h">
+      <Filter>src\Apex\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Apex\Core\Input\MouseCodes.h">
+      <Filter>src\Apex\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Apex\Core\Layers\Layer.h">
+      <Filter>src\Apex\Layers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Apex\Core\Layers\LayerStack.h">
+      <Filter>src\Apex\Layers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Apex\Graphics\Material\Material.h">
+      <Filter>src\Apex\Material</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Apex\Graphics\Model\Mesh.h">
+      <Filter>src\Apex\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Apex\Graphics\Model\Model.h">
+      <Filter>src\Apex\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Apex\Graphics\Renderer\RenderCommands.h">
+      <Filter>src\Apex\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Apex\Graphics\Renderer\Renderer.h">
+      <Filter>src\Apex\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Apex\Graphics\Renderer\RendererAPI.h">
+      <Filter>src\Apex\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Apex\Graphics\Renderer\RenderingContext.h">
+      <Filter>src\Apex\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Apex\Graphics\RenderPrimitives\Buffer.h">
+      <Filter>src\Apex\RenderPrimitives</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Apex\Graphics\RenderPrimitives\FrameBuffer.h">
+      <Filter>src\Apex\RenderPrimitives</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Apex\Graphics\RenderPrimitives\Shader.h">
+      <Filter>src\Apex\RenderPrimitives</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Apex\Graphics\RenderPrimitives\Texture.h">
+      <Filter>src\Apex\RenderPrimitives</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Apex\Graphics\RenderPrimitives\VertexArray.h">
+      <Filter>src\Apex\RenderPrimitives</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Apex\Core\Timer.h">
+      <Filter>src\Apex\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Apex\Core\Random.h">
+      <Filter>src\Apex\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Apex\Utils\ComputeShader\ComputeShader.h" />
+    <ClInclude Include="src\Apex\Core\Log.h">
+      <Filter>src\Apex\Log</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Apex\Core\Camera.h" />
+    <ClInclude Include="src\Apex\Graphics\PostProcessing\Blur.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Apex\Application.cpp">
@@ -1391,64 +1386,10 @@
     <ClCompile Include="src\Apex\ImGui\ImGuiLayer.cpp">
       <Filter>src\Apex\ImGui</Filter>
     </ClCompile>
-    <ClCompile Include="src\Apex\Layers\Layer.cpp">
-      <Filter>src\Apex\Layers</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Apex\Layers\LayerStack.cpp">
-      <Filter>src\Apex\Layers</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Apex\Log\Log.cpp">
-      <Filter>src\Apex\Log</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Apex\Material\Material.cpp">
-      <Filter>src\Apex\Material</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Apex\Model\Mesh.cpp">
-      <Filter>src\Apex\Model</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Apex\Model\Model.cpp">
-      <Filter>src\Apex\Model</Filter>
-    </ClCompile>
     <ClCompile Include="src\Apex\Physics\ParticleSystem\ParticleSystem2D.cpp">
       <Filter>src\Apex\Physics\ParticleSystem</Filter>
     </ClCompile>
-    <ClCompile Include="src\Apex\PostProcessing\Blur.cpp">
-      <Filter>src\Apex\PostProcessing</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Apex\RenderPrimitives\Buffer.cpp">
-      <Filter>src\Apex\RenderPrimitives</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Apex\RenderPrimitives\Camera.cpp">
-      <Filter>src\Apex\RenderPrimitives</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Apex\RenderPrimitives\FrameBuffer.cpp">
-      <Filter>src\Apex\RenderPrimitives</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Apex\RenderPrimitives\Shader.cpp">
-      <Filter>src\Apex\RenderPrimitives</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Apex\RenderPrimitives\Texture.cpp">
-      <Filter>src\Apex\RenderPrimitives</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Apex\RenderPrimitives\VertexArray.cpp">
-      <Filter>src\Apex\RenderPrimitives</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Apex\Renderer\RenderCommands.cpp">
-      <Filter>src\Apex\Renderer</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Apex\Renderer\Renderer.cpp">
-      <Filter>src\Apex\Renderer</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Apex\Renderer\RendererAPI.cpp">
-      <Filter>src\Apex\Renderer</Filter>
-    </ClCompile>
     <ClCompile Include="src\Apex\Utils\MathPrimitiveParser.cpp">
-      <Filter>src\Apex\Utils</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Apex\Utils\Random.cpp">
-      <Filter>src\Apex\Utils</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Apex\Utils\Timer.cpp">
       <Filter>src\Apex\Utils</Filter>
     </ClCompile>
     <ClCompile Include="src\Platform\OpenGL\OpenGLBuffer.cpp">
@@ -1494,7 +1435,57 @@
     <ClCompile Include="src\Apex\Networking\Socket.cpp" />
     <ClCompile Include="src\Apex\Networking\NetworkManager.cpp" />
     <ClCompile Include="src\Apex\Utils\Profiler.cpp" />
-    <ClCompile Include="src\Apex\ComputeShader\ComputeShader.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLComputeShader.cpp" />
+    <ClCompile Include="src\Apex\Core\Layers\Layer.cpp">
+      <Filter>src\Apex\Layers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Apex\Core\Layers\LayerStack.cpp">
+      <Filter>src\Apex\Layers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Apex\Graphics\Material\Material.cpp">
+      <Filter>src\Apex\Material</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Apex\Graphics\Model\Mesh.cpp">
+      <Filter>src\Apex\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Apex\Graphics\Model\Model.cpp">
+      <Filter>src\Apex\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Apex\Graphics\Renderer\RenderCommands.cpp">
+      <Filter>src\Apex\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Apex\Graphics\Renderer\Renderer.cpp">
+      <Filter>src\Apex\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Apex\Graphics\Renderer\RendererAPI.cpp">
+      <Filter>src\Apex\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Apex\Graphics\RenderPrimitives\Buffer.cpp">
+      <Filter>src\Apex\RenderPrimitives</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Apex\Graphics\RenderPrimitives\FrameBuffer.cpp">
+      <Filter>src\Apex\RenderPrimitives</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Apex\Graphics\RenderPrimitives\Shader.cpp">
+      <Filter>src\Apex\RenderPrimitives</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Apex\Graphics\RenderPrimitives\Texture.cpp">
+      <Filter>src\Apex\RenderPrimitives</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Apex\Graphics\RenderPrimitives\VertexArray.cpp">
+      <Filter>src\Apex\RenderPrimitives</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Apex\Core\Timer.cpp">
+      <Filter>src\Apex\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Apex\Core\Random.cpp">
+      <Filter>src\Apex\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Apex\Utils\ComputeShader\ComputeShader.cpp" />
+    <ClCompile Include="src\Apex\Core\Log.cpp">
+      <Filter>src\Apex\Log</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Apex\Core\Camera.cpp" />
+    <ClCompile Include="src\Apex\Graphics\PostProcessing\Blur.cpp" />
   </ItemGroup>
 </Project>

@@ -1,5 +1,5 @@
 #include "apex_pch.h"
-#include "Apex/Input/Input.h"
+#include "Apex/Core/Input/Input.h"
 
 #include <GLFW/glfw3.h>
 #include "Apex/Application.h"

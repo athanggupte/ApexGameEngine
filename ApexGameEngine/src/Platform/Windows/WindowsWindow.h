@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Apex/Window.h"
-#include "Apex/Renderer/RenderingContext.h"
+#include "Apex/Graphics/Renderer/RenderingContext.h"
 
 #include <GLFW/glfw3.h>
 

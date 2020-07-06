@@ -1,9 +1,9 @@
 #include "apex_pch.h"
 #include "Application.h"
 
-#include "Apex/Log/Log.h"
-#include "Apex/Renderer/Renderer.h"
-#include "Apex/Input/Input.h"
+#include "Apex/Core/Log.h"
+#include "Apex/Core/Input/Input.h"
+#include "Apex/Graphics/Renderer/Renderer.h"
 
 //#include <GLFW/glfw3.h>
 #include <glad/glad.h>

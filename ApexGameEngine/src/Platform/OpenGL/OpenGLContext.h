@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Apex/Renderer/RenderingContext.h"
+#include "Apex/Graphics/Renderer/RenderingContext.h"
 
 struct GLFWwindow;
 

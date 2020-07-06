@@ -1,9 +1,9 @@
 #pragma once
 
-#include "Apex/Layers/Layer.h"
-#include "Apex/Events/MouseEvent.h"
-#include "Apex/Events/KeyEvent.h"
-#include "Apex/Events/ApplicationEvent.h"
+#include "Apex/Core/Layers/Layer.h"
+#include "Apex/Core/Events/MouseEvent.h"
+#include "Apex/Core/Events/KeyEvent.h"
+#include "Apex/Core/Events/ApplicationEvent.h"
 
 namespace Apex {
 

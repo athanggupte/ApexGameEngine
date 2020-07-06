@@ -1,7 +1,7 @@
 #include "apex_pch.h"
 #include "Buffer.h"
 
-#include "Apex/Renderer/Renderer.h"
+#include "Apex/Graphics/Renderer/Renderer.h"
 
 #include "Platform/OpenGL/OpenGLBuffer.h"
 

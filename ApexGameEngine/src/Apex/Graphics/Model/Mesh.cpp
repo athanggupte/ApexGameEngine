@@ -1,7 +1,7 @@
 #include "apex_pch.h"
 #include "Mesh.h"
 
-#include "Apex/RenderPrimitives/Buffer.h"
+#include "Apex/Graphics/RenderPrimitives/Buffer.h"
 
 namespace Apex {
 

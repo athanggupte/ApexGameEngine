@@ -1,7 +1,7 @@
 #include "apex_pch.h"
 #include "Blur.h"
 
-#include "Apex/Renderer/Renderer.h"
+#include "Apex/Graphics/Renderer/Renderer.h"
 
 namespace Apex {
 

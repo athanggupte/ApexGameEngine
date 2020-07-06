@@ -1,7 +1,7 @@
 #include "apex_pch.h"
 #include "OpenGLTexture.h"
 
-#include "Apex/Renderer/Renderer.h"
+#include "Apex/Graphics/Renderer/Renderer.h"
 
 #include <glad/glad.h>
 #include <stb_image.h>

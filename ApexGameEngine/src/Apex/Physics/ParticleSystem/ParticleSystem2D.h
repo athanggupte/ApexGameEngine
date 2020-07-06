@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Apex/RenderPrimitives/VertexArray.h"
-#include "Apex/RenderPrimitives/Shader.h"
+#include "Apex/Graphics/RenderPrimitives/VertexArray.h"
+#include "Apex/Graphics/RenderPrimitives/Shader.h"
 
 #include <glm/glm.hpp>
 #include <vector>

@@ -1,10 +1,10 @@
 #pragma once
 
 #include "Window.h"
-#include "Apex/Layers/LayerStack.h"
-#include "Apex/Events/Event.h"
-#include "Apex/Events/ApplicationEvent.h"
-#include "Apex/Utils/Timer.h"
+#include "Apex/Core/Layers/LayerStack.h"
+#include "Apex/Core/Events/Event.h"
+#include "Apex/Core/Events/ApplicationEvent.h"
+#include "Apex/Core/Timer.h"
 
 #include "Apex/ImGui/ImGuiLayer.h"
 

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Apex/ComputeShader/ComputeShader.h"
+#include "Apex/Utils/ComputeShader/ComputeShader.h"
 
 namespace Apex {
 

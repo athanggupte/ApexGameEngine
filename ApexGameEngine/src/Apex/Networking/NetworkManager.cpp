@@ -2,7 +2,7 @@
 #include "NetworkManager.h"
 
 #include "Socket.h"
-#include "Apex/Utils/Timer.h"
+#include "Apex/Core/Timer.h"
 
 namespace Apex {
 

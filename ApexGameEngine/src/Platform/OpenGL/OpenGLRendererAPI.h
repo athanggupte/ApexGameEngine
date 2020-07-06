@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Apex/Renderer/RendererAPI.h"
+#include "Apex/Graphics/Renderer/RendererAPI.h"
 
 namespace Apex {
 

@@ -1,9 +1,9 @@
 #include "apex_pch.h"
 #include "ParticleSystem2D.h"
 
-#include "Apex/Utils/Timer.h"
-#include "Apex/Utils/Random.h"
-#include "Apex/Renderer/Renderer.h"
+#include "Apex/Core/Timer.h"
+#include "Apex/Core/Random.h"
+#include "Apex/Graphics/Renderer/Renderer.h"
 
 #include <glm/gtc/constants.hpp>
 #define GLM_ENABLE_EXPERIMENTAL
