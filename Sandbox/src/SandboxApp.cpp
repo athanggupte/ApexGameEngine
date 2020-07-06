@@ -8,9 +8,9 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-#include "Apex/Material/Material.h"
-#include "Apex/Model/Model.h"
-#include "Apex/ComputeShader/ComputeShader.h"
+#include "Apex/Graphics/Material/Material.h"
+#include "Apex/Graphics/Model/Model.h"
+#include "Apex/Utils/ComputeShader/ComputeShader.h"
 #include "Apex/Physics/ParticleSystem/ParticleSystem2D.h"
 
 #include "Games/DXBall/DXBall.h"

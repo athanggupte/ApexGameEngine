@@ -9,8 +9,8 @@
 #include <imgui.h>
 #include <imgui_internal.h>
 
-#include "Apex/RenderPrimitives/Texture.h"
-#include "Apex/ComputeShader/ComputeShader.h"
+#include "Apex/Graphics/RenderPrimitives/Texture.h"
+#include "Apex/Utils/ComputeShader/ComputeShader.h"
 
 namespace Apex::EditorTools {
 	

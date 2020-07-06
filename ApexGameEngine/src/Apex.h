@@ -3,21 +3,22 @@
 //-----Core-----------------------------
 #include "Apex/Application.h"
 #include "Apex/AssetManager/AssetManager.h"
-#include "Apex/Layers/Layer.h"
+#include "Apex/Core/Layers/Layer.h"
+#include "Apex/Core/Log.h"
+#include "Apex/Core/Timer.h"
+#include "Apex/Core/Random.h"
 //------------------------------------//
 
 //-----Utility--------------------------
-#include "Apex/Log/Log.h"
+#include "Apex/Utils/ComputeShader/ComputeShader.h"
 #include "Apex/Utils/MathPrimitiveParser.h"
-#include "Apex/Utils/Timer.h"
-#include "Apex/Utils/Random.h"
 #include "Apex/Utils/Profiler.h"
 //------------------------------------//
 
 //-----Input----------------------------
-#include "Apex/Input/Input.h"
-#include "Apex/Input/KeyCodes.h"
-#include "Apex/Input/MouseCodes.h"
+#include "Apex/Core/Input/Input.h"
+#include "Apex/Core/Input/KeyCodes.h"
+#include "Apex/Core/Input/MouseCodes.h"
 //------------------------------------//
 
 //-----ImGui----------------------------
@@ -25,20 +26,20 @@
 //------------------------------------//
 
 //-----Renderer-------------------------
-#include "Apex/Renderer/Renderer.h"
-#include "Apex/Renderer/RenderCommands.h"
+#include "Apex/Graphics/Renderer/Renderer.h"
+#include "Apex/Graphics/Renderer/RenderCommands.h"
 
-#include "Apex/RenderPrimitives/Shader.h"
-#include "Apex/RenderPrimitives/Texture.h"
-#include "Apex/RenderPrimitives/Buffer.h"
-#include "Apex/RenderPrimitives/VertexArray.h"
-#include "Apex/RenderPrimitives/FrameBuffer.h"
+#include "Apex/Graphics/RenderPrimitives/Shader.h"
+#include "Apex/Graphics/RenderPrimitives/Texture.h"
+#include "Apex/Graphics/RenderPrimitives/Buffer.h"
+#include "Apex/Graphics/RenderPrimitives/VertexArray.h"
+#include "Apex/Graphics/RenderPrimitives/FrameBuffer.h"
 
-#include "Apex/Camera/Camera.h"
+#include "Apex/Core/Camera.h"
 //------------------------------------//
 
 //-----PostProcessing-------------------
-#include "Apex/PostProcessing/Blur.h"
+#include "Apex/Graphics/PostProcessing/Blur.h"
 //------------------------------------//
 
 #include "Apex/StartUp.h" 
