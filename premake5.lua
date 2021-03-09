@@ -11,14 +11,15 @@ outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
 -- Include directories relative to the root (solution) directory
 IncludeDirs = {}
-IncludeDirs["spdlog"] = "ApexGameEngine/vendor/spdlog/include"
-IncludeDirs["GLFW"] = "ApexGameEngine/vendor/GLFW/include"
-IncludeDirs["Glad"] = "ApexGameEngine/vendor/Glad/include"
-IncludeDirs["ImGui"] = "ApexGameEngine/vendor/imgui"
-IncludeDirs["glm"] = "ApexGameEngine/vendor/glm"
-IncludeDirs["stb_image"] = "ApexGameEngine/vendor/stb_image"
+IncludeDirs["spdlog"] = "ApexGameEngine/vendor/spdlog/include/"
+IncludeDirs["GLFW"] = "ApexGameEngine/vendor/GLFW/include/"
+IncludeDirs["Glad"] = "ApexGameEngine/vendor/Glad/include/"
+IncludeDirs["ImGui"] = "ApexGameEngine/vendor/imgui/"
+IncludeDirs["glm"] = "ApexGameEngine/vendor/glm/"
+IncludeDirs["stb_image"] = "ApexGameEngine/vendor/stb_image/"
 IncludeDirs["Assimp"] = "ApexGameEngine/vendor/Assimp/src/include/"
 IncludeDirs["irrKlang"] = "ApexGameEngine/vendor/irrKlang/include/"
+IncludeDirs["ApexIK"] = "ApexGameEngine/vendor/ApexIK/ApexIK/include/"
 
 -- DLLs
 DLLs = {}
@@ -28,6 +29,7 @@ DLLs["irrKlang"] = "irrKlang"
 include "ApexGameEngine/vendor/GLFW"
 include "ApexGameEngine/vendor/Glad"
 include "ApexGameEngine/vendor/imgui"
+include "ApexGameEngine/vendor/ApexIK"
 
 
 -- Apex Game Engine Project
@@ -64,7 +66,8 @@ project "ApexGameEngine"
 		"%{IncludeDirs.stb_image}",
 		"%{prj.name}/vendor/Assimp/build/include",
 		"%{IncludeDirs.Assimp}",
-		"%{IncludeDirs.irrKlang}"
+		"%{IncludeDirs.irrKlang}",
+		"%{IncludeDirs.ApexIK}"
 	}
 
 	libdirs {
@@ -79,6 +82,7 @@ project "ApexGameEngine"
 		"Glad",
 		"ImGui",
 		"opengl32.lib",
+		"ApexIK",
 		"%{DLLs.Assimp}",
 		--"zlibd",
 		--"IrrXMLd",
@@ -138,7 +142,8 @@ project "ApexEditor"
 		"%{IncludeDirs.glm}",
 		"ApexGameEngine/vendor/Assimp/build/include",
 		"%{IncludeDirs.Assimp}",
-		"%{IncludeDirs.irrKlang}"
+		"%{IncludeDirs.irrKlang}",
+		"%{IncludeDirs.ApexIK}"
 	}
 	
 	libdirs {
@@ -148,6 +153,7 @@ project "ApexEditor"
 
 	links {
 		"ApexGameEngine",
+		"ApexIK",
 		"%{DLLs.Assimp}",
 		"%{DLLs.irrKlang}"
 	}
@@ -198,7 +204,8 @@ project "Sandbox"
 		"%{IncludeDirs.glm}",
 		"ApexGameEngine/vendor/Assimp/build/include",
 		"%{IncludeDirs.Assimp}",
-		"%{IncludeDirs.irrKlang}"
+		"%{IncludeDirs.irrKlang}",
+		"%{IncludeDirs.ApexIK}"
 	}
 	
 	libdirs {
@@ -208,6 +215,7 @@ project "Sandbox"
 
 	links {
 		"ApexGameEngine",
+		"ApexIK",
 		"%{DLLs.Assimp}",
 		"%{DLLs.irrKlang}"
 	}

@@ -2,6 +2,9 @@
 
 //-----Core-----------------------------
 #include "Apex/Application.h"
+			/*-------------Testing----------------*/
+			#include "Apex/Core/ECS/ECSRegistry.h"
+			/*------------------------------------*/
 #include "Apex/AssetManager/AssetManager.h"
 #include "Apex/Core/Layers/Layer.h"
 #include "Apex/Core/Log.h"

@@ -21,6 +21,8 @@
 // Audio
 #include "irrKlang.h"
 
+#include "Apex/Core/ECS/ECSComponent.h"
+
 class SandboxLayer : public Apex::Layer
 {
 public:
@@ -172,6 +174,25 @@ public:
 	// Inherited via Layer
 	void OnAttach() override
 	{
+		static Apex::ECS::Registry s_Registry;
+		{
+			auto testcomp = s_Registry.emplace_back<TestComponent>(0, 21);
+			APEX_CORE_DEBUG("TestComponent::COUNT = {}", TestComponent::COUNT);
+			APEX_CORE_DEBUG("TestComponent::value = {}", testcomp.value);
+		}
+
+		{
+			auto meshcomp = s_Registry.emplace_back<MeshComponent>(0, "Mesh-1");
+			APEX_CORE_DEBUG("MeshComponent::COUNT = {}", MeshComponent::COUNT);
+			APEX_CORE_DEBUG("MeshComponent::value = {}", meshcomp.mesh);
+		}
+
+		{
+			auto meshcomp = s_Registry.emplace_back<MeshComponent>(0, "Mesh-2");
+			APEX_CORE_DEBUG("MeshComponent::COUNT = {}", MeshComponent::COUNT);
+			APEX_CORE_DEBUG("MeshComponent::value = {}", meshcomp.mesh);
+		}
+
 		m_NoiseTexture->BindImage(0U, false, true);
 		m_ComputeShader->Bind();
 		m_ComputeShader->Dispatch(m_NoiseTexture->GetWidth(), m_NoiseTexture->GetHeight(), 1U);
@@ -304,6 +325,16 @@ public:
 	}
 
 private:
+	struct TestComponent : public Apex::ECS::Component<TestComponent>
+	{
+		int value;
+	};
+
+	struct MeshComponent : public Apex::ECS::Component<MeshComponent>
+	{
+		std::string mesh;
+	};
+
 	/// Main scene objects ///
 	Apex::Ref<Apex::Shader> m_FlatShader;
 	//Apex::Ref<Apex::Shader> m_TextureShader;
@@ -343,7 +374,7 @@ private:
 	float m_Contrast = 0.0f;
 };
 
-
+#if 0
 class ModelLayer : public Apex::Layer
 {
 public:
@@ -700,7 +731,6 @@ private:
 	bool m_MouseSelectMode = false;
 };
 
-#if 0
 class ParticleLayer : public Apex::Layer
 {
 public:

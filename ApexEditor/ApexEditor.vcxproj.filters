@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="EditorTools">
+      <UniqueIdentifier>{FD6001B7-6916-7AAC-F20A-74835EBF70B0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EditorTools\ImNodes">
+      <UniqueIdentifier>{1BCFD248-8730-B056-109E-F6087CFEE615}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EditorTools\NodeGraph">
+      <UniqueIdentifier>{849FDC6B-F00B-9866-B9FF-2FC4252BBACE}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EditorTools\PythonGraph">
+      <UniqueIdentifier>{609D2111-CCD4-69A8-D5DE-CDCB419590A1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EditorTools\ShaderGraph">
+      <UniqueIdentifier>{55A6CE0D-C1DD-16A5-CAE7-7AC8369E3D9E}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\EditorLayer.h" />
+    <ClInclude Include="src\EditorTools\ImNodes\ImNodes.h">
+      <Filter>EditorTools\ImNodes</Filter>
+    </ClInclude>
+    <ClInclude Include="src\EditorTools\ImNodes\ImNodesEz.h">
+      <Filter>EditorTools\ImNodes</Filter>
+    </ClInclude>
+    <ClInclude Include="src\EditorTools\NodeGraph\ConnectionTree.h">
+      <Filter>EditorTools\NodeGraph</Filter>
+    </ClInclude>
+    <ClInclude Include="src\EditorTools\NodeGraph\Node.h">
+      <Filter>EditorTools\NodeGraph</Filter>
+    </ClInclude>
+    <ClInclude Include="src\EditorTools\NodeGraph\NodeGraph.h">
+      <Filter>EditorTools\NodeGraph</Filter>
+    </ClInclude>
+    <ClInclude Include="src\EditorTools\PythonGraph\PythonGraph.h">
+      <Filter>EditorTools\PythonGraph</Filter>
+    </ClInclude>
+    <ClInclude Include="src\EditorTools\PythonGraph\PythonNodes.h">
+      <Filter>EditorTools\PythonGraph</Filter>
+    </ClInclude>
+    <ClInclude Include="src\EditorTools\ShaderGraph\Node.h">
+      <Filter>EditorTools\ShaderGraph</Filter>
+    </ClInclude>
+    <ClInclude Include="src\EditorTools\ShaderGraph\ShaderGraph.h">
+      <Filter>EditorTools\ShaderGraph</Filter>
+    </ClInclude>
+    <ClInclude Include="src\EditorTools\ShaderGraph\ShaderNodes.h">
+      <Filter>EditorTools\ShaderGraph</Filter>
+    </ClInclude>
+    <ClInclude Include="src\EditorTools\ShaderGraph\ShaderSlots.h">
+      <Filter>EditorTools\ShaderGraph</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\ApexEditor.cpp" />
+    <ClCompile Include="src\EditorTools\ImNodes\ImNodes.cpp">
+      <Filter>EditorTools\ImNodes</Filter>
+    </ClCompile>
+    <ClCompile Include="src\EditorTools\ImNodes\ImNodesEz.cpp">
+      <Filter>EditorTools\ImNodes</Filter>
+    </ClCompile>
+    <ClCompile Include="src\EditorTools\NodeGraph\ConnectionTree.cpp">
+      <Filter>EditorTools\NodeGraph</Filter>
+    </ClCompile>
+    <ClCompile Include="src\EditorTools\NodeGraph\Node.cpp">
+      <Filter>EditorTools\NodeGraph</Filter>
+    </ClCompile>
+    <ClCompile Include="src\EditorTools\NodeGraph\NodeGraph.cpp">
+      <Filter>EditorTools\NodeGraph</Filter>
+    </ClCompile>
+    <ClCompile Include="src\EditorTools\PythonGraph\PythonGraph.cpp">
+      <Filter>EditorTools\PythonGraph</Filter>
+    </ClCompile>
+    <ClCompile Include="src\EditorTools\ShaderGraph\ShaderGraph.cpp">
+      <Filter>EditorTools\ShaderGraph</Filter>
+    </ClCompile>
+    <ClCompile Include="src\EditorTools\ShaderGraph\ShaderNodes.cpp">
+      <Filter>EditorTools\ShaderGraph</Filter>
+    </ClCompile>
+    <ClCompile Include="src\myfonts.cpp" />
+  </ItemGroup>
+</Project>

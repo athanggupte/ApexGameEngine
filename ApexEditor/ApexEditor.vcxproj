@@ -79,7 +79,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>APEX_PLATFORM_WINDOWS;APEX_DEBUG;APEX_ENABLE_ASSERTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\ApexGameEngine\src;..\ApexGameEngine\vendor\spdlog\include;..\ApexGameEngine\vendor\imgui;..\ApexGameEngine\vendor\glm;..\ApexGameEngine\vendor\Assimp\build\include;..\ApexGameEngine\vendor\Assimp\src\include;..\ApexGameEngine\vendor\irrKlang\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\ApexGameEngine\src;..\ApexGameEngine\vendor\spdlog\include;..\ApexGameEngine\vendor\imgui;..\ApexGameEngine\vendor\glm;..\ApexGameEngine\vendor\Assimp\build\include;..\ApexGameEngine\vendor\Assimp\src\include;..\ApexGameEngine\vendor\irrKlang\include;..\ApexGameEngine\vendor\ApexIK\ApexIK\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -97,7 +97,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>APEX_PLATFORM_WINDOWS;APEX_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\ApexGameEngine\src;..\ApexGameEngine\vendor\spdlog\include;..\ApexGameEngine\vendor\imgui;..\ApexGameEngine\vendor\glm;..\ApexGameEngine\vendor\Assimp\build\include;..\ApexGameEngine\vendor\Assimp\src\include;..\ApexGameEngine\vendor\irrKlang\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\ApexGameEngine\src;..\ApexGameEngine\vendor\spdlog\include;..\ApexGameEngine\vendor\imgui;..\ApexGameEngine\vendor\glm;..\ApexGameEngine\vendor\Assimp\build\include;..\ApexGameEngine\vendor\Assimp\src\include;..\ApexGameEngine\vendor\irrKlang\include;..\ApexGameEngine\vendor\ApexIK\ApexIK\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -119,7 +119,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>APEX_PLATFORM_WINDOWS;APEX_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\ApexGameEngine\src;..\ApexGameEngine\vendor\spdlog\include;..\ApexGameEngine\vendor\imgui;..\ApexGameEngine\vendor\glm;..\ApexGameEngine\vendor\Assimp\build\include;..\ApexGameEngine\vendor\Assimp\src\include;..\ApexGameEngine\vendor\irrKlang\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\ApexGameEngine\src;..\ApexGameEngine\vendor\spdlog\include;..\ApexGameEngine\vendor\imgui;..\ApexGameEngine\vendor\glm;..\ApexGameEngine\vendor\Assimp\build\include;..\ApexGameEngine\vendor\Assimp\src\include;..\ApexGameEngine\vendor\irrKlang\include;..\ApexGameEngine\vendor\ApexIK\ApexIK\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -138,6 +138,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\EditorLayer.h" />
+    <ClInclude Include="src\EditorTools\ImNodes\ImNodes.h" />
+    <ClInclude Include="src\EditorTools\ImNodes\ImNodesEz.h" />
+    <ClInclude Include="src\EditorTools\NodeGraph\ConnectionTree.h" />
+    <ClInclude Include="src\EditorTools\NodeGraph\Node.h" />
+    <ClInclude Include="src\EditorTools\NodeGraph\NodeGraph.h" />
+    <ClInclude Include="src\EditorTools\PythonGraph\PythonGraph.h" />
+    <ClInclude Include="src\EditorTools\PythonGraph\PythonNodes.h" />
     <ClInclude Include="src\EditorTools\ShaderGraph\Node.h" />
     <ClInclude Include="src\EditorTools\ShaderGraph\ShaderGraph.h" />
     <ClInclude Include="src\EditorTools\ShaderGraph\ShaderNodes.h" />
@@ -145,6 +152,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\ApexEditor.cpp" />
+    <ClCompile Include="src\EditorTools\ImNodes\ImNodes.cpp" />
+    <ClCompile Include="src\EditorTools\ImNodes\ImNodesEz.cpp" />
+    <ClCompile Include="src\EditorTools\NodeGraph\ConnectionTree.cpp" />
+    <ClCompile Include="src\EditorTools\NodeGraph\Node.cpp" />
+    <ClCompile Include="src\EditorTools\NodeGraph\NodeGraph.cpp" />
+    <ClCompile Include="src\EditorTools\PythonGraph\PythonGraph.cpp" />
     <ClCompile Include="src\EditorTools\ShaderGraph\ShaderGraph.cpp" />
     <ClCompile Include="src\EditorTools\ShaderGraph\ShaderNodes.cpp" />
     <ClCompile Include="src\myfonts.cpp" />
@@ -152,6 +165,9 @@
   <ItemGroup>
     <ProjectReference Include="..\ApexGameEngine\ApexGameEngine.vcxproj">
       <Project>{63028D86-4FD0-808C-3864-F1B224D15CF1}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\ApexGameEngine\vendor\ApexIK\ApexIK.vcxproj">
+      <Project>{8778A2A7-731A-CD7D-5CD5-E0D1481654CE}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
