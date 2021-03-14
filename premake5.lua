@@ -17,7 +17,7 @@ IncludeDirs["Glad"] = "ApexGameEngine/vendor/Glad/include/"
 IncludeDirs["ImGui"] = "ApexGameEngine/vendor/imgui/"
 IncludeDirs["glm"] = "ApexGameEngine/vendor/glm/"
 IncludeDirs["stb_image"] = "ApexGameEngine/vendor/stb_image/"
-IncludeDirs["Assimp"] = "ApexGameEngine/vendor/Assimp/src/include/"
+IncludeDirs["Assimp"] = "ApexGameEngine/vendor/Assimp/include/"
 IncludeDirs["irrKlang"] = "ApexGameEngine/vendor/irrKlang/include/"
 IncludeDirs["ApexIK"] = "ApexGameEngine/modules/ApexIK/ApexIK/include/"
 
@@ -287,6 +287,10 @@ project "Sandbox"
 		
 		libdirs (LinuxLibDirs)
 		links (LinuxLibs)
+        
+		postbuildcommands {
+			"echo \"{CHDIR} %{cfg.buildtarget.abspath}\" > %{prj.name}.sh"
+		}
 		
 	filter "configurations:Debug"
 		defines {
