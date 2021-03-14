@@ -13,3 +13,6 @@
 [submodule "ApexGameEngine/modules/ApexIK"]
 	path = ApexGameEngine/modules/ApexIK
 	url = https://github.com/xdevapps/ApexIK
+[submodule "ApexGameEngine/vendor/Assimp"]
+	path = ApexGameEngine/vendor/Assimp
+	url = https://github.com/xdevapps/assimp
