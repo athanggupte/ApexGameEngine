@@ -19,7 +19,7 @@ IncludeDirs["glm"] = "ApexGameEngine/vendor/glm/"
 IncludeDirs["stb_image"] = "ApexGameEngine/vendor/stb_image/"
 IncludeDirs["Assimp"] = "ApexGameEngine/vendor/Assimp/src/include/"
 IncludeDirs["irrKlang"] = "ApexGameEngine/vendor/irrKlang/include/"
-IncludeDirs["ApexIK"] = "ApexGameEngine/vendor/ApexIK/ApexIK/include/"
+IncludeDirs["ApexIK"] = "ApexGameEngine/modules/ApexIK/ApexIK/include/"
 
 -- DLLs
 DLLs = {}
@@ -48,7 +48,8 @@ LinuxLibDirs = { "ApexGameEngine/vendor/Assimp/build/bin", "ApexGameEngine/vendo
 include "ApexGameEngine/vendor/GLFW"
 include "ApexGameEngine/vendor/Glad"
 include "ApexGameEngine/vendor/imgui"
-include "ApexGameEngine/vendor/ApexIK"
+
+include "ApexGameEngine/modules/ApexIK"
 
 
 -- Apex Game Engine Project

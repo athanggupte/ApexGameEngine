@@ -10,6 +10,6 @@
 [submodule "ApexGameEngine/vendor/glm"]
 	path = ApexGameEngine/vendor/glm
 	url = https://github.com/g-truc/glm
-[submodule "ApexGameEngine/vendor/ApexIK"]
-	path = ApexGameEngine/vendor/ApexIK
+[submodule "ApexGameEngine/modules/ApexIK"]
+	path = ApexGameEngine/modules/ApexIK
 	url = https://github.com/xdevapps/ApexIK
