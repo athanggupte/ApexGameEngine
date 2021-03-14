@@ -10,6 +10,7 @@
 
 #include <string>
 #include <sstream>
+#include <list>
 #include <array>
 #include <queue>
 #include <stack>

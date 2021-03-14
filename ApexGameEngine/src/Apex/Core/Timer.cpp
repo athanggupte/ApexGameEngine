@@ -9,11 +9,11 @@ namespace Apex {
 
 	void Timer::InitTimer()
 	{
-		#ifdef APEX_PLATFORM_WINDOWS
+		//#ifdef APEX_PLATFORM_WINDOWS
 			s_Timer = new WindowsTimer();
-		#else
-			#error Apex only supports Windows for now!	
-		#endif
+		//#else
+		//	#error Apex only supports Windows for now!	
+		//#endif
 	}
 
 }

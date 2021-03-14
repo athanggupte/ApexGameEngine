@@ -16,7 +16,7 @@ namespace Apex {
 		virtual const std::string& GetName() const = 0;
 
 		virtual const std::unordered_map<std::string, uint32_t>& GetActiveUniformLocations() = 0;
-		virtual const std::vector<std::tuple<std::string, uint32_t, size_t>>& GetActiveUniformData() = 0;
+		virtual const std::vector<std::tuple<std::string, uint32_t, size_t>> GetActiveUniformData() = 0;
 
 		virtual void SetUniInt(const std::string& name, int value) = 0;
 		virtual void SetUniFloat1(const std::string& name, float value) = 0;

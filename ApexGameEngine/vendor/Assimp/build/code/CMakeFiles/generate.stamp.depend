@@ -1,5 +1,0 @@
-# CMake generation dependency list for this directory.
-E:/Athang_Work/ApexGameEngine/ApexGameEngine/vendor/Assimp/src/cmake-modules/FindRT.cmake
-E:/Athang_Work/ApexGameEngine/ApexGameEngine/vendor/Assimp/src/code/CMakeLists.txt
-E:/CMake/cmake-3.17.0-rc1-win64-x64/share/cmake-3.17/Modules/FindPackageHandleStandardArgs.cmake
-E:/CMake/cmake-3.17.0-rc1-win64-x64/share/cmake-3.17/Modules/FindPackageMessage.cmake

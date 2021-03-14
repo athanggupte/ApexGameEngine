@@ -41,7 +41,7 @@ namespace Apex {
 		auto count = lastDot == std::string::npos ? filepath.size() - lastSlash : lastDot - lastSlash;
 		m_Name = filepath.substr(lastSlash, count);
 
-		auto& shaderSources = ParseSource(source);
+		auto shaderSources = ParseSource(source);
 		Compile(shaderSources);
 	}
 
@@ -194,7 +194,7 @@ namespace Apex {
 		return m_UniformLocations;
 	}
 
-	const std::vector<std::tuple<std::string, uint32_t, size_t>>& OpenGLShader::GetActiveUniformData()
+	const std::vector<std::tuple<std::string, uint32_t, size_t>> OpenGLShader::GetActiveUniformData()
 	{
 		std::vector<std::tuple<std::string, uint32_t, size_t>> uniformData;
 		int numUniforms = -1;

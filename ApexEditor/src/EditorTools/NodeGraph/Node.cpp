@@ -8,7 +8,7 @@
 #include <imgui.h>
 #include <imgui_internal.h>
 
-namespace Apex {
+namespace Apex::EditorTools {
 
 #define NODE_SIZE_X 220.f
 #define TITLE_SIZE_Y 18.f

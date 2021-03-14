@@ -1,3 +1,5 @@
+#ifdef APEX_PLATFORM_WINDOWS
+
 #include <apex_pch.h>
 #include "Socket.h"
 
@@ -515,3 +517,5 @@ namespace Apex {
 
 
 }
+
+#endif

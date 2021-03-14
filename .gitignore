@@ -27,6 +27,13 @@ bld/
 [Ll]og/
 [Bb]uild/
 
+# gmake files
+Makefile
+*.a
+*.so
+*.gch
+*.out
+
 # Visual Studio Code options directory
 .vscode/
 

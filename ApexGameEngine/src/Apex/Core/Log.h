@@ -28,7 +28,7 @@ namespace Apex {
 #define APEX_CORE_INFO(...)			::Apex::Log::GetCoreLogger()->info(__VA_ARGS__)
 #define APEX_CORE_WARN(...)			::Apex::Log::GetCoreLogger()->warn(__VA_ARGS__)
 #define APEX_CORE_ERROR(...)		::Apex::Log::GetCoreLogger()->error(__VA_ARGS__)
-#define APEX_CORE_CRITICAL(...)		::Apex::Log::GetCoreLogger()->critical(__VA_ARGS__); __debugbreak();
+#define APEX_CORE_CRITICAL(...)		::Apex::Log::GetCoreLogger()->critical(__VA_ARGS__); __DEBUG_BREAK__;
 
 //Client Log Macros
 #define APEX_LOG_TRACE(...)				::Apex::Log::GetClientLogger()->trace(__VA_ARGS__)
@@ -36,4 +36,4 @@ namespace Apex {
 #define APEX_LOG_INFO(...)				::Apex::Log::GetClientLogger()->info(__VA_ARGS__)
 #define APEX_LOG_WARN(...)				::Apex::Log::GetClientLogger()->warn(__VA_ARGS__)
 #define APEX_LOG_ERROR(...)				::Apex::Log::GetClientLogger()->error(__VA_ARGS__)
-#define APEX_LOG_CRITICAL(...)			::Apex::Log::GetClientLogger()->critical(__VA_ARGS__); __debugbreak();
+#define APEX_LOG_CRITICAL(...)			::Apex::Log::GetClientLogger()->critical(__VA_ARGS__); __DEBUG_BREAK__;

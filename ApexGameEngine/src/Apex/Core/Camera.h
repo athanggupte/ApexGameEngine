@@ -57,7 +57,7 @@ namespace Apex {
 		void Rotate(float pitch, float yaw, float roll);
 
 		inline const glm::vec3& GetPosition() const { return m_Position; }
-		inline const glm::vec3& GetRotation() const { glm::vec3 rot(m_Pitch, m_Yaw, m_Roll); return rot; }
+		inline const glm::vec3 GetRotation() const { glm::vec3 rot(m_Pitch, m_Yaw, m_Roll); return rot; }
 
 		inline const glm::vec3& GetFront() const { return m_Front; }
 		inline const glm::vec3& GetRight() const { return m_Right; }

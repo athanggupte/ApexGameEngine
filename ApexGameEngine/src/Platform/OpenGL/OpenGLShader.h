@@ -19,7 +19,7 @@ namespace Apex {
 
 		/* Get locations of all active Uniforms */
 		virtual const std::unordered_map<std::string, uint32_t>& GetActiveUniformLocations() override;
-		virtual const std::vector<std::tuple<std::string, uint32_t, size_t>>& GetActiveUniformData() override;
+		virtual const std::vector<std::tuple<std::string, uint32_t, size_t>> GetActiveUniformData() override;
 
 		/* Uniform Setters */
 		virtual void SetUniInt(const std::string & name, int value) override;

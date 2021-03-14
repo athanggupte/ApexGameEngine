@@ -1,0 +1,530 @@
+/usr/bin/ld: ../bin/Debug-linux-x86_64/ApexGameEngine/libApexGameEngine.a(OpenGLShader.o): warning: relocation against `glad_glUniform2fv' in read-only section `.text'
+/usr/bin/ld: ../bin/Debug-linux-x86_64/ApexGameEngine/libApexGameEngine.a(Application.o): in function `Apex::Application::Run()':
+/home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Apex/Application.cpp:59: undefined reference to `glad_glGetError'
+/usr/bin/ld: ../bin/Debug-linux-x86_64/ApexGameEngine/libApexGameEngine.a(ImGuiLayer.o): in function `Apex::ImGuiLayer::End()':
+/home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Apex/ImGui/ImGuiLayer.cpp:91: undefined reference to `glfwGetCurrentContext'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Apex/ImGui/ImGuiLayer.cpp:94: undefined reference to `glfwMakeContextCurrent'
+/usr/bin/ld: ../bin/Debug-linux-x86_64/ApexGameEngine/libApexGameEngine.a(OpenGLBuffer.o): in function `Apex::OpenGLVertexBuffer::OpenGLVertexBuffer(float*, unsigned long)':
+/home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLBuffer.cpp:15: undefined reference to `glad_glGenBuffers'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLBuffer.cpp:16: undefined reference to `glad_glBindBuffer'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLBuffer.cpp:17: undefined reference to `glad_glBufferData'
+/usr/bin/ld: ../bin/Debug-linux-x86_64/ApexGameEngine/libApexGameEngine.a(OpenGLBuffer.o): in function `Apex::OpenGLVertexBuffer::~OpenGLVertexBuffer()':
+/home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLBuffer.cpp:22: undefined reference to `glad_glDeleteBuffers'
+/usr/bin/ld: ../bin/Debug-linux-x86_64/ApexGameEngine/libApexGameEngine.a(OpenGLBuffer.o): in function `Apex::OpenGLVertexBuffer::Bind() const':
+/home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLBuffer.cpp:27: undefined reference to `glad_glBindBuffer'
+/usr/bin/ld: ../bin/Debug-linux-x86_64/ApexGameEngine/libApexGameEngine.a(OpenGLBuffer.o): in function `Apex::OpenGLVertexBuffer::Unbind() const':
+/home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLBuffer.cpp:32: undefined reference to `glad_glBindBuffer'
+/usr/bin/ld: ../bin/Debug-linux-x86_64/ApexGameEngine/libApexGameEngine.a(OpenGLBuffer.o): in function `Apex::OpenGLIndexBuffer::OpenGLIndexBuffer(unsigned int*, unsigned int)':
+/home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLBuffer.cpp:42: undefined reference to `glad_glGenBuffers'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLBuffer.cpp:43: undefined reference to `glad_glBindBuffer'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLBuffer.cpp:44: undefined reference to `glad_glBufferData'
+/usr/bin/ld: ../bin/Debug-linux-x86_64/ApexGameEngine/libApexGameEngine.a(OpenGLBuffer.o): in function `Apex::OpenGLIndexBuffer::~OpenGLIndexBuffer()':
+/home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLBuffer.cpp:49: undefined reference to `glad_glDeleteBuffers'
+/usr/bin/ld: ../bin/Debug-linux-x86_64/ApexGameEngine/libApexGameEngine.a(OpenGLBuffer.o): in function `Apex::OpenGLIndexBuffer::Bind() const':
+/home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLBuffer.cpp:54: undefined reference to `glad_glBindBuffer'
+/usr/bin/ld: ../bin/Debug-linux-x86_64/ApexGameEngine/libApexGameEngine.a(OpenGLBuffer.o): in function `Apex::OpenGLIndexBuffer::Unbind() const':
+/home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLBuffer.cpp:59: undefined reference to `glad_glBindBuffer'
+/usr/bin/ld: ../bin/Debug-linux-x86_64/ApexGameEngine/libApexGameEngine.a(OpenGLComputeShader.o): in function `Apex::OpenGLComputeShader::~OpenGLComputeShader()':
+/home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLComputeShader.cpp:43: undefined reference to `glad_glDeleteProgram'
+/usr/bin/ld: ../bin/Debug-linux-x86_64/ApexGameEngine/libApexGameEngine.a(OpenGLComputeShader.o): in function `Apex::OpenGLComputeShader::Bind()':
+/home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLComputeShader.cpp:48: undefined reference to `glad_glUseProgram'
+/usr/bin/ld: ../bin/Debug-linux-x86_64/ApexGameEngine/libApexGameEngine.a(OpenGLComputeShader.o): in function `Apex::OpenGLComputeShader::Dispatch(unsigned int, unsigned int, unsigned int)':
+/home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLComputeShader.cpp:57: undefined reference to `glad_glDispatchCompute'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLComputeShader.cpp:58: undefined reference to `glad_glMemoryBarrier'
+/usr/bin/ld: ../bin/Debug-linux-x86_64/ApexGameEngine/libApexGameEngine.a(OpenGLComputeShader.o): in function `Apex::OpenGLComputeShader::Compile(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)':
+/home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLComputeShader.cpp:63: undefined reference to `glad_glCreateProgram'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLComputeShader.cpp:64: undefined reference to `glad_glCreateShader'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLComputeShader.cpp:66: undefined reference to `glad_glShaderSource'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLComputeShader.cpp:67: undefined reference to `glad_glCompileShader'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLComputeShader.cpp:71: undefined reference to `glad_glGetShaderiv'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLComputeShader.cpp:74: undefined reference to `glad_glGetShaderiv'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLComputeShader.cpp:77: undefined reference to `glad_glGetShaderInfoLog'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLComputeShader.cpp:79: undefined reference to `glad_glDeleteShader'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLComputeShader.cpp:80: undefined reference to `glad_glDeleteProgram'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLComputeShader.cpp:89: undefined reference to `glad_glAttachShader'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLComputeShader.cpp:90: undefined reference to `glad_glLinkProgram'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLComputeShader.cpp:94: undefined reference to `glad_glGetProgramiv'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLComputeShader.cpp:97: undefined reference to `glad_glGetProgramiv'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLComputeShader.cpp:100: undefined reference to `glad_glGetProgramInfoLog'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLComputeShader.cpp:102: undefined reference to `glad_glDeleteProgram'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLComputeShader.cpp:103: undefined reference to `glad_glDeleteShader'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLComputeShader.cpp:114: undefined reference to `glad_glDetachShader'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLComputeShader.cpp:115: undefined reference to `glad_glDeleteShader'
+/usr/bin/ld: ../bin/Debug-linux-x86_64/ApexGameEngine/libApexGameEngine.a(OpenGLComputeShader.o): in function `Apex::OpenGLComputeShader::SetUniInt(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, int)':
+/home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLComputeShader.cpp:120: undefined reference to `glad_glUniform1i'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLComputeShader.cpp:120: undefined reference to `glad_glGetUniformLocation'
+/usr/bin/ld: ../bin/Debug-linux-x86_64/ApexGameEngine/libApexGameEngine.a(OpenGLComputeShader.o): in function `Apex::OpenGLComputeShader::SetUniFloat1(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, float)':
+/home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLComputeShader.cpp:125: undefined reference to `glad_glUniform1f'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLComputeShader.cpp:125: undefined reference to `glad_glGetUniformLocation'
+/usr/bin/ld: ../bin/Debug-linux-x86_64/ApexGameEngine/libApexGameEngine.a(OpenGLComputeShader.o): in function `Apex::OpenGLComputeShader::SetUniFloat2(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, glm::vec<2, float, (glm::qualifier)0> const&)':
+/home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLComputeShader.cpp:130: undefined reference to `glad_glUniform2fv'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLComputeShader.cpp:130: undefined reference to `glad_glGetUniformLocation'
+/usr/bin/ld: ../bin/Debug-linux-x86_64/ApexGameEngine/libApexGameEngine.a(OpenGLComputeShader.o): in function `Apex::OpenGLComputeShader::SetUniFloat3(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, glm::vec<3, float, (glm::qualifier)0> const&)':
+/home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLComputeShader.cpp:135: undefined reference to `glad_glUniform3fv'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLComputeShader.cpp:135: undefined reference to `glad_glGetUniformLocation'
+/usr/bin/ld: ../bin/Debug-linux-x86_64/ApexGameEngine/libApexGameEngine.a(OpenGLComputeShader.o): in function `Apex::OpenGLComputeShader::SetUniFloat3v(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, glm::vec<3, float, (glm::qualifier)0>*, unsigned long)':
+/home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLComputeShader.cpp:140: undefined reference to `glad_glUniform3fv'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLComputeShader.cpp:140: undefined reference to `glad_glGetUniformLocation'
+/usr/bin/ld: ../bin/Debug-linux-x86_64/ApexGameEngine/libApexGameEngine.a(OpenGLComputeShader.o): in function `Apex::OpenGLComputeShader::SetUniFloat4(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, glm::vec<4, float, (glm::qualifier)0> const&)':
+/home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLComputeShader.cpp:145: undefined reference to `glad_glUniform4fv'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLComputeShader.cpp:145: undefined reference to `glad_glGetUniformLocation'
+/usr/bin/ld: ../bin/Debug-linux-x86_64/ApexGameEngine/libApexGameEngine.a(OpenGLComputeShader.o): in function `Apex::OpenGLComputeShader::SetUniMat4(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, glm::mat<4, 4, float, (glm::qualifier)0> const&)':
+/home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLComputeShader.cpp:150: undefined reference to `glad_glUniformMatrix4fv'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLComputeShader.cpp:150: undefined reference to `glad_glGetUniformLocation'
+/usr/bin/ld: ../bin/Debug-linux-x86_64/ApexGameEngine/libApexGameEngine.a(OpenGLComputeShader.o): in function `Apex::OpenGLComputeShader::SetUniMat4v(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, glm::mat<4, 4, float, (glm::qualifier)0>*, unsigned long)':
+/home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLComputeShader.cpp:155: undefined reference to `glad_glUniformMatrix4fv'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLComputeShader.cpp:155: undefined reference to `glad_glGetUniformLocation'
+/usr/bin/ld: ../bin/Debug-linux-x86_64/ApexGameEngine/libApexGameEngine.a(OpenGLFrameBuffer.o): in function `Apex::OpenGLFrameBuffer::OpenGLFrameBuffer(bool)':
+/home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLFrameBuffer.cpp:30: undefined reference to `glad_glGenFramebuffers'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLFrameBuffer.cpp:31: undefined reference to `glad_glBindFramebuffer'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLFrameBuffer.cpp:34: undefined reference to `glad_glGenRenderbuffers'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLFrameBuffer.cpp:35: undefined reference to `glad_glBindRenderbuffer'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLFrameBuffer.cpp:36: undefined reference to `glad_glRenderbufferStorage'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLFrameBuffer.cpp:38: undefined reference to `glad_glFramebufferRenderbuffer'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLFrameBuffer.cpp:39: undefined reference to `glad_glBindRenderbuffer'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLFrameBuffer.cpp:40: undefined reference to `glad_glBindFramebuffer'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLFrameBuffer.cpp:48: undefined reference to `glad_glDrawBuffers'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLFrameBuffer.cpp:49: undefined reference to `glad_glBindFramebuffer'
+/usr/bin/ld: ../bin/Debug-linux-x86_64/ApexGameEngine/libApexGameEngine.a(OpenGLFrameBuffer.o): in function `Apex::OpenGLFrameBuffer::~OpenGLFrameBuffer()':
+/home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLFrameBuffer.cpp:54: undefined reference to `glad_glDeleteFramebuffers'
+/usr/bin/ld: ../bin/Debug-linux-x86_64/ApexGameEngine/libApexGameEngine.a(OpenGLFrameBuffer.o): in function `Apex::OpenGLFrameBuffer::Bind() const':
+/home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLFrameBuffer.cpp:60: undefined reference to `glad_glBindFramebuffer'
+/usr/bin/ld: ../bin/Debug-linux-x86_64/ApexGameEngine/libApexGameEngine.a(OpenGLFrameBuffer.o): in function `Apex::OpenGLFrameBuffer::Unbind() const':
+/home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLFrameBuffer.cpp:67: undefined reference to `glad_glBindFramebuffer'
+/usr/bin/ld: ../bin/Debug-linux-x86_64/ApexGameEngine/libApexGameEngine.a(OpenGLFrameBuffer.o): in function `Apex::OpenGLFrameBuffer::AttachTexture(std::shared_ptr<Apex::Texture2D> const&)':
+/home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLFrameBuffer.cpp:72: undefined reference to `glad_glBindFramebuffer'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLFrameBuffer.cpp:73: undefined reference to `glad_glFramebufferTexture2D'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLFrameBuffer.cpp:74: undefined reference to `glad_glBindFramebuffer'
+/usr/bin/ld: ../bin/Debug-linux-x86_64/ApexGameEngine/libApexGameEngine.a(OpenGLFrameBuffer.o): in function `Apex::OpenGLFrameBuffer::IsComplete() const':
+/home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLFrameBuffer.cpp:80: undefined reference to `glad_glBindFramebuffer'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLFrameBuffer.cpp:81: undefined reference to `glad_glCheckFramebufferStatus'
+/usr/bin/ld: ../bin/Debug-linux-x86_64/ApexGameEngine/libApexGameEngine.a(OpenGLFrameBuffer.o): in function `Apex::OpenGLDepthBuffer::OpenGLDepthBuffer()':
+/home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLFrameBuffer.cpp:91: undefined reference to `glad_glGenFramebuffers'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLFrameBuffer.cpp:92: undefined reference to `glad_glBindFramebuffer'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLFrameBuffer.cpp:96: undefined reference to `glad_glFramebufferTexture2D'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLFrameBuffer.cpp:98: undefined reference to `glad_glDrawBuffer'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLFrameBuffer.cpp:99: undefined reference to `glad_glReadBuffer'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLFrameBuffer.cpp:101: undefined reference to `glad_glBindFramebuffer'
+/usr/bin/ld: ../bin/Debug-linux-x86_64/ApexGameEngine/libApexGameEngine.a(OpenGLFrameBuffer.o): in function `Apex::OpenGLDepthBuffer::~OpenGLDepthBuffer()':
+/home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLFrameBuffer.cpp:106: undefined reference to `glad_glDeleteFramebuffers'
+/usr/bin/ld: ../bin/Debug-linux-x86_64/ApexGameEngine/libApexGameEngine.a(OpenGLFrameBuffer.o): in function `Apex::OpenGLDepthBuffer::Bind() const':
+/home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLFrameBuffer.cpp:111: undefined reference to `glad_glBindFramebuffer'
+/usr/bin/ld: ../bin/Debug-linux-x86_64/ApexGameEngine/libApexGameEngine.a(OpenGLFrameBuffer.o): in function `Apex::OpenGLDepthBuffer::Unbind() const':
+/home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLFrameBuffer.cpp:116: undefined reference to `glad_glBindFramebuffer'
+/usr/bin/ld: ../bin/Debug-linux-x86_64/ApexGameEngine/libApexGameEngine.a(WindowsTimer.o): in function `Apex::WindowsTimer::WindowsTimer()':
+/home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/Windows/WindowsTimer.cpp:10: undefined reference to `glfwGetTimerFrequency'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/Windows/WindowsTimer.cpp:11: undefined reference to `glfwGetTimerValue'
+/usr/bin/ld: ../bin/Debug-linux-x86_64/ApexGameEngine/libApexGameEngine.a(WindowsTimer.o): in function `Apex::WindowsTimer::UpdateTimeImpl()':
+/home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/Windows/WindowsTimer.cpp:16: undefined reference to `glfwGetTimerFrequency'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/Windows/WindowsTimer.cpp:17: undefined reference to `glfwGetTimerValue'
+/usr/bin/ld: ../bin/Debug-linux-x86_64/ApexGameEngine/libApexGameEngine.a(WindowsWindow.o): in function `Apex::WindowsWindow::Init(Apex::WindowProps const&)::{lambda(GLFWwindow*, int, int)#1}::operator()(GLFWwindow*, int, int) const':
+/home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/Windows/WindowsWindow.cpp:61: undefined reference to `glfwGetWindowUserPointer'
+/usr/bin/ld: ../bin/Debug-linux-x86_64/ApexGameEngine/libApexGameEngine.a(WindowsWindow.o): in function `Apex::WindowsWindow::Init(Apex::WindowProps const&)::{lambda(GLFWwindow*)#2}::operator()(GLFWwindow*) const':
+/home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/Windows/WindowsWindow.cpp:70: undefined reference to `glfwGetWindowUserPointer'
+/usr/bin/ld: ../bin/Debug-linux-x86_64/ApexGameEngine/libApexGameEngine.a(WindowsWindow.o): in function `Apex::WindowsWindow::Init(Apex::WindowProps const&)::{lambda(GLFWwindow*, int, int, int, int)#3}::operator()(GLFWwindow*, int, int, int, int) const':
+/home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/Windows/WindowsWindow.cpp:76: undefined reference to `glfwGetWindowUserPointer'
+/usr/bin/ld: ../bin/Debug-linux-x86_64/ApexGameEngine/libApexGameEngine.a(WindowsWindow.o): in function `Apex::WindowsWindow::Init(Apex::WindowProps const&)::{lambda(GLFWwindow*, unsigned int)#4}::operator()(GLFWwindow*, unsigned int) const':
+/home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/Windows/WindowsWindow.cpp:102: undefined reference to `glfwGetWindowUserPointer'
+/usr/bin/ld: ../bin/Debug-linux-x86_64/ApexGameEngine/libApexGameEngine.a(WindowsWindow.o): in function `Apex::WindowsWindow::Init(Apex::WindowProps const&)::{lambda(GLFWwindow*, int, int, int)#5}::operator()(GLFWwindow*, int, int, int) const':
+/home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/Windows/WindowsWindow.cpp:109: undefined reference to `glfwGetWindowUserPointer'
+/usr/bin/ld: ../bin/Debug-linux-x86_64/ApexGameEngine/libApexGameEngine.a(WindowsWindow.o):/home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/Windows/WindowsWindow.cpp:129: more undefined references to `glfwGetWindowUserPointer' follow
+/usr/bin/ld: ../bin/Debug-linux-x86_64/ApexGameEngine/libApexGameEngine.a(WindowsWindow.o): in function `Apex::WindowsWindow::Init(Apex::WindowProps const&)':
+/home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/Windows/WindowsWindow.cpp:43: undefined reference to `glfwInit'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/Windows/WindowsWindow.cpp:46: undefined reference to `glfwSetErrorCallback'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/Windows/WindowsWindow.cpp:51: undefined reference to `glfwCreateWindow'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/Windows/WindowsWindow.cpp:56: undefined reference to `glfwSetWindowUserPointer'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/Windows/WindowsWindow.cpp:60: undefined reference to `glfwSetWindowSizeCallback'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/Windows/WindowsWindow.cpp:69: undefined reference to `glfwSetWindowCloseCallback'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/Windows/WindowsWindow.cpp:75: undefined reference to `glfwSetKeyCallback'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/Windows/WindowsWindow.cpp:101: undefined reference to `glfwSetCharCallback'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/Windows/WindowsWindow.cpp:108: undefined reference to `glfwSetMouseButtonCallback'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/Windows/WindowsWindow.cpp:128: undefined reference to `glfwSetScrollCallback'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/Windows/WindowsWindow.cpp:135: undefined reference to `glfwSetCursorPosCallback'
+/usr/bin/ld: ../bin/Debug-linux-x86_64/ApexGameEngine/libApexGameEngine.a(WindowsWindow.o): in function `Apex::WindowsWindow::OnUpdate()':
+/home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/Windows/WindowsWindow.cpp:146: undefined reference to `glfwPollEvents'
+/usr/bin/ld: ../bin/Debug-linux-x86_64/ApexGameEngine/libApexGameEngine.a(WindowsWindow.o): in function `Apex::WindowsWindow::SetVSync(bool)':
+/home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/Windows/WindowsWindow.cpp:153: undefined reference to `glfwSwapInterval'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/Windows/WindowsWindow.cpp:155: undefined reference to `glfwSwapInterval'
+/usr/bin/ld: ../bin/Debug-linux-x86_64/ApexGameEngine/libApexGameEngine.a(WindowsWindow.o): in function `Apex::WindowsWindow::Shutdown()':
+/home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/Windows/WindowsWindow.cpp:167: undefined reference to `glfwDestroyWindow'
+/usr/bin/ld: ../bin/Debug-linux-x86_64/ApexGameEngine/libApexGameEngine.a(ImGuiBuild.o): in function `ImGui_ImplOpenGL3_Init(char const*)':
+/home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_opengl3.cpp:154: undefined reference to `glad_glGetIntegerv'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_opengl3.cpp:155: undefined reference to `glad_glGetIntegerv'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_opengl3.cpp:218: undefined reference to `glad_glGetIntegerv'
+/usr/bin/ld: ../bin/Debug-linux-x86_64/ApexGameEngine/libApexGameEngine.a(ImGuiBuild.o): in function `ImGui_ImplOpenGL3_SetupRenderState(ImDrawData*, int, int, unsigned int)':
+/home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_opengl3.cpp:241: undefined reference to `glad_glEnable'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_opengl3.cpp:242: undefined reference to `glad_glBlendEquation'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_opengl3.cpp:243: undefined reference to `glad_glBlendFunc'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_opengl3.cpp:244: undefined reference to `glad_glDisable'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_opengl3.cpp:245: undefined reference to `glad_glDisable'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_opengl3.cpp:246: undefined reference to `glad_glEnable'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_opengl3.cpp:248: undefined reference to `glad_glPolygonMode'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_opengl3.cpp:254: undefined reference to `glad_glGetIntegerv'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_opengl3.cpp:261: undefined reference to `glad_glViewport'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_opengl3.cpp:274: undefined reference to `glad_glUseProgram'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_opengl3.cpp:275: undefined reference to `glad_glUniform1i'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_opengl3.cpp:276: undefined reference to `glad_glUniformMatrix4fv'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_opengl3.cpp:278: undefined reference to `glad_glBindSampler'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_opengl3.cpp:283: undefined reference to `glad_glBindVertexArray'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_opengl3.cpp:287: undefined reference to `glad_glBindBuffer'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_opengl3.cpp:288: undefined reference to `glad_glBindBuffer'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_opengl3.cpp:289: undefined reference to `glad_glEnableVertexAttribArray'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_opengl3.cpp:290: undefined reference to `glad_glEnableVertexAttribArray'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_opengl3.cpp:291: undefined reference to `glad_glEnableVertexAttribArray'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_opengl3.cpp:292: undefined reference to `glad_glVertexAttribPointer'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_opengl3.cpp:293: undefined reference to `glad_glVertexAttribPointer'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_opengl3.cpp:294: undefined reference to `glad_glVertexAttribPointer'
+/usr/bin/ld: ../bin/Debug-linux-x86_64/ApexGameEngine/libApexGameEngine.a(ImGuiBuild.o): in function `ImGui_ImplOpenGL3_RenderDrawData(ImDrawData*)':
+/home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_opengl3.cpp:309: undefined reference to `glad_glGetIntegerv'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_opengl3.cpp:310: undefined reference to `glad_glActiveTexture'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_opengl3.cpp:311: undefined reference to `glad_glGetIntegerv'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_opengl3.cpp:312: undefined reference to `glad_glGetIntegerv'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_opengl3.cpp:314: undefined reference to `glad_glGetIntegerv'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_opengl3.cpp:316: undefined reference to `glad_glGetIntegerv'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_opengl3.cpp:318: undefined reference to `glad_glGetIntegerv'
+/usr/bin/ld: ../bin/Debug-linux-x86_64/ApexGameEngine/libApexGameEngine.a(ImGuiBuild.o):/home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_opengl3.cpp:321: more undefined references to `glad_glGetIntegerv' follow
+/usr/bin/ld: ../bin/Debug-linux-x86_64/ApexGameEngine/libApexGameEngine.a(ImGuiBuild.o): in function `ImGui_ImplOpenGL3_RenderDrawData(ImDrawData*)':
+/home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_opengl3.cpp:331: undefined reference to `glad_glIsEnabled'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_opengl3.cpp:332: undefined reference to `glad_glIsEnabled'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_opengl3.cpp:333: undefined reference to `glad_glIsEnabled'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_opengl3.cpp:334: undefined reference to `glad_glIsEnabled'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_opengl3.cpp:341: undefined reference to `glad_glGenVertexArrays'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_opengl3.cpp:355: undefined reference to `glad_glBufferData'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_opengl3.cpp:356: undefined reference to `glad_glBufferData'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_opengl3.cpp:382: undefined reference to `glad_glScissor'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_opengl3.cpp:385: undefined reference to `glad_glBindTexture'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_opengl3.cpp:388: undefined reference to `glad_glDrawElementsBaseVertex'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_opengl3.cpp:391: undefined reference to `glad_glDrawElements'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_opengl3.cpp:399: undefined reference to `glad_glDeleteVertexArrays'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_opengl3.cpp:403: undefined reference to `glad_glUseProgram'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_opengl3.cpp:404: undefined reference to `glad_glBindTexture'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_opengl3.cpp:406: undefined reference to `glad_glBindSampler'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_opengl3.cpp:408: undefined reference to `glad_glActiveTexture'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_opengl3.cpp:410: undefined reference to `glad_glBindVertexArray'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_opengl3.cpp:412: undefined reference to `glad_glBindBuffer'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_opengl3.cpp:413: undefined reference to `glad_glBlendEquationSeparate'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_opengl3.cpp:414: undefined reference to `glad_glBlendFuncSeparate'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_opengl3.cpp:415: undefined reference to `glad_glEnable'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_opengl3.cpp:415: undefined reference to `glad_glDisable'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_opengl3.cpp:416: undefined reference to `glad_glEnable'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_opengl3.cpp:416: undefined reference to `glad_glDisable'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_opengl3.cpp:417: undefined reference to `glad_glEnable'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_opengl3.cpp:417: undefined reference to `glad_glDisable'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_opengl3.cpp:418: undefined reference to `glad_glEnable'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_opengl3.cpp:418: undefined reference to `glad_glDisable'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_opengl3.cpp:420: undefined reference to `glad_glPolygonMode'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_opengl3.cpp:422: undefined reference to `glad_glViewport'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_opengl3.cpp:423: undefined reference to `glad_glScissor'
+/usr/bin/ld: ../bin/Debug-linux-x86_64/ApexGameEngine/libApexGameEngine.a(ImGuiBuild.o): in function `ImGui_ImplOpenGL3_CreateFontsTexture()':
+/home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_opengl3.cpp:436: undefined reference to `glad_glGetIntegerv'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_opengl3.cpp:437: undefined reference to `glad_glGenTextures'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_opengl3.cpp:438: undefined reference to `glad_glBindTexture'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_opengl3.cpp:439: undefined reference to `glad_glTexParameteri'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_opengl3.cpp:440: undefined reference to `glad_glTexParameteri'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_opengl3.cpp:442: undefined reference to `glad_glPixelStorei'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_opengl3.cpp:444: undefined reference to `glad_glTexImage2D'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_opengl3.cpp:450: undefined reference to `glad_glBindTexture'
+/usr/bin/ld: ../bin/Debug-linux-x86_64/ApexGameEngine/libApexGameEngine.a(ImGuiBuild.o): in function `ImGui_ImplOpenGL3_DestroyFontsTexture()':
+/home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_opengl3.cpp:460: undefined reference to `glad_glDeleteTextures'
+/usr/bin/ld: ../bin/Debug-linux-x86_64/ApexGameEngine/libApexGameEngine.a(ImGuiBuild.o): in function `CheckShader(unsigned int, char const*)':
+/home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_opengl3.cpp:470: undefined reference to `glad_glGetShaderiv'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_opengl3.cpp:471: undefined reference to `glad_glGetShaderiv'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_opengl3.cpp:478: undefined reference to `glad_glGetShaderInfoLog'
+/usr/bin/ld: ../bin/Debug-linux-x86_64/ApexGameEngine/libApexGameEngine.a(ImGuiBuild.o): in function `CheckProgram(unsigned int, char const*)':
+/home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_opengl3.cpp:488: undefined reference to `glad_glGetProgramiv'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_opengl3.cpp:489: undefined reference to `glad_glGetProgramiv'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_opengl3.cpp:496: undefined reference to `glad_glGetProgramInfoLog'
+/usr/bin/ld: ../bin/Debug-linux-x86_64/ApexGameEngine/libApexGameEngine.a(ImGuiBuild.o): in function `ImGui_ImplOpenGL3_CreateDeviceObjects()':
+/home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_opengl3.cpp:506: undefined reference to `glad_glGetIntegerv'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_opengl3.cpp:507: undefined reference to `glad_glGetIntegerv'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_opengl3.cpp:510: undefined reference to `glad_glGetIntegerv'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_opengl3.cpp:643: undefined reference to `glad_glCreateShader'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_opengl3.cpp:644: undefined reference to `glad_glShaderSource'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_opengl3.cpp:645: undefined reference to `glad_glCompileShader'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_opengl3.cpp:649: undefined reference to `glad_glCreateShader'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_opengl3.cpp:650: undefined reference to `glad_glShaderSource'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_opengl3.cpp:651: undefined reference to `glad_glCompileShader'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_opengl3.cpp:654: undefined reference to `glad_glCreateProgram'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_opengl3.cpp:655: undefined reference to `glad_glAttachShader'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_opengl3.cpp:656: undefined reference to `glad_glAttachShader'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_opengl3.cpp:657: undefined reference to `glad_glLinkProgram'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_opengl3.cpp:660: undefined reference to `glad_glGetUniformLocation'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_opengl3.cpp:661: undefined reference to `glad_glGetUniformLocation'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_opengl3.cpp:662: undefined reference to `glad_glGetAttribLocation'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_opengl3.cpp:663: undefined reference to `glad_glGetAttribLocation'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_opengl3.cpp:664: undefined reference to `glad_glGetAttribLocation'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_opengl3.cpp:667: undefined reference to `glad_glGenBuffers'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_opengl3.cpp:668: undefined reference to `glad_glGenBuffers'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_opengl3.cpp:673: undefined reference to `glad_glBindTexture'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_opengl3.cpp:674: undefined reference to `glad_glBindBuffer'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_opengl3.cpp:676: undefined reference to `glad_glBindVertexArray'
+/usr/bin/ld: ../bin/Debug-linux-x86_64/ApexGameEngine/libApexGameEngine.a(ImGuiBuild.o): in function `ImGui_ImplOpenGL3_DestroyDeviceObjects()':
+/home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_opengl3.cpp:684: undefined reference to `glad_glDeleteBuffers'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_opengl3.cpp:685: undefined reference to `glad_glDeleteBuffers'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_opengl3.cpp:686: undefined reference to `glad_glDetachShader'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_opengl3.cpp:687: undefined reference to `glad_glDetachShader'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_opengl3.cpp:688: undefined reference to `glad_glDeleteShader'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_opengl3.cpp:689: undefined reference to `glad_glDeleteShader'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_opengl3.cpp:690: undefined reference to `glad_glDeleteProgram'
+/usr/bin/ld: ../bin/Debug-linux-x86_64/ApexGameEngine/libApexGameEngine.a(ImGuiBuild.o): in function `ImGui_ImplOpenGL3_RenderWindow(ImGuiViewport*, void*)':
+/home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_opengl3.cpp:706: undefined reference to `glad_glClearColor'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_opengl3.cpp:707: undefined reference to `glad_glClear'
+/usr/bin/ld: ../bin/Debug-linux-x86_64/ApexGameEngine/libApexGameEngine.a(ImGuiBuild.o): in function `ImGui_ImplGlfw_GetClipboardText(void*)':
+/home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_glfw.cpp:104: undefined reference to `glfwGetClipboardString'
+/usr/bin/ld: ../bin/Debug-linux-x86_64/ApexGameEngine/libApexGameEngine.a(ImGuiBuild.o): in function `ImGui_ImplGlfw_SetClipboardText(void*, char const*)':
+/home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_glfw.cpp:109: undefined reference to `glfwSetClipboardString'
+/usr/bin/ld: ../bin/Debug-linux-x86_64/ApexGameEngine/libApexGameEngine.a(ImGuiBuild.o): in function `ImGui_ImplGlfw_Init(GLFWwindow*, bool, GlfwClientApi)':
+/home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_glfw.cpp:214: undefined reference to `glfwSetErrorCallback'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_glfw.cpp:215: undefined reference to `glfwCreateStandardCursor'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_glfw.cpp:216: undefined reference to `glfwCreateStandardCursor'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_glfw.cpp:217: undefined reference to `glfwCreateStandardCursor'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_glfw.cpp:218: undefined reference to `glfwCreateStandardCursor'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_glfw.cpp:219: undefined reference to `glfwCreateStandardCursor'
+/usr/bin/ld: ../bin/Debug-linux-x86_64/ApexGameEngine/libApexGameEngine.a(ImGuiBuild.o):/home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_glfw.cpp:221: more undefined references to `glfwCreateStandardCursor' follow
+/usr/bin/ld: ../bin/Debug-linux-x86_64/ApexGameEngine/libApexGameEngine.a(ImGuiBuild.o): in function `ImGui_ImplGlfw_Init(GLFWwindow*, bool, GlfwClientApi)':
+/home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_glfw.cpp:231: undefined reference to `glfwSetErrorCallback'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_glfw.cpp:242: undefined reference to `glfwSetMouseButtonCallback'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_glfw.cpp:243: undefined reference to `glfwSetScrollCallback'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_glfw.cpp:244: undefined reference to `glfwSetKeyCallback'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_glfw.cpp:245: undefined reference to `glfwSetCharCallback'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_glfw.cpp:246: undefined reference to `glfwSetMonitorCallback'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_glfw.cpp:251: undefined reference to `glfwSetMonitorCallback'
+/usr/bin/ld: ../bin/Debug-linux-x86_64/ApexGameEngine/libApexGameEngine.a(ImGuiBuild.o): in function `ImGui_ImplGlfw_Shutdown()':
+/home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_glfw.cpp:282: undefined reference to `glfwSetMouseButtonCallback'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_glfw.cpp:283: undefined reference to `glfwSetScrollCallback'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_glfw.cpp:284: undefined reference to `glfwSetKeyCallback'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_glfw.cpp:285: undefined reference to `glfwSetCharCallback'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_glfw.cpp:291: undefined reference to `glfwDestroyCursor'
+/usr/bin/ld: ../bin/Debug-linux-x86_64/ApexGameEngine/libApexGameEngine.a(ImGuiBuild.o): in function `ImGui_ImplGlfw_UpdateMousePosAndButtons()':
+/home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_glfw.cpp:304: undefined reference to `glfwGetMouseButton'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_glfw.cpp:322: undefined reference to `glfwGetWindowAttrib'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_glfw.cpp:328: undefined reference to `glfwSetCursorPos'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_glfw.cpp:333: undefined reference to `glfwGetCursorPos'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_glfw.cpp:338: undefined reference to `glfwGetWindowPos'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_glfw.cpp:348: undefined reference to `glfwGetMouseButton'
+/usr/bin/ld: ../bin/Debug-linux-x86_64/ApexGameEngine/libApexGameEngine.a(ImGuiBuild.o): in function `ImGui_ImplGlfw_UpdateMouseCursor()':
+/home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_glfw.cpp:373: undefined reference to `glfwGetInputMode'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_glfw.cpp:384: undefined reference to `glfwSetInputMode'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_glfw.cpp:390: undefined reference to `glfwSetCursor'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_glfw.cpp:391: undefined reference to `glfwSetInputMode'
+/usr/bin/ld: ../bin/Debug-linux-x86_64/ApexGameEngine/libApexGameEngine.a(ImGuiBuild.o): in function `ImGui_ImplGlfw_UpdateGamepads()':
+/home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_glfw.cpp:407: undefined reference to `glfwGetJoystickAxes'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_glfw.cpp:408: undefined reference to `glfwGetJoystickButtons'
+/usr/bin/ld: ../bin/Debug-linux-x86_64/ApexGameEngine/libApexGameEngine.a(ImGuiBuild.o): in function `ImGui_ImplGlfw_UpdateMonitors()':
+/home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_glfw.cpp:437: undefined reference to `glfwGetMonitors'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_glfw.cpp:443: undefined reference to `glfwGetMonitorPos'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_glfw.cpp:444: undefined reference to `glfwGetVideoMode'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_glfw.cpp:449: undefined reference to `glfwGetMonitorWorkarea'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_glfw.cpp:459: undefined reference to `glfwGetMonitorContentScale'
+/usr/bin/ld: ../bin/Debug-linux-x86_64/ApexGameEngine/libApexGameEngine.a(ImGuiBuild.o): in function `ImGui_ImplGlfw_NewFrame()':
+/home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_glfw.cpp:475: undefined reference to `glfwGetWindowSize'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_glfw.cpp:476: undefined reference to `glfwGetFramebufferSize'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_glfw.cpp:484: undefined reference to `glfwGetTime'
+/usr/bin/ld: ../bin/Debug-linux-x86_64/ApexGameEngine/libApexGameEngine.a(ImGuiBuild.o): in function `ImGui_ImplGlfw_CreateWindow(ImGuiViewport*)':
+/home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_glfw.cpp:562: undefined reference to `glfwWindowHint'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_glfw.cpp:563: undefined reference to `glfwWindowHint'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_glfw.cpp:565: undefined reference to `glfwWindowHint'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_glfw.cpp:567: undefined reference to `glfwWindowHint'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_glfw.cpp:569: undefined reference to `glfwWindowHint'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_glfw.cpp:572: undefined reference to `glfwCreateWindow'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_glfw.cpp:578: undefined reference to `glfwSetWindowPos'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_glfw.cpp:581: undefined reference to `glfwSetMouseButtonCallback'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_glfw.cpp:582: undefined reference to `glfwSetScrollCallback'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_glfw.cpp:583: undefined reference to `glfwSetKeyCallback'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_glfw.cpp:584: undefined reference to `glfwSetCharCallback'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_glfw.cpp:585: undefined reference to `glfwSetWindowCloseCallback'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_glfw.cpp:586: undefined reference to `glfwSetWindowPosCallback'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_glfw.cpp:587: undefined reference to `glfwSetWindowSizeCallback'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_glfw.cpp:590: undefined reference to `glfwMakeContextCurrent'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_glfw.cpp:591: undefined reference to `glfwSwapInterval'
+/usr/bin/ld: ../bin/Debug-linux-x86_64/ApexGameEngine/libApexGameEngine.a(ImGuiBuild.o): in function `ImGui_ImplGlfw_DestroyWindow(ImGuiViewport*)':
+/home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_glfw.cpp:605: undefined reference to `glfwDestroyWindow'
+/usr/bin/ld: ../bin/Debug-linux-x86_64/ApexGameEngine/libApexGameEngine.a(ImGuiBuild.o): in function `ImGui_ImplGlfw_ShowWindow(ImGuiViewport*)':
+/home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_glfw.cpp:669: undefined reference to `glfwShowWindow'
+/usr/bin/ld: ../bin/Debug-linux-x86_64/ApexGameEngine/libApexGameEngine.a(ImGuiBuild.o): in function `ImGui_ImplGlfw_GetWindowPos(ImGuiViewport*)':
+/home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_glfw.cpp:676: undefined reference to `glfwGetWindowPos'
+/usr/bin/ld: ../bin/Debug-linux-x86_64/ApexGameEngine/libApexGameEngine.a(ImGuiBuild.o): in function `ImGui_ImplGlfw_SetWindowPos(ImGuiViewport*, ImVec2)':
+/home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_glfw.cpp:684: undefined reference to `glfwSetWindowPos'
+/usr/bin/ld: ../bin/Debug-linux-x86_64/ApexGameEngine/libApexGameEngine.a(ImGuiBuild.o): in function `ImGui_ImplGlfw_GetWindowSize(ImGuiViewport*)':
+/home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_glfw.cpp:691: undefined reference to `glfwGetWindowSize'
+/usr/bin/ld: ../bin/Debug-linux-x86_64/ApexGameEngine/libApexGameEngine.a(ImGuiBuild.o): in function `ImGui_ImplGlfw_SetWindowSize(ImGuiViewport*, ImVec2)':
+/home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_glfw.cpp:709: undefined reference to `glfwSetWindowSize'
+/usr/bin/ld: ../bin/Debug-linux-x86_64/ApexGameEngine/libApexGameEngine.a(ImGuiBuild.o): in function `ImGui_ImplGlfw_SetWindowTitle(ImGuiViewport*, char const*)':
+/home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_glfw.cpp:715: undefined reference to `glfwSetWindowTitle'
+/usr/bin/ld: ../bin/Debug-linux-x86_64/ApexGameEngine/libApexGameEngine.a(ImGuiBuild.o): in function `ImGui_ImplGlfw_SetWindowFocus(ImGuiViewport*)':
+/home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_glfw.cpp:722: undefined reference to `glfwFocusWindow'
+/usr/bin/ld: ../bin/Debug-linux-x86_64/ApexGameEngine/libApexGameEngine.a(ImGuiBuild.o): in function `ImGui_ImplGlfw_GetWindowFocus(ImGuiViewport*)':
+/home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_glfw.cpp:732: undefined reference to `glfwGetWindowAttrib'
+/usr/bin/ld: ../bin/Debug-linux-x86_64/ApexGameEngine/libApexGameEngine.a(ImGuiBuild.o): in function `ImGui_ImplGlfw_GetWindowMinimized(ImGuiViewport*)':
+/home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_glfw.cpp:738: undefined reference to `glfwGetWindowAttrib'
+/usr/bin/ld: ../bin/Debug-linux-x86_64/ApexGameEngine/libApexGameEngine.a(ImGuiBuild.o): in function `ImGui_ImplGlfw_SetWindowAlpha(ImGuiViewport*, float)':
+/home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_glfw.cpp:745: undefined reference to `glfwSetWindowOpacity'
+/usr/bin/ld: ../bin/Debug-linux-x86_64/ApexGameEngine/libApexGameEngine.a(ImGuiBuild.o): in function `ImGui_ImplGlfw_RenderWindow(ImGuiViewport*, void*)':
+/home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_glfw.cpp:753: undefined reference to `glfwMakeContextCurrent'
+/usr/bin/ld: ../bin/Debug-linux-x86_64/ApexGameEngine/libApexGameEngine.a(ImGuiBuild.o): in function `ImGui_ImplGlfw_SwapBuffers(ImGuiViewport*, void*)':
+/home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_glfw.cpp:761: undefined reference to `glfwMakeContextCurrent'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_glfw.cpp:762: undefined reference to `glfwSwapBuffers'
+/usr/bin/ld: ../bin/Debug-linux-x86_64/ApexGameEngine/libApexGameEngine.a(ImGuiBuild.o): in function `ImGui_ImplGlfw_CreateVkSurface(ImGuiViewport*, unsigned long long, void const*, unsigned long long*)':
+/home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/imgui/examples/imgui_impl_glfw.cpp:814: undefined reference to `glfwCreateWindowSurface'
+/usr/bin/ld: ../bin/Debug-linux-x86_64/ApexGameEngine/libApexGameEngine.a(OpenGLContext.o): in function `Apex::OpenGLContext::Init()':
+/home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLContext.cpp:16: undefined reference to `glfwMakeContextCurrent'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLContext.cpp:19: undefined reference to `glfwGetProcAddress'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLContext.cpp:19: undefined reference to `gladLoadGLLoader'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLContext.cpp:22: undefined reference to `glad_glGetString'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLContext.cpp:22: undefined reference to `glad_glGetString'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLContext.cpp:22: undefined reference to `glad_glGetString'
+/usr/bin/ld: ../bin/Debug-linux-x86_64/ApexGameEngine/libApexGameEngine.a(OpenGLContext.o): in function `Apex::OpenGLContext::SwapBuffers()':
+/home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLContext.cpp:28: undefined reference to `glfwSwapBuffers'
+/usr/bin/ld: ../bin/Debug-linux-x86_64/ApexGameEngine/libApexGameEngine.a(OpenGLRendererAPI.o): in function `Apex::OpenGLRendererAPI::Init()':
+/home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLRendererAPI.cpp:10: undefined reference to `glad_glEnable'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLRendererAPI.cpp:11: undefined reference to `glad_glBlendFunc'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLRendererAPI.cpp:12: undefined reference to `glad_glEnable'
+/usr/bin/ld: ../bin/Debug-linux-x86_64/ApexGameEngine/libApexGameEngine.a(OpenGLRendererAPI.o): in function `Apex::OpenGLRendererAPI::SetClearColor(glm::vec<4, float, (glm::qualifier)0> const&)':
+/home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLRendererAPI.cpp:17: undefined reference to `glad_glClearColor'
+/usr/bin/ld: ../bin/Debug-linux-x86_64/ApexGameEngine/libApexGameEngine.a(OpenGLRendererAPI.o): in function `Apex::OpenGLRendererAPI::Clear()':
+/home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLRendererAPI.cpp:22: undefined reference to `glad_glClear'
+/usr/bin/ld: ../bin/Debug-linux-x86_64/ApexGameEngine/libApexGameEngine.a(OpenGLRendererAPI.o): in function `Apex::OpenGLRendererAPI::Draw(std::shared_ptr<Apex::VertexArray> const&)':
+/home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLRendererAPI.cpp:27: undefined reference to `glad_glDrawArrays'
+/usr/bin/ld: ../bin/Debug-linux-x86_64/ApexGameEngine/libApexGameEngine.a(OpenGLRendererAPI.o): in function `Apex::OpenGLRendererAPI::DrawIndexed(std::shared_ptr<Apex::VertexArray> const&)':
+/home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLRendererAPI.cpp:32: undefined reference to `glad_glDrawElements'
+/usr/bin/ld: ../bin/Debug-linux-x86_64/ApexGameEngine/libApexGameEngine.a(OpenGLRendererAPI.o): in function `Apex::OpenGLRendererAPI::DrawInstanced(std::shared_ptr<Apex::VertexArray> const&, unsigned long)':
+/home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLRendererAPI.cpp:37: undefined reference to `glad_glDrawElementsInstanced'
+/usr/bin/ld: ../bin/Debug-linux-x86_64/ApexGameEngine/libApexGameEngine.a(OpenGLRendererAPI.o): in function `Apex::OpenGLRendererAPI::SetDepthTest(bool)':
+/home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLRendererAPI.cpp:43: undefined reference to `glad_glEnable'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLRendererAPI.cpp:45: undefined reference to `glad_glDisable'
+/usr/bin/ld: ../bin/Debug-linux-x86_64/ApexGameEngine/libApexGameEngine.a(OpenGLRendererAPI.o): in function `Apex::OpenGLRendererAPI::SetCulling(bool)':
+/home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLRendererAPI.cpp:51: undefined reference to `glad_glEnable'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLRendererAPI.cpp:52: undefined reference to `glad_glCullFace'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLRendererAPI.cpp:55: undefined reference to `glad_glDisable'
+/usr/bin/ld: ../bin/Debug-linux-x86_64/ApexGameEngine/libApexGameEngine.a(OpenGLRendererAPI.o): in function `Apex::OpenGLRendererAPI::SetBlendMode(Apex::RendererAPI::BlendingMode, Apex::RendererAPI::BlendingMode)':
+/home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLRendererAPI.cpp:61: undefined reference to `glad_glBlendFunc'
+/usr/bin/ld: ../bin/Debug-linux-x86_64/ApexGameEngine/libApexGameEngine.a(OpenGLRendererAPI.o): in function `Apex::OpenGLRendererAPI::SetViewport(unsigned int, unsigned int, unsigned long, unsigned long)':
+/home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLRendererAPI.cpp:66: undefined reference to `glad_glViewport'
+/usr/bin/ld: ../bin/Debug-linux-x86_64/ApexGameEngine/libApexGameEngine.a(OpenGLRendererAPI.o): in function `Apex::OpenGLRendererAPI::ImageAccessBarrier()':
+/home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLRendererAPI.cpp:71: undefined reference to `glad_glMemoryBarrier'
+/usr/bin/ld: ../bin/Debug-linux-x86_64/ApexGameEngine/libApexGameEngine.a(OpenGLShader.o): in function `Apex::OpenGLShader::~OpenGLShader()':
+/home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLShader.cpp:63: undefined reference to `glad_glDeleteProgram'
+/usr/bin/ld: ../bin/Debug-linux-x86_64/ApexGameEngine/libApexGameEngine.a(OpenGLShader.o): in function `Apex::OpenGLShader::Compile(std::unordered_map<unsigned int, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::hash<unsigned int>, std::equal_to<unsigned int>, std::allocator<std::pair<unsigned int const, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > const&)':
+/home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLShader.cpp:92: undefined reference to `glad_glCreateProgram'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLShader.cpp:100: undefined reference to `glad_glCreateShader'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLShader.cpp:102: undefined reference to `glad_glShaderSource'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLShader.cpp:103: undefined reference to `glad_glCompileShader'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLShader.cpp:106: undefined reference to `glad_glGetShaderiv'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLShader.cpp:109: undefined reference to `glad_glGetShaderiv'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLShader.cpp:112: undefined reference to `glad_glGetShaderInfoLog'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLShader.cpp:113: undefined reference to `glad_glDeleteShader'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLShader.cpp:118: undefined reference to `glad_glDeleteProgram'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLShader.cpp:123: undefined reference to `glad_glAttachShader'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLShader.cpp:127: undefined reference to `glad_glLinkProgram'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLShader.cpp:130: undefined reference to `glad_glGetProgramiv'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLShader.cpp:133: undefined reference to `glad_glGetProgramiv'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLShader.cpp:136: undefined reference to `glad_glGetProgramInfoLog'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLShader.cpp:138: undefined reference to `glad_glDeleteProgram'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLShader.cpp:141: undefined reference to `glad_glDeleteShader'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLShader.cpp:153: undefined reference to `glad_glDetachShader'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLShader.cpp:154: undefined reference to `glad_glDeleteShader'
+/usr/bin/ld: ../bin/Debug-linux-x86_64/ApexGameEngine/libApexGameEngine.a(OpenGLShader.o): in function `Apex::OpenGLShader::Bind() const':
+/home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLShader.cpp:161: undefined reference to `glad_glUseProgram'
+/usr/bin/ld: ../bin/Debug-linux-x86_64/ApexGameEngine/libApexGameEngine.a(OpenGLShader.o): in function `Apex::OpenGLShader::GetActiveUniformLocations[abi:cxx11]()':
+/home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLShader.cpp:171: undefined reference to `glad_glGetProgramiv'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLShader.cpp:179: undefined reference to `glad_glGetActiveUniform'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLShader.cpp:189: undefined reference to `glad_glGetUniformLocation'
+/usr/bin/ld: ../bin/Debug-linux-x86_64/ApexGameEngine/libApexGameEngine.a(OpenGLShader.o): in function `Apex::OpenGLShader::GetActiveUniformData[abi:cxx11]()':
+/home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLShader.cpp:201: undefined reference to `glad_glGetProgramiv'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLShader.cpp:209: undefined reference to `glad_glGetActiveUniform'
+/usr/bin/ld: ../bin/Debug-linux-x86_64/ApexGameEngine/libApexGameEngine.a(OpenGLShader.o): in function `Apex::OpenGLShader::SetUniInt(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, int)':
+/home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLShader.cpp:235: undefined reference to `glad_glUniform1i'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLShader.cpp:235: undefined reference to `glad_glGetUniformLocation'
+/usr/bin/ld: ../bin/Debug-linux-x86_64/ApexGameEngine/libApexGameEngine.a(OpenGLShader.o): in function `Apex::OpenGLShader::SetUniFloat1(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, float)':
+/home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLShader.cpp:244: undefined reference to `glad_glUniform1f'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLShader.cpp:244: undefined reference to `glad_glGetUniformLocation'
+/usr/bin/ld: ../bin/Debug-linux-x86_64/ApexGameEngine/libApexGameEngine.a(OpenGLShader.o): in function `Apex::OpenGLShader::SetUniFloat2(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, glm::vec<2, float, (glm::qualifier)0> const&)':
+/home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLShader.cpp:253: undefined reference to `glad_glUniform2fv'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLShader.cpp:253: undefined reference to `glad_glGetUniformLocation'
+/usr/bin/ld: ../bin/Debug-linux-x86_64/ApexGameEngine/libApexGameEngine.a(OpenGLShader.o): in function `Apex::OpenGLShader::SetUniFloat3(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, glm::vec<3, float, (glm::qualifier)0> const&)':
+/home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLShader.cpp:262: undefined reference to `glad_glUniform3fv'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLShader.cpp:262: undefined reference to `glad_glGetUniformLocation'
+/usr/bin/ld: ../bin/Debug-linux-x86_64/ApexGameEngine/libApexGameEngine.a(OpenGLShader.o): in function `Apex::OpenGLShader::SetUniFloat3v(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, glm::vec<3, float, (glm::qualifier)0>*, unsigned long)':
+/home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLShader.cpp:271: undefined reference to `glad_glUniform3fv'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLShader.cpp:271: undefined reference to `glad_glGetUniformLocation'
+/usr/bin/ld: ../bin/Debug-linux-x86_64/ApexGameEngine/libApexGameEngine.a(OpenGLShader.o): in function `Apex::OpenGLShader::SetUniFloat4(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, glm::vec<4, float, (glm::qualifier)0> const&)':
+/home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLShader.cpp:280: undefined reference to `glad_glUniform4fv'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLShader.cpp:280: undefined reference to `glad_glGetUniformLocation'
+/usr/bin/ld: ../bin/Debug-linux-x86_64/ApexGameEngine/libApexGameEngine.a(OpenGLShader.o): in function `Apex::OpenGLShader::SetUniMat4(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, glm::mat<4, 4, float, (glm::qualifier)0> const&)':
+/home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLShader.cpp:289: undefined reference to `glad_glUniformMatrix4fv'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLShader.cpp:289: undefined reference to `glad_glGetUniformLocation'
+/usr/bin/ld: ../bin/Debug-linux-x86_64/ApexGameEngine/libApexGameEngine.a(OpenGLShader.o): in function `Apex::OpenGLShader::SetUniMat4v(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, glm::mat<4, 4, float, (glm::qualifier)0>*, unsigned long)':
+/home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLShader.cpp:298: undefined reference to `glad_glUniformMatrix4fv'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLShader.cpp:298: undefined reference to `glad_glGetUniformLocation'
+/usr/bin/ld: ../bin/Debug-linux-x86_64/ApexGameEngine/libApexGameEngine.a(OpenGLTexture.o): in function `Apex::OpenGLTexture2D::OpenGLTexture2D(unsigned int, unsigned int, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)':
+/home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLTexture.cpp:18: undefined reference to `glad_glGenTextures'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLTexture.cpp:19: undefined reference to `glad_glBindTexture'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLTexture.cpp:24: undefined reference to `glad_glTexImage2D'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLTexture.cpp:28: undefined reference to `glad_glObjectLabel'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLTexture.cpp:30: undefined reference to `glad_glTextureParameteri'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLTexture.cpp:31: undefined reference to `glad_glTextureParameteri'
+/usr/bin/ld: ../bin/Debug-linux-x86_64/ApexGameEngine/libApexGameEngine.a(OpenGLTexture.o): in function `Apex::OpenGLTexture2D::OpenGLTexture2D(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)':
+/home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLTexture.cpp:62: undefined reference to `glad_glCreateTextures'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLTexture.cpp:63: undefined reference to `glad_glTextureStorage2D'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLTexture.cpp:65: undefined reference to `glad_glTextureParameteri'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLTexture.cpp:66: undefined reference to `glad_glTextureParameteri'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLTexture.cpp:68: undefined reference to `glad_glTextureSubImage2D'
+/usr/bin/ld: ../bin/Debug-linux-x86_64/ApexGameEngine/libApexGameEngine.a(OpenGLTexture.o): in function `Apex::OpenGLTexture2D::~OpenGLTexture2D()':
+/home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLTexture.cpp:75: undefined reference to `glad_glDeleteTextures'
+/usr/bin/ld: ../bin/Debug-linux-x86_64/ApexGameEngine/libApexGameEngine.a(OpenGLTexture.o): in function `Apex::OpenGLTexture2D::Bind(unsigned int) const':
+/home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLTexture.cpp:80: undefined reference to `glad_glBindTextureUnit'
+/usr/bin/ld: ../bin/Debug-linux-x86_64/ApexGameEngine/libApexGameEngine.a(OpenGLTexture.o): in function `Apex::OpenGLTexture2D::BindImage(unsigned int, bool, bool) const':
+/home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLTexture.cpp:86: undefined reference to `glad_glBindImageTexture'
+/usr/bin/ld: ../bin/Debug-linux-x86_64/ApexGameEngine/libApexGameEngine.a(OpenGLTexture.o): in function `Apex::OpenGLTexture2D_HDR::OpenGLTexture2D_HDR(unsigned int, unsigned int, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)':
+/home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLTexture.cpp:97: undefined reference to `glad_glGenTextures'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLTexture.cpp:98: undefined reference to `glad_glBindTexture'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLTexture.cpp:101: undefined reference to `glad_glTexImage2D'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLTexture.cpp:105: undefined reference to `glad_glObjectLabel'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLTexture.cpp:107: undefined reference to `glad_glTextureParameteri'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLTexture.cpp:108: undefined reference to `glad_glTextureParameteri'
+/usr/bin/ld: ../bin/Debug-linux-x86_64/ApexGameEngine/libApexGameEngine.a(OpenGLTexture.o): in function `Apex::OpenGLTexture2D_HDR::OpenGLTexture2D_HDR(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)':
+/home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLTexture.cpp:136: undefined reference to `glad_glGenTextures'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLTexture.cpp:137: undefined reference to `glad_glBindTexture'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLTexture.cpp:138: undefined reference to `glad_glTextureStorage2D'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLTexture.cpp:141: undefined reference to `glad_glTextureParameteri'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLTexture.cpp:142: undefined reference to `glad_glTextureParameteri'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLTexture.cpp:144: undefined reference to `glad_glTextureSubImage2D'
+/usr/bin/ld: ../bin/Debug-linux-x86_64/ApexGameEngine/libApexGameEngine.a(OpenGLTexture.o): in function `Apex::OpenGLTexture2D_HDR::~OpenGLTexture2D_HDR()':
+/home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLTexture.cpp:151: undefined reference to `glad_glDeleteTextures'
+/usr/bin/ld: ../bin/Debug-linux-x86_64/ApexGameEngine/libApexGameEngine.a(OpenGLTexture.o): in function `Apex::OpenGLTexture2D_HDR::Bind(unsigned int) const':
+/home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLTexture.cpp:156: undefined reference to `glad_glBindTextureUnit'
+/usr/bin/ld: ../bin/Debug-linux-x86_64/ApexGameEngine/libApexGameEngine.a(OpenGLTexture.o): in function `Apex::OpenGLTexture2D_HDR::BindImage(unsigned int, bool, bool) const':
+/home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLTexture.cpp:162: undefined reference to `glad_glBindImageTexture'
+/usr/bin/ld: ../bin/Debug-linux-x86_64/ApexGameEngine/libApexGameEngine.a(OpenGLTexture.o): in function `Apex::OpenGLTextureDepth2D::OpenGLTextureDepth2D()':
+/home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLTexture.cpp:173: undefined reference to `glad_glGenTextures'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLTexture.cpp:174: undefined reference to `glad_glBindTexture'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLTexture.cpp:176: undefined reference to `glad_glTexImage2D'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLTexture.cpp:178: undefined reference to `glad_glTextureParameteri'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLTexture.cpp:179: undefined reference to `glad_glTextureParameteri'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLTexture.cpp:180: undefined reference to `glad_glTextureParameteri'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLTexture.cpp:181: undefined reference to `glad_glTextureParameteri'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLTexture.cpp:183: undefined reference to `glad_glTextureParameterfv'
+/usr/bin/ld: ../bin/Debug-linux-x86_64/ApexGameEngine/libApexGameEngine.a(OpenGLTexture.o): in function `Apex::OpenGLTextureDepth2D::~OpenGLTextureDepth2D()':
+/home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLTexture.cpp:188: undefined reference to `glad_glDeleteTextures'
+/usr/bin/ld: ../bin/Debug-linux-x86_64/ApexGameEngine/libApexGameEngine.a(OpenGLTexture.o): in function `Apex::OpenGLTextureDepth2D::Bind(unsigned int) const':
+/home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLTexture.cpp:193: undefined reference to `glad_glBindTextureUnit'
+/usr/bin/ld: ../bin/Debug-linux-x86_64/ApexGameEngine/libApexGameEngine.a(OpenGLVertexArray.o): in function `Apex::OpenGLVertexArray::OpenGLVertexArray()':
+/home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLVertexArray.cpp:31: undefined reference to `glad_glGenVertexArrays'
+/usr/bin/ld: ../bin/Debug-linux-x86_64/ApexGameEngine/libApexGameEngine.a(OpenGLVertexArray.o): in function `Apex::OpenGLVertexArray::~OpenGLVertexArray()':
+/home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLVertexArray.cpp:36: undefined reference to `glad_glDeleteVertexArrays'
+/usr/bin/ld: ../bin/Debug-linux-x86_64/ApexGameEngine/libApexGameEngine.a(OpenGLVertexArray.o): in function `Apex::OpenGLVertexArray::Bind() const':
+/home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLVertexArray.cpp:41: undefined reference to `glad_glBindVertexArray'
+/usr/bin/ld: ../bin/Debug-linux-x86_64/ApexGameEngine/libApexGameEngine.a(OpenGLVertexArray.o): in function `Apex::OpenGLVertexArray::Unbind() const':
+/home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLVertexArray.cpp:46: undefined reference to `glad_glBindVertexArray'
+/usr/bin/ld: ../bin/Debug-linux-x86_64/ApexGameEngine/libApexGameEngine.a(OpenGLVertexArray.o): in function `Apex::OpenGLVertexArray::AddVertexBuffer(std::shared_ptr<Apex::VertexBuffer>)':
+/home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLVertexArray.cpp:51: undefined reference to `glad_glBindVertexArray'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLVertexArray.cpp:59: undefined reference to `glad_glEnableVertexAttribArray'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLVertexArray.cpp:60: undefined reference to `glad_glVertexAttribPointer'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLVertexArray.cpp:70: undefined reference to `glad_glBindVertexArray'
+/usr/bin/ld: ../bin/Debug-linux-x86_64/ApexGameEngine/libApexGameEngine.a(OpenGLVertexArray.o): in function `Apex::OpenGLVertexArray::AddIndexBuffer(std::shared_ptr<Apex::IndexBuffer>)':
+/home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLVertexArray.cpp:75: undefined reference to `glad_glBindVertexArray'
+/usr/bin/ld: /home/alamar213/Work/ApexGameEngine/ApexGameEngine/src/Platform/OpenGL/OpenGLVertexArray.cpp:79: undefined reference to `glad_glBindVertexArray'
+/usr/bin/ld: warning: creating DT_TEXTREL in a PIE
+collect2: error: ld returned 1 exit status
+make[1]: *** [Makefile:93: ../bin/Debug-linux-x86_64/ApexEditor/ApexEditor] Error 1
+make: *** [Makefile:81: ApexEditor] Error 2

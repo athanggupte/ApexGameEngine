@@ -13,10 +13,10 @@
 #include "Apex/Utils/ComputeShader/ComputeShader.h"
 #include "Apex/Physics/ParticleSystem/ParticleSystem2D.h"
 
-#include "Games/DXBall/DXBall.h"
+//#include "Games/DXBall/DXBall.h"
 
 // Networking
-#include "Apex/Networking/NetworkManager.h"
+//#include "Apex/Networking/NetworkManager.h"
 
 // Audio
 #include "irrKlang.h"
@@ -730,6 +730,7 @@ private:
 
 	bool m_MouseSelectMode = false;
 };
+#endif
 
 class ParticleLayer : public Apex::Layer
 {
@@ -840,7 +841,7 @@ public:
 		ImGui::Image((void*)(intptr_t)m_ParticleTexture->GetID(), ImVec2(256, 256));
 		ImGui::End();
 		
-		static bool unselected = true;
+		/*static bool unselected = true;
 		ImGui::Begin("Client-Server");
 		if (unselected) {
 			auto fun = [](const Apex::Ref<Apex::TCPClientSocket>&, Apex::CommunicationPacket&) { return false; };
@@ -854,7 +855,7 @@ public:
 				unselected = false;
 			}
 		}
-		ImGui::End();
+		ImGui::End();*/
 	}
 
 	void OnEvent(Apex::Event& event) override
@@ -899,7 +900,7 @@ private:
 
 
 /* Layer for making a terminal emulator using ImGui */
-
+#if 0
 #include "Terminal.h"
 #include "ChildProcess.h"
 
@@ -1065,19 +1066,19 @@ class Sandbox : public Apex::Application
 public:
 	Sandbox()
 	{
-		Apex::Collision::Init();
-		Apex::NetworkManager::Startup();
+		//Apex::Collision::Init();
+		//Apex::NetworkManager::Startup();
 
-		PushLayer(new SandboxLayer());
+		//PushLayer(new SandboxLayer());
 		//PushLayer(new ModelLayer());
-		//PushLayer(new ParticleLayer());
+		PushLayer(new ParticleLayer());
 		//PushLayer(new DXBall::TestLayer());
 		//PushLayer(new TerminalLayer());
 	}
 
 	~Sandbox()
 	{
-		Apex::NetworkManager::Cleanup();
+		//Apex::NetworkManager::Cleanup();
 	}
 
 };

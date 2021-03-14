@@ -1,3 +1,5 @@
+#ifdef APEX_PLATFORM_WINDOWS
+
 #include "Terminal.h"
 //#include <cstdint>
 
@@ -138,3 +140,4 @@ void Process::DeInit()
 
 bool TerminalBuffer::s_DebugMode = false;
 
+#endif
