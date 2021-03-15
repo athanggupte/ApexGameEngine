@@ -1,3 +1,5 @@
+#if 0
+
 #include "apex_pch.h"
 #include "MathPrimitiveParser.h"
 
@@ -6,7 +8,9 @@
 namespace Apex {
 
 	namespace MathParser {
-		const std::string ParseMatrix(const glm::mat4& matrix)
+		
+		template<glm::length_t C, glm::length_t R, typename T, glm::qualifier Q = glm::defaultp>
+		const std::string ParseMatrix(const glm::mat<C, R, T, Q>& matrix)
 		{
 			const std::string toReplace = "), ";
 			const std::string replaceStr = ")\n\t\t\t";
@@ -24,3 +28,5 @@ namespace Apex {
 		}
 	}
 }
+
+#endif

@@ -5,6 +5,8 @@
 #include "Apex/Core/Random.h"
 #include "Apex/Graphics/Renderer/Renderer.h"
 
+#include "Apex/Utils/MathPrimitiveParser.h"
+
 #include <glm/gtc/constants.hpp>
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/gtx/compatibility.hpp>
@@ -50,7 +52,7 @@ namespace Apex {
 			layout(location = 1) in vec2 a_TexCoord;
 
 			uniform mat4 u_ViewProjection;
-			uniform mat4 u_Model;//[100];
+			uniform mat4 u_Model;
 			uniform float u_NumRows;
 			uniform vec2 u_TexOffset;
 
@@ -65,7 +67,7 @@ namespace Apex {
 				}
 				v_Position = a_Position;
 				v_TexCoord = vec2(texCoord.x, texCoord.y * -1.0);
-				gl_Position = u_ViewProjection * u_Model/*[gl_InstanceID]*/ * vec4(a_Position, 1.0);
+				gl_Position = u_ViewProjection * u_Model * vec4(a_Position, 1.0);
 			}
 		)";
 
@@ -100,11 +102,14 @@ namespace Apex {
 
 	void ParticleSystem2D::OnUpdate()
 	{
+        uint32_t i = 0;
 		for(auto& particle : m_ParticlePool) {
-			if (!particle.active)
+			i++;
+            if (!particle.active)
 				continue;
 
 			if (particle.lifeRemaining <= 0.0f) {
+                //APEX_CORE_DEBUG("Killed Particle @ {0}", i);
 				particle.active = false;
 				continue;
 			}
@@ -119,16 +124,18 @@ namespace Apex {
 	void ParticleSystem2D::OnRender()
 	{
 		uint32_t i = 0;
-		bool first_active = true;
+		static bool first_active = true;
 		for (auto& particle : m_ParticlePool) {
 			i++;
 			if (!particle.active)
 				continue;
 
-			/*if (first_active) {
-				APEX_CORE_DEBUG("Submitted Particle @ {0}", i);
-				first_active = false;
-			}*/
+			//APEX_CORE_DEBUG("Rendering Particle @ {0}", i);
+			
+// 			if (first_active) {
+// 				APEX_CORE_DEBUG("Submitted Particle @ {0}", i);
+// 				first_active = false;
+// 			}
 
 			float life = particle.lifeRemaining / particle.lifetime;
 			glm::vec4 color = glm::lerp(particle.colorEnd, particle.colorBegin, life);
@@ -141,6 +148,16 @@ namespace Apex {
 				* glm::rotate(glm::mat4(1.0f), particle.rotation, { 0.0f, 0.0f, 1.0f })
 				* glm::scale(glm::mat4(1.0f), { size, 1.0 });
 
+// 			if (first_active) {
+// 				APEX_CORE_DEBUG("sizeEnd: {0}, {1}", particle.sizeEnd.x, particle.sizeEnd.y);
+// 				APEX_CORE_DEBUG("sizeBegin: {0}, {1}", particle.sizeBegin.x, particle.sizeBegin.y);
+// 				APEX_CORE_DEBUG("life: {0}", life);
+// 				APEX_CORE_DEBUG("size: {0}, {1}", size.x, size.y);
+// 				APEX_CORE_DEBUG("scale: \n{0}", MathParser::ParseMatrix(glm::scale(glm::mat4(1.0f), { size, 1.0 })));
+// 				APEX_CORE_DEBUG(MathParser::ParseMatrix(transform));
+// 				first_active = false;
+// 			}
+			
 			m_Shader->Bind();
 			
 			if (particle.useTexture) {
@@ -195,9 +212,16 @@ namespace Apex {
 		particle.textureNumRows = particleProps.textureNumRows;
 		particle.textureIndex = particleProps.textureIndex;
 
+		
+// 		APEX_CORE_DEBUG("Emit :: Props : sizeEnd: {0}, {1}", particleProps.sizeEnd.x, particleProps.sizeEnd.y);
+// 		APEX_CORE_DEBUG("Emit :: Props : sizeBegin: {0}, {1}", particleProps.sizeBegin.x, particleProps.sizeBegin.y);
+// 		APEX_CORE_DEBUG("Emit :: Props : sizeVariation: {0}, {1}", particleProps.sizeVariation.x, particleProps.sizeVariation.y);
+// 		
+// 		APEX_CORE_DEBUG("Emitted Particle @ {0}", m_PoolIndex + 1);
+// 		APEX_CORE_DEBUG("Emit :: Particle : sizeEnd: {0}, {1}", particle.sizeEnd.x, particle.sizeEnd.y);
+// 		APEX_CORE_DEBUG("Emit :: Particle : sizeBegin: {0}, {1}", particle.sizeBegin.x, particle.sizeBegin.y);
+		
 		m_PoolIndex = m_ParticlePool.size() - ((m_ParticlePool.size() - m_PoolIndex--) % m_ParticlePool.size()) - 1;
-
-		//APEX_CORE_DEBUG("Emitted Particle @ {0}", m_PoolIndex);
 	}
 
 }

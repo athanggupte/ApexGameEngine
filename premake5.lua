@@ -217,6 +217,10 @@ project "ApexEditor"
 		libdirs (LinuxLibDirs)
 		links (LinuxLibs)
 
+		postbuildcommands {
+			"echo \"cd $(realpath %{cfg.buildtarget.directory}) && export LD_LIBRARY_PATH=/home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/Assimp/build/bin:/home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/irrKlang/bin/linux-gcc-64/ && ./%{prj.name}\" > %{cfg.buildtarget.abspath}.sh"
+		}
+		
 	filter "configurations:Debug"
 		defines {
 			"APEX_DEBUG", "APEX_ENABLE_ASSERTS"
@@ -289,7 +293,7 @@ project "Sandbox"
 		links (LinuxLibs)
         
 		postbuildcommands {
-			"echo \"{CHDIR} %{cfg.buildtarget.abspath}\" > %{prj.name}.sh"
+			"echo \"cd $(realpath %{cfg.buildtarget.directory}) && export LD_LIBRARY_PATH=/home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/Assimp/build/bin:/home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/irrKlang/bin/linux-gcc-64/ && ./%{prj.name}\" > %{cfg.buildtarget.abspath}.sh"
 		}
 		
 	filter "configurations:Debug"

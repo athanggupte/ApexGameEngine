@@ -16,11 +16,12 @@ namespace Apex {
 				APEX_CORE_WARN("True Random Device NOT AVAILABLE");
 				s_RandomEngine.seed(std::time(nullptr));
 			}
+			APEX_CORE_TRACE("Apex::Random initialized succesfully!");
 		}
 
 		static float Float()
 		{
-			return (float)s_Distribution(s_RandomEngine) / (float)std::numeric_limits<uint32_t>::max();
+			return (float)s_Distribution(s_RandomEngine) / (float)s_Distribution.max(); //(float)std::numeric_limits<uint32_t>::max();
 		}
 
 		static int Int()
