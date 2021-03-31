@@ -16,3 +16,6 @@
 [submodule "ApexGameEngine/vendor/Assimp"]
 	path = ApexGameEngine/vendor/Assimp
 	url = https://github.com/xdevapps/assimp
+[submodule "ApexGameEngine/vendor/entt"]
+	path = ApexGameEngine/vendor/entt
+	url = https://github.com/xdevapps/entt

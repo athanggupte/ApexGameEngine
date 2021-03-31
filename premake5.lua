@@ -19,6 +19,7 @@ IncludeDirs["glm"] = "ApexGameEngine/vendor/glm/"
 IncludeDirs["stb_image"] = "ApexGameEngine/vendor/stb_image/"
 IncludeDirs["Assimp"] = "ApexGameEngine/vendor/Assimp/include/"
 IncludeDirs["irrKlang"] = "ApexGameEngine/vendor/irrKlang/include/"
+IncludeDirs["entt"] = "ApexGameEngine/vendor/entt/single_include/"
 IncludeDirs["ApexIK"] = "ApexGameEngine/modules/ApexIK/ApexIK/include/"
 
 -- DLLs
@@ -78,6 +79,7 @@ project "ApexGameEngine"
 
 	includedirs {
 		"%{prj.name}/src",
+		-- External Dependencies
 		"%{IncludeDirs.spdlog}",
 		"%{IncludeDirs.GLFW}",
 		"%{IncludeDirs.Glad}",
@@ -87,7 +89,9 @@ project "ApexGameEngine"
 		"%{prj.name}/vendor/Assimp/build/include",
 		"%{IncludeDirs.Assimp}",
 		"%{IncludeDirs.irrKlang}",
-		"%{IncludeDirs.ApexIK}"
+		"%{IncludeDirs.entt}",
+		-- Modules
+		"%{IncludeDirs.ApexIK}",
 	}
 
 	libdirs {
@@ -179,12 +183,15 @@ project "ApexEditor"
 
 	includedirs {
 		"ApexGameEngine/src",
+		-- External Dependencies
 		"%{IncludeDirs.spdlog}",
 		"%{IncludeDirs.ImGui}",
 		"%{IncludeDirs.glm}",
 		"ApexGameEngine/vendor/Assimp/build/include",
 		"%{IncludeDirs.Assimp}",
 		"%{IncludeDirs.irrKlang}",
+		"%{IncludeDirs.entt}",
+		-- Modules
 		"%{IncludeDirs.ApexIK}"
 	}
 
@@ -254,12 +261,15 @@ project "Sandbox"
 
 	includedirs {
 		"ApexGameEngine/src",
+		-- External Dependencies
 		"%{IncludeDirs.spdlog}",
 		"%{IncludeDirs.ImGui}",
 		"%{IncludeDirs.glm}",
 		"ApexGameEngine/vendor/Assimp/build/include",
 		"%{IncludeDirs.Assimp}",
 		"%{IncludeDirs.irrKlang}",
+		"%{IncludeDirs.entt}",
+		-- Modules
 		"%{IncludeDirs.ApexIK}"
 	}
 
