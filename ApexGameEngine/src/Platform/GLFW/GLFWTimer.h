@@ -4,11 +4,11 @@
 
 namespace Apex {
 
-	class WindowsTimer : public Timer
+	class GLFWTimer : public Timer
 	{
 	public:
-		WindowsTimer();
-		~WindowsTimer() {}
+		GLFWTimer();
+		~GLFWTimer() {}
 
 	private:
 		inline virtual float GetSecondsImpl() override { return static_cast<float>(m_FrameTimeSteps) / static_cast<float>(m_TimerFrequency); }

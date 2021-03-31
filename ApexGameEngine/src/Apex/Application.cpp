@@ -56,8 +56,8 @@ namespace Apex {
 			//if (!m_Minimized) {
 			m_Window->OnUpdate();
 			//}
-			GLenum error = glGetError();
-			if (error != GL_NO_ERROR) APEX_CORE_ERROR("[OpenGL] :: {0}", error);
+			//GLenum error = glGetError();
+			//if (error != GL_NO_ERROR) APEX_CORE_CRITICAL("[OpenGL] :: Error {0}", error);
 		}
 
 	}

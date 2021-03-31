@@ -72,11 +72,11 @@ namespace Apex {
 			}
 			auto screenShader = AssetManager::GetShaderLibrary().Load("assets/Screen.glsl");
 			screenShader->Bind();
-			screenShader->SetUniInt("u_ScreenTexture", 0);
+			screenShader->SetUniInt1("u_ScreenTexture", 0);
 
 			auto textureShader = AssetManager::GetShaderLibrary().Load("assets/SimpleTexture.glsl");
 			textureShader->Bind();
-			textureShader->SetUniInt("u_Texture", 1);
+			textureShader->SetUniInt1("u_Texture", 1);
 
 			m_ImageTexture = Texture2D_HDR::Create(128U, 128U, "Image");
 			m_ComputeShader = ComputeShader::Create("assets/Blur.compute");

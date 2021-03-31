@@ -1,5 +1,7 @@
 #pragma once
 
+#include <entt/entt.hpp>
+
 namespace Apex {
 
 	class Scene
@@ -8,7 +10,7 @@ namespace Apex {
 		Scene() = default;
 		~Scene() = default;
 	private:
-
+		entt::registry m_Registry;
 	};
 
 }

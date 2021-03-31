@@ -36,7 +36,8 @@
 
 #define BIT(x) (1 << x)
 
-#define APEX_BIND_EVENT_FN(fn) std::bind(&fn, this, std::placeholders::_1)
+//#define APEX_BIND_EVENT_FN(fn) std::bind(&fn, this, std::placeholders::_1)
+#define APEX_BIND_EVENT_FN(fn) [this] (auto&&... args) -> decltype(auto) { return this->fn(std::forward<decltype(args)>(args)...); }
 
 #define _ENABLE_ATOMIC_ALIGNMENT_FIX	// Works only on VS 2015 Update 2 and above
 

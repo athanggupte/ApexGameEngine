@@ -1,5 +1,5 @@
 #include "apex_pch.h"
-#include "WindowsWindow.h"
+#include "GLFWWindow.h"
 
 #include "Apex/Core/Events/ApplicationEvent.h"
 #include "Apex/Core/Events/KeyEvent.h"
@@ -18,20 +18,20 @@ namespace Apex {
 
 	Window * Apex::Window::Create(const WindowProps & props)
 	{
-		return new WindowsWindow(props);
+		return new GLFWWindow(props);
 	}
 
-	WindowsWindow::WindowsWindow(const WindowProps & props)
+	GLFWWindow::GLFWWindow(const WindowProps & props)
 	{
 		Init(props);
 	}
 
-	WindowsWindow::~WindowsWindow()
+	GLFWWindow::~GLFWWindow()
 	{
 		Shutdown();
 	}
 
-	void WindowsWindow::Init(const WindowProps & props)
+	void GLFWWindow::Init(const WindowProps & props)
 	{
 		m_Data.w_Title = props.w_Title;
 		m_Data.w_Width = props.w_Width;
@@ -48,11 +48,14 @@ namespace Apex {
 			s_GLFWInitialized = true;
 		}
 
+		// Set OpenGL debug context
+		glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, true);
+		
 		m_Window = glfwCreateWindow((int)m_Data.w_Width, (int)m_Data.w_Height, m_Data.w_Title.c_str(), nullptr, nullptr);
 		
 		m_Context = new OpenGLContext(m_Window);
 		m_Context->Init();
-
+		
 		glfwSetWindowUserPointer(m_Window, &m_Data);
 		SetVSync(true);
 
@@ -141,13 +144,13 @@ namespace Apex {
 
 	}
 
-	void WindowsWindow::OnUpdate()
+	void GLFWWindow::OnUpdate()
 	{
 		glfwPollEvents();
 		m_Context->SwapBuffers();
 	}
 
-	void WindowsWindow::SetVSync(bool enabled)
+	void GLFWWindow::SetVSync(bool enabled)
 	{
 		if (enabled)
 			glfwSwapInterval(1);
@@ -157,12 +160,12 @@ namespace Apex {
 		m_Data.VSync = enabled;
 	}
 
-	bool WindowsWindow::IsVSync() const
+	bool GLFWWindow::IsVSync() const
 	{
 		return m_Data.VSync;
 	}
 
-	void WindowsWindow::Shutdown()
+	void GLFWWindow::Shutdown()
 	{
 		glfwDestroyWindow(m_Window);
 	}
