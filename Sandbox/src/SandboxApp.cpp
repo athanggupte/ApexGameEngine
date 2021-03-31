@@ -77,7 +77,7 @@ public:
 		m_PusheenTexture = Apex::Texture2D::Create("assets/textures/pusheen-thug-life.png");
 		m_CheckerTexture = Apex::Texture2D::Create("assets/textures/Checkerboard.png");
 		textureShader->Bind();
-		textureShader->SetUniInt("u_Texture", 0);
+		textureShader->SetUniInt1("u_Texture", 0);
 
 		/* ------------------TEST CODE------------------------- */
 		//Apex::Material material;
@@ -153,19 +153,19 @@ public:
 
 		m_BrightShader = Apex::Shader::Create("assets/shaders/BrightnessSplit.glsl");
 		m_BrightShader->Bind();
-		m_BrightShader->SetUniInt("u_ScreenTexture", 0);
+		m_BrightShader->SetUniInt1("u_ScreenTexture", 0);
 		
 		m_BlendShader = Apex::Shader::Create("assets/shaders/Blend.glsl");
 		m_BlendShader->Bind();
-		m_BlendShader->SetUniInt("u_SceneTexture", 0);
-		m_BlendShader->SetUniInt("u_BlurTexture", 1);
+		m_BlendShader->SetUniInt1("u_SceneTexture", 0);
+		m_BlendShader->SetUniInt1("u_BlurTexture", 1);
 
 		auto screenHDRShader = Apex::AssetManager::GetShaderLibrary().Load("assets/shaders/ScreenHDR.glsl");
 		screenHDRShader->Bind();
-		screenHDRShader->SetUniInt("u_ScreenTexture", 0);
+		screenHDRShader->SetUniInt1("u_ScreenTexture", 0);
 		auto screenShader = Apex::AssetManager::GetShaderLibrary().Load("assets/shaders/Screen.glsl");
 		screenShader->Bind();
-		screenShader->SetUniInt("u_ScreenTexture", 0);
+		screenShader->SetUniInt1("u_ScreenTexture", 0);
 
 		m_NoiseTexture = Apex::Texture2D_HDR::Create(256U, 256U, "noise");
 		m_ComputeShader = Apex::ComputeShader::Create("assets/compute/noise.compute");
@@ -174,25 +174,6 @@ public:
 	// Inherited via Layer
 	void OnAttach() override
 	{
-		static Apex::ECS::Registry s_Registry;
-		{
-			auto testcomp = s_Registry.emplace_back<TestComponent>(0, 21);
-			APEX_CORE_DEBUG("TestComponent::COUNT = {}", TestComponent::COUNT);
-			APEX_CORE_DEBUG("TestComponent::value = {}", testcomp.value);
-		}
-
-		{
-			auto meshcomp = s_Registry.emplace_back<MeshComponent>(0, "Mesh-1");
-			APEX_CORE_DEBUG("MeshComponent::COUNT = {}", MeshComponent::COUNT);
-			APEX_CORE_DEBUG("MeshComponent::value = {}", meshcomp.mesh);
-		}
-
-		{
-			auto meshcomp = s_Registry.emplace_back<MeshComponent>(0, "Mesh-2");
-			APEX_CORE_DEBUG("MeshComponent::COUNT = {}", MeshComponent::COUNT);
-			APEX_CORE_DEBUG("MeshComponent::value = {}", meshcomp.mesh);
-		}
-
 		m_NoiseTexture->BindImage(0U, false, true);
 		m_ComputeShader->Bind();
 		m_ComputeShader->Dispatch(m_NoiseTexture->GetWidth(), m_NoiseTexture->GetHeight(), 1U);
@@ -251,6 +232,7 @@ public:
 			glm::translate(glm::mat4(1.0f), glm::vec3(1.0f, -1.0f, -2.3f))
 		};*/
 
+		m_FlatShader->SetUniFloat4("u_Color", m_SquareColor);
 		Apex::Renderer::SubmitArray(m_FlatShader, m_SquareVA, m_InstancedModelMatrices.data(), 100 /*m_InstancedModelMatrices.size()*/);
 		
 
@@ -307,34 +289,18 @@ public:
 		ImGui::End();
 
 		ImGui::Begin("Textures");
-		ImGui::Image((void*)(intptr_t)m_ScreenColorTexture->GetID(), {1280.f, 720.f});
+		ImGui::Image((void*)(intptr_t)m_NoiseTexture->GetID(), { 256.f, 256.f });
 		ImGui::End();
 	}
 
 	void OnEvent(Apex::Event& event) override
 	{
 		Apex::EventDispatcher dispatcher(event);
-		dispatcher.Dispatch<Apex::MouseScrolledEvent>(APEX_BIND_EVENT_FN(SandboxLayer::OnMouseScrolled));
-	}
-
-	bool OnMouseScrolled(Apex::MouseScrolledEvent& event)
-	{
-		m_CameraPosition.z -= event.GetOffsetY();
-		
-		return false;
+		//dispatcher.Dispatch<Apex::MouseScrolledEvent>(APEX_BIND_EVENT_FN(SandboxLayer::OnMouseScrolled));
+		dispatcher.Dispatch<Apex::MouseScrolledEvent>([this] (auto& event) -> bool { this->m_CameraPosition.z -= event.GetOffsetY(); return false; });
 	}
 
 private:
-	struct TestComponent : public Apex::ECS::Component<TestComponent>
-	{
-		int value;
-	};
-
-	struct MeshComponent : public Apex::ECS::Component<MeshComponent>
-	{
-		std::string mesh;
-	};
-
 	/// Main scene objects ///
 	Apex::Ref<Apex::Shader> m_FlatShader;
 	//Apex::Ref<Apex::Shader> m_TextureShader;
@@ -393,10 +359,10 @@ public:
 		m_Model = Apex::Model::LoadModel(m_ModelFilePath);
 		m_Shader = Apex::Shader::Create("assets/shaders/PBR.glsl");
 		m_Shader->Bind();
-		m_Shader->SetUniInt("u_TextureAlbedo", 0);
-		m_Shader->SetUniInt("u_TextureNormal", 1);
-		m_Shader->SetUniInt("u_TextureMetallic", 2);
-		m_Shader->SetUniInt("u_TextureRoughness", 3);
+		m_Shader->SetUniInt1("u_TextureAlbedo", 0);
+		m_Shader->SetUniInt1("u_TextureNormal", 1);
+		m_Shader->SetUniInt1("u_TextureMetallic", 2);
+		m_Shader->SetUniInt1("u_TextureRoughness", 3);
 		//m_Texture = Apex::Texture2D::Create("assets/models/Baseball/Baseball_diffuse.jpg");
 		m_Texture = Apex::Texture2D::Create(m_TextureFilePath);
 
@@ -533,7 +499,7 @@ public:
 
 		auto textureShader = Apex::AssetManager::GetShaderLibrary().Load("assets/shaders/Texture.glsl");
 		textureShader->Bind();
-		textureShader->SetUniInt("u_Texture", 0);
+		textureShader->SetUniInt1("u_Texture", 0);
 
 		m_SoundEngine = irrklang::createIrrKlangDevice();
 		m_SoundEngine->setListenerPosition(irrklang::vec3df(m_Camera.GetPosition().x, m_Camera.GetPosition().y, m_Camera.GetPosition().z), 
@@ -627,7 +593,7 @@ public:
 				m_DepthBuffer->GetDepthTexture()->Bind(1);
 				textureShader->Bind();
 				textureShader->SetUniMat4("u_LightSpace", m_LightCamera.GetViewProjectionMatrix());
-				textureShader->SetUniInt("u_TextureLightDepth", 1);
+				textureShader->SetUniInt1("u_TextureLightDepth", 1);
 				Apex::Renderer::Submit(textureShader, m_SquareVA, glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, -22.0f, 0.0f)));
 			}
 			{
@@ -635,13 +601,13 @@ public:
 				m_DepthBuffer->GetDepthTexture()->Bind(0);
 				m_Shader->Bind();
 				m_Shader->SetUniMat4("u_LightSpace", m_LightCamera.GetViewProjectionMatrix());
-				m_Shader->SetUniInt("u_TextureLightDepth", 0);
+				m_Shader->SetUniInt1("u_TextureLightDepth", 0);
 				Apex::Renderer::SubmitModel(m_Shader, m_Model);
 			}
 			{
 				APEX_PROFILE_SCOPE("Post-Process");
 				screenShader->Bind();
-				screenShader->SetUniInt("u_Texture", 0);
+				screenShader->SetUniInt1("u_Texture", 0);
 				Apex::Renderer::SubmitPostProcess(screenShader, m_ScreenVA);
 				//Apex::Renderer::SubmitModel(m_Shader, m_Model,
 				//	glm::rotate(glm::mat4(1.0f), mouseDiff1.first * 0.02f, m_Camera.GetUp()) * glm::rotate(glm::mat4(1.0f), mouseDiff1.second * 0.02f, m_Camera.GetRight()));
@@ -1081,6 +1047,7 @@ class Sandbox : public Apex::Application
 public:
 	Sandbox()
 	{
+		Apex::Log::GetCoreLogger()->set_pattern("%^[%T] <%n> at %@ :: %v%$");
 		//Apex::Collision::Init();
 		//Apex::NetworkManager::Startup();
 
