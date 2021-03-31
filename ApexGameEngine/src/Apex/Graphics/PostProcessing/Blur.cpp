@@ -1,6 +1,7 @@
 #include "apex_pch.h"
 #include "Blur.h"
 
+#include "Apex/Graphics/Renderer/RenderCommands.h"
 #include "Apex/Graphics/Renderer/Renderer.h"
 
 namespace Apex {
@@ -18,7 +19,7 @@ namespace Apex {
 	{
 
 		m_BlurShader->Bind();
-		m_BlurShader->SetUniInt("u_ScreenTexture", 0);
+		m_BlurShader->SetUniInt1("u_ScreenTexture", 0);
 		m_BlurShader->SetUniFloat2("u_Resolution", glm::vec2(1280.f, 720.f));
 
 		//Ref<Shader> m_BlurShader = Shader::Create("assets/shaders/GaussianBlur.glsl");
@@ -36,7 +37,7 @@ namespace Apex {
 		Apex::RenderCommands::Clear();
 		inputTexture->Bind();
 		m_BlurShader->Bind();
-		m_BlurShader->SetUniInt("u_Horizontal", 0);
+		m_BlurShader->SetUniInt1("u_Horizontal", 0);
 		Apex::Renderer::SubmitPostProcess(m_BlurShader, vao);
 
 		for (int i = 0; i < amount; i++) {
@@ -46,7 +47,7 @@ namespace Apex {
 			Apex::RenderCommands::Clear();
 			m_VerBlurTex->Bind();
 			m_BlurShader->Bind();
-			m_BlurShader->SetUniInt("u_Horizontal", 1);
+			m_BlurShader->SetUniInt1("u_Horizontal", 1);
 			Apex::Renderer::SubmitPostProcess(m_BlurShader, vao);
 
 			m_VerBlurFBO->Bind();
@@ -55,7 +56,7 @@ namespace Apex {
 			Apex::RenderCommands::Clear();
 			m_HorBlurTex->Bind();
 			m_BlurShader->Bind();
-			m_BlurShader->SetUniInt("u_Horizontal", 0);
+			m_BlurShader->SetUniInt1("u_Horizontal", 0);
 			Apex::Renderer::SubmitPostProcess(m_BlurShader, vao);
 		}
 
@@ -65,7 +66,7 @@ namespace Apex {
 		Apex::RenderCommands::Clear();
 		m_VerBlurTex->Bind();
 		m_BlurShader->Bind();
-		m_BlurShader->SetUniInt("u_Horizontal", 1);
+		m_BlurShader->SetUniInt1("u_Horizontal", 1);
 		Apex::Renderer::SubmitPostProcess(m_BlurShader, vao);
 
 		return m_HorBlurTex;

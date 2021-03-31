@@ -1,6 +1,8 @@
 #include "apex_pch.h"
 #include "OpenGLRendererAPI.h"
 
+#include "Apex/Graphics/RenderPrimitives/VertexArray.h"
+
 #include <glad/glad.h>
 
 namespace Apex {

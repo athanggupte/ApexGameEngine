@@ -1,19 +1,23 @@
 #pragma once
 
-#include "RenderCommands.h"
-
-#include "Apex/Core/Camera.h"
-#include "Apex/Graphics/RenderPrimitives/Shader.h"
-#include "Apex/Graphics/Model/Model.h"
+#include "RendererAPI.h"
 
 #include <glm/glm.hpp>
 
 namespace Apex {
-
+	
+	// Forward Declarations
+	class Camera;
+	class VertexArray;
+	class Shader;
+	class Model;
+	
 	class Renderer
 	{
 	public:
 		static void Init();
+		static void Shutdown();
+		
 		static void BeginScene(Camera& camera);
 		static void EndScene();
 
@@ -28,7 +32,6 @@ namespace Apex {
 		static void SubmitPostProcess(const Ref<Shader>& shader, const Ref<VertexArray>& vertexArray);
 		static void SetImageAccessBit() { s_SceneData->ImageAccess = true; }
 
-
 	private:
 		struct SceneData
 		{
@@ -38,4 +41,5 @@ namespace Apex {
 
 		static SceneData* s_SceneData;
 	};
+	
 }

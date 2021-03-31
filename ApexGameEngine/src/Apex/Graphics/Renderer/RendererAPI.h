@@ -2,10 +2,10 @@
 
 #include <glm/glm.hpp>
 
-#include "Apex/Graphics/RenderPrimitives/VertexArray.h"
-
 namespace Apex {
 
+	class VertexArray; // Forward Declaration
+	
 	class RendererAPI
 	{
 	public:

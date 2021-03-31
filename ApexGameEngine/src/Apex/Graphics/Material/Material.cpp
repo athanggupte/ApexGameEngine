@@ -9,7 +9,7 @@ namespace Apex {
 		int slot = -1;
 		for (auto& texturePair : m_Textures) {
 			texturePair.second->Bind(++slot);
-			m_Shader->SetUniInt("u_" + texturePair.first, slot);
+			m_Shader->SetUniInt1("u_" + texturePair.first, slot);
 		}
 	}
 	

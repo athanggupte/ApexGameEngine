@@ -48,6 +48,7 @@ namespace Apex {
 	public:
 		static Ref<TextureDepth2D> Create();
 	};
+	
 //#define IMAGE_STORE_CLASS
 #ifdef IMAGE_STORE_CLASS
 	class ImageStore2D : public Texture2D

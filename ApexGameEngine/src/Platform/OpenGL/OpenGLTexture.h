@@ -68,6 +68,7 @@ namespace Apex {
 		uint32_t m_Width, m_Height;
 		uint32_t m_RendererID;
 	};
+	
 #ifdef IMAGE_STORE_CLASS
 	class OpenGLImageStore2D : public ImageStore2D
 	{

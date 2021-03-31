@@ -1,6 +1,12 @@
 #include "apex_pch.h"
 #include "Renderer.h"
 
+#include "RenderCommands.h"
+#include "Apex/Core/Camera.h"
+#include "Apex/Graphics/RenderPrimitives/VertexArray.h"
+#include "Apex/Graphics/RenderPrimitives/Shader.h"
+#include "Apex/Graphics/Model/Model.h"
+
 namespace Apex {
 
 	Renderer::SceneData* Renderer::s_SceneData = new Renderer::SceneData;
@@ -55,7 +61,7 @@ namespace Apex {
 				//APEX_CORE_INFO("Mesh textures ->");
 				for (auto[name, texture] : mesh->GetTextures()) {
 					//APEX_CORE_INFO("{0} : {1} : {2}", name, texture->GetPath(), i);
-					shader->SetUniInt("u_" + name, i);
+					shader->SetUniInt1("u_" + name, i);
 					texture->Bind(i);
 					i++;
 				}
@@ -74,4 +80,9 @@ namespace Apex {
 	}
 	/*--------------------------------------------------------------------------------------------------*/
 
+	void Renderer::Shutdown()
+	{
+		delete s_SceneData;
+	}
+	
 }
