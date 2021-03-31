@@ -13,11 +13,28 @@
 
 namespace Apex {
 	
+	static std::vector<glm::mat4> s_Transforms;
+	static std::vector<glm::vec4> s_Colors;
+	static std::vector<int> s_Alive;
+	static uint32_t s_BatchIdx;
+	
+	static void ResetBatch()
+	{
+		s_BatchIdx = 0;
+		memset(&s_Alive[0], 0, sizeof(s_Alive[0]) * s_Alive.size());
+		// More data to reset if required
+	}
+	
 	ParticleSystem2D::ParticleSystem2D(uint32_t batch_size, uint32_t max_particles)
 		: m_BatchSize(batch_size), m_PoolIndex(max_particles - 1)
 	{
 		m_ParticlePool.resize(max_particles);
+		s_Transforms.resize(m_BatchSize);
+		s_Colors.resize(m_BatchSize);
+		s_Alive.resize(m_BatchSize);
+		
 		APEX_CORE_INFO("Particle Pool Size : {0}", m_ParticlePool.size());
+		APEX_CORE_INFO("Particle Batch Size : {0}", m_BatchSize);
 
 		m_QuadVA = Apex::VertexArray::Create();
 
@@ -52,12 +69,13 @@ namespace Apex {
 			layout(location = 1) in vec2 a_TexCoord;
 
 			uniform mat4 u_ViewProjection;
-			uniform mat4 u_Model;
+			uniform mat4 u_Model[)" + std::to_string(m_BatchSize) + R"(];
 			uniform float u_NumRows;
 			uniform vec2 u_TexOffset;
 
 			out vec3 v_Position;
 			out vec2 v_TexCoord;
+			flat out int v_InstanceID;
 
 			void main()
 			{
@@ -67,7 +85,8 @@ namespace Apex {
 				}
 				v_Position = a_Position;
 				v_TexCoord = vec2(texCoord.x, texCoord.y * -1.0);
-				gl_Position = u_ViewProjection * u_Model * vec4(a_Position, 1.0);
+				gl_Position = u_ViewProjection * u_Model[gl_InstanceID] * vec4(a_Position, 1.0);
+				v_InstanceID = gl_InstanceID;
 			}
 		)";
 
@@ -76,28 +95,30 @@ namespace Apex {
 
 			layout(location = 0) out vec4 o_Color;
 
-			uniform vec4 u_Color;
+			uniform vec4 u_Color[)" + std::to_string(m_BatchSize) + R"(];
+			uniform bool u_Alive[)"+ std::to_string(m_BatchSize) + R"(];
 			uniform sampler2D u_Texture;
 			uniform bool u_UseTexture;
 			
 			in vec3 v_Position;
 			in vec2 v_TexCoord;
+			flat in int v_InstanceID;
 
 			void main()
 			{
 				if(u_UseTexture) {
 					vec4 texColor = texture(u_Texture, v_TexCoord).rgba;
-					o_Color = vec4(texColor * u_Color);
+					o_Color = vec4(texColor * u_Color[v_InstanceID]);
 					//o_Color = vec4(1.0, 0.0, 0.0, 1.0);
 				} else {
-					o_Color = u_Color;
+					o_Color = u_Color[v_InstanceID];
 				}
 			}
 		)";
 
 		m_Shader = Apex::Shader::Create("TextureShader", flatVertexSrc, flatFragmentSrc);
 		m_Shader->Bind();
-		m_Shader->SetUniInt("u_Texture", 0);
+		m_Shader->SetUniInt1("u_Texture", 0);
 	}
 
 	void ParticleSystem2D::OnUpdate()
@@ -122,11 +143,10 @@ namespace Apex {
 	}
 
 	void ParticleSystem2D::OnRender()
-	{
-		uint32_t i = 0;
+	{		
+		ResetBatch();
 		static bool first_active = true;
 		for (auto& particle : m_ParticlePool) {
-			i++;
 			if (!particle.active)
 				continue;
 
@@ -147,30 +167,34 @@ namespace Apex {
 			glm::mat4 transform = glm::translate(glm::mat4(1.0f), { particle.position, 0.0f })
 				* glm::rotate(glm::mat4(1.0f), particle.rotation, { 0.0f, 0.0f, 1.0f })
 				* glm::scale(glm::mat4(1.0f), { size, 1.0 });
+			
+			if (s_BatchIdx >= m_BatchSize) {
+				
+				APEX_CORE_DEBUG("Rendering Batch");
+				
+				m_Shader->Bind();
+				
+				/*if (particle.useTexture) {
+					glm::vec2 texOffset({ particle.textureIndex % particle.textureNumRows, glm::floor(particle.textureIndex / particle.textureNumRows) });
+					texOffset = texOffset / (float)particle.textureNumRows;
+					m_Shader->SetUniFloat2("u_TexOffset", texOffset);
+				}*/
 
-// 			if (first_active) {
-// 				APEX_CORE_DEBUG("sizeEnd: {0}, {1}", particle.sizeEnd.x, particle.sizeEnd.y);
-// 				APEX_CORE_DEBUG("sizeBegin: {0}, {1}", particle.sizeBegin.x, particle.sizeBegin.y);
-// 				APEX_CORE_DEBUG("life: {0}", life);
-// 				APEX_CORE_DEBUG("size: {0}, {1}", size.x, size.y);
-// 				APEX_CORE_DEBUG("scale: \n{0}", MathParser::ParseMatrix(glm::scale(glm::mat4(1.0f), { size, 1.0 })));
-// 				APEX_CORE_DEBUG(MathParser::ParseMatrix(transform));
-// 				first_active = false;
-// 			}
-			
-			m_Shader->Bind();
-			
-			if (particle.useTexture) {
-				glm::vec2 texOffset({ particle.textureIndex % particle.textureNumRows, glm::floor(particle.textureIndex / particle.textureNumRows) });
-				texOffset = texOffset / (float)particle.textureNumRows;
-				m_Shader->SetUniFloat2("u_TexOffset", texOffset);
+				m_Shader->SetUniFloat4v("u_Color", s_Colors.data(), s_Colors.size());
+				m_Shader->SetUniInt1v("u_Alive", s_Alive.data(), s_Alive.size());
+				m_Shader->SetUniFloat1("u_NumRows", particle.textureNumRows);
+				m_Shader->SetUniInt1("u_UseTexture", false/*particle.useTexture*/);
+
+				Renderer::Submit(m_Shader, m_QuadVA, transform);
+				Renderer::SubmitArray(m_Shader, m_QuadVA, s_Transforms.data(), s_Transforms.size());
+				
+				ResetBatch();
 			}
-
-			m_Shader->SetUniFloat4("u_Color", color);
-			m_Shader->SetUniFloat1("u_NumRows", particle.textureNumRows);
-			m_Shader->SetUniInt("u_UseTexture", particle.useTexture);
-
-			Renderer::Submit(m_Shader, m_QuadVA, transform);
+			s_Transforms[s_BatchIdx] = transform;
+			s_Colors[s_BatchIdx] = color;
+			s_Alive[s_BatchIdx] = 1u;
+			s_BatchIdx++;
+			
 			//APEX_CORE_DEBUG("Submitted Particle @ {0}", i);
 		}
 	}

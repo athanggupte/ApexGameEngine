@@ -30,14 +30,14 @@ namespace Apex {
 	{
 	public:
 		//ParticleSystem2D();
-		ParticleSystem2D(uint32_t batch_size = 5, uint32_t max_particles = 1000);
+		ParticleSystem2D(uint32_t batch_size = 100, uint32_t max_particles = 1000);
 
 		void OnUpdate();
 		void OnRender();
 
 		void Emit(const ParticleProps2D& particleProps);
 
-	private:
+	private:		
 		struct Particle
 		{
 			glm::vec2 position;
