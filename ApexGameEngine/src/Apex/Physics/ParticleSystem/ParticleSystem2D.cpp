@@ -36,28 +36,28 @@ namespace Apex {
 		APEX_CORE_INFO("Particle Pool Size : {0}", m_ParticlePool.size());
 		APEX_CORE_INFO("Particle Batch Size : {0}", m_BatchSize);
 
-		m_QuadVA = Apex::VertexArray::Create();
+		m_QuadVA = VertexArray::Create();
 
-		Apex::Ref<Apex::VertexBuffer> squareVB;
+		Ref<VertexBuffer> squareVB;
 		float squareVertices[] = {
 			-0.5f, -0.5f, 0.0f, 0.0f, 0.0f,
 			 0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
 			 0.5f,  0.5f, 0.0f, 1.0f, 1.0f,
 			-0.5f,  0.5f, 0.0f, 0.0f, 1.0f
 		};
-		squareVB = Apex::VertexBuffer::Create(squareVertices, sizeof(squareVertices));
+		squareVB = VertexBuffer::Create(squareVertices, sizeof(squareVertices));
 		squareVB->SetLayout({
-			{ Apex::ShaderDataType::Float3, "a_Position" },
-			{ Apex::ShaderDataType::Float2, "a_TexCoord" }
+			{ ShaderDataType::Float3, "a_Position" },
+			{ ShaderDataType::Float2, "a_TexCoord" }
 			});
 		m_QuadVA->AddVertexBuffer(squareVB);
 
-		Apex::Ref<Apex::IndexBuffer> squareIB;
+		Ref<IndexBuffer> squareIB;
 		uint32_t squareIndices[] = {
 			0, 1, 2,
 			0, 2, 3
 		};
-		squareIB = Apex::IndexBuffer::Create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t));
+		squareIB = IndexBuffer::Create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t));
 		m_QuadVA->AddIndexBuffer(squareIB);
 
 		m_QuadVA->Unbind();
@@ -116,7 +116,7 @@ namespace Apex {
 			}
 		)";
 
-		m_Shader = Apex::Shader::Create("TextureShader", flatVertexSrc, flatFragmentSrc);
+		m_Shader = Shader::Create("TextureShader", flatVertexSrc, flatFragmentSrc);
 		m_Shader->Bind();
 		m_Shader->SetUniInt1("u_Texture", 0);
 	}

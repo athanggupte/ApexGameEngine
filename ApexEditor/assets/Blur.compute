@@ -2,10 +2,11 @@
 
 layout(local_size_x = 1, local_size_y = 1, local_size_z = 1) in;
 
-uniform vec2 u_BlurAmount;
 layout(binding = 0) uniform sampler2D u_InTex;
 
 layout(binding = 0) uniform writeonly image2D outImage;
+
+uniform vec2 u_BlurAmount;
 
 void blur(in sampler2D tex, in vec2 blurAmount, in vec2 uv, out vec4 outColor)
 {
@@ -33,9 +34,9 @@ void negative(in vec4 inColor, out vec4 outColor)
 void sobel(in sampler2D tex, in vec2 uv, out vec4 outColor)
 {
 	float kernel[9] = float[](
-		 0.,  1.,  0.,
-		 1.,  0.,  1.,
-		 0.,  1.,  0.
+		-0.5, -1., -0.5,
+		-1.0,  6., -1.0,
+		-0.5, -1., -0.5
 	);
 
 	vec4 samples[9];
@@ -59,9 +60,12 @@ void main()
 	ivec2 pixelCoord = ivec2(gl_GlobalInvocationID.xy);
 	vec4 outColor = vec4(0.83, 0.34, 0.64, 1.0);
 	vec2 texCoord = vec2(gl_GlobalInvocationID.xy) / vec2(gl_NumWorkGroups.xy);
+	
 	outColor = texture(u_InTex, texCoord);
 
 	//blur(u_InTex, u_BlurAmount, texCoord, outColor);
+	//sobel(u_InTex, texCoord, outColor);
+	negative(outColor, outColor);
 	
 	imageStore(outImage, pixelCoord, outColor);
 	memoryBarrierImage();

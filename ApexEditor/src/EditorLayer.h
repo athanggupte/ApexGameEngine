@@ -78,7 +78,7 @@ namespace Apex {
 			textureShader->Bind();
 			textureShader->SetUniInt1("u_Texture", 1);
 
-			m_ImageTexture = Texture2D_HDR::Create(128U, 128U, "Image");
+			m_ImageTexture = Texture2D_HDR::Create(256U, 256U, "Image");
 			m_ComputeShader = ComputeShader::Create("assets/Blur.compute");
 
 			m_Texture = Texture2D::Create("assets/pusheen-thug-life.png");
@@ -163,8 +163,8 @@ namespace Apex {
 				m_ComputeShader->Bind();
 				m_ImageTexture->BindImage(0, false, true);
 				
-				m_Texture->Bind(0);				
-				m_ComputeShader->SetUniFloat2("u_BlurAmount", glm::vec2{ 4.f, 4.f });
+				m_Texture->Bind(0);
+				m_ComputeShader->SetUniFloat2("u_BlurAmount", glm::vec2{ 8.f, 8.f });
 				
 				m_ComputeShader->Dispatch(m_ImageTexture->GetWidth(), m_ImageTexture->GetHeight(), 1U);
 			}
@@ -173,7 +173,7 @@ namespace Apex {
 				m_ImageTexture->BindImage(0, false, true);
 
 				m_GameTexture->Bind(0);
-				m_ComputeShader->SetUniFloat2("u_BlurAmount", glm::vec2{ 4.f, 4.f });
+				m_ComputeShader->SetUniFloat2("u_BlurAmount", glm::vec2{ 8.f, 8.f });
 
 				m_ComputeShader->Dispatch(m_ImageTexture->GetWidth(), m_ImageTexture->GetHeight(), 1U);
 			}

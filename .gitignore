@@ -280,3 +280,6 @@ __pycache__/
 Makefile
 *.make
 obj/
+
+## Kate Editor
+.kateproject
