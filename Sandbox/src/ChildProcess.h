@@ -1,5 +1,7 @@
 #pragma once
 
+#ifdef APEX_PLATFORM_WINDOWS
+
 #include <Windows.h>
 #include <cstdio>
 #include <tchar.h>
@@ -135,3 +137,5 @@ private:
 	PROCESS_INFORMATION m_ProcInfo;
 	bool m_Started;
 };
+
+#endif
