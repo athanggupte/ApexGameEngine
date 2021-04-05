@@ -2,6 +2,7 @@
 #include "OpenGLTexture.h"
 
 #include "Apex/Graphics/Renderer/Renderer.h"
+#include "Apex/Utils/Utils.h"
 
 #include <glad/glad.h>
 #include <stb_image.h>
@@ -15,13 +16,12 @@ namespace Apex {
 	OpenGLTexture2D::OpenGLTexture2D(uint32_t width, uint32_t height, const std::string& name)
 		: m_Width(width), m_Height(height)
 	{
-		glGenTextures(1, &m_RendererID);
-		glBindTexture(GL_TEXTURE_2D, m_RendererID);
-		//glTextureStorage2D(m_RendererID, 1, GL_RGB8, m_Width, m_Height);
+// 		glGenTextures(1, &m_RendererID);
+// 		glBindTexture(GL_TEXTURE_2D, m_RendererID);
+		glCreateTextures(GL_TEXTURE_2D, 1, &m_RendererID);
 		
-		//std::vector<std::tuple<GLubyte, GLubyte, GLubyte, GLubyte>> data(width * height);
-		//data.assign(width * height, { 255, 252, 3, 232 });
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, m_Width, m_Height, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
+		glTextureStorage2D(m_RendererID, 1, GL_RGB8, m_Width, m_Height);
+		//glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, m_Width, m_Height, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
 		//glTextureSubImage2D(m_RendererID, 0, 0, 0, m_Width, m_Height, GL_RGB, GL_UNSIGNED_BYTE, nullptr);
 		
 		if(!name.empty())
@@ -68,6 +68,9 @@ namespace Apex {
 		glTextureSubImage2D(m_RendererID, 0, 0, 0, m_Width, m_Height, dataFormat, GL_UNSIGNED_BYTE, data);
 
 		stbi_image_free(data);
+		
+		auto name = GetFilename(path);
+		glObjectLabel(GL_TEXTURE, m_RendererID, -1, name.c_str());
 	}
 	
 	OpenGLTexture2D::~OpenGLTexture2D()
@@ -87,6 +90,11 @@ namespace Apex {
 		Renderer::SetImageAccessBit();
 	}
 
+	void OpenGLTexture2D::SetData(void* data, uint32_t size)
+	{
+		APEX_CORE_DEBUG("Texture2D::SetData called");
+	}
+	
 	//////////////////////////////////////////////////////////////////////
 	/*------------------------Texture 2D HDR----------------------------*/
 	//////////////////////////////////////////////////////////////////////
@@ -94,11 +102,12 @@ namespace Apex {
 	OpenGLTexture2D_HDR::OpenGLTexture2D_HDR(uint32_t width, uint32_t height, const std::string& name)
 		: m_Width(width), m_Height(height)
 	{
-		glGenTextures(1, &m_RendererID);
-		glBindTexture(GL_TEXTURE_2D, m_RendererID);
-		//glTextureStorage2D(m_RendererID, 1, GL_RGBA16F, m_Width, m_Height);
-
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, m_Width, m_Height, 0, GL_RGBA, GL_FLOAT, nullptr);
+		//glGenTextures(1, &m_RendererID);
+		//glBindTexture(GL_TEXTURE_2D, m_RendererID);
+		glCreateTextures(GL_TEXTURE_2D, 1, &m_RendererID);
+		
+		glTextureStorage2D(m_RendererID, 1, GL_RGBA16F, m_Width, m_Height);
+		//glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, m_Width, m_Height, 0, GL_RGBA, GL_FLOAT, nullptr);
 		//glTextureSubImage2D(m_RendererID, 0, 0, 0, m_Width, m_Height, GL_RGBA, GL_FLOAT, nullptr);
 		
 		if (!name.empty())

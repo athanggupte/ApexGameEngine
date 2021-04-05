@@ -20,6 +20,8 @@ namespace Apex {
 
 		virtual void Bind(uint32_t slot = 0) const override;
 		virtual void BindImage(uint32_t unit, bool read, bool write) const override;
+		
+		virtual void SetData(void* data, uint32_t size) override;
 	private:
 		std::string m_Path;
 		uint32_t m_Width, m_Height;
@@ -42,6 +44,10 @@ namespace Apex {
 
 		virtual void Bind(uint32_t slot = 0) const override;
 		virtual void BindImage(uint32_t unit, bool read, bool write) const override;
+		
+	protected:
+		virtual void SetData(void* data, uint32_t size) override {}
+		
 	private:
 		std::string m_Path;
 		uint32_t m_Width, m_Height;
@@ -61,10 +67,14 @@ namespace Apex {
 
 		virtual void Bind(uint32_t slot = 0) const override;
 
+	protected:
+		virtual void SetData(void* data, uint32_t size) override {}
+		
 	private:
-		virtual const std::string& GetPath() const { return ""; }
+		virtual const std::string& GetPath() const { return m_Path; }
 
 	private:
+		const std::string m_Path = "<N/A>";
 		uint32_t m_Width, m_Height;
 		uint32_t m_RendererID;
 	};

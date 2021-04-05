@@ -71,6 +71,7 @@ namespace Apex {
 		}
 	}
 
+#if 0
 	/*--------------------------------------------------------------------------------------------------*/
 	void Renderer::SubmitPostProcess(const Ref<Shader>& shader, const Ref<VertexArray>& vertexArray)
 	{
@@ -79,6 +80,7 @@ namespace Apex {
 		RenderCommands::Draw(vertexArray);
 	}
 	/*--------------------------------------------------------------------------------------------------*/
+#endif
 
 	void Renderer::Shutdown()
 	{

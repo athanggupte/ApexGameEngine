@@ -64,7 +64,9 @@ namespace Apex {
 		APEX_CORE_DEBUG("OpenGL Details :\n\tVendor\t\t: {0}\n\tRenderer\t: {1}\n\tVersion\t\t: {2}",
 			glGetString(GL_VENDOR), glGetString(GL_RENDERER), glGetString(GL_VERSION));
 		
-		glEnable(GL_DEBUG_OUTPUT);
+#ifdef APEX_DEBUG
+		glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
+#endif
 		glDebugMessageCallback(OpenGLDebugCallback, nullptr);
 		glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DEBUG_SEVERITY_NOTIFICATION, 0, nullptr, GL_FALSE);
 		//glDebugMessageControl(GL_DEBUG_SOURCE_SHADER_COMPILER, GL_DONT_CARE, GL_DONT_CARE, 0, nullptr, GL_FALSE);

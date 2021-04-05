@@ -54,10 +54,14 @@ namespace Apex {
 		std::unordered_map<GLenum, std::string> ParseSource(const std::string& source);
 		void Compile(const std::unordered_map<GLenum, std::string>& shaderSources);
 
+		void BindIfNotBound() const;
+		
 	private:
 		uint32_t m_RendererID;
 		std::string m_Name;
 		std::unordered_map<std::string, uint32_t> m_UniformLocations;
+		
+		inline static uint32_t s_BoundShader = -1;
 	};
 
 }

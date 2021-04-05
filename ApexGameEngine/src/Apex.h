@@ -13,6 +13,7 @@
 #include "Apex/Utils/ComputeShader/ComputeShader.h"
 #include "Apex/Utils/MathPrimitiveParser.h"
 #include "Apex/Utils/Profiler.h"
+#include "Apex/Utils/Utils.h"
 //------------------------------------//
 
 //-----Input----------------------------
@@ -26,9 +27,6 @@
 //------------------------------------//
 
 //-----Renderer-------------------------
-#include "Apex/Graphics/Renderer/Renderer.h"
-#include "Apex/Graphics/Renderer/RenderCommands.h"
-
 #include "Apex/Graphics/RenderPrimitives/Shader.h"
 #include "Apex/Graphics/RenderPrimitives/Texture.h"
 #include "Apex/Graphics/RenderPrimitives/Buffer.h"
@@ -36,9 +34,14 @@
 #include "Apex/Graphics/RenderPrimitives/FrameBuffer.h"
 
 #include "Apex/Core/Camera.h"
+
+#include "Apex/Graphics/Renderer/RenderCommands.h"
+#include "Apex/Graphics/Renderer/Renderer.h"
+#include "Apex/Graphics/Renderer/Renderer2D.h"
 //------------------------------------//
 
 //-----PostProcessing-------------------
+#include "Apex/Graphics/PostProcessing/PostProcess.h"
 #include "Apex/Graphics/PostProcessing/Blur.h"
 //------------------------------------//
 

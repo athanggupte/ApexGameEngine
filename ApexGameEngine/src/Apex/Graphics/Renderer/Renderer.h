@@ -29,7 +29,7 @@ namespace Apex {
 
 
 		/* Temporary */
-		static void SubmitPostProcess(const Ref<Shader>& shader, const Ref<VertexArray>& vertexArray);
+		//static void SubmitPostProcess(const Ref<Shader>& shader, const Ref<VertexArray>& vertexArray);
 		static void SetImageAccessBit() { s_SceneData->ImageAccess = true; }
 
 	private:

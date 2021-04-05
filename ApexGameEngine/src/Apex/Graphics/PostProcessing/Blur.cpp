@@ -2,7 +2,7 @@
 #include "Blur.h"
 
 #include "Apex/Graphics/Renderer/RenderCommands.h"
-#include "Apex/Graphics/Renderer/Renderer.h"
+#include "PostProcess.h"
 
 namespace Apex {
 
@@ -15,7 +15,7 @@ namespace Apex {
 		m_HorBlurFBO = FrameBuffer::Create(false);
 	}
 
-	Ref<Texture> Blur::GaussianBlur(int amount, const Ref<Texture>& inputTexture, const Ref<VertexArray>& vao)
+	Ref<Texture> Blur::GaussianBlur(int amount, const Ref<Texture>& inputTexture)
 	{
 
 		m_BlurShader->Bind();
@@ -35,10 +35,10 @@ namespace Apex {
 		Apex::RenderCommands::SetDepthTest(false);
 		//Apex::RenderCommands::SetClearColor({ 0.0f, 0.0f, 1.0f, 1.0f });
 		Apex::RenderCommands::Clear();
-		inputTexture->Bind();
 		m_BlurShader->Bind();
+		inputTexture->Bind();
 		m_BlurShader->SetUniInt1("u_Horizontal", 0);
-		Apex::Renderer::SubmitPostProcess(m_BlurShader, vao);
+		Apex::PostProcess::Submit(m_BlurShader);
 
 		for (int i = 0; i < amount; i++) {
 			m_HorBlurFBO->Bind();
@@ -48,7 +48,7 @@ namespace Apex {
 			m_VerBlurTex->Bind();
 			m_BlurShader->Bind();
 			m_BlurShader->SetUniInt1("u_Horizontal", 1);
-			Apex::Renderer::SubmitPostProcess(m_BlurShader, vao);
+			Apex::PostProcess::Submit(m_BlurShader);
 
 			m_VerBlurFBO->Bind();
 			Apex::RenderCommands::SetDepthTest(false);
@@ -57,7 +57,7 @@ namespace Apex {
 			m_HorBlurTex->Bind();
 			m_BlurShader->Bind();
 			m_BlurShader->SetUniInt1("u_Horizontal", 0);
-			Apex::Renderer::SubmitPostProcess(m_BlurShader, vao);
+			Apex::PostProcess::Submit(m_BlurShader);
 		}
 
 		m_HorBlurFBO->Bind();
@@ -67,7 +67,7 @@ namespace Apex {
 		m_VerBlurTex->Bind();
 		m_BlurShader->Bind();
 		m_BlurShader->SetUniInt1("u_Horizontal", 1);
-		Apex::Renderer::SubmitPostProcess(m_BlurShader, vao);
+		Apex::PostProcess::Submit(m_BlurShader);
 
 		return m_HorBlurTex;
 	}

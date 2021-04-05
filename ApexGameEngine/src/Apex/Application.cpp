@@ -4,6 +4,8 @@
 #include "Apex/Core/Log.h"
 #include "Apex/Core/Input/Input.h"
 #include "Apex/Graphics/Renderer/Renderer.h"
+#include "Apex/Graphics/Renderer/Renderer2D.h"
+#include "Apex/Graphics/PostProcessing/PostProcess.h"
 
 //#include <GLFW/glfw3.h>
 #include <glad/glad.h>
@@ -24,15 +26,19 @@ namespace Apex {
 		m_Window->SetVSync(true);
 
 		Renderer::Init();
+		Renderer2D::Init();
+		PostProcess::Init();
 
 		m_ImGuiLayer = new ImGuiLayer();
 		PushOverlay(m_ImGuiLayer);
-
 	}
 
 
 	Application::~Application()
 	{
+		Renderer::Shutdown();
+		Renderer2D::Shutdown();
+		PostProcess::Shutdown();
 	}
 
 	void Application::Run()

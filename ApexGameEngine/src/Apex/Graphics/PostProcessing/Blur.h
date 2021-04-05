@@ -12,7 +12,7 @@ namespace Apex {
 	public:
 		Blur();
 
-		Ref<Texture> GaussianBlur(int amount, const Ref<Texture>& inputTexture, const Ref<VertexArray>& vao);
+		Ref<Texture> GaussianBlur(int amount, const Ref<Texture>& inputTexture);
 
 	private:
 		Ref<Shader> m_BlurShader;

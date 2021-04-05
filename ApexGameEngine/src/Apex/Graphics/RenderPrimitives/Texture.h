@@ -1,7 +1,31 @@
 #pragma once
 
 namespace Apex {
-
+	
+	struct TextureSpec
+	{
+		enum class AccessFormat
+		{
+			RED, I_RED,
+			RG, I_RG,
+			RGB, BGR, I_RGB, I_BGR,
+			RGBA, BGRA, I_RGBA, I_BGRA
+		};
+		
+		enum class InternalFormat
+		{
+			R8, R16, 		//R16F, R32F,
+			RG8, RG16, 		//RG16F, RG32F,
+			RGB8, 			//RGB16F, RGB32F,
+			RGBA8, RGBA16, 	//RGBA16F, RGBA32F 
+		};
+		
+		enum class FormatDataType
+		{
+			BYTE, UBYTE, INT, UINT, FLOAT
+		}
+	};
+	
 	class Texture
 	{
 	public:
@@ -18,7 +42,8 @@ namespace Apex {
 		virtual void SetRows(uint32_t rows) { this->m_NumberOfRows = rows; this->m_MaxIndex = rows * rows; }
 		virtual uint32_t GetRows() { return this->m_NumberOfRows; }
 		virtual uint32_t GetMaxIndex() { return this->m_MaxIndex; }
-
+		
+		virtual void SetData(void* data, uint32_t size) = 0;
 	private:
 		uint32_t m_NumberOfRows = 1;// , n_NumberOfCols = 1;
 		uint32_t m_MaxIndex = 1;

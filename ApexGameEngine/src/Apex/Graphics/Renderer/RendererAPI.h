@@ -14,6 +14,7 @@ namespace Apex {
 			None = 0, OpenGL = 1
 		};
 
+		/* OpenGL specific -> change later */
 		enum class BlendingMode
 		{
 			ZERO = 0, ONE = 1,
