@@ -2,13 +2,15 @@
 
 #include "Apex/Graphics/RenderPrimitives/Texture.h"
 
+#include <glad/glad.h>
+
 namespace Apex {
 
 	class OpenGLTexture2D : public Texture2D
 	{
 	public:
-		OpenGLTexture2D(uint32_t width, uint32_t height, const std::string& name);
-		OpenGLTexture2D(const std::string& path);
+		OpenGLTexture2D(const std::string& path, bool useHDR);
+		OpenGLTexture2D(uint32_t width, uint32_t height, const TextureSpec& spec, const std::string& name);
 		virtual ~OpenGLTexture2D();
 
 		inline virtual uint32_t GetWidth() const override { return m_Width; }
@@ -26,8 +28,11 @@ namespace Apex {
 		std::string m_Path;
 		uint32_t m_Width, m_Height;
 		uint32_t m_RendererID;
+		GLenum m_InternalFormat, m_AccessFormat, m_DataType;
+		uint32_t m_PixelSize;
 	};
 
+#ifdef SEPARATE_HDR
 	class OpenGLTexture2D_HDR : public Texture2D_HDR
 	{
 	public:
@@ -53,6 +58,7 @@ namespace Apex {
 		uint32_t m_Width, m_Height;
 		uint32_t m_RendererID;
 	};
+#endif
 
 	class OpenGLTextureDepth2D : public TextureDepth2D
 	{

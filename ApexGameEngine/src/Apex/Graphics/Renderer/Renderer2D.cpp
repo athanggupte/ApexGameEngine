@@ -55,8 +55,10 @@ namespace Apex {
 		s_RenderData->quadVertexArray->AddIndexBuffer(squareIB);
 		
 		// Placeholder texture
-		s_RenderData->whiteTexture = Texture2D::Create(1U, 1U, "white");
+		auto whiteTextureSpec = TextureSpec{ TextureAccessFormat::RGBA, TextureInternalFormat::RGBA8, TextureDataType::UBYTE };
+		s_RenderData->whiteTexture = Texture2D::Create(1U, 1U, whiteTextureSpec, "white");
 		uint32_t whiteTextureData = 0xffffffff;
+		s_RenderData->whiteTexture->SetData(&whiteTextureData, sizeof(whiteTextureData));
 		
 		// Create shader
 		auto textureVertexSrc = R"(
@@ -87,18 +89,13 @@ namespace Apex {
 			uniform vec4 u_Color;
 			uniform sampler2D u_Texture;
 			uniform float u_TilingFactor;
-			uniform bool u_UseTexture;
 
 			in vec3 v_Position;
 			in vec2 v_TexCoord;
 
 			void main()
 			{
-				if (u_UseTexture) {
-					o_Color = texture(u_Texture, v_TexCoord * u_TilingFactor).rgba * u_Color;
-				} else {
-					o_Color = u_Color;
-				}
+				o_Color = texture(u_Texture, v_TexCoord * u_TilingFactor).rgba * u_Color;
 			}
 		)";
 		
@@ -111,7 +108,7 @@ namespace Apex {
 		delete s_RenderData;
 	}
 
-	void Renderer2D::BeginScene(const OrthographicCamera& camera)
+	void Renderer2D::BeginScene(const Camera& camera)
 	{
 		s_RenderData->textureShader->Bind();
 		s_RenderData->textureShader->SetUniMat4("u_ViewProjection", camera.GetViewProjectionMatrix());
@@ -185,16 +182,16 @@ namespace Apex {
 	{
 		// Bind Shader
 		s_RenderData->textureShader->Bind();
-		s_RenderData->textureShader->SetUniInt1("u_UseTexture", false);
 		
-		// Set Transform matrix
+		// Set Uniforms
 		s_RenderData->textureShader->SetUniMat4("u_Transform", transform);
-		
-		// Set Color
 		s_RenderData->textureShader->SetUniFloat4("u_Color", color);
 		
+		// Bind White Texture
+		s_RenderData->whiteTexture->Bind();
+		
 		// Bind VAO and submit draw call
-		s_RenderData->quadVertexArray->Bind();
+		//s_RenderData->quadVertexArray->Bind();
 		RenderCommands::DrawIndexed(s_RenderData->quadVertexArray);
 	}
 
@@ -203,7 +200,6 @@ namespace Apex {
 	{
 		// Bind Shader
 		s_RenderData->textureShader->Bind();
-		s_RenderData->textureShader->SetUniInt1("u_UseTexture", true);
 		
 		// Set Uniforms
 		s_RenderData->textureShader->SetUniMat4("u_Transform", transform);
@@ -214,7 +210,7 @@ namespace Apex {
 		texture->Bind();
 		
 		// Bind VAO and submit draw call
-		s_RenderData->quadVertexArray->Bind();
+		//s_RenderData->quadVertexArray->Bind();
 		RenderCommands::DrawIndexed(s_RenderData->quadVertexArray);
 	}
 	

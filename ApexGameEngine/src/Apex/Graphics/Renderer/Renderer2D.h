@@ -7,7 +7,7 @@
 namespace Apex {
 
 	// Forward Declarations
-	class OrthographicCamera;
+	class Camera;
 	class VertexArray;
 	class Texture2D;
 
@@ -23,7 +23,7 @@ namespace Apex {
 		static void Init();
 		static void Shutdown();
 		
-		static void BeginScene(const OrthographicCamera& camera);
+		static void BeginScene(const Camera& camera);
 		static void EndScene();
 		
 		// Primitives

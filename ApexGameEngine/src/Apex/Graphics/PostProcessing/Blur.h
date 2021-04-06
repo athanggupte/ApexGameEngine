@@ -16,8 +16,8 @@ namespace Apex {
 
 	private:
 		Ref<Shader> m_BlurShader;
-		Ref<Texture2D_HDR> m_VerBlurTex;
-		Ref<Texture2D_HDR> m_HorBlurTex;
+		Ref<Texture2D> m_VerBlurTex;
+		Ref<Texture2D> m_HorBlurTex;
 		Ref<FrameBuffer> m_VerBlurFBO;
 		Ref<FrameBuffer> m_HorBlurFBO;
 	};

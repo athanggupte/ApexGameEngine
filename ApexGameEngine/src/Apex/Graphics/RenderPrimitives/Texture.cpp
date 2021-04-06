@@ -7,30 +7,31 @@
 
 namespace Apex {
 
-	Ref<Texture2D> Texture2D::Create(const std::string & path)
+	Ref<Texture2D> Texture2D::Create(const std::string & path, bool useHDR)
 	{
 		switch (Renderer::GetAPI())
 		{
 		case RendererAPI::API::None:	APEX_CORE_CRITICAL("No Rendering API selected"); return nullptr;
-		case RendererAPI::API::OpenGL:	return std::make_shared<OpenGLTexture2D>(path);
+		case RendererAPI::API::OpenGL:	return std::make_shared<OpenGLTexture2D>(path, useHDR);
 
 		default:				APEX_CORE_CRITICAL("Unknown Rendering API"); return nullptr;
 		}
 		return nullptr;
 	}
 
-	Ref<Texture2D> Texture2D::Create(uint32_t width, uint32_t height, const std::string& name)
+	Ref<Texture2D> Texture2D::Create(uint32_t width, uint32_t height, const TextureSpec& spec, const std::string& name)
 	{
 		switch (Renderer::GetAPI())
 		{
 		case RendererAPI::API::None:	APEX_CORE_CRITICAL("No Rendering API selected"); return nullptr;
-		case RendererAPI::API::OpenGL:	return std::make_shared<OpenGLTexture2D>(width, height, name);
+		case RendererAPI::API::OpenGL:	return std::make_shared<OpenGLTexture2D>(width, height, spec, name);
 
 		default:				APEX_CORE_CRITICAL("Unknown Rendering API"); return nullptr;
 		}
 		return nullptr;
 	}
 
+#ifdef SEPARATE_HDR
 	Ref<Texture2D_HDR> Texture2D_HDR::Create(const std::string & path)
 	{
 		switch (Renderer::GetAPI())
@@ -54,7 +55,8 @@ namespace Apex {
 		}
 		return nullptr;
 	}
-
+#endif
+	
 	Ref<TextureDepth2D> TextureDepth2D::Create()
 	{
 		switch (Renderer::GetAPI())

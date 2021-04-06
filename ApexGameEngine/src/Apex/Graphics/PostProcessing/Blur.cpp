@@ -9,8 +9,8 @@ namespace Apex {
 	Blur::Blur()
 	{
 		m_BlurShader = Shader::Create("assets/shaders/GaussianBlur.glsl");
-		m_VerBlurTex = Texture2D_HDR::Create();
-		m_HorBlurTex = Texture2D_HDR::Create();
+		m_VerBlurTex = Texture2D::Create(1280, 720, { TextureAccessFormat::RGBA, TextureInternalFormat::RGBA16, TextureDataType::FLOAT });
+		m_HorBlurTex = Texture2D::Create(1280, 720, { TextureAccessFormat::RGBA, TextureInternalFormat::RGBA16, TextureDataType::FLOAT });
 		m_VerBlurFBO = FrameBuffer::Create(false);
 		m_HorBlurFBO = FrameBuffer::Create(false);
 	}

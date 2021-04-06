@@ -17,7 +17,7 @@ namespace Apex {
 		APEX_CORE_TRACE("Apex::Renderer initialized successfully!");
 	}
 
-	void Renderer::BeginScene(Camera& camera)
+	void Renderer::BeginScene(const Camera& camera)
 	{
 		s_SceneData->ViewProjectionMatrix = camera.GetViewProjectionMatrix();
 	}
