@@ -22,54 +22,72 @@
 //#include "irrKlang.h"
 
 //#include "Apex/Core/ECS/ECSComponent.h"
+#include "Apex/Core/CameraController.h"
 
 /****************      Example Layers      *****************/
-#include "TestLayer.h"
+// #include "TestLayer.h"
 // #include "ParticleSystemExample.h"
 // #include "ModelLoaderExample.h"
 // #include "TerminalExample.h"
 
-#if 0
+// #if 0
 class SandboxLayer : public Apex::Layer
 {
 public:
 	SandboxLayer()
-		: Layer("Sandbox"), m_Camera(-1.6f, 1.6f, -0.9f, 0.9f)
+		: Layer("Sandbox"), /*m_Camera(-1.6f, 1.6f, -0.9f, 0.9f), m_CameraController(&m_Camera)*/
+		m_CameraController( new Apex::OrthographicCamera(-1.6f, 1.6f, -0.9f, 0.9f) )
 	{
 	}
 	
 	void OnAttach() override
 	{
+		// Create/Import Resources
 		m_PusheenTexture = Apex::Texture2D::Create("assets/textures/pusheen-thug-life.png");
-// 		m_NoiseTexture = Apex::Texture2D_HDR::Create(256U, 256U, "noise");
-// 		m_ComputeShader = Apex::ComputeShader::Create("assets/compute/noise.compute");
+		auto hdrTextureFormat = Apex::TextureSpec{ Apex::TextureAccessFormat::RGBA, Apex::TextureInternalFormat::RGBA16, Apex::TextureDataType::FLOAT };
+		m_NoiseTexture = Apex::Texture2D::Create(256U, 256U, hdrTextureFormat, "noise");
+		auto computeShader = Apex::ComputeShader::Create("assets/compute/noise.compute");
+		
+		// Execute Compute Shader
+		m_NoiseTexture->BindImage(0U, false, true);
+		computeShader->Bind();
+		computeShader->Dispatch(m_NoiseTexture->GetWidth(), m_NoiseTexture->GetHeight(), 1U);
 	}
 	
 	void OnDetach() override {}
 
 	void OnUpdate() override
 	{
+		// Update
+		m_CameraController.OnUpdate();
+		
+		// Render
 		Apex::RenderCommands::SetClearColor({ 0.12f, 0.1185f, 0.12f, 1.0f });
 		Apex::RenderCommands::Clear();
-		Apex::Renderer2D::BeginScene(m_Camera);
+		Apex::Renderer2D::BeginScene(m_CameraController.GetCamera());
 		
 		Apex::Renderer2D::DrawQuad({ 0.5f, 0.65f }, { 0.1f, 0.1f }, m_Color);
-		Apex::Renderer2D::DrawQuad({ 0.f, 0.f }, { 1.f, 1.f }, m_PusheenTexture);
+		Apex::Renderer2D::DrawQuad({ -0.5f, -0.8f }, { 0.5f, 0.5f }, m_PusheenTexture);
+		Apex::Renderer2D::DrawQuad({ 0.f, 0.f }, { 1.f, 1.f }, m_NoiseTexture);
 		
 		Apex::Renderer2D::EndScene();
 	}
 	
+	void OnImGuiRender() override
+	{
+		ImGui::Begin("Textures");
+		ImGui::Image((void*)(intptr_t)m_NoiseTexture->GetID(), { 256.f, 256.f });
+		ImGui::End();
+	}
+	
 private:
 	Apex::Ref<Apex::Texture2D> m_PusheenTexture;
+	Apex::Ref<Apex::Texture2D> m_NoiseTexture;
 	glm::vec4 m_Color = { 0.85f, 0.45f, 0.67f, 1.f };
 	
-	Apex::OrthographicCamera m_Camera;
-// 	glm::vec3 m_CameraPosition;
-// 	float m_CameraRotation = 0.0f;
-// 	float m_CameraMoveSpeed = 0.0025f;
-// 	float m_CameraRotateSpeed = 30.0f;
+	Apex::OrthographicCameraController2D m_CameraController; 
 };
-#endif
+// #endif
 
 class Sandbox : public Apex::Application
 {

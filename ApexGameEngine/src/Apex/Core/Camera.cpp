@@ -10,7 +10,7 @@ namespace Apex {
 	//////////////////////////////////////////////////////////////////////
 
 	OrthographicCamera::OrthographicCamera(float left, float right, float bottom, float top, float nearZ, float farZ)
-		: m_ProjectionMatrix(glm::ortho(left, right, bottom, top, nearZ, farZ)), m_ViewMatrix(1.0f)
+		: Camera(glm::ortho(left, right, bottom, top, nearZ, farZ), glm::mat4(1.0f))
 	{
 		m_ViewProjectionMatrix = m_ProjectionMatrix * m_ViewMatrix;
 	}
@@ -36,7 +36,7 @@ namespace Apex {
 	//////////////////////////////////////////////////////////////////////
 
 	PerspectiveCamera::PerspectiveCamera(float fovAngle, float aspectRatio, float nearZ, float farZ)
-		: m_ProjectionMatrix(glm::perspective((float)glm::radians(fovAngle), aspectRatio, nearZ, farZ)), m_ViewMatrix(1.0f)
+		: Camera(glm::perspective((float)glm::radians(fovAngle), aspectRatio, nearZ, farZ), glm::mat4(1.0f))
 	{
 		m_ViewProjectionMatrix = m_ProjectionMatrix * m_ViewMatrix;
 	}
@@ -44,6 +44,7 @@ namespace Apex {
 	void PerspectiveCamera::LookAt(glm::vec3 center)
 	{
 		m_ViewMatrix = glm::lookAt(m_Position, center, m_WorldUp);
+		m_ViewProjectionMatrix = m_ProjectionMatrix * m_ViewMatrix;
 	}
 
 	void PerspectiveCamera::Move(const glm::vec3 & movement)

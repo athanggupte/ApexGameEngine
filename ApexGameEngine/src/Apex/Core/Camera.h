@@ -7,12 +7,21 @@ namespace Apex {
 	class Camera
 	{
 	public:
-		virtual const glm::mat4& GetProjectionMatrix() const = 0;
-		virtual const glm::mat4& GetViewMatrix() const = 0;
-		virtual const glm::mat4& GetViewProjectionMatrix() const = 0;
+		virtual void SetProjectionMatrix(const glm::mat4& projection) { m_ProjectionMatrix = projection; }
+		virtual void SetViewMatrix(const glm::mat4& view) { m_ViewMatrix = view; }
+		
+		virtual const glm::mat4& GetProjectionMatrix() const { return m_ProjectionMatrix; }
+		virtual const glm::mat4& GetViewMatrix() const { return m_ViewMatrix; }
+		virtual const glm::mat4& GetViewProjectionMatrix() const { return m_ViewProjectionMatrix; }
 	
 	protected:
+		Camera(const glm::mat4& projection, const glm::mat4& view) : m_ProjectionMatrix(projection), m_ViewMatrix(view) {}
 		virtual void RecalculateViewMatrix() = 0;
+		
+	protected:
+		glm::mat4 m_ProjectionMatrix;
+		glm::mat4 m_ViewMatrix;
+		glm::mat4 m_ViewProjectionMatrix;
 	};
 
 	class OrthographicCamera : public Camera
@@ -28,17 +37,17 @@ namespace Apex {
 		inline const glm::vec3& GetPosition() const { return m_Position; }
 		inline float GetRotation() const { return m_Rotation; }
 
-		inline const glm::mat4& GetProjectionMatrix() const override { return m_ProjectionMatrix; }
-		inline const glm::mat4& GetViewMatrix() const override { return m_ViewMatrix; }
-		inline const glm::mat4& GetViewProjectionMatrix() const override { return m_ViewProjectionMatrix; }
+// 		inline const glm::mat4& GetProjectionMatrix() const override { return m_ProjectionMatrix; }
+// 		inline const glm::mat4& GetViewMatrix() const override { return m_ViewMatrix; }
+// 		inline const glm::mat4& GetViewProjectionMatrix() const override { return m_ViewProjectionMatrix; }
 
 	private:
 		void RecalculateViewMatrix() override;
 
 	private:
-		glm::mat4 m_ProjectionMatrix;
-		glm::mat4 m_ViewMatrix;
-		glm::mat4 m_ViewProjectionMatrix;
+// 		glm::mat4 m_ProjectionMatrix;
+// 		glm::mat4 m_ViewMatrix;
+// 		glm::mat4 m_ViewProjectionMatrix;
 
 		glm::vec3 m_Position = { 0.f, 0.f, 0.f };
 		float m_Rotation = 0.f;
@@ -63,17 +72,17 @@ namespace Apex {
 		inline const glm::vec3& GetRight() const { return m_Right; }
 		inline const glm::vec3& GetUp() const { return m_Up; }
 
-		inline const glm::mat4& GetProjectionMatrix() const override { return m_ProjectionMatrix; }
-		inline const glm::mat4& GetViewMatrix() const override { return m_ViewMatrix; }
-		inline const glm::mat4& GetViewProjectionMatrix() const override { return m_ViewProjectionMatrix; }
+// 		inline const glm::mat4& GetProjectionMatrix() const override { return m_ProjectionMatrix; }
+// 		inline const glm::mat4& GetViewMatrix() const override { return m_ViewMatrix; }
+// 		inline const glm::mat4& GetViewProjectionMatrix() const override { return m_ViewProjectionMatrix; }
 
 	private:
 		void RecalculateViewMatrix() override;
 
 	private:
-		glm::mat4 m_ProjectionMatrix;
-		glm::mat4 m_ViewMatrix;
-		glm::mat4 m_ViewProjectionMatrix;
+// 		glm::mat4 m_ProjectionMatrix;
+// 		glm::mat4 m_ViewMatrix;
+// 		glm::mat4 m_ViewProjectionMatrix;
 
 		glm::vec3 m_Position = { 0.f, 0.f, 0.f };
 		glm::vec3 m_WorldUp = { 0.f, 1.f, 0.f };
