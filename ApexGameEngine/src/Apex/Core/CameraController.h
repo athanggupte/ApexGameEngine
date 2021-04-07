@@ -28,23 +28,31 @@ namespace Apex {
 	class OrthographicCameraController2D : public CameraController
 	{
 	public:
-		OrthographicCameraController2D(OrthographicCamera* camera,
+		OrthographicCameraController2D(float aspectRatio,
+							float zoomLevel = 1.f,
 							const glm::vec3& position = { 0.f, 0.f, 0.f },
 							float rotation = 0.f,
 							float movementSpeed = 0.0025f,
 							float rotationSpeed = 1.f);
 		
-		virtual const Camera& GetCamera() const override { return *m_Camera; }
+		virtual const Camera& GetCamera() const override { return m_Camera; }
 		
 		virtual void OnUpdate() override;
 		virtual void OnEvent(Event&) override;
+	private:
+		bool OnMouseScrolled(MouseScrolledEvent& e);
+		bool OnWindowResize(WindowResizeEvent& e);
 		
 	private:
-		// Camera Handle
-		OrthographicCamera* m_Camera;
 		// State
+		float m_AspectRatio;
+		float m_ZoomLevel;
 		glm::vec3 m_CameraPosition;
 		float m_CameraRotation;
+		
+		// Camera Handle
+		OrthographicCamera m_Camera;
+		
 		// Modifiers
 		float m_MovementSpeed;
 		float m_RotationSpeed;

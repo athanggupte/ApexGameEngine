@@ -7,8 +7,8 @@ namespace Apex {
 	class Camera
 	{
 	public:
-		virtual void SetProjectionMatrix(const glm::mat4& projection) { m_ProjectionMatrix = projection; }
-		virtual void SetViewMatrix(const glm::mat4& view) { m_ViewMatrix = view; }
+// 		virtual void SetProjectionMatrix(const glm::mat4& projection) { m_ProjectionMatrix = projection; }
+// 		virtual void SetViewMatrix(const glm::mat4& view) { m_ViewMatrix = view; }
 		
 		virtual const glm::mat4& GetProjectionMatrix() const { return m_ProjectionMatrix; }
 		virtual const glm::mat4& GetViewMatrix() const { return m_ViewMatrix; }
@@ -27,13 +27,15 @@ namespace Apex {
 	class OrthographicCamera : public Camera
 	{
 	public:
-		OrthographicCamera(float left, float right, float bottom, float top, float nearZ = -1.0f, float farZ = 10.0f);
+		OrthographicCamera(float left, float right, float bottom, float top, float nearZ = 1.0f, float farZ = -10.0f);
 
 		void LookAt(const glm::vec3& center);
 
 		void SetPosition(const glm::vec3& position) { m_Position = position; RecalculateViewMatrix(); }
 		void SetRotation(float rotation) { m_Rotation = rotation; RecalculateViewMatrix();  }
 
+		void SetProjection(float left, float right, float bottom, float top, float nearZ = 1.0f, float farZ = -10.0f);
+		
 		inline const glm::vec3& GetPosition() const { return m_Position; }
 		inline float GetRotation() const { return m_Rotation; }
 
@@ -92,8 +94,6 @@ namespace Apex {
 		glm::vec3 m_Up = { 0.f, 1.f, 0.f };
 
 		float m_Pitch = 0.f, m_Yaw = -90.f, m_Roll = 0.f;
-
-		bool consistent = false;
 	};
 
 }
