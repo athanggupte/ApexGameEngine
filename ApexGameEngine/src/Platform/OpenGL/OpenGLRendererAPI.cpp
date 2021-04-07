@@ -30,10 +30,11 @@ namespace Apex {
 		glDrawArrays(GL_TRIANGLES, 0, vertexArray->GetVertexBuffers().at(0)->GetCount());
 	}
 
-	void OpenGLRendererAPI::DrawIndexed(const Ref<VertexArray>& vertexArray)
+	void OpenGLRendererAPI::DrawIndexed(const Ref<VertexArray>& vertexArray, uint32_t indexCount)
 	{
+		auto count = indexCount ? indexCount : vertexArray->GetIndexBuffers().at(0)->GetCount();
 		vertexArray->Bind();
-		glDrawElements(GL_TRIANGLES, vertexArray->GetIndexBuffers().at(0)->GetCount(), GL_UNSIGNED_INT, nullptr);
+		glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, nullptr);
 	}
 	
 	void OpenGLRendererAPI::DrawInstanced(const Ref<VertexArray>& vertexArray, size_t count)

@@ -36,16 +36,16 @@ class SandboxLayer : public Apex::Layer
 public:
 	SandboxLayer()
 		: Layer("Sandbox"), /*m_Camera(-1.6f, 1.6f, -0.9f, 0.9f), m_CameraController(&m_Camera)*/
-		m_CameraController( new Apex::OrthographicCamera(-1.6f, 1.6f, -0.9f, 0.9f) )
+		m_CameraController((float)Apex::Application::Get().GetWindow().GetWidth() / (float)Apex::Application::Get().GetWindow().GetHeight())
 	{
 	}
 	
 	void OnAttach() override
 	{
 		// Create/Import Resources
+		m_BallTexture = Apex::Texture2D::Create("assets/textures/tennis-ball.png");
 		m_PusheenTexture = Apex::Texture2D::Create("assets/textures/pusheen-thug-life.png");
-		auto hdrTextureFormat = Apex::TextureSpec{ Apex::TextureAccessFormat::RGBA, Apex::TextureInternalFormat::RGBA16, Apex::TextureDataType::FLOAT };
-		m_NoiseTexture = Apex::Texture2D::Create(256U, 256U, hdrTextureFormat, "noise");
+		m_NoiseTexture = Apex::Texture2D::Create(256U, 256U, Apex::HDRTextureSpec, "noise");
 		auto computeShader = Apex::ComputeShader::Create("assets/compute/noise.compute");
 		
 		// Execute Compute Shader
@@ -61,21 +61,34 @@ public:
 		// Update
 		m_CameraController.OnUpdate();
 		
+		m_Rotation += 0.2f * Apex::Timer::GetSeconds();
+		m_Rotation = (m_Rotation > 360.f) ? 0.f : m_Rotation;
+		
 		// Render
 		Apex::RenderCommands::SetClearColor({ 0.12f, 0.1185f, 0.12f, 1.0f });
 		Apex::RenderCommands::Clear();
 		Apex::Renderer2D::BeginScene(m_CameraController.GetCamera());
 		
-		Apex::Renderer2D::DrawQuad({ 0.5f, 0.65f }, { 0.1f, 0.1f }, m_Color);
-		Apex::Renderer2D::DrawQuad({ -0.5f, -0.8f }, { 0.5f, 0.5f }, m_PusheenTexture);
-		Apex::Renderer2D::DrawQuad({ 0.f, 0.f }, { 1.f, 1.f }, m_NoiseTexture);
+		Apex::Renderer2D::DrawQuad({ 0.f, 0.65f }, { 1.f, 0.3f }, { 0.85f, 0.45f, 0.67f, 1.f });
+		Apex::Renderer2D::DrawQuad({ 0.f, -0.85f }, { 1.8f, 0.2f }, { 0.65f, 0.60f, 0.23f, 1.f });
+		
+		Apex::Renderer2D::DrawQuad({ -0.4f, 0.f }, { 0.4f, 0.4f }, m_Rotation, m_BallTexture);
+		Apex::Renderer2D::DrawQuad({ 0.f, 0.f }, { 0.4f, 0.4f }, m_PusheenTexture);
+		Apex::Renderer2D::DrawQuad({ 0.4f, 0.f }, { 0.4f, 0.4f }, m_NoiseTexture, 2.f);
 		
 		Apex::Renderer2D::EndScene();
+	}
+	
+	void OnEvent(Apex::Event& e)
+	{
+		m_CameraController.OnEvent(e);
 	}
 	
 	void OnImGuiRender() override
 	{
 		ImGui::Begin("Textures");
+		ImGui::Image((void*)(intptr_t)m_PusheenTexture->GetID(), { 256.f, 256.f });
+		ImGui::Image((void*)(intptr_t)m_BallTexture->GetID(), { 256.f, 256.f });
 		ImGui::Image((void*)(intptr_t)m_NoiseTexture->GetID(), { 256.f, 256.f });
 		ImGui::End();
 	}
@@ -83,7 +96,9 @@ public:
 private:
 	Apex::Ref<Apex::Texture2D> m_PusheenTexture;
 	Apex::Ref<Apex::Texture2D> m_NoiseTexture;
-	glm::vec4 m_Color = { 0.85f, 0.45f, 0.67f, 1.f };
+	Apex::Ref<Apex::Texture2D> m_BallTexture;
+	
+	float m_Rotation = 0.f;
 	
 	Apex::OrthographicCameraController2D m_CameraController; 
 };
@@ -94,7 +109,7 @@ class Sandbox : public Apex::Application
 public:
 	Sandbox()
 	{
-		Apex::Log::GetCoreLogger()->set_pattern("%^[%T] <%n> at %@ :: %v%$");
+		//Apex::Log::GetCoreLogger()->set_pattern("%^[%T] <%n> at %@ :: %v%$");
 		//Apex::Collision::Init();
 		//Apex::NetworkManager::Startup();
 

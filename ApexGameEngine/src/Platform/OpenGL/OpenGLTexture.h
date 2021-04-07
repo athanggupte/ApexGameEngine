@@ -72,7 +72,6 @@ namespace Apex {
 		inline virtual uint32_t GetID() const override { return m_RendererID; }
 
 		virtual void Bind(uint32_t slot = 0) const override;
-
 	protected:
 		virtual void SetData(void* data, uint32_t size) override {}
 		

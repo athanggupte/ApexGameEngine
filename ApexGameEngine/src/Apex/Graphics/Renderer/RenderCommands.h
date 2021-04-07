@@ -13,7 +13,7 @@ namespace Apex {
 		inline static void Clear() { s_RendererAPI->Clear(); }
 
 		inline static void Draw(const Ref<VertexArray>& vertexArray) { s_RendererAPI->Draw(vertexArray); }
-		inline static void DrawIndexed(const Ref<VertexArray>& vertexArray) { s_RendererAPI->DrawIndexed(vertexArray); }
+		inline static void DrawIndexed(const Ref<VertexArray>& vertexArray, uint32_t indexCount = 0) { s_RendererAPI->DrawIndexed(vertexArray, indexCount); }
 		inline static void DrawInstanced(const Ref<VertexArray>& vertexArray, size_t count) { s_RendererAPI->DrawInstanced(vertexArray, count); }
 		
 		inline static void SetDepthTest(bool value) { s_RendererAPI->SetDepthTest(value); }

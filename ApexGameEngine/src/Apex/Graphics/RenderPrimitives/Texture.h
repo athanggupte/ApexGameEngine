@@ -43,6 +43,11 @@ namespace Apex {
 		TextureDataType dataType;
 	};
 	
+	// Default TextureSpecs
+	inline static const TextureSpec SimpleTextureSpec{ TextureAccessFormat::RGBA, TextureInternalFormat::RGBA8, TextureDataType::UBYTE };
+	inline static const TextureSpec HDRTextureSpec{ TextureAccessFormat::RGBA, TextureInternalFormat::RGBA16, TextureDataType::FLOAT };
+	
+	
 	class Texture
 	{
 	public:

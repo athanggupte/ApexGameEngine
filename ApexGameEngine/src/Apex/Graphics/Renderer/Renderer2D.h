@@ -25,6 +25,7 @@ namespace Apex {
 		
 		static void BeginScene(const Camera& camera);
 		static void EndScene();
+		static void FlushBatch();
 		
 		// Primitives
 		static void DrawQuad(const glm::vec2& position, const glm::vec2& size, const glm::vec4& color); // 2D coords, flat color
@@ -40,14 +41,20 @@ namespace Apex {
 		static void DrawQuad(const glm::mat4& transform, const glm::vec4& color); // Transform matrix, flat color
 		static void DrawQuad(const glm::mat4& transform, const Ref<Texture2D>& texture, float tilingFactor = 1.0f, const glm::vec4& tintColor = { 1.0f, 1.0f, 1.0f, 1.0f }); // Transform matrix, textured
 		
-	private:
-// 		struct SceneData
-// 		{
-// 			glm::mat4 ViewProjectionMatrix;
-// 			bool ImageAccess = false;
-// 		};
-// 
-// 		static SceneData* s_SceneData;
+		
+		struct Stats
+		{
+			uint32_t drawCalls = 0;
+			uint32_t quadCount = 0;
+			
+			uint32_t GetVertexCount() { return quadCount * 4; }
+			uint32_t GetIndexCount() { return quadCount * 6; }
+			uint32_t GetTriangleCount() { return quadCount * 2; }
+		};
+		static void ResetStats();
+		static Stats GetStats();
+		
 	};
 
 }
+
