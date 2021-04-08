@@ -36,7 +36,7 @@ WinLibDirs = { "ApexGameEngine/vendor/Assimp/build/code/Debug", "ApexGameEngine/
 -- WinLibDirs["Assimp"] = "ApexGameEngine/vendor/Assimp/build/code/Debug"
 -- WinLibDirs["irrKlang"] = "ApexGameEngine/vendor/irrKlang/lib"
 
-LinuxLibs = { "GL", "dl", "m", "pthread", "assimp", "IrrKlang" }
+LinuxLibs = { "GL", "dl", "m", "pthread", "uuid", "assimp", "IrrKlang" }
 -- LinuxLibs["OpenGL"] = "GL"
 -- LinuxLibs["Assimp"] = "assimp"
 -- LinuxLibs["irrKlang"] = "IrrKlang"
