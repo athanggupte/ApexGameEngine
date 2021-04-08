@@ -7,6 +7,7 @@
 //#include "EditorTools/NodeGraph/NodeGraph.h"
 //#include "EditorTools/PythonGraph/PythonGraph.h"
 #include "EditorTools/ShaderGraph/ShaderGraph.h"
+#include "Apex/Core/GUID.h"
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -104,7 +105,7 @@ namespace Apex {
 		{
 			//RenderCommands::SetClearColor(m_BGColor);
 			//RenderCommands::Clear();
-
+			
 			m_CameraController.OnUpdate();
 			
 			m_GameFramebuffer->Bind();
