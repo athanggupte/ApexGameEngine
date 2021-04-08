@@ -23,13 +23,18 @@ namespace Apex {
 		virtual void Bind(uint32_t slot = 0) const override;
 		virtual void BindImage(uint32_t unit, bool read, bool write) const override;
 		
+		virtual void Resize(uint32_t width, uint32_t height) override;
 		virtual void SetData(void* data, uint32_t size) override;
+		virtual const TextureSpec& GetSpec() const override { return m_Specification; }
 	private:
 		std::string m_Path;
 		uint32_t m_Width, m_Height;
 		uint32_t m_RendererID;
 		GLenum m_InternalFormat, m_AccessFormat, m_DataType;
 		uint32_t m_PixelSize;
+		
+		bool m_Mutable = true;
+		TextureSpec m_Specification;
 	};
 
 #ifdef SEPARATE_HDR
@@ -49,7 +54,6 @@ namespace Apex {
 
 		virtual void Bind(uint32_t slot = 0) const override;
 		virtual void BindImage(uint32_t unit, bool read, bool write) const override;
-		
 	protected:
 		virtual void SetData(void* data, uint32_t size) override {}
 		
@@ -63,7 +67,7 @@ namespace Apex {
 	class OpenGLTextureDepth2D : public TextureDepth2D
 	{
 	public:
-		OpenGLTextureDepth2D();
+		OpenGLTextureDepth2D(uint32_t width, uint32_t height);
 		virtual ~OpenGLTextureDepth2D();
 
 		inline virtual uint32_t GetWidth() const override { return m_Width; }
@@ -72,6 +76,7 @@ namespace Apex {
 		inline virtual uint32_t GetID() const override { return m_RendererID; }
 
 		virtual void Bind(uint32_t slot = 0) const override;
+		virtual void Resize(uint32_t width, uint32_t height) override;
 	protected:
 		virtual void SetData(void* data, uint32_t size) override {}
 		

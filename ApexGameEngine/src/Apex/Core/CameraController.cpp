@@ -50,6 +50,12 @@ namespace Apex {
 		dispatcher.Dispatch<MouseScrolledEvent>(APEX_BIND_EVENT_FN(OrthographicCameraController2D::OnMouseScrolled));
 		dispatcher.Dispatch<WindowResizeEvent>(APEX_BIND_EVENT_FN(OrthographicCameraController2D::OnWindowResize));
 	}
+
+	void OrthographicCameraController2D::OnResize(float width, float height)
+	{
+		m_AspectRatio = width / height;
+		m_Camera.SetProjection(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel);
+	}
 	
 	bool OrthographicCameraController2D::OnMouseScrolled(MouseScrolledEvent& e)
 	{
@@ -61,8 +67,7 @@ namespace Apex {
 	
 	bool OrthographicCameraController2D::OnWindowResize(WindowResizeEvent& e)
 	{
-		m_AspectRatio = (float)e.GetWidth() / (float)e.GetHeight();
-		m_Camera.SetProjection(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel);
+		OnResize((float)e.GetWidth(), (float)e.GetHeight());
 		return false;
 	}
 }

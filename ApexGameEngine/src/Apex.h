@@ -31,9 +31,10 @@
 #include "Apex/Graphics/RenderPrimitives/Texture.h"
 #include "Apex/Graphics/RenderPrimitives/Buffer.h"
 #include "Apex/Graphics/RenderPrimitives/VertexArray.h"
-#include "Apex/Graphics/RenderPrimitives/FrameBuffer.h"
+#include "Apex/Graphics/RenderPrimitives/Framebuffer.h"
 
 #include "Apex/Core/Camera.h"
+#include "Apex/Core/CameraController.h"
 
 #include "Apex/Graphics/Renderer/RenderCommands.h"
 #include "Apex/Graphics/Renderer/Renderer.h"

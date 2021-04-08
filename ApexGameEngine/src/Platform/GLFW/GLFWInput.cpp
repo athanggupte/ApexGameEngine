@@ -4,7 +4,7 @@
 #include <GLFW/glfw3.h>
 #include "Apex/Application.h"
 
-//#ifdef APEX_PLATFORM_WINDOWS
+#if defined(APEX_PLATFORM_WINDOWS) || defined(APEX_PLATFORM_LINUX)
 
 namespace Apex {
 
@@ -45,4 +45,4 @@ namespace Apex {
 
 }
 
-//#endif // APEX_PLATFORM_WINDOWS
+#endif // APEX_PLATFORM_WINDOWS or APEX_PLATFORM_LINUX

@@ -59,13 +59,14 @@ namespace Apex {
 
 		virtual void Bind(uint32_t slot = 0) const = 0;
 		virtual void SetData(void* data, uint32_t size) = 0;
+		virtual void Resize(uint32_t width, uint32_t height) = 0;
 		
 		virtual const std::string& GetPath() const = 0;
 		
 		virtual void SetRows(uint32_t rows) { this->m_NumberOfRows = rows; this->m_MaxIndex = rows * rows; }
 		virtual uint32_t GetRows() { return this->m_NumberOfRows; }
 		virtual uint32_t GetMaxIndex() { return this->m_MaxIndex; }
-	private:
+	protected:
 		uint32_t m_NumberOfRows = 1;// , n_NumberOfCols = 1;
 		uint32_t m_MaxIndex = 1;
 	};
@@ -77,6 +78,7 @@ namespace Apex {
 		static Ref<Texture2D> Create(uint32_t width, uint32_t height, const TextureSpec& spec, const std::string& name = "");
 
 		virtual void BindImage(uint32_t unit, bool read, bool write) const = 0;
+		virtual const TextureSpec& GetSpec() const = 0;
 	};
 
 //#define SEPARATE_HDR
@@ -95,7 +97,7 @@ namespace Apex {
 	class TextureDepth2D : public Texture
 	{
 	public:
-		static Ref<TextureDepth2D> Create();
+		static Ref<TextureDepth2D> Create(uint32_t width = 1024, uint32_t height = 1024);
 	};
 
 //#define IMAGE_STORE_CLASS

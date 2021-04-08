@@ -21,6 +21,8 @@ namespace Apex {
 		virtual void OnUpdate() = 0;
 		virtual void OnEvent(Event&) = 0;
 		
+		virtual void OnResize(float width, float height) = 0;
+		
 	private:
 		//Camera* m_Camera;
 	};
@@ -39,6 +41,8 @@ namespace Apex {
 		
 		virtual void OnUpdate() override;
 		virtual void OnEvent(Event&) override;
+		
+		virtual void OnResize(float width, float height) override;
 	private:
 		bool OnMouseScrolled(MouseScrolledEvent& e);
 		bool OnWindowResize(WindowResizeEvent& e);

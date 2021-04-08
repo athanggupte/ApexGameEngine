@@ -1,6 +1,11 @@
 #pragma once
 
 #include "Apex/Core.h"
+
+#ifdef APEX_DEBUG
+#define SPDLOG_ACTIVE_LEVEL SPDLOG_LEVEL_TRACE
+#endif
+
 #include "spdlog/spdlog.h"
 #include "spdlog/fmt/ostr.h"
 
@@ -46,9 +51,9 @@ namespace Apex {
 // #define APEX_LOG_ERROR(...)				::Apex::Log::GetClientLogger()->error(__VA_ARGS__)
 // #define APEX_LOG_CRITICAL(...)			::Apex::Log::GetClientLogger()->critical(__VA_ARGS__); __DEBUG_BREAK__;
 
-#define APEX_LOG_TRACE(...)				SPD_LOGGER_TRACE(Apex::Log::GetClientLogger(), __VA_ARGS__)
-#define APEX_LOG_DEBUG(...)				SPD_LOGGER_DEBUG(Apex::Log::GetClientLogger(), __VA_ARGS__)
-#define APEX_LOG_INFO(...)				SPD_LOGGER_INFO(Apex::Log::GetClientLogger(), __VA_ARGS__)
-#define APEX_LOG_WARN(...)				SPD_LOGGER_WARN(Apex::Log::GetClientLogger(), __VA_ARGS__)
-#define APEX_LOG_ERROR(...)				SPD_LOGGER_ERROR(Apex::Log::GetClientLogger(), __VA_ARGS__)
-#define APEX_LOG_CRITICAL(...)			SPD_LOGGER_CRITICAL(Apex::Log::GetClientLogger(), __VA_ARGS__); __DEBUG_BREAK__;
+#define APEX_LOG_TRACE(...)				SPDLOG_LOGGER_TRACE(Apex::Log::GetClientLogger(), __VA_ARGS__)
+#define APEX_LOG_DEBUG(...)				SPDLOG_LOGGER_DEBUG(Apex::Log::GetClientLogger(), __VA_ARGS__)
+#define APEX_LOG_INFO(...)				SPDLOG_LOGGER_INFO(Apex::Log::GetClientLogger(), __VA_ARGS__)
+#define APEX_LOG_WARN(...)				SPDLOG_LOGGER_WARN(Apex::Log::GetClientLogger(), __VA_ARGS__)
+#define APEX_LOG_ERROR(...)				SPDLOG_LOGGER_ERROR(Apex::Log::GetClientLogger(), __VA_ARGS__)
+#define APEX_LOG_CRITICAL(...)			SPDLOG_LOGGER_CRITICAL(Apex::Log::GetClientLogger(), __VA_ARGS__); __DEBUG_BREAK__;

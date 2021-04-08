@@ -11,8 +11,8 @@ namespace Apex {
 		m_BlurShader = Shader::Create("assets/shaders/GaussianBlur.glsl");
 		m_VerBlurTex = Texture2D::Create(1280, 720, { TextureAccessFormat::RGBA, TextureInternalFormat::RGBA16, TextureDataType::FLOAT });
 		m_HorBlurTex = Texture2D::Create(1280, 720, { TextureAccessFormat::RGBA, TextureInternalFormat::RGBA16, TextureDataType::FLOAT });
-		m_VerBlurFBO = FrameBuffer::Create(false);
-		m_HorBlurFBO = FrameBuffer::Create(false);
+		m_VerBlurFBO = Framebuffer::Create({ 1280, 720, false, 0 });
+		m_HorBlurFBO = Framebuffer::Create({ 1280, 720, false, 0 });
 	}
 
 	Ref<Texture> Blur::GaussianBlur(int amount, const Ref<Texture>& inputTexture)
@@ -25,11 +25,11 @@ namespace Apex {
 		//Ref<Shader> m_BlurShader = Shader::Create("assets/shaders/GaussianBlur.glsl");
 		//Ref<Texture2D_HDR> m_VerBlurTex = Texture2D_HDR::Create();
 		//Ref<Texture2D_HDR> m_HorBlurTex = Texture2D_HDR::Create();
-		//Ref<FrameBuffer> m_VerBlurFBO = FrameBuffer::Create(false);
-		//Ref<FrameBuffer> m_HorBlurFBO = FrameBuffer::Create(false);
+		//Ref<Framebuffer> m_VerBlurFBO = Framebuffer::Create(false);
+		//Ref<Framebuffer> m_HorBlurFBO = Framebuffer::Create(false);
 
-		m_VerBlurFBO->AttachTexture(m_VerBlurTex);
-		m_HorBlurFBO->AttachTexture(m_HorBlurTex);
+		m_VerBlurFBO->AttachColorTexture(m_VerBlurTex);
+		m_HorBlurFBO->AttachColorTexture(m_HorBlurTex);
 
 		m_VerBlurFBO->Bind();
 		Apex::RenderCommands::SetDepthTest(false);

@@ -12,7 +12,7 @@ namespace Apex {
 		switch (Renderer::GetAPI())
 		{
 		case RendererAPI::API::None:	APEX_CORE_CRITICAL("No Rendering API selected"); return nullptr;
-		case RendererAPI::API::OpenGL:	return std::make_shared<OpenGLTexture2D>(path, useHDR);
+		case RendererAPI::API::OpenGL:	return CreateRef<OpenGLTexture2D>(path, useHDR);
 
 		default:				APEX_CORE_CRITICAL("Unknown Rendering API"); return nullptr;
 		}
@@ -24,7 +24,7 @@ namespace Apex {
 		switch (Renderer::GetAPI())
 		{
 		case RendererAPI::API::None:	APEX_CORE_CRITICAL("No Rendering API selected"); return nullptr;
-		case RendererAPI::API::OpenGL:	return std::make_shared<OpenGLTexture2D>(width, height, spec, name);
+		case RendererAPI::API::OpenGL:	return CreateRef<OpenGLTexture2D>(width, height, spec, name);
 
 		default:				APEX_CORE_CRITICAL("Unknown Rendering API"); return nullptr;
 		}
@@ -37,7 +37,7 @@ namespace Apex {
 		switch (Renderer::GetAPI())
 		{
 		case RendererAPI::API::None:	APEX_CORE_CRITICAL("No Rendering API selected"); return nullptr;
-		case RendererAPI::API::OpenGL:	return std::make_shared<OpenGLTexture2D_HDR>(path);
+		case RendererAPI::API::OpenGL:	return CreateRef<OpenGLTexture2D_HDR>(path);
 
 		default:				APEX_CORE_CRITICAL("Unknown Rendering API"); return nullptr;
 		}
@@ -49,7 +49,7 @@ namespace Apex {
 		switch (Renderer::GetAPI())
 		{
 		case RendererAPI::API::None:	APEX_CORE_CRITICAL("No Rendering API selected"); return nullptr;
-		case RendererAPI::API::OpenGL:	return std::make_shared<OpenGLTexture2D_HDR>(width, height, name);
+		case RendererAPI::API::OpenGL:	return CreateRef<OpenGLTexture2D_HDR>(width, height, name);
 
 		default:				APEX_CORE_CRITICAL("Unknown Rendering API"); return nullptr;
 		}
@@ -57,12 +57,12 @@ namespace Apex {
 	}
 #endif
 	
-	Ref<TextureDepth2D> TextureDepth2D::Create()
+	Ref<TextureDepth2D> TextureDepth2D::Create(uint32_t width, uint32_t height)
 	{
 		switch (Renderer::GetAPI())
 		{
 		case RendererAPI::API::None:	APEX_CORE_CRITICAL("No Rendering API selected"); return nullptr;
-		case RendererAPI::API::OpenGL:	return std::make_shared<OpenGLTextureDepth2D>();
+		case RendererAPI::API::OpenGL:	return CreateRef<OpenGLTextureDepth2D>(width, height);
 
 		default:				APEX_CORE_CRITICAL("Unknown Rendering API"); return nullptr;
 		}

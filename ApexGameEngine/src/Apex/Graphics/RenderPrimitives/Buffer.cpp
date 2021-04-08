@@ -12,7 +12,7 @@ namespace Apex{
 		switch (Renderer::GetAPI())
 		{
 			case RendererAPI::API::None:	APEX_CORE_CRITICAL("No Rendering API selected"); return nullptr;
-			case RendererAPI::API::OpenGL:	return std::make_shared<OpenGLVertexBuffer>(size);
+			case RendererAPI::API::OpenGL:	return CreateRef<OpenGLVertexBuffer>(size);
 		}
 		APEX_CORE_CRITICAL("Unknown Rendering API"); return nullptr;
 	}
@@ -22,7 +22,7 @@ namespace Apex{
 		switch (Renderer::GetAPI())
 		{
 			case RendererAPI::API::None:	APEX_CORE_CRITICAL("No Rendering API selected"); return nullptr;
-			case RendererAPI::API::OpenGL:	return std::make_shared<OpenGLVertexBuffer>(vertices, size);
+			case RendererAPI::API::OpenGL:	return CreateRef<OpenGLVertexBuffer>(vertices, size);
 		}
 		APEX_CORE_CRITICAL("Unknown Rendering API"); return nullptr;
 	}
@@ -32,7 +32,7 @@ namespace Apex{
 		switch (Renderer::GetAPI())
 		{
 			case RendererAPI::API::None:	APEX_CORE_CRITICAL("No Rendering API selected"); return nullptr;
-			case RendererAPI::API::OpenGL:	return std::make_shared<OpenGLIndexBuffer>(indices, count);
+			case RendererAPI::API::OpenGL:	return CreateRef<OpenGLIndexBuffer>(indices, count);
 		}
 		APEX_CORE_CRITICAL("Unknown Rendering API"); return nullptr;
 	}
