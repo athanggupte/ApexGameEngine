@@ -41,8 +41,23 @@
 
 #define _ENABLE_ATOMIC_ALIGNMENT_FIX	// Works only on VS 2015 Update 2 and above
 
+#include "Apex/Core/GUID.h"
+#include "Apex/Core/ResourceHandle.hpp"
+
 namespace Apex {
 
+	template<typename T>
+	using Ref = SharedResourceHandle<T>;
+	
+	template<typename T, typename... Args>
+	constexpr typename std::enable_if<std::is_constructible<T, Args&&...>::value, SharedResourceHandle<T>>::type
+	CreateRef(Args&& ... args)
+	{
+		return SharedResourceHandle<T>(new T(std::forward<Args>(args)...));
+	}
+
+	
+// Old Code
 	template<typename T>
 	using Scope = std::unique_ptr<T>;
 	
@@ -52,7 +67,7 @@ namespace Apex {
 		return std::make_unique<T>(std::forward<Args>(args)...);
 	}
 
-	template<typename T>
+/*	template<typename T>
 	using Ref = std::shared_ptr<T>;
 
 	template<typename T, typename... Args>
@@ -60,5 +75,5 @@ namespace Apex {
 	{
 		return std::make_shared<T>(std::forward<Args>(args)...);
 	}
-
+*/
 }

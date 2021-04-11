@@ -1,7 +1,7 @@
 #pragma once
 
 #include "apex_pch.h"
-#include "Apex/Core.h"
+#include "Apex/Core/Core.h"
 
 namespace Apex {
 

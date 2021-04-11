@@ -23,7 +23,7 @@ namespace Apex {
 
 		static void Submit(const Ref<Shader>& shader, const Ref<VertexArray>& vertexArray, const glm::mat4& modelMatrix = glm::mat4(1.0f));
 		static void SubmitArray(const Ref<Shader>& shader, const Ref<VertexArray>& vertexArray, glm::mat4 modelMatrices[], size_t count);
-		static void SubmitModel(const Ref<Shader>& shader, const Ref<Model>& model, const glm::mat4& modelMatrix = glm::mat4(1.0f));
+		//static void SubmitModel(const Ref<Shader>& shader, const Ref<Model>& model, const glm::mat4& modelMatrix = glm::mat4(1.0f));
 
 		inline static RendererAPI::API GetAPI() { return RendererAPI::GetAPI(); }
 

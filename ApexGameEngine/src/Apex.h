@@ -2,17 +2,21 @@
 
 //-----Core-----------------------------
 #include "Apex/Application.h"
-#include "Apex/AssetManager/AssetManager.h"
+#include "Apex/Core/AssetManager/AssetManager.h"
 #include "Apex/Core/Layers/Layer.h"
 #include "Apex/Core/Log.h"
 #include "Apex/Core/Timer.h"
-#include "Apex/Core/Random.h"
+// Entity-Component-System
+#include "Apex/Core/ECS/Scene.h"
+#include "Apex/Core/ECS/Entity.h"
+#include "Apex/Core/ECS/Components.h"
 //------------------------------------//
 
 //-----Utility--------------------------
 #include "Apex/Utils/ComputeShader/ComputeShader.h"
 #include "Apex/Utils/MathPrimitiveParser.h"
 #include "Apex/Utils/Profiler.h"
+#include "Apex/Utils/Random.h"
 #include "Apex/Utils/Utils.h"
 //------------------------------------//
 

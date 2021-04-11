@@ -9,8 +9,8 @@ namespace Apex {
 	
 	GUID GenerateGUID()
 	{
-		uuid_t guid;
-		uuid_generate(guid);
+		guid_t guid;
+		uuid_generate(guid.data());
 		return GUID(guid);
 	}
 	

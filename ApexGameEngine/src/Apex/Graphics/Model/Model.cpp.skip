@@ -11,7 +11,7 @@ namespace Apex {
 
 	Ref<Model> Model::LoadModel(const std::string & path, bool loadTextures) {
 		s_LoadTextures = loadTextures;
-		return std::make_shared<Model>(path);
+		return CreateRef<Model>(path);
 	}
 
 	Model::Model(const std::string & path)
@@ -32,10 +32,10 @@ namespace Apex {
 			aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
 			APEX_CORE_DEBUG("Mesh Loaded : {0}", mesh->mName.C_Str());
 			if (mesh->mName.length) {
-				m_Meshes[mesh->mName.C_Str() + std::to_string(m_Meshes.size())] = std::make_shared<Mesh>(ProcessMesh(mesh, scene));
+				m_Meshes[mesh->mName.C_Str() + std::to_string(m_Meshes.size())] = CreateRef<Mesh>(ProcessMesh(mesh, scene));
 			}
 			else
-				m_Meshes["mesh-" + std::to_string(m_Meshes.size())] = std::make_shared<Mesh>(ProcessMesh(mesh, scene));
+				m_Meshes["mesh-" + std::to_string(m_Meshes.size())] = CreateRef<Mesh>(ProcessMesh(mesh, scene));
 		}
 
 		for (uint32_t i = 0; i < node->mNumChildren; i++) {

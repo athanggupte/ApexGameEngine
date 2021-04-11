@@ -24,6 +24,8 @@ namespace Apex {
 		virtual const Ref<Texture2D>& GetColorAttachment(uint32_t index) const override { return m_ColorAttachments[index]; }
 		virtual const Ref<TextureDepth2D>& GetDepthAttachment() const override { return m_DepthAttachment; }
 
+		virtual const FramebufferSpec& GetSpecification() const override { return m_Specification; }
+		
 		virtual bool IsComplete() const;
 
 	private:

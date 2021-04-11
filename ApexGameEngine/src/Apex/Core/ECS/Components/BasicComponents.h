@@ -5,6 +5,9 @@
 #define COMPONENT_DEFAULT_CTR(name)	name() = default;\
 									name(const name&) = default
 
+#include "Apex/Core/Camera.h"
+#include "Apex/Graphics/RenderPrimitives/Texture.h"
+
 namespace Apex {
 
 	struct TagComponent
@@ -39,14 +42,31 @@ namespace Apex {
 	struct SpriteRendererComponent
 	{
 		glm::vec4 Color = glm::vec4{ 1.f };
-		//Ref<Texture2D> Texture;
+		Ref<Texture2D> Texture = nullptr;
+		float TilingFactor = 1.f;
 		
 		COMPONENT_DEFAULT_CTR(SpriteRendererComponent);
 		
 		SpriteRendererComponent(const glm::vec4& color)
 			: Color(color) {}
+			
+		SpriteRendererComponent(const Ref<Texture2D>& texture, float tilingFactor = 1.f)
+			: Texture(texture), TilingFactor(tilingFactor) {}
 	};
 
+	struct CameraComponent
+	{
+		RenderCamera Camera;
+		
+		COMPONENT_DEFAULT_CTR(CameraComponent);
+		
+		CameraComponent(const RenderCamera& camera)
+			: Camera{ camera } {}
+		
+		CameraComponent(const glm::mat4& projection)
+			: Camera{ projection } {}
+	};
+	
 }
 
 #undef COMPONENT_DEFAULT_CTR

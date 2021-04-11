@@ -2,6 +2,7 @@
 #include "GUID.h"
 
 #include <cstring>
+#include <algorithm>
 
 namespace Apex {
 	
@@ -17,9 +18,9 @@ namespace Apex {
 	};
 	
 	/* Taken from libuuid/unpack.c */
-	static void uuid_unpack(const uuid_t in, struct uuid *uu)
+	static void uuid_unpack(const guid_t in, struct uuid *uu)
 	{
-		const uint8_t	*ptr = in;
+		const uint8_t	*ptr = in.data();
 		uint32_t		tmp;
 
 		tmp = *ptr++;
@@ -46,7 +47,7 @@ namespace Apex {
 	/* Taken from libuuid/compare.c */
 #define UUCMP(u1,u2) if (u1 != u2) return((u1 < u2) ? -1 : 1);
 
-	static int uuid_compare(const uuid_t uu1, const uuid_t uu2)
+	static int uuid_compare(const guid_t uu1, const guid_t uu2)
 	{
 		struct uuid	uuid1, uuid2;
 
@@ -60,14 +61,27 @@ namespace Apex {
 		return memcmp(uuid1.node, uuid2.node, 6);
 	}
 	
-	GUID::GUID(uuid_t guid)
+	GUID::GUID()
 	{
-		memcpy(m_Guid, guid, 16);
+ 		// memset(m_Guid, 0, 16);
+	}
+	
+	GUID::GUID(guid_t guid)
+		: m_Guid(guid)
+	{
+		// memcpy(m_Guid, guid, 16);
 	}
 	
 	GUID::GUID(const GUID& other)
+		: m_Guid(other.m_Guid)
 	{
-		memcpy(m_Guid, other.m_Guid, 16);
+		// memcpy(m_Guid, other.m_Guid, 16);
+	}
+	
+	GUID::GUID(GUID&& other)
+		: m_Guid(std::move(other.m_Guid))
+	{
+		// memcpy(m_Guid, other.m_Guid, 16);
 	}
 	
 	std::string GUID::GetString() const
@@ -97,7 +111,7 @@ namespace Apex {
 	
 	GUID::operator bool() const
 	{
-		uint32_t *tmp = (uint32_t*)m_Guid;
+		uint32_t *tmp = (uint32_t*)m_Guid.data();
 		
 		for (auto i=0; i<4; i++) {
 			if (*tmp++) {
@@ -105,6 +119,11 @@ namespace Apex {
 			}
 		}
 		return false;
+	}
+	
+	void GUID::operator = (const GUID& other)
+	{
+		std::copy(other.m_Guid.begin(), other.m_Guid.end(), m_Guid.begin());
 	}
 	
 }
