@@ -1,11 +1,15 @@
 #include "apex_pch.h"
 #include "Application.h"
 
-#include "Apex/Log/Log.h"
-#include "Apex/Renderer/Renderer.h"
-#include "Apex/Input/Input.h"
+#include "Apex/Core/Log.h"
+#include "Apex/Core/Input/Input.h"
+#include "Apex/Graphics/Renderer/RenderCommands.h"
+#include "Apex/Graphics/Renderer/Renderer.h"
+#include "Apex/Graphics/Renderer/Renderer2D.h"
+#include "Apex/Graphics/PostProcessing/PostProcess.h"
 
-#include <GLFW/glfw3.h>
+//#include <GLFW/glfw3.h>
+//#include <glad/glad.h>
 
 namespace Apex {
 
@@ -23,25 +27,32 @@ namespace Apex {
 		m_Window->SetVSync(true);
 
 		Renderer::Init();
+		Renderer2D::Init();
+		PostProcess::Init();
 
 		m_ImGuiLayer = new ImGuiLayer();
 		PushOverlay(m_ImGuiLayer);
-
 	}
 
 
 	Application::~Application()
 	{
+		Renderer::Shutdown();
+		Renderer2D::Shutdown();
+		PostProcess::Shutdown();
 	}
 
 	void Application::Run()
 	{
+
 		while (m_Running) {
 
 			Timer::UpdateTime();
 
-			for (Layer* layer : m_LayerStack)
-				layer->OnUpdate();
+			if (!m_Minimized) {
+				for (Layer* layer : m_LayerStack)
+					layer->OnUpdate();
+			}
 
 			//Render ImGui
 			m_ImGuiLayer->Begin();
@@ -49,8 +60,16 @@ namespace Apex {
 				layer->OnImGuiRender();
 			m_ImGuiLayer->End();
 
+			//if (!m_Minimized) {
 			m_Window->OnUpdate();
+			//}
 		}
+
+	}
+
+	void Application::Close()
+	{
+		m_Running = false;
 	}
 
 	// Event Handlers
@@ -59,11 +78,12 @@ namespace Apex {
 	{
 		EventDispatcher dispatcher(e);
 		dispatcher.Dispatch<WindowCloseEvent>(BIND_CALLBACK_FN(OnWindowClose));
+		dispatcher.Dispatch<WindowResizeEvent>(BIND_CALLBACK_FN(OnWindowResize));
 
-		for (auto it = m_LayerStack.end(); it != m_LayerStack.begin(); ) {
-			(*--it)->OnEvent(e);
-			if (e.IsHandled())
+		for (auto it = m_LayerStack.rbegin(); it != m_LayerStack.rend(); ++it) {
+			if (e.Handled)
 				break;
+			(*it)->OnEvent(e);
 		}
 	}
 
@@ -82,6 +102,19 @@ namespace Apex {
 	bool Application::OnWindowClose(WindowCloseEvent & e)
 	{
 		m_Running = false;
+		return false;
+	}
+
+	bool Application::OnWindowResize(WindowResizeEvent& e)
+	{
+		if (e.GetWidth() == 0 || e.GetHeight() == 0) {
+			m_Minimized = true;
+			return false;
+		}
+		m_Minimized = false;
+
+		RenderCommands::SetViewport(0, 0, e.GetWidth(), e.GetHeight());
+		
 		return false;
 	}
 

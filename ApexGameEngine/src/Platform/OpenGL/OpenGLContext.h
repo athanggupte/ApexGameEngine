@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Apex/Renderer/RenderingContext.h"
+#include "Apex/Graphics/Renderer/RenderingContext.h"
 
 struct GLFWwindow;
 
@@ -13,6 +13,7 @@ namespace Apex {
 
 		virtual void Init() override;
 		virtual void SwapBuffers() override;
+		
 	private:
 		GLFWwindow* m_WindowHandle;
 	};

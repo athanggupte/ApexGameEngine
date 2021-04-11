@@ -1,9 +1,9 @@
 #pragma once
 
-#include "Apex/Layers/Layer.h"
-#include "Apex/Events/MouseEvent.h"
-#include "Apex/Events/KeyEvent.h"
-#include "Apex/Events/ApplicationEvent.h"
+#include "Apex/Core/Layers/Layer.h"
+#include "Apex/Core/Events/MouseEvent.h"
+#include "Apex/Core/Events/KeyEvent.h"
+#include "Apex/Core/Events/ApplicationEvent.h"
 
 namespace Apex {
 
@@ -16,13 +16,15 @@ namespace Apex {
 		virtual void OnAttach() override;
 		virtual void OnDetach() override;
 		virtual void OnUpdate() override {}
-		virtual void OnImGuiRender() override;
+		virtual void OnImGuiRender() override {}
+		virtual void OnEvent(Event& event) override;
 
 		void Begin();
 		void End();
 
 	private:
 		float m_Time = 0.0f;
+		bool m_BlockEvents = true;
 	};
 
 }

@@ -27,7 +27,8 @@ namespace Apex {
 
 	OpenGLVertexArray::OpenGLVertexArray()
 	{
-		glCreateVertexArrays(1, &m_RendererID);
+		//glCreateVertexArrays(1, &m_RendererID);
+		glGenVertexArrays(1, &m_RendererID);
 	}
 
 	OpenGLVertexArray::~OpenGLVertexArray()
@@ -75,6 +76,7 @@ namespace Apex {
 		indexBuffer->Bind();
 
 		m_IndexBuffers.push_back(indexBuffer);
+		glBindVertexArray(0);
 	}
 
 }

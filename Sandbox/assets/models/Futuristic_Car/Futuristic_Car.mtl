@@ -1,0 +1,77 @@
+# Blender MTL File: 'Futuristic_Car_2.1.blend'
+# Material Count: 7
+
+newmtl Futuristic_Car.001
+Ns 96.078431
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.500000 0.500000 0.500000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd textures\Futuristic_Car_C.jpg
+map_Bump textures\\Futuristic_Car_N.jpg
+map_Ks textures\\Futuristic_Car_S.jpg
+
+newmtl Futuristic_Car.001_Speed_Car_A_1.png.001
+Ns 96.078431
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.500000 0.500000 0.500000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd textures\Futuristic_Car_C.jpg
+map_Bump textures\\Futuristic_Car_N.jpg
+map_Ks textures\\Futuristic_Car_S.jpg
+
+newmtl Futuristic_Car.001_untitled.000
+Ns 96.078431
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.500000 0.500000 0.500000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd C:\Users\PC\Desktop\car drive\textures\Speed_Car_c.png
+map_Bump textures\\Futuristic_Car_N.jpg
+map_Ks textures\\Futuristic_Car_S.jpg
+
+newmtl Futuristic_Car_black.001
+Ns 96.078431
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 1
+map_Kd textures\\Futuristic_Car_S.jpg
+
+newmtl Futuristic_Car_glass.001
+Ns 749.999996
+Ka 0.000000 0.000000 0.000000
+Kd 0.000000 0.000000 0.000000
+Ks 1.000000 1.000000 1.000000
+Ni 1.000000
+d 0.134796
+illum 2
+map_Kd textures\Futuristic_Car_N.jpg
+
+newmtl box
+Ns 96.078431
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.500000 0.500000 0.500000
+Ni 1.000000
+d 1.000000
+illum 2
+
+newmtl box_Futuristic_Car_C.jpg.001
+Ns 96.078431
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.500000 0.500000 0.500000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd textures\Futuristic_Car_C.jpg
