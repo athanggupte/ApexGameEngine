@@ -21,7 +21,7 @@ namespace Apex {
 
 	void OpenGLRendererAPI::Clear()
 	{
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 	}
 
 	void OpenGLRendererAPI::Draw(const Ref<VertexArray>& vertexArray)
@@ -51,6 +51,39 @@ namespace Apex {
 			glDisable(GL_DEPTH_TEST);
 	}
 
+	void OpenGLRendererAPI::SetDepthWriteMode(bool value)
+	{
+		glDepthMask(value ? GL_TRUE : GL_FALSE);
+	}
+	
+	void OpenGLRendererAPI::SetDepthTestFunction(DepthStencilMode criterion)
+	{
+		glDepthFunc((GLenum)criterion);
+	}
+	
+	void OpenGLRendererAPI::SetStencilTest(bool value)
+	{
+		if (value)
+			glEnable(GL_STENCIL_TEST);
+		else
+			glDisable(GL_STENCIL_TEST);
+	}
+	
+	void OpenGLRendererAPI::SetStencilTestFunction(DepthStencilMode criterion, int8_t refValue, uint8_t mask)
+	{
+		glStencilFunc((GLenum)criterion, refValue, mask);
+	}
+	
+	void OpenGLRendererAPI::SetStencilWriteMask(uint32_t mask)
+	{
+		glStencilMask(mask);
+	}
+	
+	void OpenGLRendererAPI::SetStencilAction(DepthStencilAction onStencilFail, DepthStencilAction onDepthFail, DepthStencilAction onPass)
+	{
+		glStencilOp((GLenum)onStencilFail, (GLenum)onDepthFail, (GLenum)onPass);
+	}
+	
 	void OpenGLRendererAPI::SetCulling(bool value)
 	{
 		if (value) {

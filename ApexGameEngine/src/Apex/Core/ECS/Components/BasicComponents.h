@@ -44,6 +44,8 @@ namespace Apex {
 		glm::vec4 Color = glm::vec4{ 1.f };
 		Ref<Texture2D> Texture = nullptr;
 		float TilingFactor = 1.f;
+		bool useTexture = true;
+		bool visible = true;
 		
 		COMPONENT_DEFAULT_CTR(SpriteRendererComponent);
 		

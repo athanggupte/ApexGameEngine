@@ -46,10 +46,12 @@ namespace Apex {
 		
 		auto group = m_Registry.group<TransformComponent, SpriteRendererComponent>();
 		group.each([] (auto& transform, auto& sprite) {
-			if (sprite.Texture)
-				Renderer2D::DrawQuad(transform, sprite.Texture, sprite.TilingFactor);
-			else
-				Renderer2D::DrawQuad(transform, sprite.Color);
+			if (sprite.visible) {
+				if (sprite.Texture && sprite.useTexture)
+					Renderer2D::DrawQuad(transform, sprite.Texture, sprite.TilingFactor);
+				else
+					Renderer2D::DrawQuad(transform, sprite.Color);
+			}
 		});
 	}
 	

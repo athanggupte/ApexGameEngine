@@ -62,13 +62,24 @@ namespace Apex {
 
 		virtual void OnUpdate() override 
 		{
+			// Resize
+			if (auto& fbSpec = m_GameFramebuffer->GetSpecification();
+				m_GameViewportSize.x > 0.f && m_GameViewportSize.y > 0.f &&
+				(fbSpec.width != m_GameViewportSize.x || fbSpec.height != m_GameViewportSize.y))
+			{
+				//m_GameFramebuffer->Resize((uint32_t)m_GameViewportSize.x, (uint32_t)m_GameViewportSize.y);
+				m_CameraController.OnResize(m_GameViewportSize.x, m_GameViewportSize.y);
+			}
+			
 			m_CameraController.OnUpdate();
+			
+			
+			// Render
+			Renderer2D::ResetStats();
 			
 			m_GameFramebuffer->Bind();
 			RenderCommands::SetClearColor(m_BGColor);
 			RenderCommands::Clear();
-			
-			Renderer2D::ResetStats();
 			
 			m_Scene.OnUpdate(m_PlayScene);
 			if (!m_PlayScene) {
@@ -159,13 +170,8 @@ namespace Apex {
 			ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{ 0.f, 0.f });
 			ImGui::Begin("Game View");
 			ImVec2 viewportSize = ImGui::GetContentRegionAvail();
-			if (m_GameViewportSize != *((glm::vec2*)&viewportSize)) {
-				m_GameViewportSize = *((glm::vec2*)&viewportSize);
-				//if (m_GameViewportSize.x > 0.f && m_GameViewportSize.y > 0.f) {
-					m_GameFramebuffer->Resize((uint32_t)m_GameViewportSize.x, (uint32_t)m_GameViewportSize.y);
-					m_CameraController.OnResize(m_GameViewportSize.x, m_GameViewportSize.y);
-				//}
-			}
+			m_GameViewportSize = *((glm::vec2*)&viewportSize);
+			
 			ImGui::Image((void*)(intptr_t)m_GameFramebuffer->GetColorAttachmentID(), { m_GameViewportSize.x, m_GameViewportSize.y }, { 0.f, 1.f }, { 1.f, 0.f });
 			ImGui::End();
 			ImGui::PopStyleVar();
