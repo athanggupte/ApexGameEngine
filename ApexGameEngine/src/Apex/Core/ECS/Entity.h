@@ -14,25 +14,38 @@ namespace Apex {
 		Entity(const Entity& other) = default;
 		
 		template<typename Component_t, typename... Args>
-		void AddComponent(Args&& ... args);
+		inline void AddComponent(Args&& ... args)
+		{
+			m_Registry->emplace<Component_t>(m_EntityId, std::forward<Args>(args)...);
+		}
 		
 		template<typename Component_t>
-		bool HasComponent();
+		inline bool HasComponent()
+		{
+			return m_Registry->has<Component_t>(m_EntityId);
+		}
+		
+		template<typename... Component_t>
+		inline decltype(auto) GetComponents()
+		{
+			return m_Registry->get<Component_t...>(m_EntityId);
+		}
 		
 		template<typename Component_t>
-		Component_t& GetComponent(); 
+		inline void RemoveComponent()
+		{
+			m_Registry->remove<Component_t>(m_EntityId);
+		}
 		
-		template<typename Component_t>
-		void RemoveComponent(); 
-		
-		operator bool() const { return m_EntityId != entt::null; }
+		inline operator bool() const { return m_EntityId != entt::null; }
 		
 	protected:
-		Entity(entt::entity id, Scene* scene) : m_EntityId(id), m_Scene(scene) {}
+		Entity(entt::entity id, Scene* scene) : m_EntityId(id), m_Registry(&scene->m_Registry) {}
 		
 	private:
 		entt::entity m_EntityId{ entt::null };
-		Scene* m_Scene = nullptr;
+		//Scene* m_Scene = nullptr;
+		entt::registry* m_Registry = nullptr;
 		
 		friend class Scene;
 	};
@@ -40,4 +53,4 @@ namespace Apex {
 }
 
 
-#include "Entity.hpp"
+//#include "Entity.hpp"

@@ -48,7 +48,7 @@ namespace Apex {
 		RenderCommands::DrawInstanced(vertexArray, count);
 	}
 
-	void Renderer::SubmitModel(const Ref<Shader>& shader, const Ref<Model>& model, const glm::mat4 & modelMatrix)
+	/*void Renderer::SubmitModel(const Ref<Shader>& shader, const Ref<Model>& model, const glm::mat4 & modelMatrix)
 	{
 		model->ApplyModelMatrix(modelMatrix);
 		shader->Bind();
@@ -69,7 +69,7 @@ namespace Apex {
 				RenderCommands::DrawIndexed(mesh->GetVAO());
 			}
 		}
-	}
+	}*/
 
 #if 0
 	/*--------------------------------------------------------------------------------------------------*/

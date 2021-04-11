@@ -31,6 +31,7 @@ namespace Apex {
 		virtual const Ref<Texture2D>& GetColorAttachment(uint32_t index = 0) const = 0;
 		virtual const Ref<TextureDepth2D>& GetDepthAttachment() const = 0;
 		
+		virtual const FramebufferSpec& GetSpecification() const = 0;
 		static Ref<Framebuffer> Create(FramebufferSpec spec);
 	};
 

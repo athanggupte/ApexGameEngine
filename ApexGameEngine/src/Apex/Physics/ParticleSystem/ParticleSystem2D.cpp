@@ -2,7 +2,7 @@
 #include "ParticleSystem2D.h"
 
 #include "Apex/Core/Timer.h"
-#include "Apex/Core/Random.h"
+#include "Apex/Utils/Random.h"
 #include "Apex/Graphics/Renderer/Renderer.h"
 
 #include "Apex/Utils/MathPrimitiveParser.h"

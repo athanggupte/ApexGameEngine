@@ -182,7 +182,7 @@ namespace Apex {
 		s_BoundShader = m_RendererID;
 	}
 	
-	const std::unordered_map<std::string, uint32_t>& OpenGLShader::GetActiveUniformLocations()
+	void OpenGLShader::UpdateActiveUniformLocations()
 	{
 		int numUniforms = -1;
 		glGetProgramiv(m_RendererID, GL_ACTIVE_UNIFORMS, &numUniforms);
@@ -207,11 +207,14 @@ namespace Apex {
 
 			m_UniformLocations.emplace(name, location);
 		}
-
+	}
+	
+	const std::unordered_map<std::string, uint32_t>& OpenGLShader::GetActiveUniformLocations() const
+	{
 		return m_UniformLocations;
 	}
 
-	const std::vector<std::tuple<std::string, uint32_t, size_t>> OpenGLShader::GetActiveUniformData()
+	const std::vector<std::tuple<std::string, uint32_t, size_t>> OpenGLShader::GetActiveUniformData() const
 	{
 		std::vector<std::tuple<std::string, uint32_t, size_t>> uniformData;
 		int numUniforms = -1;
@@ -249,7 +252,7 @@ namespace Apex {
 	//////////////////////////////////////////////////////////////
 	/////////////////      Integer Types      ////////////////////
 	//////////////////////////////////////////////////////////////
-	void OpenGLShader::SetUniInt1(const std::string & name, int value)
+	void OpenGLShader::SetUniInt1(const std::string & name, int value) const
 	{
 		BindIfNotBound();
 	#ifdef SHADER_UNIFORMS_NO_CACHE
@@ -259,7 +262,7 @@ namespace Apex {
 	#endif
 	}
 
-	void OpenGLShader::SetUniInt2(const std::string & name, const glm::ivec2& value)
+	void OpenGLShader::SetUniInt2(const std::string & name, const glm::ivec2& value) const
 	{
 		BindIfNotBound();
 	#ifdef SHADER_UNIFORMS_NO_CACHE
@@ -269,7 +272,7 @@ namespace Apex {
 	#endif
 	}
 
-	void OpenGLShader::SetUniInt3(const std::string & name, const glm::ivec3& value)
+	void OpenGLShader::SetUniInt3(const std::string & name, const glm::ivec3& value) const
 	{
 		BindIfNotBound();
 	#ifdef SHADER_UNIFORMS_NO_CACHE
@@ -279,7 +282,7 @@ namespace Apex {
 	#endif
 	}
 
-	void OpenGLShader::SetUniInt4(const std::string & name, const glm::ivec4& value)
+	void OpenGLShader::SetUniInt4(const std::string & name, const glm::ivec4& value) const
 	{
 		BindIfNotBound();
 	#ifdef SHADER_UNIFORMS_NO_CACHE
@@ -290,7 +293,7 @@ namespace Apex {
 	}
 
 	//////////     Integer Array Types     /////////////
-	void OpenGLShader::SetUniInt1v(const std::string & name, int values[], size_t count)
+	void OpenGLShader::SetUniInt1v(const std::string & name, int values[], size_t count) const
 	{
 		BindIfNotBound();
 	#ifdef SHADER_UNIFORMS_NO_CACHE
@@ -300,7 +303,7 @@ namespace Apex {
 	#endif
 	}
 
-	void OpenGLShader::SetUniInt2v(const std::string & name, glm::ivec2 values[], size_t count)
+	void OpenGLShader::SetUniInt2v(const std::string & name, glm::ivec2 values[], size_t count) const
 	{
 		BindIfNotBound();
 	#ifdef SHADER_UNIFORMS_NO_CACHE
@@ -310,7 +313,7 @@ namespace Apex {
 	#endif
 	}
 
-	void OpenGLShader::SetUniInt3v(const std::string & name, glm::ivec3 values[], size_t count)
+	void OpenGLShader::SetUniInt3v(const std::string & name, glm::ivec3 values[], size_t count) const
 	{
 		BindIfNotBound();
 	#ifdef SHADER_UNIFORMS_NO_CACHE
@@ -320,7 +323,7 @@ namespace Apex {
 	#endif
 	}
 
-	void OpenGLShader::SetUniInt4v(const std::string & name, glm::ivec4 values[], size_t count)
+	void OpenGLShader::SetUniInt4v(const std::string & name, glm::ivec4 values[], size_t count) const
 	{
 		BindIfNotBound();
 	#ifdef SHADER_UNIFORMS_NO_CACHE
@@ -333,7 +336,7 @@ namespace Apex {
 	//////////////////////////////////////////////////////////////
 	//////////////////      Float Types      /////////////////////
 	//////////////////////////////////////////////////////////////
-	void OpenGLShader::SetUniFloat1(const std::string & name, float value)
+	void OpenGLShader::SetUniFloat1(const std::string & name, float value) const
 	{
 		BindIfNotBound();
 	#ifdef SHADER_UNIFORMS_NO_CACHE
@@ -343,7 +346,7 @@ namespace Apex {
 	#endif
 	}
 
-	void OpenGLShader::SetUniFloat2(const std::string & name, const glm::vec2 & value)
+	void OpenGLShader::SetUniFloat2(const std::string & name, const glm::vec2 & value) const
 	{
 		BindIfNotBound();
 	#ifdef SHADER_UNIFORMS_NO_CACHE
@@ -353,7 +356,7 @@ namespace Apex {
 	#endif
 	}
 
-	void OpenGLShader::SetUniFloat3(const std::string & name, const glm::vec3 & value)
+	void OpenGLShader::SetUniFloat3(const std::string & name, const glm::vec3 & value) const
 	{
 		BindIfNotBound();
 	#ifdef SHADER_UNIFORMS_NO_CACHE
@@ -363,7 +366,7 @@ namespace Apex {
 	#endif
 	}
 
-	void OpenGLShader::SetUniFloat4(const std::string & name, const glm::vec4 & value)
+	void OpenGLShader::SetUniFloat4(const std::string & name, const glm::vec4 & value) const
 	{
 		BindIfNotBound();
 	#ifdef SHADER_UNIFORMS_NO_CACHE
@@ -374,7 +377,7 @@ namespace Apex {
 	}
 
 	//////////     Float Array Types     /////////////
-	void OpenGLShader::SetUniFloat1v(const std::string & name, float values[], size_t count)
+	void OpenGLShader::SetUniFloat1v(const std::string & name, float values[], size_t count) const
 	{
 		BindIfNotBound();
 	#ifdef SHADER_UNIFORMS_NO_CACHE
@@ -384,7 +387,7 @@ namespace Apex {
 	#endif
 	}
 	
-	void OpenGLShader::SetUniFloat2v(const std::string & name, glm::vec2 values[], size_t count)
+	void OpenGLShader::SetUniFloat2v(const std::string & name, glm::vec2 values[], size_t count) const
 	{
 		BindIfNotBound();
 	#ifdef SHADER_UNIFORMS_NO_CACHE
@@ -394,7 +397,7 @@ namespace Apex {
 	#endif
 	}
 
-	void OpenGLShader::SetUniFloat3v(const std::string & name, glm::vec3 values[], size_t count)
+	void OpenGLShader::SetUniFloat3v(const std::string & name, glm::vec3 values[], size_t count) const
 	{
 		BindIfNotBound();
 	#ifdef SHADER_UNIFORMS_NO_CACHE
@@ -404,7 +407,7 @@ namespace Apex {
 	#endif
 	}
 
-	void OpenGLShader::SetUniFloat4v(const std::string & name, glm::vec4 values[], size_t count)
+	void OpenGLShader::SetUniFloat4v(const std::string & name, glm::vec4 values[], size_t count) const
 	{
 		BindIfNotBound();
 	#ifdef SHADER_UNIFORMS_NO_CACHE
@@ -417,7 +420,7 @@ namespace Apex {
 	//////////////////////////////////////////////////////////////
 	/////////////////      Matrix Types      /////////////////////
 	//////////////////////////////////////////////////////////////
-	void OpenGLShader::SetUniMat4(const std::string& name, const glm::mat4 & matrix)
+	void OpenGLShader::SetUniMat4(const std::string& name, const glm::mat4 & matrix) const
 	{
 		BindIfNotBound();
 	#ifdef SHADER_UNIFORMS_NO_CACHE
@@ -427,7 +430,7 @@ namespace Apex {
 	#endif
 	}
 
-	void OpenGLShader::SetUniMat4v(const std::string& name, glm::mat4 matrices[], size_t count)
+	void OpenGLShader::SetUniMat4v(const std::string& name, glm::mat4 matrices[], size_t count) const
 	{
 		BindIfNotBound();
 	#ifdef SHADER_UNIFORMS_NO_CACHE

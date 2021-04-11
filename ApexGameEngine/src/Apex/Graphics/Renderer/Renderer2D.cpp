@@ -22,11 +22,11 @@ namespace Apex {
 
 	struct Renderer2DData
 	{
-		const uint32_t maxQuads = 10000;
-		const uint32_t maxVertices = maxQuads * 4;
-		const uint32_t maxIndices = maxQuads * 6;
-		static const uint32_t maxTextureSlots = 32;
-		const uint32_t baseAvblTextureSlot = 1;
+		constexpr static const uint32_t MAX_QUADS = 10000;
+		constexpr static const uint32_t MAX_VERTICES = MAX_QUADS * 4;
+		constexpr static const uint32_t MAX_INDICES = MAX_QUADS * 6;
+		constexpr static const uint32_t MAX_TEXTURE_SLOTS = 32;
+		constexpr static const uint32_t BASE_TEXTURE_SLOT = 1;
 		
 		
 		Ref<VertexArray> quadVertexArray;
@@ -38,8 +38,8 @@ namespace Apex {
 		QuadVertex* quadBufferBase = nullptr;
 		QuadVertex* quadBufferPtr = nullptr;
 		
-		std::array<Ref<Texture>, maxTextureSlots> textureSlots;
-		uint32_t textureSlotIndex = baseAvblTextureSlot;
+		std::array<Ref<Texture>, MAX_TEXTURE_SLOTS> textureSlots;
+		uint32_t textureSlotIndex = BASE_TEXTURE_SLOT;
 		
 		Renderer2D::Stats stats;
 		
@@ -66,9 +66,9 @@ namespace Apex {
 		s_RenderData.quadVertexArray = VertexArray::Create();
 		
 		// Create vertex buffer (VBO), and set to VAO
-		s_RenderData.quadBufferBase = new QuadVertex[s_RenderData.maxVertices];
+		s_RenderData.quadBufferBase = new QuadVertex[Renderer2DData::MAX_VERTICES];
 		
-		s_RenderData.quadVertexBuffer = VertexBuffer::Create(s_RenderData.maxVertices * sizeof(QuadVertex));
+		s_RenderData.quadVertexBuffer = VertexBuffer::Create(Renderer2DData::MAX_VERTICES * sizeof(QuadVertex));
 		s_RenderData.quadVertexBuffer->SetLayout({
 			{ ShaderDataType::Float3, "a_Position" },
 			{ ShaderDataType::Float4, "a_Color" },
@@ -78,8 +78,8 @@ namespace Apex {
 		s_RenderData.quadVertexArray->AddVertexBuffer(s_RenderData.quadVertexBuffer);
 		
 		// Create index buffer (IBO), and set to VAO
-		uint32_t* quadIndices = new uint32_t[s_RenderData.maxIndices];
-		for (uint32_t i = 0, offset = 0; i < s_RenderData.maxIndices; i += 6, offset += 4) {
+		uint32_t* quadIndices = new uint32_t[Renderer2DData::MAX_INDICES];
+		for (uint32_t i = 0, offset = 0; i < Renderer2DData::MAX_INDICES; i += 6, offset += 4) {
 			quadIndices[i + 0] = offset + 0;
 			quadIndices[i + 1] = offset + 1;
 			quadIndices[i + 2] = offset + 2;
@@ -88,7 +88,7 @@ namespace Apex {
 			quadIndices[i + 4] = offset + 3;
 			quadIndices[i + 5] = offset + 0;
 		}
-		auto quadIB = IndexBuffer::Create(quadIndices, s_RenderData.maxIndices);
+		auto quadIB = IndexBuffer::Create(quadIndices, Renderer2DData::MAX_INDICES);
 		s_RenderData.quadVertexArray->AddIndexBuffer(quadIB);
 		delete[] quadIndices;
 		
@@ -130,7 +130,7 @@ namespace Apex {
 
 			layout(location = 0) out vec4 o_Color;
 
-			uniform sampler2D u_Textures[)" + std::to_string(s_RenderData.maxTextureSlots) + R"(];
+			uniform sampler2D u_Textures[)" + std::to_string(Renderer2DData::MAX_TEXTURE_SLOTS) + R"(];
 			//uniform float u_TilingFactor;
 
 			in vec3 v_Position;
@@ -147,12 +147,12 @@ namespace Apex {
 		s_RenderData.textureShader = Shader::Create("Quad-Texture", textureVertexSrc, textureFragmentSrc);
 		s_RenderData.textureShader->Bind();
 		
-		int textureUniforms[s_RenderData.maxTextureSlots];
-		for (auto i=0; i<s_RenderData.maxTextureSlots; i++) {
+		int textureUniforms[Renderer2DData::MAX_TEXTURE_SLOTS];
+		for (auto i=0; i<Renderer2DData::MAX_TEXTURE_SLOTS; i++) {
 			textureUniforms[i] = i;
 		}
 		
-		s_RenderData.textureShader->SetUniInt1v("u_Textures", textureUniforms, s_RenderData.maxTextureSlots);
+		s_RenderData.textureShader->SetUniInt1v("u_Textures", textureUniforms, Renderer2DData::MAX_TEXTURE_SLOTS);
 		
 		s_RenderData.textureSlots[0] = s_RenderData.whiteTexture;
 	}
@@ -162,18 +162,32 @@ namespace Apex {
 		//delete s_RenderData;
 		delete[] s_RenderData.quadBufferBase;
 	}
-
+	
+	void Renderer2D::BeginScene(const RenderCamera& camera, const glm::mat4& transform)
+	{
+		auto viewProj = camera.projection * glm::inverse(transform);
+		
+		s_RenderData.textureShader->Bind();
+		s_RenderData.textureShader->SetUniMat4("u_ViewProjection", viewProj);
+		
+		ResetBatch();
+	}
+	
 	void Renderer2D::BeginScene(const Camera& camera)
 	{
 		s_RenderData.textureShader->Bind();
 		s_RenderData.textureShader->SetUniMat4("u_ViewProjection", camera.GetViewProjectionMatrix());
 		
-		// Reset Batch
+		ResetBatch();
+	}
+	
+	void Renderer2D::ResetBatch()
+	{
 		s_RenderData.quadIndexCount = 0;
 		s_RenderData.quadBufferPtr = s_RenderData.quadBufferBase;
-		s_RenderData.textureSlotIndex = s_RenderData.baseAvblTextureSlot;
+		s_RenderData.textureSlotIndex = Renderer2DData::BASE_TEXTURE_SLOT;
 	}
-
+	
 	void Renderer2D::EndScene()
 	{
 		uint32_t dataSize = (uint8_t*)s_RenderData.quadBufferPtr - (uint8_t*)s_RenderData.quadBufferBase;
@@ -181,13 +195,13 @@ namespace Apex {
 		
 		FlushBatch();
 	}
-	
+
 	void Renderer2D::FlushBatch()
 	{
 		/*static bool firstRun = true;
 		if (firstRun) {
 			APEX_CORE_DEBUG("textureSlots:");
-			for (auto i=0; i < s_RenderData.maxTextureSlots; i++)
+			for (auto i=0; i < Renderer2DData::MAX_TEXTURE_SLOTS; i++)
 				APEX_CORE_DEBUG("slot: {0} | id: {1}", i, s_RenderData.textureSlots[i] ? s_RenderData.textureSlots[i]->GetID() : 0);
 			auto count = 0;
 			for (auto it=s_RenderData.quadBufferBase; it < s_RenderData.quadBufferPtr; it+=4)
@@ -205,7 +219,7 @@ namespace Apex {
 		// Statistics
 		s_RenderData.stats.drawCalls++;
 	}
-
+	
 	// 2D coords, flat color
 	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const glm::vec4& color)
 	{
@@ -268,6 +282,12 @@ namespace Apex {
 	// Transform matrix, flat color
 	void Renderer2D::DrawQuad(const glm::mat4& transform, const glm::vec4& color)
 	{
+		if (s_RenderData.quadIndexCount >= Renderer2DData::MAX_INDICES)
+		{
+			EndScene();
+			ResetBatch();
+		}
+		
 		constexpr float whiteTextureIndex = 0.f;
 		
 		for (uint32_t i=0; i<4; i++) {
@@ -287,11 +307,17 @@ namespace Apex {
 	// Transform matrix, textured
 	void Renderer2D::DrawQuad(const glm::mat4& transform, const Ref<Texture2D>& texture, float tilingFactor, const glm::vec4& tintColor)
 	{
+		if (s_RenderData.quadIndexCount >= Renderer2DData::MAX_INDICES)
+		{
+			EndScene();
+			ResetBatch();
+		}
+		
 		constexpr glm::vec4 color = { 1.f, 1.f, 1.f, 1.f };
 		
 		float textureIndex = 0.f;
 		
-		for (uint32_t i = s_RenderData.baseAvblTextureSlot; i < s_RenderData.textureSlotIndex; i++) {
+		for (uint32_t i = s_RenderData.BASE_TEXTURE_SLOT; i < s_RenderData.textureSlotIndex; i++) {
 			if (s_RenderData.textureSlots[i]->GetID() == texture->GetID()) {
 				textureIndex = (float)i;
 				break;

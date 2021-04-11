@@ -7,6 +7,7 @@
 namespace Apex {
 
 	// Forward Declarations
+	struct RenderCamera;
 	class Camera;
 	class VertexArray;
 	class Texture2D;
@@ -23,9 +24,9 @@ namespace Apex {
 		static void Init();
 		static void Shutdown();
 		
+		static void BeginScene(const RenderCamera& camera, const glm::mat4& transform);
 		static void BeginScene(const Camera& camera);
 		static void EndScene();
-		static void FlushBatch();
 		
 		// Primitives
 		static void DrawQuad(const glm::vec2& position, const glm::vec2& size, const glm::vec4& color); // 2D coords, flat color
@@ -53,6 +54,10 @@ namespace Apex {
 		};
 		static void ResetStats();
 		static Stats GetStats();
+	
+	private:
+		static void ResetBatch();
+		static void FlushBatch();
 		
 	};
 

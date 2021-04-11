@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Apex/Core.h"
+#include "Apex/Core/Core.h"
 
 #ifdef APEX_DEBUG
 #define SPDLOG_ACTIVE_LEVEL SPDLOG_LEVEL_TRACE

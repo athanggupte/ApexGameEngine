@@ -16,8 +16,8 @@ namespace Apex {
 		virtual inline const std::vector<std::string>& GetLoadedTexturePaths() const { return this->m_LoadedTexturePaths; }
 
 		virtual inline const glm::mat4& GetModelMatrix() const { return m_ModelMatrix; }
-		virtual inline void SetModelMatrix(const glm::mat4& modelMatrix) { m_ModelMatrix = modelMatrix; }
-		virtual inline void ApplyModelMatrix(const glm::mat4& modelMatrix) { m_ModelMatrix = modelMatrix * m_ModelMatrix; }
+		virtual inline void SetModelMatrix(const glm::mat4& modelMatrix) const { m_ModelMatrix = modelMatrix; }
+		virtual inline void ApplyModelMatrix(const glm::mat4& modelMatrix) const { m_ModelMatrix = modelMatrix * m_ModelMatrix; }
 
 		static Ref<Model> LoadModel(const std::string& path, bool loadTextures = true);
 
@@ -30,7 +30,7 @@ namespace Apex {
 		std::string m_Directory;
 		std::unordered_map<std::string, Ref<Mesh>> m_Meshes;
 		std::vector<std::string> m_LoadedTexturePaths;
-		glm::mat4 m_ModelMatrix = glm::mat4(1.0f);
+		mutable glm::mat4 m_ModelMatrix = glm::mat4(1.0f);
 	};
 
 }
