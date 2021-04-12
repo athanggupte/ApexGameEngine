@@ -1,7 +1,7 @@
 #pragma once
 
 #include "apex_pch.h"
-#include "Apex/Core.h"
+#include "Apex/Core/Core.h"
 
 namespace Apex {
 
@@ -25,10 +25,15 @@ namespace Apex {
 	};
 
 
-#define EVENT_CLASS_TYPE(type) static EventType GetStaticType() { return EventType::##type; }\
+#ifdef APEX_PLATFORM_WINDOWS
+	#define EVENT_CLASS_TYPE(type) static EventType GetStaticType() { return EventType::##type; }\
 								virtual EventType GetEventType() const override { return GetStaticType(); }\
 								virtual const char* GetName() const override { return #type; }
-
+#elif defined(APEX_PLATFORM_LINUX)
+	#define EVENT_CLASS_TYPE(type) static EventType GetStaticType() { return EventType::type; }\
+								virtual EventType GetEventType() const override { return GetStaticType(); }\
+								virtual const char* GetName() const override { return #type; }
+#endif
 #define EVENT_CLASS_CATEGORY(category) virtual int GetCategoryFlags() const override { return category; }
 
 

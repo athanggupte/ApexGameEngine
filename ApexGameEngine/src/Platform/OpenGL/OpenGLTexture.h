@@ -2,13 +2,15 @@
 
 #include "Apex/Graphics/RenderPrimitives/Texture.h"
 
+#include <glad/glad.h>
+
 namespace Apex {
 
 	class OpenGLTexture2D : public Texture2D
 	{
 	public:
-		OpenGLTexture2D(uint32_t width, uint32_t height, const std::string& name);
-		OpenGLTexture2D(const std::string& path);
+		OpenGLTexture2D(const std::string& path, bool useHDR);
+		OpenGLTexture2D(uint32_t width, uint32_t height, const TextureSpec& spec, const std::string& name);
 		virtual ~OpenGLTexture2D();
 
 		inline virtual uint32_t GetWidth() const override { return m_Width; }
@@ -20,12 +22,22 @@ namespace Apex {
 
 		virtual void Bind(uint32_t slot = 0) const override;
 		virtual void BindImage(uint32_t unit, bool read, bool write) const override;
+		
+		virtual void Resize(uint32_t width, uint32_t height) override;
+		virtual void SetData(void* data, uint32_t size) override;
+		virtual const TextureSpec& GetSpec() const override { return m_Specification; }
 	private:
 		std::string m_Path;
 		uint32_t m_Width, m_Height;
 		uint32_t m_RendererID;
+		GLenum m_InternalFormat, m_AccessFormat, m_DataType;
+		uint32_t m_PixelSize;
+		
+		bool m_Mutable = true;
+		TextureSpec m_Specification;
 	};
 
+#ifdef SEPARATE_HDR
 	class OpenGLTexture2D_HDR : public Texture2D_HDR
 	{
 	public:
@@ -42,16 +54,20 @@ namespace Apex {
 
 		virtual void Bind(uint32_t slot = 0) const override;
 		virtual void BindImage(uint32_t unit, bool read, bool write) const override;
+	protected:
+		virtual void SetData(void* data, uint32_t size) override {}
+		
 	private:
 		std::string m_Path;
 		uint32_t m_Width, m_Height;
 		uint32_t m_RendererID;
 	};
+#endif
 
 	class OpenGLTextureDepth2D : public TextureDepth2D
 	{
 	public:
-		OpenGLTextureDepth2D();
+		OpenGLTextureDepth2D(uint32_t width, uint32_t height);
 		virtual ~OpenGLTextureDepth2D();
 
 		inline virtual uint32_t GetWidth() const override { return m_Width; }
@@ -60,14 +76,19 @@ namespace Apex {
 		inline virtual uint32_t GetID() const override { return m_RendererID; }
 
 		virtual void Bind(uint32_t slot = 0) const override;
+		virtual void Resize(uint32_t width, uint32_t height) override;
+	protected:
+		virtual void SetData(void* data, uint32_t size) override {}
+		
+	private:
+		virtual const std::string& GetPath() const { return m_Path; }
 
 	private:
-		virtual const std::string& GetPath() const { return ""; }
-
-	private:
+		const std::string m_Path = "<N/A>";
 		uint32_t m_Width, m_Height;
 		uint32_t m_RendererID;
 	};
+	
 #ifdef IMAGE_STORE_CLASS
 	class OpenGLImageStore2D : public ImageStore2D
 	{

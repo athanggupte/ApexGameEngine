@@ -11,23 +11,46 @@ outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
 -- Include directories relative to the root (solution) directory
 IncludeDirs = {}
-IncludeDirs["spdlog"] = "ApexGameEngine/vendor/spdlog/include"
-IncludeDirs["GLFW"] = "ApexGameEngine/vendor/GLFW/include"
-IncludeDirs["Glad"] = "ApexGameEngine/vendor/Glad/include"
-IncludeDirs["ImGui"] = "ApexGameEngine/vendor/imgui"
-IncludeDirs["glm"] = "ApexGameEngine/vendor/glm"
-IncludeDirs["stb_image"] = "ApexGameEngine/vendor/stb_image"
-IncludeDirs["Assimp"] = "ApexGameEngine/vendor/Assimp/src/include/"
+IncludeDirs["spdlog"] = "ApexGameEngine/vendor/spdlog/include/"
+IncludeDirs["GLFW"] = "ApexGameEngine/vendor/GLFW/include/"
+IncludeDirs["Glad"] = "ApexGameEngine/vendor/Glad/include/"
+IncludeDirs["ImGui"] = "ApexGameEngine/vendor/imgui/"
+IncludeDirs["glm"] = "ApexGameEngine/vendor/glm/"
+IncludeDirs["stb_image"] = "ApexGameEngine/vendor/stb_image/"
+IncludeDirs["Assimp"] = "ApexGameEngine/vendor/Assimp/include/"
 IncludeDirs["irrKlang"] = "ApexGameEngine/vendor/irrKlang/include/"
+IncludeDirs["entt"] = "ApexGameEngine/vendor/entt/single_include/"
+IncludeDirs["ApexIK"] = "ApexGameEngine/modules/ApexIK/ApexIK/include/"
 
 -- DLLs
 DLLs = {}
 DLLs["Assimp"] = "assimp-vc142-mtd"
-DLLs["irrKlang"] = "irrKlang"
 
+-- Platform library linkages
+WinLibs = { "opengl32.lib", "assimp-vc142-mtd", "irrKlang" }
+-- WinLibs["OpenGL"] = "opengl32.lib"
+-- WinLibs["Assimp"] = "%{DLLs.Assimp}"
+-- WinLibs["irrKlang"] = "irrKlang"
+
+WinLibDirs = { "ApexGameEngine/vendor/Assimp/build/code/Debug", "ApexGameEngine/vendor/irrKlang/lib" }
+-- WinLibDirs["Assimp"] = "ApexGameEngine/vendor/Assimp/build/code/Debug"
+-- WinLibDirs["irrKlang"] = "ApexGameEngine/vendor/irrKlang/lib"
+
+LinuxLibs = { "GL", "dl", "m", "pthread", "uuid", "assimp", "IrrKlang" }
+-- LinuxLibs["OpenGL"] = "GL"
+-- LinuxLibs["Assimp"] = "assimp"
+-- LinuxLibs["irrKlang"] = "IrrKlang"
+
+LinuxLibDirs = { "ApexGameEngine/vendor/Assimp/build/bin", "ApexGameEngine/vendor/irrKlang/bin/linux-gcc-64" }
+-- LinuxLibDirs["Assimp"] = "ApexGameEngine/vendor/Assimp/build/bin"
+-- LinuxLibDirs["irrKlang"] = "ApexGameEngine/vendor/irrKlang/bin/linux-gcc-64"
+
+-- Include other premake files
 include "ApexGameEngine/vendor/GLFW"
 include "ApexGameEngine/vendor/Glad"
 include "ApexGameEngine/vendor/imgui"
+
+include "ApexGameEngine/modules/ApexIK"
 
 
 -- Apex Game Engine Project
@@ -56,6 +79,7 @@ project "ApexGameEngine"
 
 	includedirs {
 		"%{prj.name}/src",
+		-- External Dependencies
 		"%{IncludeDirs.spdlog}",
 		"%{IncludeDirs.GLFW}",
 		"%{IncludeDirs.Glad}",
@@ -64,11 +88,13 @@ project "ApexGameEngine"
 		"%{IncludeDirs.stb_image}",
 		"%{prj.name}/vendor/Assimp/build/include",
 		"%{IncludeDirs.Assimp}",
-		"%{IncludeDirs.irrKlang}"
+		"%{IncludeDirs.irrKlang}",
+		"%{IncludeDirs.entt}",
+		-- Modules
+		"%{IncludeDirs.ApexIK}",
 	}
 
 	libdirs {
-		"ApexGameEngine/vendor/Assimp/build/code/Debug",
 		--"ApexGameEngine/vendor/Assimp/build/contrib/zlib/Debug",
 		--"ApexGameEngine/vendor/Assimp/build/contrib/irrXML/Debug"
 		"ApexGameEngine/vendor/irrKlang/lib"
@@ -78,11 +104,9 @@ project "ApexGameEngine"
 		"GLFW",
 		"Glad",
 		"ImGui",
-		"opengl32.lib",
-		"%{DLLs.Assimp}",
-		--"zlibd",
+		"ApexIK",
+		--"zlibd",4"
 		--"IrrXMLd",
-		"%{DLLs.irrKlang}"
 	}
 
 	filter "system:windows"
@@ -94,7 +118,22 @@ project "ApexGameEngine"
 			"APEX_BUILD_DLL",
 			"GLFW_INCLUDE_NONE"
 		}
+		
+		libdirs (WinLibDirs)
+		links (WinLibs)
+        
+	filter "system:linux"
+		systemversion "latest"
 
+		defines {
+			"APEX_PLATFORM_LINUX",
+-- 			"APEX_BUILD_DLL",
+			"GLFW_INCLUDE_NONE"
+		}
+		
+		libdirs (LinuxLibDirs)
+		links (LinuxLibs)
+		
 	filter "configurations:Debug"
 		defines {
 			"APEX_DEBUG", "APEX_ENABLE_ASSERTS", "APEX_PROFILER_ENABLE"
@@ -123,6 +162,11 @@ project "ApexEditor"
 	cppdialect "C++17"
 	staticruntime "on"
 
+	newoption {
+		trigger = "editor-tools",
+		description = "Build editor tools like Node Graph"
+	}
+		
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
 
@@ -130,26 +174,33 @@ project "ApexEditor"
 		"%{prj.name}/src/**.h",
 		"%{prj.name}/src/**.cpp"
 	}
+    
+	configuration "not editor-tools"
+		removefiles {
+			"%{prj.name}/src/EditorTools/**.h",
+			"%{prj.name}/src/EditorTools/**.cpp"
+		}
 
 	includedirs {
 		"ApexGameEngine/src",
+		-- External Dependencies
 		"%{IncludeDirs.spdlog}",
 		"%{IncludeDirs.ImGui}",
 		"%{IncludeDirs.glm}",
 		"ApexGameEngine/vendor/Assimp/build/include",
 		"%{IncludeDirs.Assimp}",
-		"%{IncludeDirs.irrKlang}"
-	}
-	
-	libdirs {
-		"ApexGameEngine/vendor/Assimp/build/code/Debug",
-		"ApexGameEngine/vendor/irrKlang/lib"
+		"%{IncludeDirs.irrKlang}",
+		"%{IncludeDirs.entt}",
+		-- Modules
+		"%{IncludeDirs.ApexIK}"
 	}
 
 	links {
 		"ApexGameEngine",
-		"%{DLLs.Assimp}",
-		"%{DLLs.irrKlang}"
+		"GLFW",
+		"Glad",
+		"ImGui",
+		"ApexIK",
 	}
 
 	filter "system:windows"
@@ -159,7 +210,24 @@ project "ApexEditor"
 		defines {
 			"APEX_PLATFORM_WINDOWS"
 		}
+        
+		libdirs (WinLibDirs)
+		links (WinLibs)
+		
+	filter "system:linux"
+		systemversion "latest"
 
+		defines {
+			"APEX_PLATFORM_LINUX"
+		}
+		
+		libdirs (LinuxLibDirs)
+		links (LinuxLibs)
+
+		postbuildcommands {
+			"echo \"cd $(realpath %{cfg.buildtarget.directory}) && export LD_LIBRARY_PATH=/home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/Assimp/build/bin:/home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/irrKlang/bin/linux-gcc-64/ && ./%{prj.name}\" > %{cfg.buildtarget.abspath}.sh"
+		}
+		
 	filter "configurations:Debug"
 		defines {
 			"APEX_DEBUG", "APEX_ENABLE_ASSERTS"
@@ -193,23 +261,24 @@ project "Sandbox"
 
 	includedirs {
 		"ApexGameEngine/src",
+		-- External Dependencies
 		"%{IncludeDirs.spdlog}",
 		"%{IncludeDirs.ImGui}",
 		"%{IncludeDirs.glm}",
 		"ApexGameEngine/vendor/Assimp/build/include",
 		"%{IncludeDirs.Assimp}",
-		"%{IncludeDirs.irrKlang}"
-	}
-	
-	libdirs {
-		"ApexGameEngine/vendor/Assimp/build/code/Debug",
-		"ApexGameEngine/vendor/irrKlang/lib"
+		"%{IncludeDirs.irrKlang}",
+		"%{IncludeDirs.entt}",
+		-- Modules
+		"%{IncludeDirs.ApexIK}"
 	}
 
 	links {
 		"ApexGameEngine",
-		"%{DLLs.Assimp}",
-		"%{DLLs.irrKlang}"
+		"GLFW",
+		"Glad",
+		"ImGui",
+		"ApexIK",
 	}
 
 	filter "system:windows"
@@ -219,7 +288,24 @@ project "Sandbox"
 		defines {
 			"APEX_PLATFORM_WINDOWS"
 		}
+		
+		libdirs (WinLibDirs)
+		links (WinLibs)
 
+	filter "system:linux"
+		systemversion "latest"
+
+		defines {
+			"APEX_PLATFORM_LINUX"
+		}
+		
+		libdirs (LinuxLibDirs)
+		links (LinuxLibs)
+        
+		postbuildcommands {
+			"echo \"cd $(realpath %{cfg.buildtarget.directory}) && export LD_LIBRARY_PATH=/home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/Assimp/build/bin:/home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/irrKlang/bin/linux-gcc-64/ && ./%{prj.name}\" > %{cfg.buildtarget.abspath}.sh"
+		}
+		
 	filter "configurations:Debug"
 		defines {
 			"APEX_DEBUG", "APEX_ENABLE_ASSERTS"

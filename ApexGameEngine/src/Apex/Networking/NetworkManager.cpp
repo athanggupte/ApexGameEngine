@@ -1,3 +1,5 @@
+#ifdef APEX_PLATFORM_WINDOWS
+
 #include <apex_pch.h>
 #include "NetworkManager.h"
 
@@ -67,3 +69,5 @@ namespace Apex {
 	}
 
 }
+
+#endif

@@ -4,11 +4,87 @@ layout(local_size_x = 1, local_size_y = 1, local_size_z = 1) in;
 
 layout(binding = 0) uniform writeonly image2D outImage;
 
+
+float rand2D(in vec2 coords)
+{
+	return fract(sin(dot(coords.xy ,vec2(12.9898,78.233))) * 123324.25423/*43758.5453*/);
+}
+
+float interpolate(in float a, in float b, in float x)
+{
+	return a + smoothstep(0.0, 1.0, x) * (b - a);
+}
+
+float interpolatedNoise2D(in vec2 pos)
+{
+	vec2 iPos = floor(pos);
+	vec2 fPos = fract(pos);
+	
+	float v1 = rand2D(iPos);
+	float v2 = rand2D(iPos + vec2(1.0, 0.0));
+	float v3 = rand2D(iPos + vec2(0.0, 1.0));
+	float v4 = rand2D(iPos + vec2(1.0, 1.0));
+	
+	float i1 = interpolate(v1, v3, fPos.y);
+	float i2 = interpolate(v2, v4, fPos.y);
+	
+	return interpolate(i1, i2, fPos.x);
+}
+
+float interpolatedNoiseWl2D(in vec2 coord, in float wavelength)
+{
+	return interpolatedNoise2D(coord / wavelength);
+}
+
+float perlinNoise2D(in vec2 coord, in float maxWavelength, in int nOctaves, in float weight)
+{
+	int octave = nOctaves;
+	float wavelength = maxWavelength;
+	float noize = interpolatedNoiseWl2D(coord, maxWavelength) * weight;
+	
+	while (--octave > 0) {
+		wavelength /= 2;
+		noize += interpolatedNoiseWl2D(coord, wavelength) * pow(weight, nOctaves - octave + 1);
+	}
+	return noize;
+}
+
+float dotNoise2D(in vec2 pos, in float maxDotSize, in float density)
+{
+	vec2 iPos = floor(pos);
+	vec2 fPos = fract(pos);
+	
+	if (rand2D(iPos + vec2(1.0, 1.0)) > density)
+		return 0.0;
+	
+	float xOffset = rand2D(iPos) - 0.5;
+	float yOffset = rand2D(iPos + vec2(1.0, 0.0)) - 0.5;
+	float dotSize = 0.5 * maxDotSize * max(0.25, rand2D(iPos + vec2(0.0, 1.0)));
+	
+	vec2 truePos = 0.5 * (1.0 - 2.0 * dotSize) * vec2(xOffset, yOffset);
+	
+	float dist = length(truePos - fPos);
+	return 1.0 - smoothstep(0.3 * dotSize, 1.0 * dotSize, dist);
+}
+
+float dotNoiseWl2D(in vec2 coord, in float wavelength, in float maxDotSize, in float density)
+{
+	return dotNoise2D(coord / wavelength, maxDotSize, density);
+}
+
+float equipotentialFilter(in float value, in float rangeMin, in float rangeMax)
+{
+	return smoothstep(rangeMin, rangeMax, value) * (1.0 - smoothstep(1.0 - rangeMax, 1.0 - rangeMin, value));
+}
+
 void main()
 {
 	ivec2 pCoords = ivec2(gl_GlobalInvocationID.xy);
 
-	vec3 outColor = vec3(1.0) + noise3(gl_GlobalInvocationID.xyz /*/ vec3(256.0)*/);
-
+	//vec3 outColor = vec3(1.0) * smoothstep(0.4, 0.6, dotNoise2D(gl_GlobalInvocationID.xy, 1.0, 0.05));	
+	vec3 outColor = vec3(1.0) * (1.0 - equipotentialFilter(interpolatedNoiseWl2D(gl_GlobalInvocationID.xy, 16.0), 0.45, 0.5));
+	//vec3 outColor = vec3(1.0) * perlinNoise2D(gl_GlobalInvocationID.xy, 32.0, 5, 1.0) / 5;
+	//vec3 outColor = vec3(1.0) * equipotentialFilter(perlinNoise2D(gl_GlobalInvocationID.xy, 32.0, 5, 1.0), 0.5, 0.45);
+	
 	imageStore(outImage, pCoords, vec4(outColor, 1.0));
 }

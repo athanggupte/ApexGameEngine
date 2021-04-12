@@ -3,7 +3,7 @@
 #include "Apex/Graphics/RenderPrimitives/Texture.h"
 #include "Apex/Graphics/RenderPrimitives/VertexArray.h"
 #include "Apex/Graphics/RenderPrimitives/Shader.h"
-#include "Apex/Graphics/RenderPrimitives/FrameBuffer.h"
+#include "Apex/Graphics/RenderPrimitives/Framebuffer.h"
 
 namespace Apex {
 
@@ -12,14 +12,14 @@ namespace Apex {
 	public:
 		Blur();
 
-		Ref<Texture> GaussianBlur(int amount, const Ref<Texture>& inputTexture, const Ref<VertexArray>& vao);
+		Ref<Texture> GaussianBlur(int amount, const Ref<Texture>& inputTexture);
 
 	private:
 		Ref<Shader> m_BlurShader;
-		Ref<Texture2D_HDR> m_VerBlurTex;
-		Ref<Texture2D_HDR> m_HorBlurTex;
-		Ref<FrameBuffer> m_VerBlurFBO;
-		Ref<FrameBuffer> m_HorBlurFBO;
+		Ref<Texture2D> m_VerBlurTex;
+		Ref<Texture2D> m_HorBlurTex;
+		Ref<Framebuffer> m_VerBlurFBO;
+		Ref<Framebuffer> m_HorBlurFBO;
 	};
 
 }

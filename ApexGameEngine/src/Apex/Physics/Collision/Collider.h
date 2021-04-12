@@ -28,7 +28,7 @@ namespace Apex {
 	class Collider
 	{
 	public:
-		static enum class ColliderType
+		enum class ColliderType
 		{
 			LINE = 1,
 			AABB = 2, OBB,
@@ -70,7 +70,7 @@ namespace Apex {
 
 		void SetCenter(const glm::vec2& center) { m_Center = center; }
 
-		const std::pair<glm::vec2, glm::vec2>& GetCorners() const { return { {m_Center.x - m_HalfDimensions.x, m_Center.y + m_HalfDimensions.y}, {m_Center.x + m_HalfDimensions.x, m_Center.y - m_HalfDimensions.y} }; }
+		const std::pair<glm::vec2, glm::vec2> GetCorners() const { return { {m_Center.x - m_HalfDimensions.x, m_Center.y + m_HalfDimensions.y}, {m_Center.x + m_HalfDimensions.x, m_Center.y - m_HalfDimensions.y} }; }
 	private:
 		glm::vec2 m_Center, m_HalfDimensions;
 	};
@@ -94,7 +94,7 @@ namespace Apex {
 
 	class CollisionCheck {
 	public:
-		static bool CheckCollisionLineLine(const Ref<LineCollider>& col1, const Ref<LineCollider>& col2) {}
+		static bool CheckCollisionLineLine(const Ref<LineCollider>& col1, const Ref<LineCollider>& col2) { return false; }
 		static bool CheckCollisionLineAABB(const Ref<LineCollider>& col1, const Ref<AABBCollider>& col2);
 		static bool CheckCollisionAABBAABB(const Ref<AABBCollider>& col1, const Ref<AABBCollider>& col2);
 		static bool CheckCollisionAABBCircle(const Ref<AABBCollider>& col1, const Ref<CircleCollider>& col2);

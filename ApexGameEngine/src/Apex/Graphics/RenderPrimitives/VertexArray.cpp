@@ -12,7 +12,7 @@ namespace Apex {
 		switch (Renderer::GetAPI())
 		{
 			case RendererAPI::API::None:	APEX_CORE_CRITICAL("No Rendering API selected"); return nullptr;
-			case RendererAPI::API::OpenGL:	return std::make_shared<OpenGLVertexArray>();
+			case RendererAPI::API::OpenGL:	return CreateRef<OpenGLVertexArray>();
 
 			default:				APEX_CORE_CRITICAL("Unknown Rendering API"); return nullptr;
 		}

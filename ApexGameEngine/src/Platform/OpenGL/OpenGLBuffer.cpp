@@ -8,11 +8,18 @@ namespace Apex {
 	//////////////////////////////////////////////////////////////////////
 	/*-------------------------Vertex Buffer----------------------------*/
 	//////////////////////////////////////////////////////////////////////
-	OpenGLVertexBuffer::OpenGLVertexBuffer(float * vertices, size_t size)
+	OpenGLVertexBuffer::OpenGLVertexBuffer(uint32_t size)
 		: m_Count(size)
 	{
-		//glCreateBuffers(1, &m_RendererID);
-		glGenBuffers(1, &m_RendererID);
+		glCreateBuffers(1, &m_RendererID);
+		glBindBuffer(GL_ARRAY_BUFFER, m_RendererID);
+		glBufferData(GL_ARRAY_BUFFER, size, nullptr, GL_DYNAMIC_DRAW);
+	}
+	
+	OpenGLVertexBuffer::OpenGLVertexBuffer(float * vertices, uint32_t size)
+		: m_Count(size)
+	{
+		glCreateBuffers(1, &m_RendererID);
 		glBindBuffer(GL_ARRAY_BUFFER, m_RendererID);
 		glBufferData(GL_ARRAY_BUFFER, size, vertices, GL_STATIC_DRAW);
 	}
@@ -31,17 +38,21 @@ namespace Apex {
 	{
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 	}
+	
+	void OpenGLVertexBuffer::SetData(const void* data, uint32_t size)
+	{
+		glBindBuffer(GL_ARRAY_BUFFER, m_RendererID);
+		glBufferSubData(GL_ARRAY_BUFFER, 0, size, data);
+	}
 
 	//////////////////////////////////////////////////////////////////////
 	/*-------------------------Index Buffer-----------------------------*/
 	//////////////////////////////////////////////////////////////////////
-	OpenGLIndexBuffer::OpenGLIndexBuffer(uint32_t * indices, uint32_t count)
+	OpenGLIndexBuffer::OpenGLIndexBuffer(uint32_t* indices, uint32_t count)
 		: m_Count(count)
 	{
-		//glCreateBuffers(1, &m_RendererID);
-		glGenBuffers(1, &m_RendererID);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_RendererID);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_Count * sizeof(uint32_t), indices, GL_STATIC_DRAW);
+		glCreateBuffers(1, &m_RendererID);
+		glNamedBufferData(m_RendererID, m_Count * sizeof(uint32_t), indices, GL_STATIC_DRAW);
 	}
 
 	OpenGLIndexBuffer::~OpenGLIndexBuffer()

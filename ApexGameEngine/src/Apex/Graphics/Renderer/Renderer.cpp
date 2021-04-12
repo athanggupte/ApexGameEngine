@@ -1,6 +1,12 @@
 #include "apex_pch.h"
 #include "Renderer.h"
 
+#include "RenderCommands.h"
+#include "Apex/Core/Camera.h"
+#include "Apex/Graphics/RenderPrimitives/VertexArray.h"
+#include "Apex/Graphics/RenderPrimitives/Shader.h"
+#include "Apex/Graphics/Model/Model.h"
+
 namespace Apex {
 
 	Renderer::SceneData* Renderer::s_SceneData = new Renderer::SceneData;
@@ -11,7 +17,7 @@ namespace Apex {
 		APEX_CORE_TRACE("Apex::Renderer initialized successfully!");
 	}
 
-	void Renderer::BeginScene(Camera& camera)
+	void Renderer::BeginScene(const Camera& camera)
 	{
 		s_SceneData->ViewProjectionMatrix = camera.GetViewProjectionMatrix();
 	}
@@ -42,7 +48,7 @@ namespace Apex {
 		RenderCommands::DrawInstanced(vertexArray, count);
 	}
 
-	void Renderer::SubmitModel(const Ref<Shader>& shader, const Ref<Model>& model, const glm::mat4 & modelMatrix)
+	/*void Renderer::SubmitModel(const Ref<Shader>& shader, const Ref<Model>& model, const glm::mat4 & modelMatrix)
 	{
 		model->ApplyModelMatrix(modelMatrix);
 		shader->Bind();
@@ -55,7 +61,7 @@ namespace Apex {
 				//APEX_CORE_INFO("Mesh textures ->");
 				for (auto[name, texture] : mesh->GetTextures()) {
 					//APEX_CORE_INFO("{0} : {1} : {2}", name, texture->GetPath(), i);
-					shader->SetUniInt("u_" + name, i);
+					shader->SetUniInt1("u_" + name, i);
 					texture->Bind(i);
 					i++;
 				}
@@ -63,8 +69,9 @@ namespace Apex {
 				RenderCommands::DrawIndexed(mesh->GetVAO());
 			}
 		}
-	}
+	}*/
 
+#if 0
 	/*--------------------------------------------------------------------------------------------------*/
 	void Renderer::SubmitPostProcess(const Ref<Shader>& shader, const Ref<VertexArray>& vertexArray)
 	{
@@ -73,5 +80,11 @@ namespace Apex {
 		RenderCommands::Draw(vertexArray);
 	}
 	/*--------------------------------------------------------------------------------------------------*/
+#endif
 
+	void Renderer::Shutdown()
+	{
+		delete s_SceneData;
+	}
+	
 }

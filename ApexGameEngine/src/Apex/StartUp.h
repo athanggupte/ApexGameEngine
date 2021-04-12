@@ -1,6 +1,6 @@
 #pragma once
 
-#ifdef APEX_PLATFORM_WINDOWS
+//#ifdef APEX_PLATFORM_WINDOWS
 
 extern Apex::Application* Apex::CreateApplication();
 
@@ -18,25 +18,27 @@ int main(int argc, char** argv)
 	Apex::PhysicsManager::Init();
 	// ...
 	*/
-	Apex::AssetManager::Init();
-
+	
 	APEX_CORE_INFO("Welcome to Apex Game Engine !");
+	
+	Apex::AssetManager::Init();
+	Apex::Random::Init();
 
-	APEX_PROFILE_BEGIN_SESSION("StartUp", "ApexGameEngineProfile-StartUp.json");
+	//APEX_PROFILE_BEGIN_SESSION("StartUp", "ApexGameEngineProfile-StartUp.json");
 	auto app = Apex::CreateApplication();
-	APEX_PROFILE_END_SESSION();
+	//APEX_PROFILE_END_SESSION();
 
 	Apex::Timer::InitTimer();
 
-	APEX_PROFILE_BEGIN_SESSION("Runtime", "ApexGameEngineProfile-Runtime.json");
+	//APEX_PROFILE_BEGIN_SESSION("Runtime", "ApexGameEngineProfile-Runtime.json");
 	app->Run();
-	APEX_PROFILE_END_SESSION();
+	//APEX_PROFILE_END_SESSION();
 
-	APEX_PROFILE_BEGIN_SESSION("ShutDown", "ApexGameEngineProfile-ShutDown.json");
+	//APEX_PROFILE_BEGIN_SESSION("ShutDown", "ApexGameEngineProfile-ShutDown.json");
 	delete app;
-	APEX_PROFILE_END_SESSION();
+	//APEX_PROFILE_END_SESSION();
 
 	return 0;
 }
 
-#endif
+//#endif

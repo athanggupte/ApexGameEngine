@@ -3,10 +3,13 @@
 
 #include "Apex/Core/Log.h"
 #include "Apex/Core/Input/Input.h"
+#include "Apex/Graphics/Renderer/RenderCommands.h"
 #include "Apex/Graphics/Renderer/Renderer.h"
+#include "Apex/Graphics/Renderer/Renderer2D.h"
+#include "Apex/Graphics/PostProcessing/PostProcess.h"
 
 //#include <GLFW/glfw3.h>
-#include <glad/glad.h>
+//#include <glad/glad.h>
 
 namespace Apex {
 
@@ -24,15 +27,19 @@ namespace Apex {
 		m_Window->SetVSync(true);
 
 		Renderer::Init();
+		Renderer2D::Init();
+		PostProcess::Init();
 
 		m_ImGuiLayer = new ImGuiLayer();
 		PushOverlay(m_ImGuiLayer);
-
 	}
 
 
 	Application::~Application()
 	{
+		Renderer::Shutdown();
+		Renderer2D::Shutdown();
+		PostProcess::Shutdown();
 	}
 
 	void Application::Run()
@@ -56,8 +63,6 @@ namespace Apex {
 			//if (!m_Minimized) {
 			m_Window->OnUpdate();
 			//}
-			GLenum error = glGetError();
-			if (error != GL_NO_ERROR) APEX_CORE_ERROR("[OpenGL] :: {0}", error);
 		}
 
 	}
@@ -74,13 +79,6 @@ namespace Apex {
 		EventDispatcher dispatcher(e);
 		dispatcher.Dispatch<WindowCloseEvent>(BIND_CALLBACK_FN(OnWindowClose));
 		dispatcher.Dispatch<WindowResizeEvent>(BIND_CALLBACK_FN(OnWindowResize));
-
-#if 0
-		if (e.GetType() == EventType::WindowCloseEvent)
-		{
-			this->OnWindowClose(e);
-		}
-#endif
 
 		for (auto it = m_LayerStack.rbegin(); it != m_LayerStack.rend(); ++it) {
 			if (e.Handled)
@@ -115,6 +113,8 @@ namespace Apex {
 		}
 		m_Minimized = false;
 
+		RenderCommands::SetViewport(0, 0, e.GetWidth(), e.GetHeight());
+		
 		return false;
 	}
 

@@ -1,6 +1,8 @@
 #include "apex_pch.h"
 #include "OpenGLShader.h"
 
+#include "Apex/Utils/Utils.h"
+
 #include <fstream>
 #include <glad/glad.h>
 #include <glm/gtc/type_ptr.hpp>
@@ -35,14 +37,17 @@ namespace Apex {
 		}
 
 		// Extract name from filepath
-		auto lastSlash = filepath.find_last_of("/\\");
+		/*auto lastSlash = filepath.find_last_of("/\\");
 		lastSlash = lastSlash == std::string::npos ? 0 : lastSlash + 1;
 		auto lastDot = filepath.rfind('.');
 		auto count = lastDot == std::string::npos ? filepath.size() - lastSlash : lastDot - lastSlash;
-		m_Name = filepath.substr(lastSlash, count);
+		m_Name = filepath.substr(lastSlash, count);*/
+		m_Name = GetFilename(filepath);
 
-		auto& shaderSources = ParseSource(source);
+		auto shaderSources = ParseSource(source);
 		Compile(shaderSources);
+		
+		glObjectLabel(GL_PROGRAM, m_RendererID, -1, m_Name.c_str());
 	}
 
 	OpenGLShader::OpenGLShader(const std::string & name, const std::string & vertexSrc, const std::string & fragmentSrc)
@@ -54,6 +59,7 @@ namespace Apex {
 
 		Compile(sources);
 
+		glObjectLabel(GL_PROGRAM, m_RendererID, -1, m_Name.c_str());
 		//OpenGLShader::GetActiveUniformLocations();
 
 	}
@@ -91,7 +97,8 @@ namespace Apex {
 	{
 		GLuint program = glCreateProgram();
 		APEX_CORE_ASSERT(shaderSources.size() < 4, "Max. 4 shaders supported");
-		std::array<GLuint, 4> glShaderIDs;
+		//std::array<GLuint, 4> glShaderIDs;
+		std::vector<GLuint> glShaderIDs(shaderSources.size());
 		int shaderIndex = 0;
 		for (auto& kv : shaderSources) {
 			GLenum type = kv.first;
@@ -152,20 +159,30 @@ namespace Apex {
 		for (auto id : glShaderIDs) {
 			glDetachShader(program, id);
 			glDeleteShader(id);
-		}		
-
+		}
 	}
 
 	void OpenGLShader::Bind() const
 	{
-		glUseProgram(m_RendererID);
+		// if (s_BoundShader != m_RendererID)
+			glUseProgram(m_RendererID);
+		s_BoundShader = m_RendererID;
 	}
 	
 	void OpenGLShader::Unbind() const
 	{
+		if (s_BoundShader == m_RendererID)
+			s_BoundShader = -1;
 	}
 
-	const std::unordered_map<std::string, uint32_t>& OpenGLShader::GetActiveUniformLocations()
+	inline void OpenGLShader::BindIfNotBound() const
+	{
+		if (s_BoundShader != m_RendererID)
+			glUseProgram(m_RendererID);
+		s_BoundShader = m_RendererID;
+	}
+	
+	void OpenGLShader::UpdateActiveUniformLocations()
 	{
 		int numUniforms = -1;
 		glGetProgramiv(m_RendererID, GL_ACTIVE_UNIFORMS, &numUniforms);
@@ -190,11 +207,14 @@ namespace Apex {
 
 			m_UniformLocations.emplace(name, location);
 		}
-
+	}
+	
+	const std::unordered_map<std::string, uint32_t>& OpenGLShader::GetActiveUniformLocations() const
+	{
 		return m_UniformLocations;
 	}
 
-	const std::vector<std::tuple<std::string, uint32_t, size_t>>& OpenGLShader::GetActiveUniformData()
+	const std::vector<std::tuple<std::string, uint32_t, size_t>> OpenGLShader::GetActiveUniformData() const
 	{
 		std::vector<std::tuple<std::string, uint32_t, size_t>> uniformData;
 		int numUniforms = -1;
@@ -229,8 +249,12 @@ namespace Apex {
 #define SHADER_UNIFORMS_NO_CACHE
 #endif
 
-	void OpenGLShader::SetUniInt(const std::string & name, int value)
+	//////////////////////////////////////////////////////////////
+	/////////////////      Integer Types      ////////////////////
+	//////////////////////////////////////////////////////////////
+	void OpenGLShader::SetUniInt1(const std::string & name, int value) const
 	{
+		BindIfNotBound();
 	#ifdef SHADER_UNIFORMS_NO_CACHE
 		glUniform1i(glGetUniformLocation(m_RendererID, name.c_str()), value);
 	#else
@@ -238,8 +262,83 @@ namespace Apex {
 	#endif
 	}
 
-	void OpenGLShader::SetUniFloat1(const std::string & name, float value)
+	void OpenGLShader::SetUniInt2(const std::string & name, const glm::ivec2& value) const
 	{
+		BindIfNotBound();
+	#ifdef SHADER_UNIFORMS_NO_CACHE
+		glUniform2iv(glGetUniformLocation(m_RendererID, name.c_str()), 1, glm::value_ptr(value));
+	#else
+		glUniform2iv(m_UniformLocations.at(name), 1, glm::value_ptr(value));
+	#endif
+	}
+
+	void OpenGLShader::SetUniInt3(const std::string & name, const glm::ivec3& value) const
+	{
+		BindIfNotBound();
+	#ifdef SHADER_UNIFORMS_NO_CACHE
+		glUniform3iv(glGetUniformLocation(m_RendererID, name.c_str()), 1, glm::value_ptr(value));
+	#else
+		glUniform3iv(m_UniformLocations.at(name), 1, glm::value_ptr(value));
+	#endif
+	}
+
+	void OpenGLShader::SetUniInt4(const std::string & name, const glm::ivec4& value) const
+	{
+		BindIfNotBound();
+	#ifdef SHADER_UNIFORMS_NO_CACHE
+		glUniform4iv(glGetUniformLocation(m_RendererID, name.c_str()), 1, glm::value_ptr(value));
+	#else
+		glUniform4iv(m_UniformLocations.at(name), 1, glm::value_ptr(value));
+	#endif
+	}
+
+	//////////     Integer Array Types     /////////////
+	void OpenGLShader::SetUniInt1v(const std::string & name, int values[], size_t count) const
+	{
+		BindIfNotBound();
+	#ifdef SHADER_UNIFORMS_NO_CACHE
+		glUniform1iv(glGetUniformLocation(m_RendererID, name.c_str()), count, values);
+	#else
+		glUniform1iv(m_UniformLocations.at(name), count, values);
+	#endif
+	}
+
+	void OpenGLShader::SetUniInt2v(const std::string & name, glm::ivec2 values[], size_t count) const
+	{
+		BindIfNotBound();
+	#ifdef SHADER_UNIFORMS_NO_CACHE
+		glUniform2iv(glGetUniformLocation(m_RendererID, name.c_str()), count, glm::value_ptr(values[0]));
+	#else
+		glUniform2iv(m_UniformLocations.at(name), count, glm::value_ptr(values[0]));
+	#endif
+	}
+
+	void OpenGLShader::SetUniInt3v(const std::string & name, glm::ivec3 values[], size_t count) const
+	{
+		BindIfNotBound();
+	#ifdef SHADER_UNIFORMS_NO_CACHE
+		glUniform3iv(glGetUniformLocation(m_RendererID, name.c_str()), count, glm::value_ptr(values[0]));
+	#else
+		glUniform3iv(m_UniformLocations.at(name), count, glm::value_ptr(values[0]));
+	#endif
+	}
+
+	void OpenGLShader::SetUniInt4v(const std::string & name, glm::ivec4 values[], size_t count) const
+	{
+		BindIfNotBound();
+	#ifdef SHADER_UNIFORMS_NO_CACHE
+		glUniform4iv(glGetUniformLocation(m_RendererID, name.c_str()), count, glm::value_ptr(values[0]));
+	#else
+		glUniform4iv(m_UniformLocations.at(name), count, glm::value_ptr(values[0]));
+	#endif
+	}
+	
+	//////////////////////////////////////////////////////////////
+	//////////////////      Float Types      /////////////////////
+	//////////////////////////////////////////////////////////////
+	void OpenGLShader::SetUniFloat1(const std::string & name, float value) const
+	{
+		BindIfNotBound();
 	#ifdef SHADER_UNIFORMS_NO_CACHE
 		glUniform1f(glGetUniformLocation(m_RendererID, name.c_str()), value);
 	#else
@@ -247,8 +346,9 @@ namespace Apex {
 	#endif
 	}
 
-	void OpenGLShader::SetUniFloat2(const std::string & name, const glm::vec2 & value)
+	void OpenGLShader::SetUniFloat2(const std::string & name, const glm::vec2 & value) const
 	{
+		BindIfNotBound();
 	#ifdef SHADER_UNIFORMS_NO_CACHE
 		glUniform2fv(glGetUniformLocation(m_RendererID, name.c_str()), 1, glm::value_ptr(value));
 	#else
@@ -256,8 +356,9 @@ namespace Apex {
 	#endif
 	}
 
-	void OpenGLShader::SetUniFloat3(const std::string & name, const glm::vec3 & value)
+	void OpenGLShader::SetUniFloat3(const std::string & name, const glm::vec3 & value) const
 	{
+		BindIfNotBound();
 	#ifdef SHADER_UNIFORMS_NO_CACHE
 		glUniform3fv(glGetUniformLocation(m_RendererID, name.c_str()), 1, glm::value_ptr(value));
 	#else
@@ -265,17 +366,9 @@ namespace Apex {
 	#endif
 	}
 
-	void OpenGLShader::SetUniFloat3v(const std::string & name, glm::vec3 values[], size_t count)
+	void OpenGLShader::SetUniFloat4(const std::string & name, const glm::vec4 & value) const
 	{
-	#ifdef SHADER_UNIFORMS_NO_CACHE
-		glUniform3fv(glGetUniformLocation(m_RendererID, name.c_str()), count, glm::value_ptr(values[0]));
-	#else
-		glUniform3fv(m_UniformLocations.at(name), 1, glm::value_ptr(value));
-	#endif
-	}
-
-	void OpenGLShader::SetUniFloat4(const std::string & name, const glm::vec4 & value)
-	{
+		BindIfNotBound();
 	#ifdef SHADER_UNIFORMS_NO_CACHE
 		glUniform4fv(glGetUniformLocation(m_RendererID, name.c_str()), 1, glm::value_ptr(value));
 	#else
@@ -283,8 +376,53 @@ namespace Apex {
 	#endif
 	}
 
-	void OpenGLShader::SetUniMat4(const std::string& name, const glm::mat4 & matrix)
+	//////////     Float Array Types     /////////////
+	void OpenGLShader::SetUniFloat1v(const std::string & name, float values[], size_t count) const
 	{
+		BindIfNotBound();
+	#ifdef SHADER_UNIFORMS_NO_CACHE
+		glUniform1fv(glGetUniformLocation(m_RendererID, name.c_str()), count, values);
+	#else
+		glUniform1fv(m_UniformLocations.at(name), count, value);
+	#endif
+	}
+	
+	void OpenGLShader::SetUniFloat2v(const std::string & name, glm::vec2 values[], size_t count) const
+	{
+		BindIfNotBound();
+	#ifdef SHADER_UNIFORMS_NO_CACHE
+		glUniform2fv(glGetUniformLocation(m_RendererID, name.c_str()), count, glm::value_ptr(values[0]));
+	#else
+		glUniform2fv(m_UniformLocations.at(name), count, glm::value_ptr(value));
+	#endif
+	}
+
+	void OpenGLShader::SetUniFloat3v(const std::string & name, glm::vec3 values[], size_t count) const
+	{
+		BindIfNotBound();
+	#ifdef SHADER_UNIFORMS_NO_CACHE
+		glUniform3fv(glGetUniformLocation(m_RendererID, name.c_str()), count, glm::value_ptr(values[0]));
+	#else
+		glUniform3fv(m_UniformLocations.at(name), count, glm::value_ptr(value));
+	#endif
+	}
+
+	void OpenGLShader::SetUniFloat4v(const std::string & name, glm::vec4 values[], size_t count) const
+	{
+		BindIfNotBound();
+	#ifdef SHADER_UNIFORMS_NO_CACHE
+		glUniform4fv(glGetUniformLocation(m_RendererID, name.c_str()), count, glm::value_ptr(values[0]));
+	#else
+		glUniform4fv(m_UniformLocations.at(name), count, glm::value_ptr(value));
+	#endif
+	}
+	
+	//////////////////////////////////////////////////////////////
+	/////////////////      Matrix Types      /////////////////////
+	//////////////////////////////////////////////////////////////
+	void OpenGLShader::SetUniMat4(const std::string& name, const glm::mat4 & matrix) const
+	{
+		BindIfNotBound();
 	#ifdef SHADER_UNIFORMS_NO_CACHE
 		glUniformMatrix4fv(glGetUniformLocation(m_RendererID, name.c_str()), 1, GL_FALSE, glm::value_ptr(matrix));
 	#else
@@ -292,10 +430,11 @@ namespace Apex {
 	#endif
 	}
 
-	void OpenGLShader::SetUniMat4v(const std::string& name, glm::mat4 matrices[], size_t count)
+	void OpenGLShader::SetUniMat4v(const std::string& name, glm::mat4 matrices[], size_t count) const
 	{
+		BindIfNotBound();
 	#ifdef SHADER_UNIFORMS_NO_CACHE
-			glUniformMatrix4fv(glGetUniformLocation(m_RendererID, name.c_str()), count, GL_FALSE, glm::value_ptr(matrices[0]));
+		glUniformMatrix4fv(glGetUniformLocation(m_RendererID, name.c_str()), count, GL_FALSE, glm::value_ptr(matrices[0]));
 	#else
 		glUniformMatrix4fv(m_UniformLocations.at(name), count, GL_FALSE, glm::value_ptr(matrices[0]));
 	#endif

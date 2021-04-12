@@ -27,6 +27,13 @@ bld/
 [Ll]og/
 [Bb]uild/
 
+# gmake files
+Makefile
+*.a
+*.so
+*.gch
+*.out
+
 # Visual Studio Code options directory
 .vscode/
 
@@ -267,3 +274,12 @@ paket-files/
 # Python Tools for Visual Studio (PTVS)
 __pycache__/
 *.pyc
+
+
+### premake-gmake ###
+Makefile
+*.make
+obj/
+
+## Kate Editor
+.kateproject

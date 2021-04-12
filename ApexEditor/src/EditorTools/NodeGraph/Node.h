@@ -9,8 +9,8 @@
 
 namespace Apex::EditorTools {
 	
-	struct Node;
-	struct Slot
+	typedef struct Node Node;
+	typedef struct Slot
 	{
 		enum SlotType
 		{
@@ -29,7 +29,7 @@ namespace Apex::EditorTools {
 		// ImGui related attributes
 		//ImGuiID id;
 		ImVec2 pos;
-	};
+	} Slot;
 
 	struct Node
 	{
@@ -64,7 +64,7 @@ namespace Apex::EditorTools {
 		}
 	};
 
-	struct Connection
+	typedef struct Connection
 	{
 		//Node* inputNode = nullptr;
 		Slot* inputSlot = nullptr;
@@ -72,9 +72,9 @@ namespace Apex::EditorTools {
 		Slot* outputSlot = nullptr;
 
 		bool IsPending() { return (/*inputNode && */inputSlot && /*outputNode &&*/ outputSlot) ? false : true; }
-	};
+	} Connection;
 
-	struct NodeCanvas
+	typedef struct NodeCanvas
 	{
 		ImVec2 offset = { 0.f, 0.f };
 		float zoom = 1.f;
@@ -84,17 +84,17 @@ namespace Apex::EditorTools {
 		ImVec2 activeSlotPos = { 0.f, 0.f };
 
 		//Connection* activeConnection = nullptr;
-	};
+	} NodeCanvas;
 
-	struct ErrorState
+	typedef struct ErrorState
 	{
 		Node* errorNode = nullptr;
 		Slot* errorSlot = nullptr;
-	};
+	} ErrorState;
 
-	//bool BeginCanvas(NodeCanvas& canvas);
-	//void EndCanvas(NodeCanvas& canvas);
-	//bool DrawNode(Node& node, NodeCanvas& canvas);
-	//bool DrawSlot(Slot& slot, NodeCanvas& canvas);
-	//bool DrawConnection(Connection& connection, NodeCanvas& canvas);
+	bool BeginCanvas(NodeCanvas& canvas);
+	void EndCanvas(NodeCanvas& canvas);
+	bool DrawNode(Node& node, NodeCanvas& canvas);
+	bool DrawSlot(Slot& slot, NodeCanvas& canvas);
+	bool DrawConnection(Connection& connection, NodeCanvas& canvas);
 }

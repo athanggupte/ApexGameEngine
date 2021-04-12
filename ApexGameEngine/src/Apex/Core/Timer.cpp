@@ -1,7 +1,7 @@
 #include "apex_pch.h"
 #include "Timer.h"
 
-#include "Platform/Windows/WindowsTimer.h"
+#include "Platform/GLFW/GLFWTimer.h"
 
 namespace Apex {
 
@@ -9,11 +9,11 @@ namespace Apex {
 
 	void Timer::InitTimer()
 	{
-		#ifdef APEX_PLATFORM_WINDOWS
-			s_Timer = new WindowsTimer();
-		#else
-			#error Apex only supports Windows for now!	
-		#endif
+		//#ifdef APEX_PLATFORM_WINDOWS
+			s_Timer = new GLFWTimer();
+		//#else
+		//	#error Apex only supports Windows for now!	
+		//#endif
 	}
 
 }

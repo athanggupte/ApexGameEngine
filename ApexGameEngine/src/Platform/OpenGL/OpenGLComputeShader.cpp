@@ -115,44 +115,105 @@ namespace Apex {
 		glDeleteShader(shader);
 	}
 
-	void OpenGLComputeShader::SetUniInt(const std::string& name, int value)
+	//////////////////////////////////////////////////////////////
+	/////////////////      Integer Types      ////////////////////
+	//////////////////////////////////////////////////////////////
+	void OpenGLComputeShader::SetUniInt1(const std::string & name, int value)
 	{
 		glUniform1i(glGetUniformLocation(m_RendererID, name.c_str()), value);
 	}
 
-	void OpenGLComputeShader::SetUniFloat1(const std::string& name, float value)
+	void OpenGLComputeShader::SetUniInt2(const std::string & name, const glm::ivec2& value)
+	{
+		glUniform2iv(glGetUniformLocation(m_RendererID, name.c_str()), 1, glm::value_ptr(value));
+	}
+
+	void OpenGLComputeShader::SetUniInt3(const std::string & name, const glm::ivec3& value)
+	{
+		glUniform3iv(glGetUniformLocation(m_RendererID, name.c_str()), 1, glm::value_ptr(value));
+	}
+
+	void OpenGLComputeShader::SetUniInt4(const std::string & name, const glm::ivec4& value)
+	{
+		glUniform4iv(glGetUniformLocation(m_RendererID, name.c_str()), 1, glm::value_ptr(value));
+	}
+
+	//////////     Integer Array Types     /////////////
+	void OpenGLComputeShader::SetUniInt1v(const std::string & name, int values[], size_t count)
+	{
+		glUniform1iv(glGetUniformLocation(m_RendererID, name.c_str()), count, values);
+	}
+
+	void OpenGLComputeShader::SetUniInt2v(const std::string & name, glm::ivec2 values[], size_t count)
+	{
+		glUniform2iv(glGetUniformLocation(m_RendererID, name.c_str()), count, glm::value_ptr(values[0]));
+	}
+
+	void OpenGLComputeShader::SetUniInt3v(const std::string & name, glm::ivec3 values[], size_t count)
+	{
+		glUniform3iv(glGetUniformLocation(m_RendererID, name.c_str()), count, glm::value_ptr(values[0]));
+	}
+
+	void OpenGLComputeShader::SetUniInt4v(const std::string & name, glm::ivec4 values[], size_t count)
+	{
+		glUniform4iv(glGetUniformLocation(m_RendererID, name.c_str()), count, glm::value_ptr(values[0]));
+	}
+	
+	//////////////////////////////////////////////////////////////
+	//////////////////      Float Types      /////////////////////
+	//////////////////////////////////////////////////////////////
+	void OpenGLComputeShader::SetUniFloat1(const std::string & name, float value)
 	{
 		glUniform1f(glGetUniformLocation(m_RendererID, name.c_str()), value);
 	}
 
-	void OpenGLComputeShader::SetUniFloat2(const std::string& name, const glm::vec2& value)
+	void OpenGLComputeShader::SetUniFloat2(const std::string & name, const glm::vec2 & value)
 	{
 		glUniform2fv(glGetUniformLocation(m_RendererID, name.c_str()), 1, glm::value_ptr(value));
 	}
 
-	void OpenGLComputeShader::SetUniFloat3(const std::string& name, const glm::vec3& value)
+	void OpenGLComputeShader::SetUniFloat3(const std::string & name, const glm::vec3 & value)
 	{
 		glUniform3fv(glGetUniformLocation(m_RendererID, name.c_str()), 1, glm::value_ptr(value));
 	}
 
-	void OpenGLComputeShader::SetUniFloat3v(const std::string& name, glm::vec3 values[], size_t count)
-	{
-		glUniform3fv(glGetUniformLocation(m_RendererID, name.c_str()), count, glm::value_ptr(values[0]));
-	}
-
-	void OpenGLComputeShader::SetUniFloat4(const std::string& name, const glm::vec4& value)
+	void OpenGLComputeShader::SetUniFloat4(const std::string & name, const glm::vec4 & value)
 	{
 		glUniform4fv(glGetUniformLocation(m_RendererID, name.c_str()), 1, glm::value_ptr(value));
 	}
 
-	void OpenGLComputeShader::SetUniMat4(const std::string& name, const glm::mat4& matrix)
+	//////////     Float Array Types     /////////////
+	void OpenGLComputeShader::SetUniFloat1v(const std::string & name, float values[], size_t count)
+	{
+		glUniform3fv(glGetUniformLocation(m_RendererID, name.c_str()), count, values);
+	}
+	
+	void OpenGLComputeShader::SetUniFloat2v(const std::string & name, glm::vec2 values[], size_t count)
+	{
+		glUniform2fv(glGetUniformLocation(m_RendererID, name.c_str()), count, glm::value_ptr(values[0]));
+	}
+
+	void OpenGLComputeShader::SetUniFloat3v(const std::string & name, glm::vec3 values[], size_t count)
+	{
+		glUniform3fv(glGetUniformLocation(m_RendererID, name.c_str()), count, glm::value_ptr(values[0]));
+	}
+
+	void OpenGLComputeShader::SetUniFloat4v(const std::string & name, glm::vec4 values[], size_t count)
+	{
+		glUniform3fv(glGetUniformLocation(m_RendererID, name.c_str()), count, glm::value_ptr(values[0]));
+	}
+	
+	//////////////////////////////////////////////////////////////
+	/////////////////      Matrix Types      /////////////////////
+	//////////////////////////////////////////////////////////////
+	void OpenGLComputeShader::SetUniMat4(const std::string& name, const glm::mat4 & matrix)
 	{
 		glUniformMatrix4fv(glGetUniformLocation(m_RendererID, name.c_str()), 1, GL_FALSE, glm::value_ptr(matrix));
 	}
 
 	void OpenGLComputeShader::SetUniMat4v(const std::string& name, glm::mat4 matrices[], size_t count)
 	{
-		glUniformMatrix4fv(glGetUniformLocation(m_RendererID, name.c_str()), count, GL_FALSE, glm::value_ptr(matrices[0]));
+			glUniformMatrix4fv(glGetUniformLocation(m_RendererID, name.c_str()), count, GL_FALSE, glm::value_ptr(matrices[0]));
 	}
 
 }

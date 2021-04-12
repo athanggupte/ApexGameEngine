@@ -23,8 +23,8 @@ namespace Apex::EditorTools {
 		TEX2D, TEX3D
 	};
 
-	struct Node;
-	struct Slot
+	typedef struct Node Node;
+	typedef struct Slot
 	{
 		enum SlotType
 		{
@@ -51,7 +51,7 @@ namespace Apex::EditorTools {
 		}
 
 		virtual std::string GetDefaultValue() = 0;
-	};
+	} Slot;
 
 	struct Node
 	{
@@ -80,19 +80,19 @@ namespace Apex::EditorTools {
 		}
 	};
 
-	struct NodeCanvas
+	typedef struct NodeCanvas
 	{
 		ImVec2 offset = { 0.f, 0.f };
 		float zoom = 1.f;
 
 		Node* activeNode = nullptr;
 		Slot* activeSlot = nullptr;
-	};
+	} NodeCanvas;
 
-	struct ErrorState
+	typedef struct ErrorState
 	{
 		Node* errorNode = nullptr;
 		Slot* errorSlot = nullptr;
-	};
+	} ErrorState;
 
 }
