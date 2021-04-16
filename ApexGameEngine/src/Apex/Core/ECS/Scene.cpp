@@ -5,12 +5,15 @@
 #include "Apex/Core/ECS/Components.h"
 
 #include "Apex/Graphics/Renderer/Renderer2D.h"
+#include "Apex/Physics/PhysicsSystem.h"
+
+#include <glm/gtc/matrix_transform.hpp>
 
 namespace Apex {
 
 	Scene::Scene()
 	{
-		m_Registry.group<TransformComponent, SpriteRendererComponent>();
+		//m_Registry.group<TransformComponent, SpriteRendererComponent>();
 	}
 	
 	Entity Scene::CreateEntity(const std::string& name)
@@ -24,6 +27,11 @@ namespace Apex {
 	void Scene::OnUpdate(bool play)
 	{
 		// Physics Update
+		auto view = m_Registry.view<ParticleComponent, TransformComponent>();
+		view.each([] (auto& particle, auto& transform) {
+			transform.Transform = glm::translate(glm::mat4(1.f), particle.ParticlePtr->Position) * transform.Transform;
+		});
+		
 		// Update Pathfinding
 		// Update AI
 		// Triggers
@@ -44,8 +52,8 @@ namespace Apex {
 		// IMP: When iterating components ownsed by a group outside the group donot add new
 		//      entities with the same list of components -> iterators get invalidated
 		
-		auto group = m_Registry.group<TransformComponent, SpriteRendererComponent>();
-		group.each([] (auto& transform, auto& sprite) {
+		auto view = m_Registry.view<TransformComponent, SpriteRendererComponent>();
+		view.each([] (auto& transform, auto& sprite) {
 			if (sprite.visible) {
 				if (sprite.Texture && sprite.useTexture)
 					Renderer2D::DrawQuad(transform, sprite.Texture, sprite.TilingFactor);

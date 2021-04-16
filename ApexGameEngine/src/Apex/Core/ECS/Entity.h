@@ -20,7 +20,7 @@ namespace Apex {
 		}
 		
 		template<typename Component_t>
-		inline bool HasComponent()
+		inline bool HasComponent() const
 		{
 			return m_Registry->has<Component_t>(m_EntityId);
 		}

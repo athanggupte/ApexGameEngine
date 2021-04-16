@@ -10,6 +10,8 @@ namespace Apex {
 	class Scene;
 	class Entity; // Forward declaration
 	
+	class PhysicsSystem;
+	
 	class Scene
 	{
 	public:
@@ -33,6 +35,7 @@ namespace Apex {
 		entt::registry m_Registry;
 		
 		friend class Entity;
+		friend class PhysicsSystem;
 		
 		// Scene rendering
 		SceneOptions Options;

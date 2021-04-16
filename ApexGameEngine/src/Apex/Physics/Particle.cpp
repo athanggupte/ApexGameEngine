@@ -3,25 +3,27 @@
 
 namespace Apex::Physics {
 	
-	Particle& Update(real_t deltaTime, Particle& particle)
+	Particle& Particle::Update(real_t deltaTime)
 	{
+// 		APEX_CORE_DEBUG("Particle ({}) ::\n\tPosition = {}, {}, {}\n\tVelocity = {}, {}, {}\n\tForce = {}, {}, {}",
+// 						(void*)this, 
+// 						Position.x, Position.y, Position.z,
+// 						Velocity.x, Velocity.y, Velocity.z,
+// 						Force.x, Force.y, Force.z
+// 						);
+		
 		/* Aggregate acceleration from external and constant forces */
-		vec3_t totalAcceleration = particle.Acceleration + (particle.InverseMass * particle.Force);
+		vec3_t totalAcceleration = Acceleration + (InverseMass * Force);
 		
 		/* Update position and velocity based on Newton's Laws */
-		Update(deltaTime, particle.Position, particle.Velocity, totalAcceleration);
+		UpdatePosition(deltaTime, Position, Velocity);
+		UpdateVelocity(deltaTime, Velocity, totalAcceleration);
 		
 		/* Apply damping to velocity */
-		particle.Velocity *= glm::pow(particle.Damping, deltaTime);
+		Velocity *= glm::pow(Damping, deltaTime);
 		
-		/* Reset/Clear accumulated forces */
-		particle.ClearForce();
-	}
-	
-	vec3_t& Update(real_t deltaTime, vec3_t& position, vec3_t& velocity, const vec3_t& acceleration)
-	{
-		UpdatePosition(deltaTime, position, velocity, acceleration);
-		UpdateVelocity(deltaTime, velocity, acceleration);
+		/* Return changed particle */
+		return *this;
 	}
 	
 	vec3_t& UpdatePosition(real_t deltaTime, vec3_t& position, const vec3_t& velocity)
@@ -37,5 +39,6 @@ namespace Apex::Physics {
 		velocity += acceleration * deltaTime;
 		return velocity;
 	}
+	
 	
 }

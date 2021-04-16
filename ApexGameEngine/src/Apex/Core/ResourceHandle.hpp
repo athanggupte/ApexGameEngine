@@ -191,6 +191,9 @@ namespace Apex {
 			return m_RefCount ? *m_RefCount : 0;
 		}
 		
+		Resource_t* Get() { return m_ResourcePtr; }
+		const Resource_t* Get() const { return m_ResourcePtr; }
+		
 		Resource_t* operator -> () { return m_ResourcePtr; }
 		Resource_t& operator * () { return *m_ResourcePtr; }
 		

@@ -70,7 +70,13 @@ namespace Apex {
 
 		void SetCenter(const glm::vec2& center) { m_Center = center; }
 
-		const std::pair<glm::vec2, glm::vec2> GetCorners() const { return { {m_Center.x - m_HalfDimensions.x, m_Center.y + m_HalfDimensions.y}, {m_Center.x + m_HalfDimensions.x, m_Center.y - m_HalfDimensions.y} }; }
+		const std::pair<glm::vec2, glm::vec2> GetCorners() const
+		{ 
+			return {
+				{m_Center.x - m_HalfDimensions.x, m_Center.y + m_HalfDimensions.y},
+				{m_Center.x + m_HalfDimensions.x, m_Center.y - m_HalfDimensions.y}
+			};
+		}
 	private:
 		glm::vec2 m_Center, m_HalfDimensions;
 	};
