@@ -2,7 +2,7 @@
 
 #include <entt/entt.hpp>
 
-//#include "Apex/Core/ECS/Entity.h"
+#include "Apex/Core/Timer.h"
 #include "Apex/Core/Events/Event.h"
 
 namespace Apex {
@@ -18,7 +18,7 @@ namespace Apex {
 		
 		Entity CreateEntity(const std::string& name = std::string());
 		
-		void OnUpdate(bool play = false);
+		void OnUpdate(Timestep ts, bool play = false);
 		void OnEvent(Event&);
 		void Render2D();
 		

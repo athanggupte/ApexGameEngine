@@ -48,10 +48,11 @@ namespace Apex {
 		while (m_Running) {
 
 			Timer::UpdateTime();
+			auto timestep = Timer::GetTimestep();
 
 			if (!m_Minimized) {
 				for (Layer* layer : m_LayerStack)
-					layer->OnUpdate();
+					layer->OnUpdate(timestep);
 			}
 
 			//Render ImGui
