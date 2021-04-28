@@ -60,7 +60,7 @@ namespace Apex {
 			//m_SoundEngine->drop();
 		}
 
-		virtual void OnUpdate() override 
+		virtual void OnUpdate(Timestep ts) override 
 		{
 			// Resize
 			if (auto& fbSpec = m_GameFramebuffer->GetSpecification();

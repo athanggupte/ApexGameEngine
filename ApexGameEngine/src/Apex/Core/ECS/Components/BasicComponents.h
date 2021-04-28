@@ -8,6 +8,8 @@
 #include "Apex/Core/Camera.h"
 #include "Apex/Graphics/RenderPrimitives/Texture.h"
 
+#include "Apex/Core/ECS/ScriptableEntity.h"
+
 namespace Apex {
 
 	struct TagComponent
@@ -67,6 +69,24 @@ namespace Apex {
 		
 		CameraComponent(const glm::mat4& projection)
 			: Camera{ projection } {}
+	};
+	
+	
+	struct NativeScriptComponent
+	{
+		ScriptableEntity* Instance;
+		
+		std::function<void(Entity, Scene*)> InstantiateFn;
+		std::function<void()> DestroyFn;
+		
+		std::function<void(Timestep)> OnCreateFn;
+		
+		template<typename Instance_t>
+		void Bind()
+		{
+			
+		}
+		
 	};
 	
 }

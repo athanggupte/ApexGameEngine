@@ -1,3 +1,4 @@
+#if 0
 #pragma once
 
 #include "Apex/Core/Timer.h"
@@ -23,3 +24,4 @@ namespace Apex {
 	};
 
 }
+#endif

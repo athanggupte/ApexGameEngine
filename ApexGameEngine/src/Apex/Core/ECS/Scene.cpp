@@ -2,6 +2,7 @@
 #include "Scene.h"
 
 #include "Apex/Core/ECS/Entity.h"
+#include "Apex/Core/ECS/ScriptableEntity.h"
 #include "Apex/Core/ECS/Components.h"
 
 #include "Apex/Graphics/Renderer/Renderer2D.h"
@@ -21,7 +22,7 @@ namespace Apex {
 		 return entity;
 	}
 
-	void Scene::OnUpdate(bool play)
+	void Scene::OnUpdate(Timestep ts, bool play)
 	{
 		// Physics Update
 		// Update Pathfinding

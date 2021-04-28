@@ -1,7 +1,6 @@
 #include "apex_pch.h"
 #include "ParticleSystem2D.h"
 
-#include "Apex/Core/Timer.h"
 #include "Apex/Utils/Random.h"
 #include "Apex/Graphics/Renderer/Renderer.h"
 
@@ -121,7 +120,7 @@ namespace Apex {
 		m_Shader->SetUniInt1("u_Texture", 0);
 	}
 
-	void ParticleSystem2D::OnUpdate()
+	void ParticleSystem2D::OnUpdate(Timestep dt)
 	{
         uint32_t i = 0;
 		for(auto& particle : m_ParticlePool) {
@@ -135,10 +134,10 @@ namespace Apex {
 				continue;
 			}
 
-			particle.lifeRemaining -= Timer::GetSeconds();
-			particle.position += particle.velocity * Timer::GetSeconds();
-			particle.velocity += particle.acceleration * Timer::GetSeconds();
-			particle.rotation += particle.rotationSpeed * Timer::GetSeconds();
+			particle.lifeRemaining -= (float)dt;
+			particle.position += particle.velocity * (float)dt;
+			particle.velocity += particle.acceleration * (float)dt;
+			particle.rotation += particle.rotationSpeed * (float)dt;
 		}
 	}
 

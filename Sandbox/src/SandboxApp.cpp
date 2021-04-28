@@ -72,7 +72,7 @@ public:
 	
 	void OnDetach() override {}
 
-	void OnUpdate() override
+	void OnUpdate(Apex::Timestep ts) override
 	{
 		// Update
 		m_CameraController.OnUpdate();

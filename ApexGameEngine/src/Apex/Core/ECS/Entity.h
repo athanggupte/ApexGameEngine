@@ -25,6 +25,12 @@ namespace Apex {
 			return m_Registry->has<Component_t>(m_EntityId);
 		}
 		
+		template<typename Component_t>
+		inline decltype(auto) GetComponent()
+		{
+			return m_Registry->get<Component_t>(m_EntityId);
+		}
+		
 		template<typename... Component_t>
 		inline decltype(auto) GetComponents()
 		{

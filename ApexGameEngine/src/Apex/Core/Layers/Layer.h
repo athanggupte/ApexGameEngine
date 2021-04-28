@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Apex/Core/Events/Event.h"
+#include "Apex/Core/Timer.h"
 
 namespace Apex {
 
@@ -12,7 +13,7 @@ namespace Apex {
 
 		virtual void OnAttach() = 0; 
 		virtual void OnDetach() = 0;
-		virtual void OnUpdate() = 0;
+		virtual void OnUpdate(Timestep) = 0;
 		virtual void OnImGuiRender() {}
 		virtual void OnEvent(Event& event) {}
 
