@@ -42,7 +42,7 @@ namespace Apex {
 		auto lastDot = filepath.rfind('.');
 		auto count = lastDot == std::string::npos ? filepath.size() - lastSlash : lastDot - lastSlash;
 		m_Name = filepath.substr(lastSlash, count);*/
-		m_Name = GetFilename(filepath);
+		m_Name = Utils::GetFilename(filepath);
 
 		auto shaderSources = ParseSource(source);
 		Compile(shaderSources);

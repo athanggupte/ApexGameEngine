@@ -52,6 +52,15 @@ include "ApexGameEngine/vendor/imgui"
 
 include "ApexGameEngine/modules/ApexIK"
 
+local linux_de = os.getenv("XDG_CURRENT_DESKTOP")
+local curDir = os.getenv("CD")
+if curDir == nil then
+	curDir = os.getenv("PWD")
+end
+if curDir == nil then
+	curDir = '.'
+end
+curDir = '"'..curDir..'"'
 
 -- Apex Game Engine Project
 project "ApexGameEngine"
@@ -134,22 +143,32 @@ project "ApexGameEngine"
 		libdirs (LinuxLibDirs)
 		links (LinuxLibs)
 		
+		if linux_de == "KDE" then
+			defines { "LINUX_DE_KDE" }
+		elseif linux_de == "GNOME" then
+			defines { "LINUX_DE_GNOME" }
+		elseif linux_de == "lxqt" then
+			defines { "LINUX_DE_LXQT" }
+		end
+		
 	filter "configurations:Debug"
 		defines {
-			"APEX_DEBUG", "APEX_ENABLE_ASSERTS", "APEX_PROFILER_ENABLE"
+			"APEX_DEBUG", "APEX_ENABLE_ASSERTS", "APEX_PROFILER_ENABLE",
+			"APEX_HOME_DIR="..curDir
 		}
 		runtime "Debug"
 		symbols "on"
 
 	filter "configurations:Release"
 		defines {
-			"APEX_RELEASE", "APEX_PROFILER_ENABLE"
+			"APEX_RELEASE", "APEX_PROFILER_ENABLE",
+			"APEX_HOME_DIR="..curDir
 		}
 		runtime "Release"
 		optimize "on"
 
 	filter "configurations:Dist"
-		defines "APEX_DIST"
+		defines { "APEX_DIST", "APEX_HOME_DIR=\".\"" }
 		runtime "Release"
 		optimize "on"
 

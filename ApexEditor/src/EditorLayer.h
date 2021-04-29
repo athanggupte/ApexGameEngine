@@ -8,6 +8,10 @@
 //#include "EditorTools/PythonGraph/PythonGraph.h"
 // #include "EditorTools/ShaderGraph/ShaderGraph.h"
 
+#include "MenuBar.h"
+#include "Panels/SceneHeirarchyPanel.h"
+#include "Panels/InspectorPanel.h"
+
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
@@ -27,25 +31,30 @@ namespace Apex {
 
 		virtual void OnAttach() override
 		{
+			m_Scene = CreateRef<Scene>();
+			
 			// Asset allocation
 			m_ImageTexture = Texture2D::Create(256U, 256U, HDRTextureSpec, "Image");
 			m_ComputeShader = ComputeShader::Create("assets/Blur.compute");
 			m_Texture = Texture2D::Create("assets/pusheen-thug-life.png");
-			m_GameFramebuffer = Framebuffer::Create({ 800U, 600U });
+			m_GameFramebuffer = Framebuffer::Create({ 1280u, 720u });
 
 			// Entity Initialization
-			auto pusheenEntity = m_Scene.CreateEntity("pusheen");
+			auto pusheenEntity = m_Scene->CreateEntity("pusheen");
 			pusheenEntity.AddComponent<SpriteRendererComponent>(m_Texture, 2.f);
 			pusheenEntity.GetComponents<TransformComponent>().Transform = glm::translate(glm::mat4(1.f), { 0.6f, 0.1f, 0.f }) * glm::scale(glm::mat4(1.f), { 0.5f, 0.5f, 1.f });
 			
-			auto squareEntity = m_Scene.CreateEntity("square");
+			auto squareEntity = m_Scene->CreateEntity("square");
 			squareEntity.AddComponent<SpriteRendererComponent>(glm::vec4{ 0.2f, 0.88f, 0.34f, 1.f });
 			squareEntity.GetComponents<TransformComponent>().Transform = glm::translate(glm::mat4(1.f), { -0.6f, -0.1f, 0.f }) * glm::scale(glm::mat4(1.f), { 0.5f, 0.5f, 1.f });
 			
-			auto cameraEntity = m_Scene.CreateEntity("camera");
+			auto cameraEntity = m_Scene->CreateEntity("camera");
 			auto aspectRatio = 16.f / 9.f;
 			cameraEntity.AddComponent<CameraComponent>(glm::ortho(aspectRatio * -1.f, aspectRatio * 1.f, -1.f, 1.f, -1.f, 1.f));
-			m_Scene.SetPrimaryCamera(cameraEntity);
+			m_Scene->SetPrimaryCamera(cameraEntity);
+			
+			// Panels
+			m_SceneHeirarchyPanel.SetContext(m_Scene);
 			
 			// ImGui options
 			ImGui::GetIO().ConfigWindowsMoveFromTitleBarOnly = true;
@@ -81,10 +90,10 @@ namespace Apex {
 			RenderCommands::SetClearColor(m_BGColor);
 			RenderCommands::Clear();
 			
-			m_Scene.OnUpdate(m_PlayScene);
+			m_Scene->OnUpdate(ts, m_PlayScene);
 			if (!m_PlayScene) {
 				Renderer2D::BeginScene(m_CameraController.GetCamera());
-				m_Scene.Render2D();
+				m_Scene->Render2D();
 				Renderer2D::EndScene();
 			}
 			
@@ -102,8 +111,9 @@ namespace Apex {
 			auto font2 = ImGui::GetIO().Fonts->Fonts[1];
 			ImGui::PushFont(font2);
 			BeginDockspace();
+			MainMenuBar::OnImGuiRender();
 			
-			//ImGui::ShowDemoWindow();
+			ImGui::ShowDemoWindow();
 			//ImGui::ShowMetricsWindow();
 
 			/*static EditorTools::NodeGraph nodeGraph(PythonGraph::nodeTypes, PythonGraph::CreateNode, std::vector<std::string>() );
@@ -122,18 +132,17 @@ namespace Apex {
 
 			ImGui::Begin("Rendering");
 			ImGui::DragFloat4("Background", &m_BGColor[0], 0.001f, 0.0f, 1.0f);
-			
 			{
 				ImGui::Separator();
 				ImGui::Checkbox("Play", &m_PlayScene);
 				ImGui::Separator();
 			}
+			ImGui::End();
 			
-			{
-				ImGui::Separator();
-				ImGui::Text("Entities:");
-				ImGui::Separator();
-			}
+			m_SceneHeirarchyPanel.OnImGuiRender();
+			auto entity = m_SceneHeirarchyPanel.GetSelectedEntity();
+			m_InspectorPanel.SetContext(entity, m_Scene);
+			m_InspectorPanel.OnImGuiRender();
 			
 			//if (!m_ShowNodeGraph) {
 			//	m_ShowNodeGraph = ImGui::Button("Show Node Graph");
@@ -141,10 +150,10 @@ namespace Apex {
 
 			//if (ImGui::Button("Parse Graph"))
 			//	APEX_CORE_TRACE(nodeGraph.Parse().c_str());
-			ImGui::End();
 
 			ShowSettings();
 			ShowGameViewport();
+			
 			EndDockspace();
 			
 			ImGui::PopFont();
@@ -193,8 +202,8 @@ namespace Apex {
 				| ImGuiWindowFlags_NoMove
 				| ImGuiWindowFlags_NoBringToFrontOnFocus
 				| ImGuiWindowFlags_NoNavFocus;
-
 			ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, { 0.0f, 0.0f });
+			
 			ImGui::Begin("Dockspace", &m_Open, windowFlags);
 			ImGui::PopStyleVar(3); // Pop StyleVars - WindowPadding, WindowBorderSize, WindowRounding
 
@@ -202,16 +211,6 @@ namespace Apex {
 			io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 			ImGuiID dockspaceID = ImGui::GetID("EditorDockspace");
 			ImGui::DockSpace(dockspaceID, { 0.0f, 0.0f }, dockNodeFlags);
-
-			if (ImGui::BeginMenuBar())
-			{
-				if (ImGui::BeginMenu("File"))
-				{
-					if (ImGui::MenuItem("Exit")) Application::Get().Close();
-					ImGui::EndMenu();
-				}
-				ImGui::EndMenuBar();
-			}
 		}
 		
 		void EndDockspace()
@@ -263,13 +262,16 @@ namespace Apex {
 		glm::vec2 m_GameViewportSize;
 		
 		OrthographicCameraController2D m_CameraController;
-		Scene m_Scene;
+		Ref<Scene> m_Scene;
 		
 		Ref<Texture2D> m_Texture;
 		Ref<Texture2D> m_ImageTexture;		
 		Ref<ComputeShader> m_ComputeShader;
 
 		bool m_PlayScene = false;
+		
+		SceneHeirarchyPanel m_SceneHeirarchyPanel;
+		InspectorPanel m_InspectorPanel;
 		
 		//irrklang::ISoundEngine* m_SoundEngine;
 		//irrklang::ISound* m_Sound;

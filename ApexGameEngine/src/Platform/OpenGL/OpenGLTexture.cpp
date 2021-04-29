@@ -202,7 +202,7 @@ namespace Apex {
 
 		stbi_image_free(data);
 		
-		auto name = GetFilename(path);
+		auto name = Utils::GetFilename(path);
 		glObjectLabel(GL_TEXTURE, m_RendererID, -1, name.c_str());
 	}
 	

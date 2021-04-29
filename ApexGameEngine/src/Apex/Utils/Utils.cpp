@@ -1,7 +1,7 @@
 #include "apex_pch.h" 
 #include "Utils.h"
 
-namespace Apex {
+namespace Apex::Utils {
 	
 	std::string GetFilename(const std::string& filepath)
 	{
