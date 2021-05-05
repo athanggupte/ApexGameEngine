@@ -69,13 +69,13 @@ namespace Apex {
 	GUID::GUID(guid_t guid)
 		: m_Guid(guid)
 	{
-		// memcpy(m_Guid, guid, 16);
+		// memcpy(m_Guid.data(), guid.data(), 16);
 	}
 	
 	GUID::GUID(const GUID& other)
 		: m_Guid(other.m_Guid)
 	{
-		// memcpy(m_Guid, other.m_Guid, 16);
+		// memcpy(m_Guid.data(), other.m_Guid.data(), 16);
 	}
 	
 	GUID::GUID(GUID&& other)

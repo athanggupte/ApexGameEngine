@@ -3,6 +3,8 @@
 #include "Apex/Application.h"
 #include <imgui.h>
 
+#include "Apex/Core/ECS/Entity.h"
+
 #include "Apex/Utils/Utils.h"
 #include "Apex/Utils/CustomDataStructures.h"
 
@@ -59,12 +61,15 @@ namespace Apex {
 		if (ImGui::MenuItem("Redo", "Ctrl+Shift+Z", false, canRedo)) {
 			
 		}
+		if (ImGui::MenuItem("Create New")) {
+			
+		}
 		if (ImGui::MenuItem("Preferences", "Ctrl+P")) {
 			
 		}
 	}
 	
-	void MainMenuBar::OnImGuiRender()
+	void MainMenuBar::OnImGuiRender(const Ref<Scene>& activeScene)
 	{
 		if (ImGui::BeginMenuBar())
 		{

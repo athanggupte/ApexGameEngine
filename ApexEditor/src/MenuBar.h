@@ -4,7 +4,7 @@ namespace Apex {
 	
 	struct MainMenuBar
 	{
-		static void OnImGuiRender();
+		void OnImGuiRender(const Ref<Scene>& activeScene);
 	};
 	
 }

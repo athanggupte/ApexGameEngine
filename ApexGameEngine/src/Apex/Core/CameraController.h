@@ -4,6 +4,7 @@
 
 #include <glm/glm.hpp>
 
+#include "Apex/Core/Timer.h"
 #include "Apex/Core/Events/Event.h"
 #include "Apex/Core/Events/ApplicationEvent.h"
 #include "Apex/Core/Events/MouseEvent.h"
@@ -18,7 +19,7 @@ namespace Apex {
 		
 		virtual const Camera& GetCamera() const = 0;
 		
-		virtual void OnUpdate() = 0;
+		virtual void OnUpdate(Timestep ts) = 0;
 		virtual void OnEvent(Event&) = 0;
 		
 		virtual void OnResize(float width, float height) = 0;
@@ -39,12 +40,14 @@ namespace Apex {
 		
 		virtual const Camera& GetCamera() const override { return m_Camera; }
 		
-		virtual void OnUpdate() override;
+		virtual void OnUpdate(Timestep ts) override;
 		virtual void OnEvent(Event&) override;
 		
 		virtual void OnResize(float width, float height) override;
 	private:
 		bool OnMouseScrolled(MouseScrolledEvent& e);
+		bool OnMouseButtonPressedEvent(MouseButtonPressedEvent& e);
+		bool OnMouseButtonReleasedEvent(MouseButtonReleasedEvent& e);
 		bool OnWindowResize(WindowResizeEvent& e);
 		
 	private:
@@ -53,6 +56,8 @@ namespace Apex {
 		float m_ZoomLevel;
 		glm::vec3 m_CameraPosition;
 		float m_CameraRotation;
+		bool m_IsDragging = false;
+		std::pair<float, float> m_DragStartPos = { 0.f, 0.f };
 		
 		// Camera Handle
 		OrthographicCamera m_Camera;

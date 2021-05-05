@@ -1,5 +1,8 @@
 #pragma once
 
+#include <vector>
+#include <list>
+
 #include "NodeGraph.h"
 
 namespace Apex::EditorTools {

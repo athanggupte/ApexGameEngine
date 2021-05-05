@@ -3,7 +3,7 @@
 #include "Apex/Core/Events/Event.h"
 
 namespace Apex {
-
+	
 	struct WindowProps
 	{
 		std::string w_Title;
@@ -15,6 +15,8 @@ namespace Apex {
 					uint32_t height = 720)
 			: w_Title(title), w_Width(width), w_Height(height) {}
 	};
+	
+	struct ImageData; // Forward Declaration
 
 	class Window
 	{
@@ -33,6 +35,8 @@ namespace Apex {
 		virtual void SetVSync(bool enabled) = 0;
 		virtual bool IsVSync() const = 0;
 
+		virtual void SetWindowIcon(const ImageData& imageData) const = 0;
+		
 		virtual void* GetNativeWindow() const = 0;
 
 		static Window* Create(const WindowProps& props = WindowProps());

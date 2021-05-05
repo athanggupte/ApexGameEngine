@@ -2,7 +2,17 @@
 
 namespace Apex {
 	
+	struct ImageData
+	{
+		int32_t width, height, channels;
+		uint8_t* pixels;
+		
+		~ImageData();
+	};
+	
 	namespace Utils {
+		
+		ImageData LoadImage(const std::string& path, int32_t targetChannels = 4);
 	
 		std::string GetFilename(const std::string& filepath);
 		

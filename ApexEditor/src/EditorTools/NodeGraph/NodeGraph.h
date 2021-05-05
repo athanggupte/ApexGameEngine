@@ -1,5 +1,7 @@
 #pragma once
 
+#include <functional>
+
 #include "Node.h"
 #include "ConnectionTree.h"
 

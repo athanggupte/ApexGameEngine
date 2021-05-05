@@ -1,4 +1,4 @@
-#include <apex_pch.h>
+#include <apexed_pch.h>
 #include "ShaderNodes.h"
 
 #include "ShaderSlots.h"
@@ -10,7 +10,7 @@ namespace Apex::EditorTools {
 	{
 		name = "Output";
 		inputSlots = {
-			new EditorTools::SlotVec4({ "Color" })
+			new EditorTools::SlotVec4{ "Color" }
 		};
 		outputSlots = {};
 		size = { 6.f, 0.f };
@@ -29,16 +29,16 @@ namespace Apex::EditorTools {
 	{
 		name = "Test";
 		inputSlots = {
-			new EditorTools::SlotFloat({ "FloatInput" }),
-			new EditorTools::SlotVec2({ "Vec2Input" }),
-			new EditorTools::SlotVec3({ "Vec3Input" }),
-			new EditorTools::SlotVec4({ "Vec4Input" })
+			new EditorTools::SlotFloat{ "FloatInput" },
+			new EditorTools::SlotVec2{ "Vec2Input" },
+			new EditorTools::SlotVec3{ "Vec3Input" },
+			new EditorTools::SlotVec4{ "Vec4Input" }
 		};
 		outputSlots = {
-			new EditorTools::SlotFloat({ "FloatOutput" }),
-			new EditorTools::SlotVec2({ "Vec2Output" }),
-			new EditorTools::SlotVec3({ "Vec3Output" }),
-			new EditorTools::SlotVec4({ "Vec4Output" })
+			new EditorTools::SlotFloat{ "FloatOutput" },
+			new EditorTools::SlotVec2{ "Vec2Output" },
+			new EditorTools::SlotVec3{ "Vec3Output" },
+			new EditorTools::SlotVec4{ "Vec4Output" }
 		};
 		size = { 24.f, 0.f };
 	}
@@ -55,10 +55,10 @@ namespace Apex::EditorTools {
 	{
 		name = "Blur";
 		inputSlots = {
-			new EditorTools::SlotTexture2D({ "TexIn" })
+			new EditorTools::SlotTexture2D{ "TexIn" }
 		};
 		outputSlots = {
-			new EditorTools::SlotVec4({ "Out" })
+			new EditorTools::SlotVec4{ "Out" }
 		};
 		size = { 24.f, 0.f };
 

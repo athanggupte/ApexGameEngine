@@ -3,14 +3,7 @@
 #include <glm/glm.hpp>
 
 namespace Apex {
-	
-	struct RenderCamera
-	{
-		glm::mat4 projection;
-		
-		const glm::mat4& GetProjection() const { return projection; }
-	};
-	
+
 	class Camera
 	{
 	public:

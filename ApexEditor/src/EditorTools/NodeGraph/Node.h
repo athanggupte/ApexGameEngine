@@ -25,7 +25,7 @@ namespace Apex::EditorTools {
 		Node* parentNode;
 		Slot* connectedSlot; // For input slots only
 
-
+		float defaultValue = 0.f;
 		// ImGui related attributes
 		//ImGuiID id;
 		ImVec2 pos;

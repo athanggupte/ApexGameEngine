@@ -189,18 +189,23 @@ project "ApexEditor"
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
 
+	pchheader "apexed_pch.h"
+	pchsource "ApexEditor/src/apexed_pch.cpp"
+	
 	files {
 		"%{prj.name}/src/**.h",
 		"%{prj.name}/src/**.cpp"
 	}
-    
-	configuration "not editor-tools"
+
+	if not _OPTIONS["editor-tools"] then
 		removefiles {
 			"%{prj.name}/src/EditorTools/**.h",
 			"%{prj.name}/src/EditorTools/**.cpp"
 		}
+	end
 
 	includedirs {
+		"ApexEditor/src",
 		"ApexGameEngine/src",
 		-- External Dependencies
 		"%{IncludeDirs.spdlog}",
@@ -279,6 +284,7 @@ project "Sandbox"
 	}
 
 	includedirs {
+		"Sandbox/src",
 		"ApexGameEngine/src",
 		-- External Dependencies
 		"%{IncludeDirs.spdlog}",

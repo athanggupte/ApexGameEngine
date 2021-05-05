@@ -1,4 +1,4 @@
-#include <apex_pch.h>
+#include <apexed_pch.h>
 #include "NodeGraph.h"
 
 #ifndef IMGUI_DEFINE_MATH_OPERATORS
@@ -428,7 +428,7 @@ namespace Apex::EditorTools {
 			ImGui::SetCursorScreenPos({ center - ImVec2{ 30.f, 9.5f } * m_Canvas.zoom });
 			ImGui::SetNextItemWidth(60.f * m_Canvas.zoom);
 			ImGui::PushStyleColor(ImGuiCol_FrameBg, IM_COL32(102, 102, 106, 220));
-			ImGui::InputDouble("", &slot.defaultValue, 0.0, 0.0, "%.3f");
+			ImGui::InputFloat("", &slot.defaultValue, 0.0, 0.0, "%.3f");
 			ImGui::PopStyleColor();
 		}
 
@@ -478,7 +478,7 @@ namespace Apex::EditorTools {
 
 #define SQR(_x_) _x_ * _x_ 
 
-		ImVec2 closest_pt = ImBezierClosestPointCasteljau(input_pos, p2, p3, output_pos, ImGui::GetMousePos(), style.CurveTessellationTol);
+		ImVec2 closest_pt = ImBezierCubicClosestPointCasteljau(input_pos, p2, p3, output_pos, ImGui::GetMousePos(), style.CurveTessellationTol);
 		float min_square_distance = ImFabs(ImLengthSqr(ImGui::GetMousePos() - closest_pt));
 		bool is_close = min_square_distance <= SQR(thickness + 0.8);
 		draw_list->AddBezierCurve(input_pos, p2, p3, output_pos, is_close ? IM_COL32(111, 252, 151, 200) : IM_COL32(204, 56, 207, 250), is_close ? thickness + 0.5f : thickness, 0);
