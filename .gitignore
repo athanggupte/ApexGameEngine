@@ -283,3 +283,7 @@ obj/
 
 ## Kate Editor
 .kateproject
+
+## KDevelop IDE
+*.kdev4
+.kdev4/

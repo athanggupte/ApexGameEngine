@@ -79,11 +79,16 @@ project "ApexGameEngine"
 	files {
 		"%{prj.name}/src/**.h",
 		"%{prj.name}/src/**.cpp",
+		-- STB Image --
 		"%{prj.name}/vendor/stb_image/**.h",
 		"%{prj.name}/vendor/stb_image/**.cpp",
+		-- GLM --
 		"%{prj.name}/vendor/glm/glm/**.hpp",
 		"%{prj.name}/vendor/glm/glm/**.inl",
-		"%{prj.name}/vendor/glm/glm/**.h"
+		"%{prj.name}/vendor/glm/glm/**.h",
+		-- PugiXML --
+		"%{prj.name}/vendor/pugixml/**.hpp",
+		"%{prj.name}/vendor/pugixml/**.cpp",
 	}
 
 	includedirs {
