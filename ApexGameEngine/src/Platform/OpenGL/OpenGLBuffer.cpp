@@ -70,4 +70,34 @@ namespace Apex {
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	}
 
+	///////////////////////////////////////////////////////////////////////
+	/*-------------------------Uniform Buffer----------------------------*/
+	///////////////////////////////////////////////////////////////////////
+	OpenGLUniformBuffer::OpenGLUniformBuffer(uint32_t size, uint32_t binding)
+		: m_Size(size)
+	{
+		glCreateBuffers(1, &m_RendererID);
+		glNamedBufferData(m_RendererID, size, nullptr, GL_DYNAMIC_DRAW);
+		glBindBufferBase(GL_UNIFORM_BUFFER, binding, m_RendererID);
+	}
+
+	OpenGLUniformBuffer::~OpenGLUniformBuffer()
+	{
+		glDeleteBuffers(1, &m_RendererID);
+	}
+
+	void OpenGLUniformBuffer::Bind() const
+	{
+		glBindBuffer(GL_UNIFORM_BUFFER, m_RendererID);
+	}
+
+	void OpenGLUniformBuffer::Unbind() const
+	{
+		glBindBuffer(GL_UNIFORM_BUFFER, 0);
+	}
+	
+	void OpenGLUniformBuffer::SetData(const void* data, uint32_t size, uint32_t offset)
+	{
+		glNamedBufferSubData(m_RendererID, offset, size, data);
+	}
 }
