@@ -3,6 +3,7 @@
 
 #include "Apex/Core/Log.h"
 #include "Apex/Core/Input/Input.h"
+#include "Apex/Core/FileSystem/VFS.h"
 #include "Apex/Graphics/Renderer/RenderCommands.h"
 #include "Apex/Graphics/Renderer/Renderer.h"
 #include "Apex/Graphics/Renderer/Renderer2D.h"
@@ -29,6 +30,7 @@ namespace Apex {
 		Renderer::Init();
 		Renderer2D::Init();
 		PostProcess::Init();
+		FileSystem::Init();
 
 		m_ImGuiLayer = new ImGuiLayer();
 		PushOverlay(m_ImGuiLayer);

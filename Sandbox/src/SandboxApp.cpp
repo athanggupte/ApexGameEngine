@@ -8,8 +8,8 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-//#include "Apex/Graphics/Material/Material.h"
-//#include "Apex/Graphics/Model/Model.h"
+// #include "Apex/Graphics/Material/Material.h"
+#include "Apex/Graphics/Model/Model.h"
 //#include "Apex/Utils/ComputeShader/ComputeShader.h"
 //#include "Apex/Physics/ParticleSystem/ParticleSystem2D.h"
 
@@ -20,6 +20,8 @@
 
 // Audio
 //#include "irrKlang.h"
+
+#include "Apex/Core/FileSystem/VFS.h"
 
 #include "Apex/Core/ECS/Scene.h"
 #include "Apex/Core/ECS/Entity.h"
@@ -32,7 +34,49 @@
 // #include "ModelLoaderExample.h"
 // #include "TerminalExample.h"
 
-// #if 0
+#if 1
+class SandboxLayer: public Apex::Layer
+{
+public:
+	SandboxLayer()
+		: Layer("Model Viewer"), m_Camera(63.5f, 16.f / 9.f)
+	{}
+	
+	~SandboxLayer() {}
+	
+	void OnAttach() override
+	{
+		Apex::FileSystem::Mount("/assets", "assets");
+		auto file = Apex::FileSystem::GetFile("/assets/shaders/FlatColor.glsl");
+		std::string source;
+		if (file->OpenRead()) {
+			source.resize(file->Size());
+			file->Read(&source[0], source.size());
+			APEX_LOG_INFO("FlatColor.glsl:\n{}", source);
+		}
+		
+	}
+	
+	void OnDetach() override {}
+	
+	void OnUpdate(Apex::Timestep ts) override
+	{
+		
+	}
+	
+	void OnEvent(Apex::Event& e) override {}
+	
+	void OnImGuiRender() override {}
+	
+private:
+	Apex::PerspectiveCamera m_Camera;
+	Apex::Ref<Apex::Model> m_Model;
+	Apex::Ref<Apex::Shader> m_Shader;
+	Apex::Ref<Apex::Texture2D> m_Texture;
+};
+#endif
+
+#if 0
 class SandboxLayer : public Apex::Layer
 {
 public:
@@ -80,7 +124,7 @@ public:
 		ballTransformComp.Transform = glm::translate(glm::mat4(1.f), { m_BallPosition.x, m_BallPosition.y, 0.1f });
 		ballSpriteComp.useTexture = true;
 		
-		m_Rotation += 0.2f * Apex::Timer::GetSeconds();
+		m_Rotation += 0.2f * ts;
 		m_Rotation = (m_Rotation > 360.f) ? 0.f : m_Rotation;
 		
 		// Render
@@ -174,7 +218,7 @@ private:
 	Apex::Ref<Apex::Scene> m_Scene;
 	bool m_ShowOutline = false;
 };
-// #endif
+#endif
 
 class Sandbox : public Apex::Application
 {
