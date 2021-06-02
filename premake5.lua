@@ -20,6 +20,7 @@ IncludeDirs["stb_image"] = "ApexGameEngine/vendor/stb_image/"
 IncludeDirs["Assimp"] = "ApexGameEngine/vendor/Assimp/include/"
 IncludeDirs["irrKlang"] = "ApexGameEngine/vendor/irrKlang/include/"
 IncludeDirs["entt"] = "ApexGameEngine/vendor/entt/single_include/"
+IncludeDirs["ImGuizmoQuat"] = "ApexGameEngine/vendor/imguizmo_quat/imGuIZMO.quat/"
 IncludeDirs["ApexIK"] = "ApexGameEngine/modules/ApexIK/ApexIK/include/"
 
 -- DLLs
@@ -49,6 +50,7 @@ LinuxLibDirs = { "ApexGameEngine/vendor/Assimp/build/bin", "ApexGameEngine/vendo
 include "ApexGameEngine/vendor/GLFW"
 include "ApexGameEngine/vendor/Glad"
 include "ApexGameEngine/vendor/imgui"
+include "ApexGameEngine/vendor/imguizmo_quat"
 
 include "ApexGameEngine/modules/ApexIK"
 
@@ -90,6 +92,7 @@ project "ApexGameEngine"
 		"%{IncludeDirs.Assimp}",
 		"%{IncludeDirs.irrKlang}",
 		"%{IncludeDirs.entt}",
+		"%{IncludeDirs.ImGuizmoQuat}",
 		-- Modules
 		"%{IncludeDirs.ApexIK}",
 	}
@@ -104,11 +107,19 @@ project "ApexGameEngine"
 		"GLFW",
 		"Glad",
 		"ImGui",
+		"ImGuizmoQuat",
 		"ApexIK",
 		--"zlibd",4"
 		--"IrrXMLd",
 	}
-
+	
+	targetDir = path.getabsolute("bin/" .. outputdir .. "/%{prj.name}")
+	
+	defines {
+		"APEX_INSTALL_LOCATION=\""..targetDir.."\"",
+		"APEX_USE_VFS"
+	}
+	
 	filter "system:windows"
 		staticruntime "On"
 		systemversion "latest"
@@ -191,6 +202,7 @@ project "ApexEditor"
 		"%{IncludeDirs.Assimp}",
 		"%{IncludeDirs.irrKlang}",
 		"%{IncludeDirs.entt}",
+		"%{IncludeDirs.ImGuizmoQuat}",
 		-- Modules
 		"%{IncludeDirs.ApexIK}"
 	}
@@ -200,6 +212,7 @@ project "ApexEditor"
 		"GLFW",
 		"Glad",
 		"ImGui",
+		"ImGuizmoQuat",
 		"ApexIK",
 	}
 
@@ -269,6 +282,7 @@ project "Sandbox"
 		"%{IncludeDirs.Assimp}",
 		"%{IncludeDirs.irrKlang}",
 		"%{IncludeDirs.entt}",
+		"%{IncludeDirs.ImGuizmoQuat}",
 		-- Modules
 		"%{IncludeDirs.ApexIK}"
 	}
@@ -278,6 +292,7 @@ project "Sandbox"
 		"GLFW",
 		"Glad",
 		"ImGui",
+		"ImGuizmoQuat",
 		"ApexIK",
 	}
 

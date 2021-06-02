@@ -82,7 +82,7 @@ namespace Apex {
 	
 	Ref<VFS::IFile> FileSystem::GetFile(const std::string& filePath)
 	{
-		APEX_CORE_ASSERT(std::regex_match(filePath, reg), "Incorrect file path format!");
+		APEX_CORE_ASSERT(std::regex_match(filePath, reg), "Incorrect file path format -> \"" + filePath + "\"");
 		std::istringstream fpss(filePath);
 		char rootSlash;
 		fpss >> rootSlash;

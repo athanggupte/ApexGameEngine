@@ -12,4 +12,13 @@ namespace Apex {
 		return filepath.substr(lastSlash, count);
 	}
 	
+	namespace std140 {
+	
+		uint32_t GetNextPosition(uint32_t currentPosition, uint32_t currentSize, std140::DataAlignment alignment)
+		{
+			uint32_t nextPosition = (currentPosition + currentSize + (alignment - 1)) & ~(alignment - 1);
+			return nextPosition;
+		}
+		
+	}
 }

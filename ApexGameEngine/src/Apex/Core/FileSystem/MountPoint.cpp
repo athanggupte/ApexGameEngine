@@ -13,12 +13,12 @@ namespace Apex::VFS {
 	
 	void PhysicalMountPoint::OnMount()
 	{
-		CacheFilenames();
-		std::stringstream ss;
-		ss << "Files in `" << m_PhysicalPath << "` :";
-		for (auto& f : m_Filenames)
-			ss << "\n\t\t" << f;
-		APEX_CORE_DEBUG(ss.str());
+		//CacheFilenames();
+		//std::stringstream ss;
+		//ss << "Files in `" << m_PhysicalPath << "` :";
+		//for (auto& f : m_Filenames)
+		//	ss << "\n\t\t" << f;
+		//APEX_CORE_DEBUG(ss.str());
 	}
 	
 	bool PhysicalMountPoint::HasFile(const std::string& filePath) const

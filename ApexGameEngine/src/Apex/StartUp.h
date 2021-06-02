@@ -30,9 +30,9 @@ int main(int argc, char** argv)
 
 	Apex::Timer::Init();
 
-	//APEX_PROFILE_BEGIN_SESSION("Runtime", "ApexGameEngineProfile-Runtime.json");
+	APEX_PROFILE_BEGIN_SESSION("Runtime", "ApexGameEngineProfile-Runtime.json");
 	app->Run();
-	//APEX_PROFILE_END_SESSION();
+	APEX_PROFILE_END_SESSION();
 
 	//APEX_PROFILE_BEGIN_SESSION("ShutDown", "ApexGameEngineProfile-ShutDown.json");
 	delete app;

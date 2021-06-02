@@ -5,7 +5,7 @@
 #include "Apex/Core/Camera.h"
 #include "Apex/Graphics/RenderPrimitives/VertexArray.h"
 #include "Apex/Graphics/RenderPrimitives/Shader.h"
-#include "Apex/Graphics/Model/Model.h"
+//#include "Apex/Graphics/Model/Model.h"
 
 namespace Apex {
 
@@ -48,30 +48,30 @@ namespace Apex {
 		RenderCommands::DrawInstanced(vertexArray, count);
 	}
 
-	/*void Renderer::SubmitModel(const Ref<Shader>& shader, const Ref<Model>& model, const glm::mat4 & modelMatrix)
-	{
-		model->ApplyModelMatrix(modelMatrix);
-		shader->Bind();
-		shader->SetUniMat4("u_ViewProjection", s_SceneData->ViewProjectionMatrix);
-		shader->SetUniMat4("u_Model", model->GetModelMatrix());
-
-		for (auto&[name, mesh] : model->GetMeshes()) {
-			if (mesh->Show()) {
-				uint32_t i = 1;
-				//APEX_CORE_INFO("Mesh textures ->");
-				for (auto[name, texture] : mesh->GetTextures()) {
-					//APEX_CORE_INFO("{0} : {1} : {2}", name, texture->GetPath(), i);
-					shader->SetUniInt1("u_" + name, i);
-					texture->Bind(i);
-					i++;
-				}
-				mesh->GetVAO()->Bind();
-				RenderCommands::DrawIndexed(mesh->GetVAO());
-			}
-		}
-	}*/
-
-#if 0
+// 	void Renderer::SubmitModel(const Ref<Shader>& shader, const Ref<Model>& model, const glm::mat4 & modelMatrix)
+// 	{
+// 		model->ApplyModelMatrix(modelMatrix);
+// 		shader->Bind();
+// 		shader->SetUniMat4("u_ViewProjection", s_SceneData->ViewProjectionMatrix);
+// 		shader->SetUniMat4("u_Model", model->GetModelMatrix());
+// 
+// 		for (auto&[name, mesh] : model->GetMeshes()) {
+// 			if (mesh->Show()) {
+// 				uint32_t i = 1;
+// 				APEX_CORE_INFO("Mesh textures ->");
+// 				for (auto[name, texture] : mesh->GetTextures()) {
+// 					APEX_CORE_INFO("{0} : {1} : {2}", name, texture->GetPath(), i);
+// 					shader->SetUniInt1("u_" + name, i);
+// 					texture->Bind(i);
+// 					i++;
+// 				}
+// 				mesh->GetVAO()->Bind();
+// 				RenderCommands::DrawIndexed(mesh->GetVAO());
+// 			}
+// 		}
+// 	}
+	
+// #if 0
 	/*--------------------------------------------------------------------------------------------------*/
 	void Renderer::SubmitPostProcess(const Ref<Shader>& shader, const Ref<VertexArray>& vertexArray)
 	{
@@ -80,7 +80,7 @@ namespace Apex {
 		RenderCommands::Draw(vertexArray);
 	}
 	/*--------------------------------------------------------------------------------------------------*/
-#endif
+// #endif
 
 	void Renderer::Shutdown()
 	{

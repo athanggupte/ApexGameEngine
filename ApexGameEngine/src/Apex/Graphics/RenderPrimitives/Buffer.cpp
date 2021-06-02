@@ -50,4 +50,15 @@ namespace Apex{
 		APEX_CORE_CRITICAL("Unknown Rendering API"); return nullptr;
 	}
 
+	/*-------------------------Shader Storage Buffer-----------------------------*/
+	Ref<ShaderStorageBuffer> ShaderStorageBuffer::Create(uint32_t size, uint32_t binding)
+	{
+		switch (Renderer::GetAPI())
+		{
+			case RendererAPI::API::None:	APEX_CORE_CRITICAL("No Rendering API selected"); return nullptr;
+			case RendererAPI::API::OpenGL:	return CreateRef<OpenGLShaderStorageBuffer>(size, binding);
+		}
+		APEX_CORE_CRITICAL("Unknown Rendering API"); return nullptr;
+	}
+
 }
