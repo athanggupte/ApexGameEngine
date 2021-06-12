@@ -201,7 +201,7 @@ namespace Apex {
 		s_Data->SizeInBuffer = accumulator;
 		s_Data->RenderUniformBuffer = UniformBuffer::Create(s_Data->SizeInBuffer, /* binding */ 1);
 		
-		s_Data->RenderStorageBuffer = ShaderStorageBuffer::Create(0, 1);
+		s_Data->RenderStorageBuffer = ShaderStorageBuffer::Create(0, 2);
 	}
 	
 	void ForwardRenderer::Shutdown()
@@ -247,24 +247,46 @@ namespace Apex {
 		for (auto& command : s_Data->Commands) {
 			// auto& command = s_Data->Commands.front();
 			auto& mesh = command.mesh;
+			if (!mesh->GetVAO())
+				continue;
+			
 			command.shader->Bind();
 			
+			uint32_t offsetSize = sizeof(glm::mat4) * 2;
+			uint32_t sizeReqd = offsetSize * command.transforms.size();
+			
+			if (s_Data->RenderStorageBuffer->GetSize() < sizeReqd)
+				s_Data->RenderStorageBuffer->ResetData(sizeReqd);
+			
+			void * mappedStorageBufferPtr = s_Data->RenderStorageBuffer->MapBuffer(false);
+			uint32_t offset = 0;
 			for (auto& transform : command.transforms) {
-				s_Data->MappedUniformBufferPtr = s_Data->RenderUniformBuffer->MapBuffer(false);
-				s_Data->RenderStorageBuffer->ResetData(sizeof(glm::mat4) * 2 * command.transforms.size());
+				// s_Data->MappedUniformBufferPtr = s_Data->RenderUniformBuffer->MapBuffer(false);
+				// s_Data->RenderStorageBuffer->ResetData(sizeof(glm::mat4) * 2 * command.transforms.size());
 				
-				s_Data->SetGlobalUniform(glm::value_ptr(transform), Mesh_Transform);
+				// s_Data->SetGlobalUniform(glm::value_ptr(transform), Mesh_Transform);
 				
 				glm::mat4 normalMatrix = glm::mat4(glm::mat3(glm::transpose(glm::inverse(transform))));
-				s_Data->SetGlobalUniform(glm::value_ptr(normalMatrix), Mesh_NormalMat);
+				// s_Data->SetGlobalUniform(glm::value_ptr(normalMatrix), Mesh_NormalMat);
 				
-				RenderCommands::DrawIndexed(mesh->GetVAO());
+				memcpy(mappedStorageBufferPtr + offset, glm::value_ptr(transform), sizeof(transform));
+				offset += sizeof(transform);
 				
-				s_Data->NumDrawCalls++;
+				memcpy(mappedStorageBufferPtr + offset, glm::value_ptr(normalMatrix), sizeof(normalMatrix));
+				offset += sizeof(normalMatrix);
 				
-				s_Data->RenderUniformBuffer->UnmapBuffer();
-				s_Data->MappedUniformBufferPtr = nullptr;
+				// RenderCommands::DrawIndexed(mesh->GetVAO());
+				
+				// s_Data->NumDrawCalls++;
+				
+				// s_Data->RenderUniformBuffer->UnmapBuffer();
+				// s_Data->MappedUniformBufferPtr = nullptr;
+				
+				//APEX_CORE_DEBUG("offset : {}", offset);
 			}
+			s_Data->NumDrawCalls++;
+			s_Data->RenderStorageBuffer->UnmapBuffer();
+			RenderCommands::DrawInstanced(mesh->GetVAO(), command.transforms.size());
 			
 			command.transforms.clear();
 		}

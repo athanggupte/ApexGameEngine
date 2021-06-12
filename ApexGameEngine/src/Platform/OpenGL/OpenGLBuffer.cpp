@@ -123,7 +123,7 @@ namespace Apex {
 	}
 	
 	///////////////////////////////////////////////////////////////////////
-	/*-------------------------Uniform Buffer----------------------------*/
+	/*---------------------Shader Storage Buffer-------------------------*/
 	///////////////////////////////////////////////////////////////////////
 	OpenGLShaderStorageBuffer::OpenGLShaderStorageBuffer(uint32_t size, uint32_t binding)
 		: m_Size(size)

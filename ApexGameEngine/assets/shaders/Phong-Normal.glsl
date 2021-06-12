@@ -37,6 +37,17 @@ layout(std140, binding = 1) uniform RenderUniforms
 	mat3 Mesh_NormalMat;
 } ub;
 
+struct Mesh_Matrices
+{
+	mat4 Transform;
+	mat4 NormalMat;
+};
+
+layout(std430, binding = 2) buffer RenderStorage
+{
+	Mesh_Matrices Mesh_Instance[];
+} sb;
+
 // layout(std430, binding = 1) buffer RenderStorage
 // {
 // 	mat4 Mesh_Transforms[];
@@ -45,11 +56,18 @@ layout(std140, binding = 1) uniform RenderUniforms
 
 void main()
 {
-	vs_out.Position = vec3(ub.Mesh_Transform * vec4(a_Position, 1.0));
+	vs_out.Position = vec3(sb.Mesh_Instance[gl_InstanceID].Transform * vec4(a_Position, 1.0));
 	vs_out.TexCoord = vec2(a_TexCoord.x, 1.0 * a_TexCoord.y);
+	
+	vec3 T = normalize(mat3(sb.Mesh_Instance[gl_InstanceID].NormalMat) * a_Tangent);
+	vec3 B = normalize(mat3(sb.Mesh_Instance[gl_InstanceID].NormalMat) * a_Bitangent);
+	vec3 N = normalize(mat3(sb.Mesh_Instance[gl_InstanceID].NormalMat) * a_Normal);
+	
+	/*
 	vec3 T = normalize(ub.Mesh_NormalMat * a_Tangent);
 	vec3 B = normalize(ub.Mesh_NormalMat * a_Bitangent);
 	vec3 N = normalize(ub.Mesh_NormalMat * a_Normal);
+	*/
 	/* Gramm-Shmidt re-orthogonalization
 	vec3 T = normalize(ub.Mesh_NormalMat * a_Tangent);
 	vec3 N = normalize(ub.Mesh_NormalMat * a_Normal);

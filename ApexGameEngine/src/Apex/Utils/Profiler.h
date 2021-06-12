@@ -74,7 +74,7 @@ namespace Apex {
 	};
 
 }
-#define APEX_PROFILER_ENABLE
+// #define APEX_PROFILER_ENABLE
 
 #ifndef __FUNCSIG__
 #define __FUNCSIG__ __PRETTY_FUNCTION__
