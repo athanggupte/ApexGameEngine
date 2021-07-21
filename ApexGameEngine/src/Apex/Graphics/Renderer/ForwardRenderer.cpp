@@ -116,7 +116,7 @@ namespace Apex {
 			APEX_PROFILE_FUNC();
 			// this->RenderUniformBuffer->SetData(data, this->UniformSizes[index], this->UniformOffsets[index]);
 			APEX_CORE_ASSERT(this->MappedUniformBufferPtr != nullptr, "[ForwardRenderer] :: Begin Scene before setting data!");
-			memcpy(this->MappedUniformBufferPtr + this->UniformOffsets[index], data, this->UniformSizes[index]);
+			memcpy((char*)this->MappedUniformBufferPtr + this->UniformOffsets[index], data, this->UniformSizes[index]);
 		}
 		
 		// Stats
@@ -269,10 +269,10 @@ namespace Apex {
 				glm::mat4 normalMatrix = glm::mat4(glm::mat3(glm::transpose(glm::inverse(transform))));
 				// s_Data->SetGlobalUniform(glm::value_ptr(normalMatrix), Mesh_NormalMat);
 				
-				memcpy(mappedStorageBufferPtr + offset, glm::value_ptr(transform), sizeof(transform));
+				memcpy((char*)mappedStorageBufferPtr + offset, glm::value_ptr(transform), sizeof(transform));
 				offset += sizeof(transform);
 				
-				memcpy(mappedStorageBufferPtr + offset, glm::value_ptr(normalMatrix), sizeof(normalMatrix));
+				memcpy((char*)mappedStorageBufferPtr + offset, glm::value_ptr(normalMatrix), sizeof(normalMatrix));
 				offset += sizeof(normalMatrix);
 				
 				// RenderCommands::DrawIndexed(mesh->GetVAO());
@@ -344,7 +344,7 @@ namespace Apex {
 		}
 		else {
 			s_Data->Commands.push_back({ mesh, shader, { modelTransform } });
-			s_Data->MeshShaderIndexCache.insert({ { mesh, shader }, s_Data->Commands.size() - 1 });
+			s_Data->MeshShaderIndexCache.insert({ { mesh, shader }, (uint32_t)(s_Data->Commands.size() - 1) });
 		}
 // 		s_Data->SetGlobalUniform(glm::value_ptr(modelTransform), Mesh_Transform);
 // 		

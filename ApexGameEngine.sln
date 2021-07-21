@@ -7,13 +7,15 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ApexEditor", "ApexEditor\Ap
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ApexGameEngine", "ApexGameEngine\ApexGameEngine.vcxproj", "{63028D86-4FD0-808C-3864-F1B224D15CF1}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ApexIK", "ApexGameEngine\vendor\ApexIK\ApexIK.vcxproj", "{8778A2A7-731A-CD7D-5CD5-E0D1481654CE}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ApexIK", "ApexGameEngine\modules\ApexIK\ApexIK\ApexIK.vcxproj", "{8778A2A7-731A-CD7D-5CD5-E0D1481654CE}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GLFW", "ApexGameEngine\vendor\GLFW\GLFW.vcxproj", "{154B857C-0182-860D-AA6E-6C109684020F}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Glad", "ApexGameEngine\vendor\Glad\Glad.vcxproj", "{BDD6857C-A90D-870D-52FA-6C103E10030F}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ImGui", "ApexGameEngine\vendor\imgui\ImGui.vcxproj", "{C0FF640D-2C14-8DBE-F595-301E616989EF}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ImGuizmoQuat", "ApexGameEngine\vendor\imguizmo_quat\ImGuizmoQuat.vcxproj", "{9111DA0E-7D74-69B3-26FA-A169123C3536}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -64,6 +66,12 @@ Global
 		{C0FF640D-2C14-8DBE-F595-301E616989EF}.Dist|x64.Build.0 = Dist|x64
 		{C0FF640D-2C14-8DBE-F595-301E616989EF}.Release|x64.ActiveCfg = Release|x64
 		{C0FF640D-2C14-8DBE-F595-301E616989EF}.Release|x64.Build.0 = Release|x64
+		{9111DA0E-7D74-69B3-26FA-A169123C3536}.Debug|x64.ActiveCfg = Debug|x64
+		{9111DA0E-7D74-69B3-26FA-A169123C3536}.Debug|x64.Build.0 = Debug|x64
+		{9111DA0E-7D74-69B3-26FA-A169123C3536}.Dist|x64.ActiveCfg = Dist|x64
+		{9111DA0E-7D74-69B3-26FA-A169123C3536}.Dist|x64.Build.0 = Dist|x64
+		{9111DA0E-7D74-69B3-26FA-A169123C3536}.Release|x64.ActiveCfg = Release|x64
+		{9111DA0E-7D74-69B3-26FA-A169123C3536}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

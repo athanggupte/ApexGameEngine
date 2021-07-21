@@ -57,7 +57,9 @@ public:
 		
 		for (auto& modelFile : m_ModelFilePaths) {
 			m_Models.push_back(Apex::Model::LoadModel(modelFile, false));
-			m_Props.emplace_back(ModelProps{ Position: { Apex::Random::Float() * 10.f, 0.f, -15.f } });
+			ModelProps props{};
+			props.Position = { Apex::Random::Float() * 10.f, 0.f, -15.f };
+			m_Props.emplace_back(props);
 		}
 		
 // 		m_Textures.push_back({

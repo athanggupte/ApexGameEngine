@@ -97,7 +97,11 @@ namespace Apex {
 	#endif
 		
 #else
-#warning Profiler is disabled!
+#ifdef _MSC_VER
+#pragma message("Profiler is disabled!")
+#elif defined(__GNUC__) || defined(__clang__)
+#warn Profiler is disabled!
+#endif
 	#define APEX_PROFILE_BEGIN_SESSION(name, filepath)	
 	#define APEX_PROFILE_END_SESSION()					
 	#define APEX_PROFILE_SCOPE(name)					

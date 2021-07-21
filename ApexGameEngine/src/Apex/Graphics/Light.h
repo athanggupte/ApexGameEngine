@@ -19,6 +19,4 @@ namespace Apex {
 		glm::vec4 Attenuation;
 	};
 	
-	struct 
-	
 }

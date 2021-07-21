@@ -7,17 +7,23 @@
     <Filter Include="src\Apex">
       <UniqueIdentifier>{8ABD1BCF-768A-76DA-9FA3-64828BCFAB68}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\Apex\AssetManager">
-      <UniqueIdentifier>{54323B6C-C09E-F666-8992-8EC4F5BD18CF}</UniqueIdentifier>
-    </Filter>
     <Filter Include="src\Apex\Core">
       <UniqueIdentifier>{22E85A9C-8EA8-D6D2-57E3-1F50C3621BAF}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Apex\Core\AssetManager">
+      <UniqueIdentifier>{ECD3703F-D8E3-1C10-419D-812E2DCC0BA9}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\Apex\Core\ECS">
       <UniqueIdentifier>{6C1D11A2-D833-0F38-21AB-9A598D00E0BF}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Apex\Core\ECS\Components">
+      <UniqueIdentifier>{0147DD2A-ED01-CDD6-96B9-452182531767}</UniqueIdentifier>
+    </Filter>
     <Filter Include="src\Apex\Core\Events">
       <UniqueIdentifier>{C6D939C8-B268-C391-5B87-D78C47F5D337}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Apex\Core\FileSystem">
+      <UniqueIdentifier>{F630EA2F-E255-39B0-0BA1-1E40F72438CE}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\Apex\Core\Input">
       <UniqueIdentifier>{A1A92E6B-0D0B-0C79-9678-522B02D94238}</UniqueIdentifier>
@@ -25,17 +31,8 @@
     <Filter Include="src\Apex\Core\Layers">
       <UniqueIdentifier>{A1C41CD7-8D53-A6A0-3672-BA9B22E0B646}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\Apex\Core\Scene">
-      <UniqueIdentifier>{BF66DD6B-2BC8-BA79-B435-012C2096F138}</UniqueIdentifier>
-    </Filter>
     <Filter Include="src\Apex\Graphics">
       <UniqueIdentifier>{0A614613-7677-44A9-BFEE-CFCA2B441531}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="src\Apex\Graphics\Material">
-      <UniqueIdentifier>{E85ADEFE-D46A-8ACF-3D24-EFED29537968}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="src\Apex\Graphics\Model">
-      <UniqueIdentifier>{CAE9E335-3621-2CCD-3F2B-90F0ABE152C6}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\Apex\Graphics\PostProcessing">
       <UniqueIdentifier>{BC76B04B-A8C7-9B8D-D12B-8A4FBDDB2EF7}</UniqueIdentifier>
@@ -79,11 +76,14 @@
     <Filter Include="src\Platform">
       <UniqueIdentifier>{21CA02E5-0D2D-9289-B6B2-CA3FA2F45D0C}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Platform\GLFW">
+      <UniqueIdentifier>{0002C6D8-6C18-C46E-B58F-4F9021E594F6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Platform\Linux">
+      <UniqueIdentifier>{0052F1F1-EC35-B247-5596-AC9A41999CC9}</UniqueIdentifier>
+    </Filter>
     <Filter Include="src\Platform\OpenGL">
       <UniqueIdentifier>{35A49437-A105-7245-2A73-B8F796D3A804}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="src\Platform\Windows">
-      <UniqueIdentifier>{5B054582-4794-CE4B-F0B2-E246DC20DFF1}</UniqueIdentifier>
     </Filter>
     <Filter Include="vendor">
       <UniqueIdentifier>{B3738122-9F15-ACF8-88D0-BF4C74113349}</UniqueIdentifier>
@@ -120,22 +120,34 @@
     <ClInclude Include="src\Apex\Application.h">
       <Filter>src\Apex</Filter>
     </ClInclude>
-    <ClInclude Include="src\Apex\AssetManager\AssetManager.h">
-      <Filter>src\Apex\AssetManager</Filter>
+    <ClInclude Include="src\Apex\Core\AssetManager\AssetManager.h">
+      <Filter>src\Apex\Core\AssetManager</Filter>
     </ClInclude>
-    <ClInclude Include="src\Apex\Core.h">
-      <Filter>src\Apex</Filter>
+    <ClInclude Include="src\Apex\Core\AssetManager\ResourceLibrary.h">
+      <Filter>src\Apex\Core\AssetManager</Filter>
     </ClInclude>
     <ClInclude Include="src\Apex\Core\Camera.h">
       <Filter>src\Apex\Core</Filter>
     </ClInclude>
-    <ClInclude Include="src\Apex\Core\ECS\ECSComponent.h">
+    <ClInclude Include="src\Apex\Core\CameraController.h">
+      <Filter>src\Apex\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Apex\Core\Core.h">
+      <Filter>src\Apex\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Apex\Core\ECS\Components.h">
       <Filter>src\Apex\Core\ECS</Filter>
     </ClInclude>
-    <ClInclude Include="src\Apex\Core\ECS\ECSEntity.h">
+    <ClInclude Include="src\Apex\Core\ECS\Components\BasicComponents.h">
+      <Filter>src\Apex\Core\ECS\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Apex\Core\ECS\Entity.h">
       <Filter>src\Apex\Core\ECS</Filter>
     </ClInclude>
-    <ClInclude Include="src\Apex\Core\ECS\ECSRegistry.h">
+    <ClInclude Include="src\Apex\Core\ECS\Scene.h">
+      <Filter>src\Apex\Core\ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Apex\Core\ECS\ScriptableEntity.h">
       <Filter>src\Apex\Core\ECS</Filter>
     </ClInclude>
     <ClInclude Include="src\Apex\Core\Events\ApplicationEvent.h">
@@ -149,6 +161,18 @@
     </ClInclude>
     <ClInclude Include="src\Apex\Core\Events\MouseEvent.h">
       <Filter>src\Apex\Core\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Apex\Core\FileSystem\FileHandle.h">
+      <Filter>src\Apex\Core\FileSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Apex\Core\FileSystem\MountPoint.h">
+      <Filter>src\Apex\Core\FileSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Apex\Core\FileSystem\VFS.h">
+      <Filter>src\Apex\Core\FileSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Apex\Core\GUID.h">
+      <Filter>src\Apex\Core</Filter>
     </ClInclude>
     <ClInclude Include="src\Apex\Core\Input\Input.h">
       <Filter>src\Apex\Core\Input</Filter>
@@ -168,31 +192,31 @@
     <ClInclude Include="src\Apex\Core\Log.h">
       <Filter>src\Apex\Core</Filter>
     </ClInclude>
-    <ClInclude Include="src\Apex\Core\Random.h">
-      <Filter>src\Apex\Core</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Apex\Core\Scene\Scene.h">
-      <Filter>src\Apex\Core\Scene</Filter>
-    </ClInclude>
     <ClInclude Include="src\Apex\Core\Timer.h">
       <Filter>src\Apex\Core</Filter>
     </ClInclude>
-    <ClInclude Include="src\Apex\Graphics\Material\Material.h">
-      <Filter>src\Apex\Graphics\Material</Filter>
+    <ClInclude Include="src\Apex\Graphics\Light.h">
+      <Filter>src\Apex\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="src\Apex\Graphics\Model\Mesh.h">
-      <Filter>src\Apex\Graphics\Model</Filter>
+    <ClInclude Include="src\Apex\Graphics\Material.h">
+      <Filter>src\Apex\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="src\Apex\Graphics\Model\Model.h">
-      <Filter>src\Apex\Graphics\Model</Filter>
+    <ClInclude Include="src\Apex\Graphics\Mesh.h">
+      <Filter>src\Apex\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Apex\Graphics\Model.h">
+      <Filter>src\Apex\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="src\Apex\Graphics\PostProcessing\Blur.h">
+      <Filter>src\Apex\Graphics\PostProcessing</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Apex\Graphics\PostProcessing\PostProcess.h">
       <Filter>src\Apex\Graphics\PostProcessing</Filter>
     </ClInclude>
     <ClInclude Include="src\Apex\Graphics\RenderPrimitives\Buffer.h">
       <Filter>src\Apex\Graphics\RenderPrimitives</Filter>
     </ClInclude>
-    <ClInclude Include="src\Apex\Graphics\RenderPrimitives\FrameBuffer.h">
+    <ClInclude Include="src\Apex\Graphics\RenderPrimitives\Framebuffer.h">
       <Filter>src\Apex\Graphics\RenderPrimitives</Filter>
     </ClInclude>
     <ClInclude Include="src\Apex\Graphics\RenderPrimitives\Shader.h">
@@ -204,10 +228,16 @@
     <ClInclude Include="src\Apex\Graphics\RenderPrimitives\VertexArray.h">
       <Filter>src\Apex\Graphics\RenderPrimitives</Filter>
     </ClInclude>
+    <ClInclude Include="src\Apex\Graphics\Renderer\ForwardRenderer.h">
+      <Filter>src\Apex\Graphics\Renderer</Filter>
+    </ClInclude>
     <ClInclude Include="src\Apex\Graphics\Renderer\RenderCommands.h">
       <Filter>src\Apex\Graphics\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\Apex\Graphics\Renderer\Renderer.h">
+      <Filter>src\Apex\Graphics\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Apex\Graphics\Renderer\Renderer2D.h">
       <Filter>src\Apex\Graphics\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\Apex\Graphics\Renderer\RendererAPI.h">
@@ -237,6 +267,12 @@
     <ClInclude Include="src\Apex\Physics\Movement\RigidBody.h">
       <Filter>src\Apex\Physics\Movement</Filter>
     </ClInclude>
+    <ClInclude Include="src\Apex\Physics\ParticleConstraints.h">
+      <Filter>src\Apex\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Apex\Physics\ParticleContact.h">
+      <Filter>src\Apex\Physics</Filter>
+    </ClInclude>
     <ClInclude Include="src\Apex\Physics\ParticleSystem\ParticleSystem2D.h">
       <Filter>src\Apex\Physics\ParticleSystem</Filter>
     </ClInclude>
@@ -255,8 +291,20 @@
     <ClInclude Include="src\Apex\Utils\Profiler.h">
       <Filter>src\Apex\Utils</Filter>
     </ClInclude>
+    <ClInclude Include="src\Apex\Utils\Random.h">
+      <Filter>src\Apex\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Apex\Utils\Utils.h">
+      <Filter>src\Apex\Utils</Filter>
+    </ClInclude>
     <ClInclude Include="src\Apex\Window.h">
       <Filter>src\Apex</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Platform\GLFW\GLFWTimer.h">
+      <Filter>src\Platform\GLFW</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Platform\GLFW\GLFWWindow.h">
+      <Filter>src\Platform\GLFW</Filter>
     </ClInclude>
     <ClInclude Include="src\Platform\OpenGL\OpenGLBuffer.h">
       <Filter>src\Platform\OpenGL</Filter>
@@ -267,7 +315,7 @@
     <ClInclude Include="src\Platform\OpenGL\OpenGLContext.h">
       <Filter>src\Platform\OpenGL</Filter>
     </ClInclude>
-    <ClInclude Include="src\Platform\OpenGL\OpenGLFrameBuffer.h">
+    <ClInclude Include="src\Platform\OpenGL\OpenGLFramebuffer.h">
       <Filter>src\Platform\OpenGL</Filter>
     </ClInclude>
     <ClInclude Include="src\Platform\OpenGL\OpenGLRendererAPI.h">
@@ -281,12 +329,6 @@
     </ClInclude>
     <ClInclude Include="src\Platform\OpenGL\OpenGLVertexArray.h">
       <Filter>src\Platform\OpenGL</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Platform\Windows\WindowsTimer.h">
-      <Filter>src\Platform\Windows</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Platform\Windows\WindowsWindow.h">
-      <Filter>src\Platform\Windows</Filter>
     </ClInclude>
     <ClInclude Include="src\apex_pch.h">
       <Filter>src</Filter>
@@ -600,6 +642,66 @@
     <ClInclude Include="vendor\glm\glm\ext\matrix_float4x4_precision.hpp">
       <Filter>vendor\glm\glm\ext</Filter>
     </ClInclude>
+    <ClInclude Include="vendor\glm\glm\ext\matrix_int2x2.hpp">
+      <Filter>vendor\glm\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\glm\glm\ext\matrix_int2x2_sized.hpp">
+      <Filter>vendor\glm\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\glm\glm\ext\matrix_int2x3.hpp">
+      <Filter>vendor\glm\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\glm\glm\ext\matrix_int2x3_sized.hpp">
+      <Filter>vendor\glm\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\glm\glm\ext\matrix_int2x4.hpp">
+      <Filter>vendor\glm\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\glm\glm\ext\matrix_int2x4_sized.hpp">
+      <Filter>vendor\glm\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\glm\glm\ext\matrix_int3x2.hpp">
+      <Filter>vendor\glm\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\glm\glm\ext\matrix_int3x2_sized.hpp">
+      <Filter>vendor\glm\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\glm\glm\ext\matrix_int3x3.hpp">
+      <Filter>vendor\glm\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\glm\glm\ext\matrix_int3x3_sized.hpp">
+      <Filter>vendor\glm\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\glm\glm\ext\matrix_int3x4.hpp">
+      <Filter>vendor\glm\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\glm\glm\ext\matrix_int3x4_sized.hpp">
+      <Filter>vendor\glm\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\glm\glm\ext\matrix_int4x2.hpp">
+      <Filter>vendor\glm\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\glm\glm\ext\matrix_int4x2_sized.hpp">
+      <Filter>vendor\glm\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\glm\glm\ext\matrix_int4x3.hpp">
+      <Filter>vendor\glm\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\glm\glm\ext\matrix_int4x3_sized.hpp">
+      <Filter>vendor\glm\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\glm\glm\ext\matrix_int4x4.hpp">
+      <Filter>vendor\glm\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\glm\glm\ext\matrix_int4x4_sized.hpp">
+      <Filter>vendor\glm\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\glm\glm\ext\matrix_integer.hpp">
+      <Filter>vendor\glm\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\glm\glm\ext\matrix_integer.inl">
+      <Filter>vendor\glm\glm\ext</Filter>
+    </ClInclude>
     <ClInclude Include="vendor\glm\glm\ext\matrix_projection.hpp">
       <Filter>vendor\glm\glm\ext</Filter>
     </ClInclude>
@@ -616,6 +718,60 @@
       <Filter>vendor\glm\glm\ext</Filter>
     </ClInclude>
     <ClInclude Include="vendor\glm\glm\ext\matrix_transform.inl">
+      <Filter>vendor\glm\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\glm\glm\ext\matrix_uint2x2.hpp">
+      <Filter>vendor\glm\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\glm\glm\ext\matrix_uint2x2_sized.hpp">
+      <Filter>vendor\glm\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\glm\glm\ext\matrix_uint2x3.hpp">
+      <Filter>vendor\glm\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\glm\glm\ext\matrix_uint2x3_sized.hpp">
+      <Filter>vendor\glm\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\glm\glm\ext\matrix_uint2x4.hpp">
+      <Filter>vendor\glm\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\glm\glm\ext\matrix_uint2x4_sized.hpp">
+      <Filter>vendor\glm\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\glm\glm\ext\matrix_uint3x2.hpp">
+      <Filter>vendor\glm\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\glm\glm\ext\matrix_uint3x2_sized.hpp">
+      <Filter>vendor\glm\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\glm\glm\ext\matrix_uint3x3.hpp">
+      <Filter>vendor\glm\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\glm\glm\ext\matrix_uint3x3_sized.hpp">
+      <Filter>vendor\glm\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\glm\glm\ext\matrix_uint3x4.hpp">
+      <Filter>vendor\glm\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\glm\glm\ext\matrix_uint3x4_sized.hpp">
+      <Filter>vendor\glm\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\glm\glm\ext\matrix_uint4x2.hpp">
+      <Filter>vendor\glm\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\glm\glm\ext\matrix_uint4x2_sized.hpp">
+      <Filter>vendor\glm\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\glm\glm\ext\matrix_uint4x3.hpp">
+      <Filter>vendor\glm\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\glm\glm\ext\matrix_uint4x3_sized.hpp">
+      <Filter>vendor\glm\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\glm\glm\ext\matrix_uint4x4.hpp">
+      <Filter>vendor\glm\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\glm\glm\ext\matrix_uint4x4_sized.hpp">
       <Filter>vendor\glm\glm\ext</Filter>
     </ClInclude>
     <ClInclude Include="vendor\glm\glm\ext\quaternion_common.hpp">
@@ -688,6 +844,18 @@
       <Filter>vendor\glm\glm\ext</Filter>
     </ClInclude>
     <ClInclude Include="vendor\glm\glm\ext\scalar_integer.inl">
+      <Filter>vendor\glm\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\glm\glm\ext\scalar_packing.hpp">
+      <Filter>vendor\glm\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\glm\glm\ext\scalar_packing.inl">
+      <Filter>vendor\glm\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\glm\glm\ext\scalar_reciprocal.hpp">
+      <Filter>vendor\glm\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\glm\glm\ext\scalar_reciprocal.inl">
       <Filter>vendor\glm\glm\ext</Filter>
     </ClInclude>
     <ClInclude Include="vendor\glm\glm\ext\scalar_relational.hpp">
@@ -786,31 +954,43 @@
     <ClInclude Include="vendor\glm\glm\ext\vector_int1.hpp">
       <Filter>vendor\glm\glm\ext</Filter>
     </ClInclude>
-    <ClInclude Include="vendor\glm\glm\ext\vector_int1_precision.hpp">
+    <ClInclude Include="vendor\glm\glm\ext\vector_int1_sized.hpp">
       <Filter>vendor\glm\glm\ext</Filter>
     </ClInclude>
     <ClInclude Include="vendor\glm\glm\ext\vector_int2.hpp">
       <Filter>vendor\glm\glm\ext</Filter>
     </ClInclude>
-    <ClInclude Include="vendor\glm\glm\ext\vector_int2_precision.hpp">
+    <ClInclude Include="vendor\glm\glm\ext\vector_int2_sized.hpp">
       <Filter>vendor\glm\glm\ext</Filter>
     </ClInclude>
     <ClInclude Include="vendor\glm\glm\ext\vector_int3.hpp">
       <Filter>vendor\glm\glm\ext</Filter>
     </ClInclude>
-    <ClInclude Include="vendor\glm\glm\ext\vector_int3_precision.hpp">
+    <ClInclude Include="vendor\glm\glm\ext\vector_int3_sized.hpp">
       <Filter>vendor\glm\glm\ext</Filter>
     </ClInclude>
     <ClInclude Include="vendor\glm\glm\ext\vector_int4.hpp">
       <Filter>vendor\glm\glm\ext</Filter>
     </ClInclude>
-    <ClInclude Include="vendor\glm\glm\ext\vector_int4_precision.hpp">
+    <ClInclude Include="vendor\glm\glm\ext\vector_int4_sized.hpp">
       <Filter>vendor\glm\glm\ext</Filter>
     </ClInclude>
     <ClInclude Include="vendor\glm\glm\ext\vector_integer.hpp">
       <Filter>vendor\glm\glm\ext</Filter>
     </ClInclude>
     <ClInclude Include="vendor\glm\glm\ext\vector_integer.inl">
+      <Filter>vendor\glm\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\glm\glm\ext\vector_packing.hpp">
+      <Filter>vendor\glm\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\glm\glm\ext\vector_packing.inl">
+      <Filter>vendor\glm\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\glm\glm\ext\vector_reciprocal.hpp">
+      <Filter>vendor\glm\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\glm\glm\ext\vector_reciprocal.inl">
       <Filter>vendor\glm\glm\ext</Filter>
     </ClInclude>
     <ClInclude Include="vendor\glm\glm\ext\vector_relational.hpp">
@@ -822,25 +1002,25 @@
     <ClInclude Include="vendor\glm\glm\ext\vector_uint1.hpp">
       <Filter>vendor\glm\glm\ext</Filter>
     </ClInclude>
-    <ClInclude Include="vendor\glm\glm\ext\vector_uint1_precision.hpp">
+    <ClInclude Include="vendor\glm\glm\ext\vector_uint1_sized.hpp">
       <Filter>vendor\glm\glm\ext</Filter>
     </ClInclude>
     <ClInclude Include="vendor\glm\glm\ext\vector_uint2.hpp">
       <Filter>vendor\glm\glm\ext</Filter>
     </ClInclude>
-    <ClInclude Include="vendor\glm\glm\ext\vector_uint2_precision.hpp">
+    <ClInclude Include="vendor\glm\glm\ext\vector_uint2_sized.hpp">
       <Filter>vendor\glm\glm\ext</Filter>
     </ClInclude>
     <ClInclude Include="vendor\glm\glm\ext\vector_uint3.hpp">
       <Filter>vendor\glm\glm\ext</Filter>
     </ClInclude>
-    <ClInclude Include="vendor\glm\glm\ext\vector_uint3_precision.hpp">
+    <ClInclude Include="vendor\glm\glm\ext\vector_uint3_sized.hpp">
       <Filter>vendor\glm\glm\ext</Filter>
     </ClInclude>
     <ClInclude Include="vendor\glm\glm\ext\vector_uint4.hpp">
       <Filter>vendor\glm\glm\ext</Filter>
     </ClInclude>
-    <ClInclude Include="vendor\glm\glm\ext\vector_uint4_precision.hpp">
+    <ClInclude Include="vendor\glm\glm\ext\vector_uint4_sized.hpp">
       <Filter>vendor\glm\glm\ext</Filter>
     </ClInclude>
     <ClInclude Include="vendor\glm\glm\ext\vector_ulp.hpp">
@@ -937,9 +1117,6 @@
       <Filter>vendor\glm\glm\gtc</Filter>
     </ClInclude>
     <ClInclude Include="vendor\glm\glm\gtc\reciprocal.hpp">
-      <Filter>vendor\glm\glm\gtc</Filter>
-    </ClInclude>
-    <ClInclude Include="vendor\glm\glm\gtc\reciprocal.inl">
       <Filter>vendor\glm\glm\gtc</Filter>
     </ClInclude>
     <ClInclude Include="vendor\glm\glm\gtc\round.hpp">
@@ -1395,6 +1572,9 @@
     <ClInclude Include="vendor\glm\glm\simd\matrix.h">
       <Filter>vendor\glm\glm\simd</Filter>
     </ClInclude>
+    <ClInclude Include="vendor\glm\glm\simd\neon.h">
+      <Filter>vendor\glm\glm\simd</Filter>
+    </ClInclude>
     <ClInclude Include="vendor\glm\glm\simd\packing.h">
       <Filter>vendor\glm\glm\simd</Filter>
     </ClInclude>
@@ -1430,17 +1610,29 @@
     <ClCompile Include="src\Apex\Application.cpp">
       <Filter>src\Apex</Filter>
     </ClCompile>
-    <ClCompile Include="src\Apex\AssetManager\AssetManager.cpp">
-      <Filter>src\Apex\AssetManager</Filter>
+    <ClCompile Include="src\Apex\Core\AssetManager\AssetManager.cpp">
+      <Filter>src\Apex\Core\AssetManager</Filter>
     </ClCompile>
     <ClCompile Include="src\Apex\Core\Camera.cpp">
       <Filter>src\Apex\Core</Filter>
     </ClCompile>
-    <ClCompile Include="src\Apex\Core\ECS\ECSComponent.cpp">
+    <ClCompile Include="src\Apex\Core\CameraController.cpp">
+      <Filter>src\Apex\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Apex\Core\ECS\Scene.cpp">
       <Filter>src\Apex\Core\ECS</Filter>
     </ClCompile>
-    <ClCompile Include="src\Apex\Core\ECS\ECSRegistry.cpp">
-      <Filter>src\Apex\Core\ECS</Filter>
+    <ClCompile Include="src\Apex\Core\FileSystem\FileHandle.cpp">
+      <Filter>src\Apex\Core\FileSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Apex\Core\FileSystem\MountPoint.cpp">
+      <Filter>src\Apex\Core\FileSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Apex\Core\FileSystem\VFS.cpp">
+      <Filter>src\Apex\Core\FileSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Apex\Core\GUID.cpp">
+      <Filter>src\Apex\Core</Filter>
     </ClCompile>
     <ClCompile Include="src\Apex\Core\Layers\Layer.cpp">
       <Filter>src\Apex\Core\Layers</Filter>
@@ -1451,31 +1643,25 @@
     <ClCompile Include="src\Apex\Core\Log.cpp">
       <Filter>src\Apex\Core</Filter>
     </ClCompile>
-    <ClCompile Include="src\Apex\Core\Random.cpp">
-      <Filter>src\Apex\Core</Filter>
+    <ClCompile Include="src\Apex\Graphics\Light.cpp">
+      <Filter>src\Apex\Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="src\Apex\Core\Scene\Scene.cpp">
-      <Filter>src\Apex\Core\Scene</Filter>
+    <ClCompile Include="src\Apex\Graphics\Material.cpp">
+      <Filter>src\Apex\Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="src\Apex\Core\Timer.cpp">
-      <Filter>src\Apex\Core</Filter>
+    <ClCompile Include="src\Apex\Graphics\Mesh.cpp">
+      <Filter>src\Apex\Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="src\Apex\Graphics\Material\Material.cpp">
-      <Filter>src\Apex\Graphics\Material</Filter>
+    <ClCompile Include="src\Apex\Graphics\Model.cpp">
+      <Filter>src\Apex\Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="src\Apex\Graphics\Model\Mesh.cpp">
-      <Filter>src\Apex\Graphics\Model</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Apex\Graphics\Model\Model.cpp">
-      <Filter>src\Apex\Graphics\Model</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Apex\Graphics\PostProcessing\Blur.cpp">
+    <ClCompile Include="src\Apex\Graphics\PostProcessing\PostProcess.cpp">
       <Filter>src\Apex\Graphics\PostProcessing</Filter>
     </ClCompile>
     <ClCompile Include="src\Apex\Graphics\RenderPrimitives\Buffer.cpp">
       <Filter>src\Apex\Graphics\RenderPrimitives</Filter>
     </ClCompile>
-    <ClCompile Include="src\Apex\Graphics\RenderPrimitives\FrameBuffer.cpp">
+    <ClCompile Include="src\Apex\Graphics\RenderPrimitives\Framebuffer.cpp">
       <Filter>src\Apex\Graphics\RenderPrimitives</Filter>
     </ClCompile>
     <ClCompile Include="src\Apex\Graphics\RenderPrimitives\Shader.cpp">
@@ -1487,10 +1673,16 @@
     <ClCompile Include="src\Apex\Graphics\RenderPrimitives\VertexArray.cpp">
       <Filter>src\Apex\Graphics\RenderPrimitives</Filter>
     </ClCompile>
+    <ClCompile Include="src\Apex\Graphics\Renderer\ForwardRenderer.cpp">
+      <Filter>src\Apex\Graphics\Renderer</Filter>
+    </ClCompile>
     <ClCompile Include="src\Apex\Graphics\Renderer\RenderCommands.cpp">
       <Filter>src\Apex\Graphics\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\Apex\Graphics\Renderer\Renderer.cpp">
+      <Filter>src\Apex\Graphics\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Apex\Graphics\Renderer\Renderer2D.cpp">
       <Filter>src\Apex\Graphics\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\Apex\Graphics\Renderer\RendererAPI.cpp">
@@ -1508,15 +1700,6 @@
     <ClCompile Include="src\Apex\Networking\Socket.cpp">
       <Filter>src\Apex\Networking</Filter>
     </ClCompile>
-    <ClCompile Include="src\Apex\Physics\Collision\Collidable.cpp">
-      <Filter>src\Apex\Physics\Collision</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Apex\Physics\Collision\Collider.cpp">
-      <Filter>src\Apex\Physics\Collision</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Apex\Physics\Movement\RigidBody.cpp">
-      <Filter>src\Apex\Physics\Movement</Filter>
-    </ClCompile>
     <ClCompile Include="src\Apex\Physics\ParticleSystem\ParticleSystem2D.cpp">
       <Filter>src\Apex\Physics\ParticleSystem</Filter>
     </ClCompile>
@@ -1532,6 +1715,24 @@
     <ClCompile Include="src\Apex\Utils\Profiler.cpp">
       <Filter>src\Apex\Utils</Filter>
     </ClCompile>
+    <ClCompile Include="src\Apex\Utils\Random.cpp">
+      <Filter>src\Apex\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Apex\Utils\Utils.cpp">
+      <Filter>src\Apex\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Platform\GLFW\GLFWInput.cpp">
+      <Filter>src\Platform\GLFW</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Platform\GLFW\GLFWTimer.cpp">
+      <Filter>src\Platform\GLFW</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Platform\GLFW\GLFWWindow.cpp">
+      <Filter>src\Platform\GLFW</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Platform\Linux\LinuxGUIDGenerator.cpp">
+      <Filter>src\Platform\Linux</Filter>
+    </ClCompile>
     <ClCompile Include="src\Platform\OpenGL\OpenGLBuffer.cpp">
       <Filter>src\Platform\OpenGL</Filter>
     </ClCompile>
@@ -1541,7 +1742,7 @@
     <ClCompile Include="src\Platform\OpenGL\OpenGLContext.cpp">
       <Filter>src\Platform\OpenGL</Filter>
     </ClCompile>
-    <ClCompile Include="src\Platform\OpenGL\OpenGLFrameBuffer.cpp">
+    <ClCompile Include="src\Platform\OpenGL\OpenGLFramebuffer.cpp">
       <Filter>src\Platform\OpenGL</Filter>
     </ClCompile>
     <ClCompile Include="src\Platform\OpenGL\OpenGLRendererAPI.cpp">
@@ -1555,15 +1756,6 @@
     </ClCompile>
     <ClCompile Include="src\Platform\OpenGL\OpenGLVertexArray.cpp">
       <Filter>src\Platform\OpenGL</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Platform\Windows\WindowsInput.cpp">
-      <Filter>src\Platform\Windows</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Platform\Windows\WindowsTimer.cpp">
-      <Filter>src\Platform\Windows</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp">
-      <Filter>src\Platform\Windows</Filter>
     </ClCompile>
     <ClCompile Include="src\apex_pch.cpp">
       <Filter>src</Filter>

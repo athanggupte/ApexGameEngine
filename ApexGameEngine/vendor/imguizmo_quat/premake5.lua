@@ -26,7 +26,7 @@ project "ImGuizmoQuat"
 	
 	filter "system:windows"
 		systemversion "latest"
-		staticruntime "On"
+		staticruntime(WinCRunTime_Type)
 	
 	filter "system:linux"
 		pic "On"

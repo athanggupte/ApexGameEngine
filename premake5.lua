@@ -9,6 +9,8 @@ workspace "ApexGameEngine"
 
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
+WinCRunTime_Type = "Off"
+
 -- Include directories relative to the root (solution) directory
 IncludeDirs = {}
 IncludeDirs["spdlog"] = "ApexGameEngine/vendor/spdlog/include/"
@@ -33,7 +35,7 @@ WinLibs = { "opengl32.lib", "assimp-vc142-mtd", "irrKlang" }
 -- WinLibs["Assimp"] = "%{DLLs.Assimp}"
 -- WinLibs["irrKlang"] = "irrKlang"
 
-WinLibDirs = { "ApexGameEngine/vendor/Assimp/build/code/Debug", "ApexGameEngine/vendor/irrKlang/lib" }
+WinLibDirs = { "ApexGameEngine/vendor/Assimp/lib/Debug", "ApexGameEngine/vendor/irrKlang/lib" }
 -- WinLibDirs["Assimp"] = "ApexGameEngine/vendor/Assimp/build/code/Debug"
 -- WinLibDirs["irrKlang"] = "ApexGameEngine/vendor/irrKlang/lib"
 
@@ -121,8 +123,8 @@ project "ApexGameEngine"
 	}
 	
 	filter "system:windows"
-		staticruntime "On"
 		systemversion "latest"
+		staticruntime(WinCRunTime_Type)
 
 		defines {
 			"APEX_PLATFORM_WINDOWS",
@@ -217,8 +219,8 @@ project "ApexEditor"
 	}
 
 	filter "system:windows"
-		staticruntime "On"
 		systemversion "latest"
+		staticruntime(WinCRunTime_Type)
 
 		defines {
 			"APEX_PLATFORM_WINDOWS"
@@ -297,8 +299,8 @@ project "Sandbox"
 	}
 
 	filter "system:windows"
-		staticruntime "On"
 		systemversion "latest"
+		staticruntime(WinCRunTime_Type)
 
 		defines {
 			"APEX_PLATFORM_WINDOWS"

@@ -76,11 +76,11 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>apex_pch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>APEX_PLATFORM_WINDOWS;APEX_BUILD_DLL;GLFW_INCLUDE_NONE;APEX_DEBUG;APEX_ENABLE_ASSERTS;APEX_PROFILER_ENABLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\GLFW\include;vendor\Glad\include;vendor\imgui;vendor\glm;vendor\stb_image;vendor\Assimp\build\include;vendor\Assimp\src\include;vendor\irrKlang\include;vendor\ApexIK\ApexIK\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>APEX_INSTALL_LOCATION="D:/Athang/ApexGameEngine/bin/Debug-windows-x86_64/ApexGameEngine";APEX_USE_VFS;APEX_PLATFORM_WINDOWS;APEX_BUILD_DLL;GLFW_INCLUDE_NONE;APEX_DEBUG;APEX_ENABLE_ASSERTS;APEX_PROFILER_ENABLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\GLFW\include;vendor\Glad\include;vendor\imgui;vendor\glm;vendor\stb_image;vendor\Assimp\build\include;vendor\Assimp\include;vendor\irrKlang\include;vendor\entt\single_include;vendor\imguizmo_quat\imGuIZMO.quat;modules\ApexIK\ApexIK\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
-      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -89,7 +89,7 @@
     </Link>
     <Lib>
       <AdditionalDependencies>opengl32.lib;assimp-vc142-mtd.lib;irrKlang.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>vendor\Assimp\build\code\Debug;vendor\irrKlang\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>vendor\Assimp\lib\Debug;vendor\irrKlang\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -97,14 +97,14 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>apex_pch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>APEX_PLATFORM_WINDOWS;APEX_BUILD_DLL;GLFW_INCLUDE_NONE;APEX_RELEASE;APEX_PROFILER_ENABLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\GLFW\include;vendor\Glad\include;vendor\imgui;vendor\glm;vendor\stb_image;vendor\Assimp\build\include;vendor\Assimp\src\include;vendor\irrKlang\include;vendor\ApexIK\ApexIK\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>APEX_INSTALL_LOCATION="D:/Athang/ApexGameEngine/bin/Release-windows-x86_64/ApexGameEngine";APEX_USE_VFS;APEX_PLATFORM_WINDOWS;APEX_BUILD_DLL;GLFW_INCLUDE_NONE;APEX_RELEASE;APEX_PROFILER_ENABLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\GLFW\include;vendor\Glad\include;vendor\imgui;vendor\glm;vendor\stb_image;vendor\Assimp\build\include;vendor\Assimp\include;vendor\irrKlang\include;vendor\entt\single_include;vendor\imguizmo_quat\imGuIZMO.quat;modules\ApexIK\ApexIK\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <MinimalRebuild>false</MinimalRebuild>
       <StringPooling>true</StringPooling>
-      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -114,7 +114,7 @@
     </Link>
     <Lib>
       <AdditionalDependencies>opengl32.lib;assimp-vc142-mtd.lib;irrKlang.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>vendor\Assimp\build\code\Debug;vendor\irrKlang\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>vendor\Assimp\lib\Debug;vendor\irrKlang\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Dist|x64'">
@@ -122,14 +122,14 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>apex_pch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>APEX_PLATFORM_WINDOWS;APEX_BUILD_DLL;GLFW_INCLUDE_NONE;APEX_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\GLFW\include;vendor\Glad\include;vendor\imgui;vendor\glm;vendor\stb_image;vendor\Assimp\build\include;vendor\Assimp\src\include;vendor\irrKlang\include;vendor\ApexIK\ApexIK\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>APEX_INSTALL_LOCATION="D:/Athang/ApexGameEngine/bin/Dist-windows-x86_64/ApexGameEngine";APEX_USE_VFS;APEX_PLATFORM_WINDOWS;APEX_BUILD_DLL;GLFW_INCLUDE_NONE;APEX_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\GLFW\include;vendor\Glad\include;vendor\imgui;vendor\glm;vendor\stb_image;vendor\Assimp\build\include;vendor\Assimp\include;vendor\irrKlang\include;vendor\entt\single_include;vendor\imguizmo_quat\imGuIZMO.quat;modules\ApexIK\ApexIK\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <MinimalRebuild>false</MinimalRebuild>
       <StringPooling>true</StringPooling>
-      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -139,42 +139,52 @@
     </Link>
     <Lib>
       <AdditionalDependencies>opengl32.lib;assimp-vc142-mtd.lib;irrKlang.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>vendor\Assimp\build\code\Debug;vendor\irrKlang\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>vendor\Assimp\lib\Debug;vendor\irrKlang\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\Apex.h" />
     <ClInclude Include="src\Apex\Application.h" />
-    <ClInclude Include="src\Apex\AssetManager\AssetManager.h" />
-    <ClInclude Include="src\Apex\Core.h" />
+    <ClInclude Include="src\Apex\Core\AssetManager\AssetManager.h" />
+    <ClInclude Include="src\Apex\Core\AssetManager\ResourceLibrary.h" />
     <ClInclude Include="src\Apex\Core\Camera.h" />
-    <ClInclude Include="src\Apex\Core\ECS\ECSComponent.h" />
-    <ClInclude Include="src\Apex\Core\ECS\ECSEntity.h" />
-    <ClInclude Include="src\Apex\Core\ECS\ECSRegistry.h" />
+    <ClInclude Include="src\Apex\Core\CameraController.h" />
+    <ClInclude Include="src\Apex\Core\Core.h" />
+    <ClInclude Include="src\Apex\Core\ECS\Components.h" />
+    <ClInclude Include="src\Apex\Core\ECS\Components\BasicComponents.h" />
+    <ClInclude Include="src\Apex\Core\ECS\Entity.h" />
+    <ClInclude Include="src\Apex\Core\ECS\Scene.h" />
+    <ClInclude Include="src\Apex\Core\ECS\ScriptableEntity.h" />
     <ClInclude Include="src\Apex\Core\Events\ApplicationEvent.h" />
     <ClInclude Include="src\Apex\Core\Events\Event.h" />
     <ClInclude Include="src\Apex\Core\Events\KeyEvent.h" />
     <ClInclude Include="src\Apex\Core\Events\MouseEvent.h" />
+    <ClInclude Include="src\Apex\Core\FileSystem\FileHandle.h" />
+    <ClInclude Include="src\Apex\Core\FileSystem\MountPoint.h" />
+    <ClInclude Include="src\Apex\Core\FileSystem\VFS.h" />
+    <ClInclude Include="src\Apex\Core\GUID.h" />
     <ClInclude Include="src\Apex\Core\Input\Input.h" />
     <ClInclude Include="src\Apex\Core\Input\KeyCodes.h" />
     <ClInclude Include="src\Apex\Core\Input\MouseCodes.h" />
     <ClInclude Include="src\Apex\Core\Layers\Layer.h" />
     <ClInclude Include="src\Apex\Core\Layers\LayerStack.h" />
     <ClInclude Include="src\Apex\Core\Log.h" />
-    <ClInclude Include="src\Apex\Core\Random.h" />
-    <ClInclude Include="src\Apex\Core\Scene\Scene.h" />
     <ClInclude Include="src\Apex\Core\Timer.h" />
-    <ClInclude Include="src\Apex\Graphics\Material\Material.h" />
-    <ClInclude Include="src\Apex\Graphics\Model\Mesh.h" />
-    <ClInclude Include="src\Apex\Graphics\Model\Model.h" />
+    <ClInclude Include="src\Apex\Graphics\Light.h" />
+    <ClInclude Include="src\Apex\Graphics\Material.h" />
+    <ClInclude Include="src\Apex\Graphics\Mesh.h" />
+    <ClInclude Include="src\Apex\Graphics\Model.h" />
     <ClInclude Include="src\Apex\Graphics\PostProcessing\Blur.h" />
+    <ClInclude Include="src\Apex\Graphics\PostProcessing\PostProcess.h" />
     <ClInclude Include="src\Apex\Graphics\RenderPrimitives\Buffer.h" />
-    <ClInclude Include="src\Apex\Graphics\RenderPrimitives\FrameBuffer.h" />
+    <ClInclude Include="src\Apex\Graphics\RenderPrimitives\Framebuffer.h" />
     <ClInclude Include="src\Apex\Graphics\RenderPrimitives\Shader.h" />
     <ClInclude Include="src\Apex\Graphics\RenderPrimitives\Texture.h" />
     <ClInclude Include="src\Apex\Graphics\RenderPrimitives\VertexArray.h" />
+    <ClInclude Include="src\Apex\Graphics\Renderer\ForwardRenderer.h" />
     <ClInclude Include="src\Apex\Graphics\Renderer\RenderCommands.h" />
     <ClInclude Include="src\Apex\Graphics\Renderer\Renderer.h" />
+    <ClInclude Include="src\Apex\Graphics\Renderer\Renderer2D.h" />
     <ClInclude Include="src\Apex\Graphics\Renderer\RendererAPI.h" />
     <ClInclude Include="src\Apex\Graphics\Renderer\RenderingContext.h" />
     <ClInclude Include="src\Apex\ImGui\ImGuiLayer.h" />
@@ -184,23 +194,27 @@
     <ClInclude Include="src\Apex\Physics\Collision\Collider.h" />
     <ClInclude Include="src\Apex\Physics\Interaction\MousePicker.h" />
     <ClInclude Include="src\Apex\Physics\Movement\RigidBody.h" />
+    <ClInclude Include="src\Apex\Physics\ParticleConstraints.h" />
+    <ClInclude Include="src\Apex\Physics\ParticleContact.h" />
     <ClInclude Include="src\Apex\Physics\ParticleSystem\ParticleSystem2D.h" />
     <ClInclude Include="src\Apex\Physics\PhysicsTimer\PhysicsTimer.h" />
     <ClInclude Include="src\Apex\StartUp.h" />
     <ClInclude Include="src\Apex\Utils\ComputeShader\ComputeShader.h" />
     <ClInclude Include="src\Apex\Utils\MathPrimitiveParser.h" />
     <ClInclude Include="src\Apex\Utils\Profiler.h" />
+    <ClInclude Include="src\Apex\Utils\Random.h" />
+    <ClInclude Include="src\Apex\Utils\Utils.h" />
     <ClInclude Include="src\Apex\Window.h" />
+    <ClInclude Include="src\Platform\GLFW\GLFWTimer.h" />
+    <ClInclude Include="src\Platform\GLFW\GLFWWindow.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLBuffer.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLComputeShader.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLContext.h" />
-    <ClInclude Include="src\Platform\OpenGL\OpenGLFrameBuffer.h" />
+    <ClInclude Include="src\Platform\OpenGL\OpenGLFramebuffer.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLRendererAPI.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLShader.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLTexture.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLVertexArray.h" />
-    <ClInclude Include="src\Platform\Windows\WindowsTimer.h" />
-    <ClInclude Include="src\Platform\Windows\WindowsWindow.h" />
     <ClInclude Include="src\apex_pch.h" />
     <ClInclude Include="vendor\glm\glm\common.hpp" />
     <ClInclude Include="vendor\glm\glm\detail\_features.hpp" />
@@ -305,12 +319,50 @@
     <ClInclude Include="vendor\glm\glm\ext\matrix_float4x3_precision.hpp" />
     <ClInclude Include="vendor\glm\glm\ext\matrix_float4x4.hpp" />
     <ClInclude Include="vendor\glm\glm\ext\matrix_float4x4_precision.hpp" />
+    <ClInclude Include="vendor\glm\glm\ext\matrix_int2x2.hpp" />
+    <ClInclude Include="vendor\glm\glm\ext\matrix_int2x2_sized.hpp" />
+    <ClInclude Include="vendor\glm\glm\ext\matrix_int2x3.hpp" />
+    <ClInclude Include="vendor\glm\glm\ext\matrix_int2x3_sized.hpp" />
+    <ClInclude Include="vendor\glm\glm\ext\matrix_int2x4.hpp" />
+    <ClInclude Include="vendor\glm\glm\ext\matrix_int2x4_sized.hpp" />
+    <ClInclude Include="vendor\glm\glm\ext\matrix_int3x2.hpp" />
+    <ClInclude Include="vendor\glm\glm\ext\matrix_int3x2_sized.hpp" />
+    <ClInclude Include="vendor\glm\glm\ext\matrix_int3x3.hpp" />
+    <ClInclude Include="vendor\glm\glm\ext\matrix_int3x3_sized.hpp" />
+    <ClInclude Include="vendor\glm\glm\ext\matrix_int3x4.hpp" />
+    <ClInclude Include="vendor\glm\glm\ext\matrix_int3x4_sized.hpp" />
+    <ClInclude Include="vendor\glm\glm\ext\matrix_int4x2.hpp" />
+    <ClInclude Include="vendor\glm\glm\ext\matrix_int4x2_sized.hpp" />
+    <ClInclude Include="vendor\glm\glm\ext\matrix_int4x3.hpp" />
+    <ClInclude Include="vendor\glm\glm\ext\matrix_int4x3_sized.hpp" />
+    <ClInclude Include="vendor\glm\glm\ext\matrix_int4x4.hpp" />
+    <ClInclude Include="vendor\glm\glm\ext\matrix_int4x4_sized.hpp" />
+    <ClInclude Include="vendor\glm\glm\ext\matrix_integer.hpp" />
+    <ClInclude Include="vendor\glm\glm\ext\matrix_integer.inl" />
     <ClInclude Include="vendor\glm\glm\ext\matrix_projection.hpp" />
     <ClInclude Include="vendor\glm\glm\ext\matrix_projection.inl" />
     <ClInclude Include="vendor\glm\glm\ext\matrix_relational.hpp" />
     <ClInclude Include="vendor\glm\glm\ext\matrix_relational.inl" />
     <ClInclude Include="vendor\glm\glm\ext\matrix_transform.hpp" />
     <ClInclude Include="vendor\glm\glm\ext\matrix_transform.inl" />
+    <ClInclude Include="vendor\glm\glm\ext\matrix_uint2x2.hpp" />
+    <ClInclude Include="vendor\glm\glm\ext\matrix_uint2x2_sized.hpp" />
+    <ClInclude Include="vendor\glm\glm\ext\matrix_uint2x3.hpp" />
+    <ClInclude Include="vendor\glm\glm\ext\matrix_uint2x3_sized.hpp" />
+    <ClInclude Include="vendor\glm\glm\ext\matrix_uint2x4.hpp" />
+    <ClInclude Include="vendor\glm\glm\ext\matrix_uint2x4_sized.hpp" />
+    <ClInclude Include="vendor\glm\glm\ext\matrix_uint3x2.hpp" />
+    <ClInclude Include="vendor\glm\glm\ext\matrix_uint3x2_sized.hpp" />
+    <ClInclude Include="vendor\glm\glm\ext\matrix_uint3x3.hpp" />
+    <ClInclude Include="vendor\glm\glm\ext\matrix_uint3x3_sized.hpp" />
+    <ClInclude Include="vendor\glm\glm\ext\matrix_uint3x4.hpp" />
+    <ClInclude Include="vendor\glm\glm\ext\matrix_uint3x4_sized.hpp" />
+    <ClInclude Include="vendor\glm\glm\ext\matrix_uint4x2.hpp" />
+    <ClInclude Include="vendor\glm\glm\ext\matrix_uint4x2_sized.hpp" />
+    <ClInclude Include="vendor\glm\glm\ext\matrix_uint4x3.hpp" />
+    <ClInclude Include="vendor\glm\glm\ext\matrix_uint4x3_sized.hpp" />
+    <ClInclude Include="vendor\glm\glm\ext\matrix_uint4x4.hpp" />
+    <ClInclude Include="vendor\glm\glm\ext\matrix_uint4x4_sized.hpp" />
     <ClInclude Include="vendor\glm\glm\ext\quaternion_common.hpp" />
     <ClInclude Include="vendor\glm\glm\ext\quaternion_common.inl" />
     <ClInclude Include="vendor\glm\glm\ext\quaternion_common_simd.inl" />
@@ -335,6 +387,10 @@
     <ClInclude Include="vendor\glm\glm\ext\scalar_int_sized.hpp" />
     <ClInclude Include="vendor\glm\glm\ext\scalar_integer.hpp" />
     <ClInclude Include="vendor\glm\glm\ext\scalar_integer.inl" />
+    <ClInclude Include="vendor\glm\glm\ext\scalar_packing.hpp" />
+    <ClInclude Include="vendor\glm\glm\ext\scalar_packing.inl" />
+    <ClInclude Include="vendor\glm\glm\ext\scalar_reciprocal.hpp" />
+    <ClInclude Include="vendor\glm\glm\ext\scalar_reciprocal.inl" />
     <ClInclude Include="vendor\glm\glm\ext\scalar_relational.hpp" />
     <ClInclude Include="vendor\glm\glm\ext\scalar_relational.inl" />
     <ClInclude Include="vendor\glm\glm\ext\scalar_uint_sized.hpp" />
@@ -367,25 +423,29 @@
     <ClInclude Include="vendor\glm\glm\ext\vector_float4.hpp" />
     <ClInclude Include="vendor\glm\glm\ext\vector_float4_precision.hpp" />
     <ClInclude Include="vendor\glm\glm\ext\vector_int1.hpp" />
-    <ClInclude Include="vendor\glm\glm\ext\vector_int1_precision.hpp" />
+    <ClInclude Include="vendor\glm\glm\ext\vector_int1_sized.hpp" />
     <ClInclude Include="vendor\glm\glm\ext\vector_int2.hpp" />
-    <ClInclude Include="vendor\glm\glm\ext\vector_int2_precision.hpp" />
+    <ClInclude Include="vendor\glm\glm\ext\vector_int2_sized.hpp" />
     <ClInclude Include="vendor\glm\glm\ext\vector_int3.hpp" />
-    <ClInclude Include="vendor\glm\glm\ext\vector_int3_precision.hpp" />
+    <ClInclude Include="vendor\glm\glm\ext\vector_int3_sized.hpp" />
     <ClInclude Include="vendor\glm\glm\ext\vector_int4.hpp" />
-    <ClInclude Include="vendor\glm\glm\ext\vector_int4_precision.hpp" />
+    <ClInclude Include="vendor\glm\glm\ext\vector_int4_sized.hpp" />
     <ClInclude Include="vendor\glm\glm\ext\vector_integer.hpp" />
     <ClInclude Include="vendor\glm\glm\ext\vector_integer.inl" />
+    <ClInclude Include="vendor\glm\glm\ext\vector_packing.hpp" />
+    <ClInclude Include="vendor\glm\glm\ext\vector_packing.inl" />
+    <ClInclude Include="vendor\glm\glm\ext\vector_reciprocal.hpp" />
+    <ClInclude Include="vendor\glm\glm\ext\vector_reciprocal.inl" />
     <ClInclude Include="vendor\glm\glm\ext\vector_relational.hpp" />
     <ClInclude Include="vendor\glm\glm\ext\vector_relational.inl" />
     <ClInclude Include="vendor\glm\glm\ext\vector_uint1.hpp" />
-    <ClInclude Include="vendor\glm\glm\ext\vector_uint1_precision.hpp" />
+    <ClInclude Include="vendor\glm\glm\ext\vector_uint1_sized.hpp" />
     <ClInclude Include="vendor\glm\glm\ext\vector_uint2.hpp" />
-    <ClInclude Include="vendor\glm\glm\ext\vector_uint2_precision.hpp" />
+    <ClInclude Include="vendor\glm\glm\ext\vector_uint2_sized.hpp" />
     <ClInclude Include="vendor\glm\glm\ext\vector_uint3.hpp" />
-    <ClInclude Include="vendor\glm\glm\ext\vector_uint3_precision.hpp" />
+    <ClInclude Include="vendor\glm\glm\ext\vector_uint3_sized.hpp" />
     <ClInclude Include="vendor\glm\glm\ext\vector_uint4.hpp" />
-    <ClInclude Include="vendor\glm\glm\ext\vector_uint4_precision.hpp" />
+    <ClInclude Include="vendor\glm\glm\ext\vector_uint4_sized.hpp" />
     <ClInclude Include="vendor\glm\glm\ext\vector_ulp.hpp" />
     <ClInclude Include="vendor\glm\glm\ext\vector_ulp.inl" />
     <ClInclude Include="vendor\glm\glm\fwd.hpp" />
@@ -418,7 +478,6 @@
     <ClInclude Include="vendor\glm\glm\gtc\random.hpp" />
     <ClInclude Include="vendor\glm\glm\gtc\random.inl" />
     <ClInclude Include="vendor\glm\glm\gtc\reciprocal.hpp" />
-    <ClInclude Include="vendor\glm\glm\gtc\reciprocal.inl" />
     <ClInclude Include="vendor\glm\glm\gtc\round.hpp" />
     <ClInclude Include="vendor\glm\glm\gtc\round.inl" />
     <ClInclude Include="vendor\glm\glm\gtc\type_aligned.hpp" />
@@ -570,6 +629,7 @@
     <ClInclude Include="vendor\glm\glm\simd\geometric.h" />
     <ClInclude Include="vendor\glm\glm\simd\integer.h" />
     <ClInclude Include="vendor\glm\glm\simd\matrix.h" />
+    <ClInclude Include="vendor\glm\glm\simd\neon.h" />
     <ClInclude Include="vendor\glm\glm\simd\packing.h" />
     <ClInclude Include="vendor\glm\glm\simd\platform.h" />
     <ClInclude Include="vendor\glm\glm\simd\trigonometric.h" />
@@ -583,51 +643,55 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Apex\Application.cpp" />
-    <ClCompile Include="src\Apex\AssetManager\AssetManager.cpp" />
+    <ClCompile Include="src\Apex\Core\AssetManager\AssetManager.cpp" />
     <ClCompile Include="src\Apex\Core\Camera.cpp" />
-    <ClCompile Include="src\Apex\Core\ECS\ECSComponent.cpp" />
-    <ClCompile Include="src\Apex\Core\ECS\ECSRegistry.cpp" />
+    <ClCompile Include="src\Apex\Core\CameraController.cpp" />
+    <ClCompile Include="src\Apex\Core\ECS\Scene.cpp" />
+    <ClCompile Include="src\Apex\Core\FileSystem\FileHandle.cpp" />
+    <ClCompile Include="src\Apex\Core\FileSystem\MountPoint.cpp" />
+    <ClCompile Include="src\Apex\Core\FileSystem\VFS.cpp" />
+    <ClCompile Include="src\Apex\Core\GUID.cpp" />
     <ClCompile Include="src\Apex\Core\Layers\Layer.cpp" />
     <ClCompile Include="src\Apex\Core\Layers\LayerStack.cpp" />
     <ClCompile Include="src\Apex\Core\Log.cpp" />
-    <ClCompile Include="src\Apex\Core\Random.cpp" />
-    <ClCompile Include="src\Apex\Core\Scene\Scene.cpp" />
-    <ClCompile Include="src\Apex\Core\Timer.cpp" />
-    <ClCompile Include="src\Apex\Graphics\Material\Material.cpp" />
-    <ClCompile Include="src\Apex\Graphics\Model\Mesh.cpp" />
-    <ClCompile Include="src\Apex\Graphics\Model\Model.cpp" />
-    <ClCompile Include="src\Apex\Graphics\PostProcessing\Blur.cpp" />
+    <ClCompile Include="src\Apex\Graphics\Light.cpp" />
+    <ClCompile Include="src\Apex\Graphics\Material.cpp" />
+    <ClCompile Include="src\Apex\Graphics\Mesh.cpp" />
+    <ClCompile Include="src\Apex\Graphics\Model.cpp" />
+    <ClCompile Include="src\Apex\Graphics\PostProcessing\PostProcess.cpp" />
     <ClCompile Include="src\Apex\Graphics\RenderPrimitives\Buffer.cpp" />
-    <ClCompile Include="src\Apex\Graphics\RenderPrimitives\FrameBuffer.cpp" />
+    <ClCompile Include="src\Apex\Graphics\RenderPrimitives\Framebuffer.cpp" />
     <ClCompile Include="src\Apex\Graphics\RenderPrimitives\Shader.cpp" />
     <ClCompile Include="src\Apex\Graphics\RenderPrimitives\Texture.cpp" />
     <ClCompile Include="src\Apex\Graphics\RenderPrimitives\VertexArray.cpp" />
+    <ClCompile Include="src\Apex\Graphics\Renderer\ForwardRenderer.cpp" />
     <ClCompile Include="src\Apex\Graphics\Renderer\RenderCommands.cpp" />
     <ClCompile Include="src\Apex\Graphics\Renderer\Renderer.cpp" />
+    <ClCompile Include="src\Apex\Graphics\Renderer\Renderer2D.cpp" />
     <ClCompile Include="src\Apex\Graphics\Renderer\RendererAPI.cpp" />
     <ClCompile Include="src\Apex\ImGui\ImGuiBuild.cpp" />
     <ClCompile Include="src\Apex\ImGui\ImGuiLayer.cpp" />
     <ClCompile Include="src\Apex\Networking\NetworkManager.cpp" />
     <ClCompile Include="src\Apex\Networking\Socket.cpp" />
-    <ClCompile Include="src\Apex\Physics\Collision\Collidable.cpp" />
-    <ClCompile Include="src\Apex\Physics\Collision\Collider.cpp" />
-    <ClCompile Include="src\Apex\Physics\Movement\RigidBody.cpp" />
     <ClCompile Include="src\Apex\Physics\ParticleSystem\ParticleSystem2D.cpp" />
     <ClCompile Include="src\Apex\Physics\PhysicsTimer\PhysicsTimer.cpp" />
     <ClCompile Include="src\Apex\Utils\ComputeShader\ComputeShader.cpp" />
     <ClCompile Include="src\Apex\Utils\MathPrimitiveParser.cpp" />
     <ClCompile Include="src\Apex\Utils\Profiler.cpp" />
+    <ClCompile Include="src\Apex\Utils\Random.cpp" />
+    <ClCompile Include="src\Apex\Utils\Utils.cpp" />
+    <ClCompile Include="src\Platform\GLFW\GLFWInput.cpp" />
+    <ClCompile Include="src\Platform\GLFW\GLFWTimer.cpp" />
+    <ClCompile Include="src\Platform\GLFW\GLFWWindow.cpp" />
+    <ClCompile Include="src\Platform\Linux\LinuxGUIDGenerator.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLBuffer.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLComputeShader.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLContext.cpp" />
-    <ClCompile Include="src\Platform\OpenGL\OpenGLFrameBuffer.cpp" />
+    <ClCompile Include="src\Platform\OpenGL\OpenGLFramebuffer.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLRendererAPI.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLShader.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLTexture.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLVertexArray.cpp" />
-    <ClCompile Include="src\Platform\Windows\WindowsInput.cpp" />
-    <ClCompile Include="src\Platform\Windows\WindowsTimer.cpp" />
-    <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp" />
     <ClCompile Include="src\apex_pch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
@@ -643,7 +707,10 @@
     <ProjectReference Include="vendor\imgui\ImGui.vcxproj">
       <Project>{C0FF640D-2C14-8DBE-F595-301E616989EF}</Project>
     </ProjectReference>
-    <ProjectReference Include="vendor\ApexIK\ApexIK.vcxproj">
+    <ProjectReference Include="vendor\imguizmo_quat\ImGuizmoQuat.vcxproj">
+      <Project>{9111DA0E-7D74-69B3-26FA-A169123C3536}</Project>
+    </ProjectReference>
+    <ProjectReference Include="modules\ApexIK\ApexIK\ApexIK.vcxproj">
       <Project>{8778A2A7-731A-CD7D-5CD5-E0D1481654CE}</Project>
     </ProjectReference>
   </ItemGroup>
