@@ -1,6 +1,8 @@
 #include <apex_pch.h>
 #include "OpenGLComputeShader.h"
 
+#include "Apex/Core/FileSystem/VFS.h"
+
 #include <fstream>
 #include <glad/glad.h>
 #include <glm/gtc/type_ptr.hpp>
@@ -10,6 +12,15 @@ namespace Apex {
     OpenGLComputeShader::OpenGLComputeShader(const std::string& filepath)
     {
 		std::string source;
+		std::ifstream in(filepath, std::ios::in | std::ios::binary);
+#ifdef APEX_USE_VFS
+		auto file = FileSystem::GetFile(filepath);
+		if (file && file->OpenRead()) {
+			source.resize(file->Size());
+			file->Read(&source[0], source.size());
+			file->Close();
+		}
+#else
 		std::ifstream in(filepath, std::ios::in | std::ios::binary);
 		if (in) {
 			in.seekg(0, std::ios::end);
@@ -21,6 +32,7 @@ namespace Apex {
 		else {
 			APEX_CORE_ERROR("Could not open file : {0}", filepath);
 		}
+#endif
 
 		// Extract name from filepath
 		auto lastSlash = filepath.find_last_of("/\\");

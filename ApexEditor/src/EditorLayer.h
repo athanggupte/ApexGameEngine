@@ -11,6 +11,10 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
+#ifndef APEX_INSTALL_LOCATION
+#error Install location not specified
+#endif
+
 extern const char font_cousine_compressed_data_base85[];
 
 namespace Apex {
@@ -27,10 +31,13 @@ namespace Apex {
 
 		virtual void OnAttach() override
 		{
+			// Mount required directories
+			FileSystem::Mount("/assets", APEX_INSTALL_LOCATION "/assets");
+
 			// Asset allocation
 			m_ImageTexture = Texture2D::Create(256U, 256U, HDRTextureSpec, "Image");
-			m_ComputeShader = ComputeShader::Create("assets/Blur.compute");
-			m_Texture = Texture2D::Create("assets/pusheen-thug-life.png");
+			m_ComputeShader = ComputeShader::Create("/assets/Blur.compute");
+			m_Texture = Texture2D::Create("/assets/pusheen-thug-life.png");
 			m_GameFramebuffer = Framebuffer::Create({ 800U, 600U });
 
 			// Entity Initialization

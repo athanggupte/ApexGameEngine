@@ -35,7 +35,7 @@ WinLibs = { "opengl32.lib", "assimp-vc142-mtd", "irrKlang" }
 -- WinLibs["Assimp"] = "%{DLLs.Assimp}"
 -- WinLibs["irrKlang"] = "irrKlang"
 
-WinLibDirs = { "ApexGameEngine/vendor/Assimp/lib/Debug", "ApexGameEngine/vendor/irrKlang/lib" }
+WinLibDirs = { "ApexGameEngine/vendor/Assimp/build/lib/Debug", "ApexGameEngine/vendor/irrKlang/lib" }
 -- WinLibDirs["Assimp"] = "ApexGameEngine/vendor/Assimp/build/code/Debug"
 -- WinLibDirs["irrKlang"] = "ApexGameEngine/vendor/irrKlang/lib"
 
@@ -55,7 +55,6 @@ include "ApexGameEngine/vendor/imgui"
 include "ApexGameEngine/vendor/imguizmo_quat"
 
 include "ApexGameEngine/modules/ApexIK"
-
 
 -- Apex Game Engine Project
 project "ApexGameEngine"
@@ -218,6 +217,13 @@ project "ApexEditor"
 		"ApexIK",
 	}
 
+	targetDir = path.getabsolute("bin/" .. outputdir .. "/%{prj.name}")
+	
+	defines {
+		"APEX_INSTALL_LOCATION=\""..targetDir.."\"",
+		"APEX_USE_VFS"
+	}
+
 	filter "system:windows"
 		systemversion "latest"
 		staticruntime(WinCRunTime_Type)
@@ -297,6 +303,13 @@ project "Sandbox"
 		"ImGuizmoQuat",
 		"ApexIK",
 	}
+	
+	targetDir = path.getabsolute("bin/" .. outputdir .. "/%{prj.name}")
+	
+	defines {
+		"APEX_INSTALL_LOCATION=\""..targetDir.."\"",
+		"APEX_USE_VFS"
+	}
 
 	filter "system:windows"
 		systemversion "latest"
@@ -336,3 +349,25 @@ project "Sandbox"
 	filter "configurations:Dist"
 		defines "APEX_DIST"
 		optimize "on"
+
+
+
+project "Assimp"
+	location "ApexGameEngine/vendor/Assimp"
+	kind "Makefile"
+
+	buildcommands {
+		"{MKDIR} build",
+		"{CHDIR} build",
+		"cmake -DASSIMP_BUILD_ASSIMP_TOOLS=OFF -DASSIMP_BUILD_SAMPLES=OFF -DASSIMP_BUILD_TESTS=OFF ..",
+		"cmake --build . "
+	}
+
+	filter "system:windows"
+		postbuildcommands {
+			"{ECHO} Copy %{prj.location}/build/bin/Debug/assimp-vc142-mtd.dll to the directory containing the executable binaries after building"
+		}
+	filter "system:linux"
+		postbuildcommands {
+			"{ECHO} Copy %{prj.location}/build/bin/Debug/assimp-vc142-mtd.so to the directory containing the executable binaries after building"
+		}
