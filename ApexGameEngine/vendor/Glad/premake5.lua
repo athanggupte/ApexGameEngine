@@ -24,7 +24,7 @@ project "Glad"
 
 	filter "system:windows"
 		systemversion "latest"
-		staticruntime "on"
+		staticruntime(WinCRunTime_Type)
 
 
 	filter "configurations:Debug"

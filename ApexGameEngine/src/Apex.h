@@ -6,6 +6,7 @@
 #include "Apex/Core/Layers/Layer.h"
 #include "Apex/Core/Log.h"
 #include "Apex/Core/Timer.h"
+#include "Apex/Core/FileSystem/VFS.h"
 // Entity-Component-System
 #include "Apex/Core/ECS/Scene.h"
 #include "Apex/Core/ECS/Entity.h"

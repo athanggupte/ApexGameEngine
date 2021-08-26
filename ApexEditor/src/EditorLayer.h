@@ -9,6 +9,10 @@
 
 #include <glm/glm.hpp>
 
+#ifndef APEX_INSTALL_LOCATION
+#error Install location not specified
+#endif
+
 extern const char font_cousine_compressed_data_base85[];
 
 namespace Apex {

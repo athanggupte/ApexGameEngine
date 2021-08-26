@@ -39,7 +39,7 @@ namespace Apex {
 	
 	void OpenGLRendererAPI::DrawInstanced(const Ref<VertexArray>& vertexArray, size_t count)
 	{
-		//vertexArray->Bind();
+		vertexArray->Bind();
 		glDrawElementsInstanced(GL_TRIANGLES, vertexArray->GetIndexBuffers().at(0)->GetCount(), GL_UNSIGNED_INT, nullptr, count);
 	}
 

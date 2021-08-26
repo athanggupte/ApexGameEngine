@@ -34,7 +34,11 @@
     <ClInclude Include="src\Games\DXBall\Gameplay\Player.h">
       <Filter>Games\DXBall\Gameplay</Filter>
     </ClInclude>
+    <ClInclude Include="src\ModelLoaderExample.h" />
+    <ClInclude Include="src\ParticleSystemExample.h" />
     <ClInclude Include="src\Terminal.h" />
+    <ClInclude Include="src\TerminalExample.h" />
+    <ClInclude Include="src\TestLayer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\SandboxApp.cpp" />

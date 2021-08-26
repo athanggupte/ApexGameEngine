@@ -218,3 +218,11 @@ namespace Apex {
 	};
 	
 }
+
+template<typename Resource_t>
+struct std::hash<Apex::SharedResourceHandle<Resource_t>>
+{
+	size_t operator () (const Apex::SharedResourceHandle<Resource_t>& key) {
+		return std::hash<Apex::GUID>()(key.GetGUID());
+	}
+};

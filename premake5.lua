@@ -9,6 +9,8 @@ workspace "ApexGameEngine"
 
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
+WinCRunTime_Type = "Off"
+
 -- Include directories relative to the root (solution) directory
 IncludeDirs = {}
 IncludeDirs["spdlog"] = "ApexGameEngine/vendor/spdlog/include/"
@@ -20,6 +22,7 @@ IncludeDirs["stb_image"] = "ApexGameEngine/vendor/stb_image/"
 IncludeDirs["Assimp"] = "ApexGameEngine/vendor/Assimp/include/"
 IncludeDirs["irrKlang"] = "ApexGameEngine/vendor/irrKlang/include/"
 IncludeDirs["entt"] = "ApexGameEngine/vendor/entt/single_include/"
+IncludeDirs["ImGuizmoQuat"] = "ApexGameEngine/vendor/imguizmo_quat/imGuIZMO.quat/"
 IncludeDirs["ApexIK"] = "ApexGameEngine/modules/ApexIK/ApexIK/include/"
 
 -- DLLs
@@ -32,7 +35,7 @@ WinLibs = { "opengl32.lib", "assimp-vc142-mtd", "irrKlang" }
 -- WinLibs["Assimp"] = "%{DLLs.Assimp}"
 -- WinLibs["irrKlang"] = "irrKlang"
 
-WinLibDirs = { "ApexGameEngine/vendor/Assimp/build/code/Debug", "ApexGameEngine/vendor/irrKlang/lib" }
+WinLibDirs = { "ApexGameEngine/vendor/Assimp/build/lib/Debug", "ApexGameEngine/vendor/irrKlang/lib" }
 -- WinLibDirs["Assimp"] = "ApexGameEngine/vendor/Assimp/build/code/Debug"
 -- WinLibDirs["irrKlang"] = "ApexGameEngine/vendor/irrKlang/lib"
 
@@ -49,6 +52,7 @@ LinuxLibDirs = { "ApexGameEngine/vendor/Assimp/build/bin", "ApexGameEngine/vendo
 include "ApexGameEngine/vendor/GLFW"
 include "ApexGameEngine/vendor/Glad"
 include "ApexGameEngine/vendor/imgui"
+include "ApexGameEngine/vendor/imguizmo_quat"
 
 include "ApexGameEngine/modules/ApexIK"
 
@@ -87,8 +91,8 @@ project "ApexGameEngine"
 		"%{prj.name}/vendor/glm/glm/**.inl",
 		"%{prj.name}/vendor/glm/glm/**.h",
 		-- PugiXML --
-		"%{prj.name}/vendor/pugixml/**.hpp",
-		"%{prj.name}/vendor/pugixml/**.cpp",
+		"%{prj.name}/vendor/pugixml/src/**.hpp",
+		"%{prj.name}/vendor/pugixml/src/**.cpp",
 	}
 
 	includedirs {
@@ -104,6 +108,7 @@ project "ApexGameEngine"
 		"%{IncludeDirs.Assimp}",
 		"%{IncludeDirs.irrKlang}",
 		"%{IncludeDirs.entt}",
+		"%{IncludeDirs.ImGuizmoQuat}",
 		-- Modules
 		"%{IncludeDirs.ApexIK}",
 	}
@@ -118,14 +123,22 @@ project "ApexGameEngine"
 		"GLFW",
 		"Glad",
 		"ImGui",
+		"ImGuizmoQuat",
 		"ApexIK",
 		--"zlibd",4"
 		--"IrrXMLd",
 	}
-
+	
+	targetDir = path.getabsolute("bin/" .. outputdir .. "/%{prj.name}")
+	
+	defines {
+		"APEX_INSTALL_LOCATION=\""..targetDir.."\"",
+		"APEX_USE_VFS"
+	}
+	
 	filter "system:windows"
-		staticruntime "On"
 		systemversion "latest"
+		staticruntime(WinCRunTime_Type)
 
 		defines {
 			"APEX_PLATFORM_WINDOWS",
@@ -220,6 +233,7 @@ project "ApexEditor"
 		"%{IncludeDirs.Assimp}",
 		"%{IncludeDirs.irrKlang}",
 		"%{IncludeDirs.entt}",
+		"%{IncludeDirs.ImGuizmoQuat}",
 		-- Modules
 		"%{IncludeDirs.ApexIK}"
 	}
@@ -229,12 +243,20 @@ project "ApexEditor"
 		"GLFW",
 		"Glad",
 		"ImGui",
+		"ImGuizmoQuat",
 		"ApexIK",
 	}
 
+	targetDir = path.getabsolute("bin/" .. outputdir .. "/%{prj.name}")
+	
+	defines {
+		"APEX_INSTALL_LOCATION=\""..targetDir.."\"",
+		"APEX_USE_VFS"
+	}
+
 	filter "system:windows"
-		staticruntime "On"
 		systemversion "latest"
+		staticruntime(WinCRunTime_Type)
 
 		defines {
 			"APEX_PLATFORM_WINDOWS"
@@ -299,6 +321,7 @@ project "Sandbox"
 		"%{IncludeDirs.Assimp}",
 		"%{IncludeDirs.irrKlang}",
 		"%{IncludeDirs.entt}",
+		"%{IncludeDirs.ImGuizmoQuat}",
 		-- Modules
 		"%{IncludeDirs.ApexIK}"
 	}
@@ -308,12 +331,20 @@ project "Sandbox"
 		"GLFW",
 		"Glad",
 		"ImGui",
+		"ImGuizmoQuat",
 		"ApexIK",
+	}
+	
+	targetDir = path.getabsolute("bin/" .. outputdir .. "/%{prj.name}")
+	
+	defines {
+		"APEX_INSTALL_LOCATION=\""..targetDir.."\"",
+		"APEX_USE_VFS"
 	}
 
 	filter "system:windows"
-		staticruntime "On"
 		systemversion "latest"
+		staticruntime(WinCRunTime_Type)
 
 		defines {
 			"APEX_PLATFORM_WINDOWS"
@@ -349,3 +380,25 @@ project "Sandbox"
 	filter "configurations:Dist"
 		defines "APEX_DIST"
 		optimize "on"
+
+
+
+project "Assimp"
+	location "ApexGameEngine/vendor/Assimp"
+	kind "Makefile"
+
+	buildcommands {
+		"{MKDIR} build",
+		"{CHDIR} build",
+		"cmake -DASSIMP_BUILD_ASSIMP_TOOLS=OFF -DASSIMP_BUILD_SAMPLES=OFF -DASSIMP_BUILD_TESTS=OFF ..",
+		"cmake --build . "
+	}
+
+	filter "system:windows"
+		postbuildcommands {
+			"{ECHO} Copy %{prj.location}/build/bin/Debug/assimp-vc142-mtd.dll to the directory containing the executable binaries after building"
+		}
+	filter "system:linux"
+		postbuildcommands {
+			"{ECHO} Copy %{prj.location}/build/bin/Debug/assimp-vc142-mtd.so to the directory containing the executable binaries after building"
+		}
