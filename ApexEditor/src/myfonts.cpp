@@ -1,3 +1,4 @@
+#include "apexed_pch.h"
 // File: 'fonts\consola.ttf' (98520 bytes)
 // Exported using binary_to_compressed_c.cpp
 #if 0

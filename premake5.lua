@@ -22,6 +22,7 @@ IncludeDirs["stb_image"] = "ApexGameEngine/vendor/stb_image/"
 IncludeDirs["Assimp"] = "ApexGameEngine/vendor/Assimp/include/"
 IncludeDirs["irrKlang"] = "ApexGameEngine/vendor/irrKlang/include/"
 IncludeDirs["entt"] = "ApexGameEngine/vendor/entt/single_include/"
+IncludeDirs["pugixml"] = "ApexGameEngine/vendor/pugixml/src/"
 IncludeDirs["ImGuizmoQuat"] = "ApexGameEngine/vendor/imguizmo_quat/imGuIZMO.quat/"
 IncludeDirs["ApexIK"] = "ApexGameEngine/modules/ApexIK/ApexIK/include/"
 
@@ -92,7 +93,7 @@ project "ApexGameEngine"
 		"%{prj.name}/vendor/glm/glm/**.h",
 		-- PugiXML --
 		"%{prj.name}/vendor/pugixml/src/**.hpp",
-		"%{prj.name}/vendor/pugixml/src/**.cpp",
+		-- "%{prj.name}/vendor/pugixml/src/**.cpp",
 	}
 
 	includedirs {
@@ -109,6 +110,7 @@ project "ApexGameEngine"
 		"%{IncludeDirs.irrKlang}",
 		"%{IncludeDirs.entt}",
 		"%{IncludeDirs.ImGuizmoQuat}",
+		"%{IncludeDirs.pugixml}",
 		-- Modules
 		"%{IncludeDirs.ApexIK}",
 	}
@@ -395,10 +397,11 @@ project "Assimp"
 	}
 
 	filter "system:windows"
-		postbuildcommands {
+		buildcommands {
 			"{ECHO} Copy %{prj.location}/build/bin/Debug/assimp-vc142-mtd.dll to the directory containing the executable binaries after building"
 		}
+
 	filter "system:linux"
-		postbuildcommands {
+		buildcommands {
 			"{ECHO} Copy %{prj.location}/build/bin/Debug/assimp-vc142-mtd.so to the directory containing the executable binaries after building"
 		}

@@ -40,6 +40,7 @@ namespace Apex {
 		
 		friend class Entity;
 		friend class SceneHeirarchyPanel;
+		friend class SceneSerializer;
 		
 		// Scene rendering
 		SceneOptions Options;

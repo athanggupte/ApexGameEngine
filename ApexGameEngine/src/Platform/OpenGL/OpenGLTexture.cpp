@@ -163,7 +163,7 @@ namespace Apex {
 		void *data = nullptr;
 		
 		std::string filepath = "";
-		auto file = FileSystem::GetFile(path);
+		auto file = FileSystem::GetFileIfExists(path);
 		if (file)
 			filepath += file->GetPhysicalPath();
 		else

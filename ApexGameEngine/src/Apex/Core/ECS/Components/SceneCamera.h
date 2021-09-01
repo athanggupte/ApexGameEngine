@@ -30,8 +30,8 @@ namespace Apex {
 		float GetOrthographicFar() const { return m_OrthographicFar; }
 		
 		void SetOrthographicSize(float size) { m_OrthographicSize = size; RecalculateProjection(); }
-		void SetOrthographicNear(float near) { m_OrthographicNear = near; RecalculateProjection(); }
-		void SetOrthographicFar(float far) { m_OrthographicFar = far; RecalculateProjection(); }
+		void SetOrthographicNear(float _near) { m_OrthographicNear = _near; RecalculateProjection(); }
+		void SetOrthographicFar(float _far) { m_OrthographicFar = _far; RecalculateProjection(); }
 		
 		// Perspective Properties
 		float GetPerspectiveVerticalFov() const { return m_PerspectiveFovY; }
@@ -39,8 +39,8 @@ namespace Apex {
 		float GetPerspectiveFar() const { return m_PerspectiveFar; }
 		
 		void SetPerspectiveVerticalFov(float fovy) { m_PerspectiveFovY = fovy; RecalculateProjection(); }
-		void SetPerspectiveNear(float near) { m_PerspectiveNear = near; RecalculateProjection(); }
-		void SetPerspectiveFar(float far) { m_PerspectiveFar = far; RecalculateProjection(); }
+		void SetPerspectiveNear(float _near) { m_PerspectiveNear = _near; RecalculateProjection(); }
+		void SetPerspectiveFar(float _far) { m_PerspectiveFar = _far; RecalculateProjection(); }
 		
 	private:
 		void RecalculateProjection();

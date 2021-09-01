@@ -14,7 +14,7 @@ namespace Apex {
 		std::string source;
 		std::ifstream in(filepath, std::ios::in | std::ios::binary);
 #ifdef APEX_USE_VFS
-		auto file = FileSystem::GetFile(filepath);
+		auto file = FileSystem::GetFileIfExists(filepath);
 		if (file && file->OpenRead()) {
 			source.resize(file->Size());
 			file->Read(&source[0], source.size());

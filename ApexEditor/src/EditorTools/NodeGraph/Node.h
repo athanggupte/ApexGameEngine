@@ -56,10 +56,10 @@ namespace Apex::EditorTools {
 		virtual ~Node()
 		{
 			for (auto slotPtr : inputSlots)
-				delete slotPtr;
+				if (slotPtr) delete slotPtr;
 			inputSlots.clear();
 			for (auto slotPtr : outputSlots)
-				delete slotPtr;
+				if (slotPtr) delete slotPtr;
 			outputSlots.clear();
 		}
 	};

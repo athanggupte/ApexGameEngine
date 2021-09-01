@@ -21,5 +21,5 @@
 #include "Apex/Core/Log.h"
 
 #ifdef APEX_PLATFORM_WINDOWS
-	#include <Windows.h>
+//	#include <Windows.h>
 #endif

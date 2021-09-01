@@ -16,7 +16,8 @@ namespace Apex {
 			
 			virtual void OnMount() = 0;
 			virtual bool HasFile(const std::string& filePath) const = 0;
-			virtual Ref<IFile> GetFile(const std::string& filePath) const = 0;
+			virtual Ref<IFile> GetFileIfExists(const std::string& filePath) const = 0;
+			virtual Ref<IFile> MakeFile(const std::string& filePath) const = 0;
 		};
 		
 		class PhysicalMountPoint : public IMountPoint
@@ -27,8 +28,9 @@ namespace Apex {
 			
 			virtual void OnMount() override;
 			virtual bool HasFile(const std::string& filePath) const override;
-			virtual Ref<IFile> GetFile(const std::string& filePath) const override;
-			
+			virtual Ref<IFile> GetFileIfExists(const std::string& filePath) const override;
+			virtual Ref<IFile> MakeFile(const std::string& filePath) const override;
+
 		protected:
 			void CacheFilenames();
 			

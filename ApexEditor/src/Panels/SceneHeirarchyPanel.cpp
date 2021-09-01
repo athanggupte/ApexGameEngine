@@ -1,3 +1,4 @@
+#include "apexed_pch.h"
 #include "SceneHeirarchyPanel.h"
 
 #include <imgui.h>
@@ -21,7 +22,7 @@ namespace Apex {
 		
 		m_Context->m_Registry.each([&](auto entityId)
 		{
-			Entity entity{ entityId, m_Context.Get() };
+			Entity entity{ entityId, m_Context.get() };
 			DrawEntityNode(entity);
 		});
 		

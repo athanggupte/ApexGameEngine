@@ -50,7 +50,7 @@ public:
 	
 	void OnAttach() override
 	{
-		Apex::FileSystem::Mount("/assets", "assets");
+		Apex::FileSystem::Mount("/assets", APEX_INSTALL_LOCATION "/assets");
 		
 		m_PhongShader = Apex::Shader::Create("/core_assets/shaders/Phong.glsl");
 		m_PhongNormalShader = Apex::Shader::Create("/core_assets/shaders/Phong-Normal.glsl");
@@ -369,3 +369,4 @@ Apex::Application* Apex::CreateApplication()
 	return new Sandbox();
 }
 
+#include <Apex/StartUp.h>

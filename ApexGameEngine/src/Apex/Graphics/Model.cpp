@@ -19,7 +19,7 @@ namespace Apex {
 	Model::Model(const std::string & path)
 	{
 		std::string filepath = "";
-		auto file = FileSystem::GetFile(path);
+		auto file = FileSystem::GetFileIfExists(path);
 		if (file)
 			filepath += file->GetPhysicalPath();
 		

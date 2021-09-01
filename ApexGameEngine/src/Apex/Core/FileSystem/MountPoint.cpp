@@ -29,12 +29,21 @@ namespace Apex::VFS {
 			return fs::exists(m_PhysicalPath + "/" + filePath);
 	}
 	
-	Apex::Ref<IFile> PhysicalMountPoint::GetFile(const std::string& filePath) const
+	Apex::Ref<IFile> PhysicalMountPoint::GetFileIfExists(const std::string& filePath) const
 	{
 		if (HasFile(filePath))
 			return Apex::CreateRef<PhysicalFile>(m_PhysicalPath + "/" + filePath);
 		else
 			return nullptr;
+	}
+
+	Apex::Ref<IFile> PhysicalMountPoint::MakeFile(const std::string& filePath) const
+	{
+		auto parentPath = fs::path(m_PhysicalPath) / fs::path(filePath).parent_path();
+		if (!fs::exists(parentPath))
+			fs::create_directories(parentPath);
+
+		return Apex::CreateRef<PhysicalFile>(m_PhysicalPath + "/" + filePath);
 	}
 	
 	void PhysicalMountPoint::CacheFilenames()

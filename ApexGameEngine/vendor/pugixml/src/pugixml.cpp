@@ -14,9 +14,6 @@
 #ifndef SOURCE_PUGIXML_CPP
 #define SOURCE_PUGIXML_CPP
 
-// ApexGameEngine PCH include
-#include <apex_pch.h>
-
 #include "pugixml.hpp"
 
 #include <stdlib.h>

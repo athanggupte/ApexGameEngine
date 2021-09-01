@@ -5,7 +5,8 @@
 #ifdef __STDC_LIB_EXT1__
 #define STRCPY(dest, size, src) strcpy_s(dest, size, src)
 #else
-#warning Using unsafe `strcpy` as `strcpy_s` not available.
+//#warning Using unsafe `strcpy` as `strcpy_s` not available.
+#pragma message "Using unsafe `strcpy` as `strcpy_s` not available."
 #define STRCPY(dest, size, src) strcpy(dest, src)
 #endif
 
@@ -19,7 +20,8 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-#include <misc/cpp/imgui_stdlib.h>
+// ImGui implementations for std::string
+#include <misc/cpp/imgui_stdlib.cpp>
 
 namespace Apex {
 	
@@ -167,7 +169,7 @@ namespace Apex {
 					ImVec4 bg_col = ImVec4(0.0f, 0.0f, 0.0f, 1.0f);      // Black background
 					ImVec4 tint_col = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);    // No tint
 					if (sprite.Texture) {
-						ImGui::Text("%s", sprite.Texture.GetGUID().GetString().c_str());
+						// ImGui::Text("%s", sprite.Texture.GetGUID().GetString().c_str());
 						if (ImGui::ImageButton((void*)(intptr_t)sprite.Texture->GetID(), size, uv0, uv1, frame_padding, bg_col, tint_col)) {
 							auto filename = Utils::OpenFileDialog();
 							if (!filename.empty())
@@ -247,5 +249,3 @@ namespace Apex {
 	}
 	
 }
-
-#include <misc/cpp/imgui_stdlib.cpp>

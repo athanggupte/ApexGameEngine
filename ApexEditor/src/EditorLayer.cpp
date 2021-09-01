@@ -8,7 +8,9 @@
 // #include "EditorTools/NodeGraph/Node.h"
 // #include "EditorTools/NodeGraph/NodeGraph.h"
 // #include "EditorTools/PythonGraph/PythonGraph.h"
-#include "EditorTools/ShaderGraph/ShaderGraph.h"
+// #include "EditorTools/ShaderGraph/ShaderGraph.h"
+
+#include <Apex/Core/ECS/SceneSerializer.h>
 
 #include <imgui.h>
 #include <glm/gtc/matrix_transform.hpp>
@@ -28,12 +30,14 @@ namespace Apex {
 
 	void EditorLayer::OnAttach()
 	{
+		FileSystem::Mount("/assets", APEX_INSTALL_LOCATION "/assets");
+
 		m_Scene = CreateRef<Scene>();
 		
 		// Asset allocation
 		m_ImageTexture = Texture2D::Create(256U, 256U, HDRTextureSpec, "Image");
-		m_ComputeShader = ComputeShader::Create("assets/Blur.compute");
-		m_Texture = Texture2D::Create("assets/pusheen-thug-life.png");
+		m_ComputeShader = ComputeShader::Create("/assets/Blur.compute");
+		m_Texture = Texture2D::Create("/assets/pusheen-thug-life.png");
 		m_GameFramebuffer = Framebuffer::Create({ 1280u, 720u });
 
 		// Entity Initialization
@@ -123,13 +127,13 @@ namespace Apex {
 // 		}
 // 		ImGui::End();
 		
-		static EditorTools::ShaderGraph shaderGraph;
+		/*static EditorTools::ShaderGraph shaderGraph;
 		if (m_ShowNodeGraph) {
 			if (ImGui::Begin("Shader Graph", &m_ShowNodeGraph, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse)) {
 				shaderGraph.RenderShaderGraph();
 			}
 			ImGui::End();
-		}
+		}*/
 
 		ImGui::Begin("Rendering");
 		ImGui::DragFloat4("Background", &m_BGColor[0], 0.001f, 0.0f, 1.0f);
@@ -334,6 +338,10 @@ namespace Apex {
 		if (ImGui::MenuItem("Open", "Ctrl+O")) {
 			auto filename = Utils::OpenFileDialog();
 			OpenFileStub(filename);
+
+			auto serializer = SceneSerializerFactory().SetFormat(SceneSerializerFactory::Format::XML).Build(m_Scene);
+			serializer->Deserialize(filename);
+
 			if (!filename.empty())
 				s_RecentFiles.Push(filename);
 		}
@@ -349,7 +357,8 @@ namespace Apex {
 			ImGui::EndMenu();
 		}
 		if (ImGui::MenuItem("Save", "Ctrl+S")) {
-			
+			auto serializer = SceneSerializerFactory().SetFormat(SceneSerializerFactory::Format::XML).Build(m_Scene);
+			serializer->Serialize("/assets/scene.xml");
 		}
 		if (ImGui::MenuItem("Save As..", "Ctrl+Shift+S")) {
 			

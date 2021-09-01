@@ -10,6 +10,7 @@
 #include "Apex/Graphics/Mesh.h"
 
 #include "Apex/Core/Camera.h"
+#include "Apex/Core/ECS/Components/SceneCamera.h"
 
 #include "Apex/Utils/Utils.h"
 #include "Apex/Utils/Profiler.h"
@@ -209,7 +210,7 @@ namespace Apex {
 		delete s_Data;
 	}
 	
-	void ForwardRenderer::BeginScene(const RenderCamera& camera, const glm::mat4& transform)
+	void ForwardRenderer::BeginScene(const SceneCamera& camera, const glm::mat4& transform)
 	{
 		APEX_PROFILE_FUNC();
 		

@@ -24,7 +24,7 @@ namespace Apex {
 		template<typename Component_t>
 		inline bool HasComponent()
 		{
-			return m_Scene->m_Registry.has<Component_t>(m_EntityId);
+			return m_Scene->m_Registry.all_of<Component_t>(m_EntityId);
 		}
 		
 		template<typename Component_t>
@@ -45,6 +45,12 @@ namespace Apex {
 			m_Scene->m_Registry.remove<Component_t>(m_EntityId);
 		}
 		
+		template<typename Func>
+		inline void Visit(Func func)
+		{
+			m_Scene->m_Registry.visit(m_EntityId, func);
+		}
+
 		inline operator bool() const { return m_EntityId != entt::null; }
 		inline operator entt::entity() const { return m_EntityId; }
 		inline operator uint32_t() const { return (uint32_t)m_EntityId; }
