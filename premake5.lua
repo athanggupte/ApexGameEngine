@@ -49,13 +49,15 @@ LinuxLibDirs = { "ApexGameEngine/vendor/Assimp/build/bin", "ApexGameEngine/vendo
 -- LinuxLibDirs["Assimp"] = "ApexGameEngine/vendor/Assimp/build/bin"
 -- LinuxLibDirs["irrKlang"] = "ApexGameEngine/vendor/irrKlang/bin/linux-gcc-64"
 
+group "Dependencies"
 -- Include other premake files
-include "ApexGameEngine/vendor/GLFW"
-include "ApexGameEngine/vendor/Glad"
-include "ApexGameEngine/vendor/imgui"
-include "ApexGameEngine/vendor/imguizmo_quat"
+	include "ApexGameEngine/vendor/GLFW"
+	include "ApexGameEngine/vendor/Glad"
+	include "ApexGameEngine/vendor/imgui"
+	include "ApexGameEngine/vendor/imguizmo_quat"
 
-include "ApexGameEngine/modules/ApexIK"
+group "Modules"
+	include "ApexGameEngine/modules/ApexIK"
 
 local linux_de = os.getenv("XDG_CURRENT_DESKTOP")
 local curDir = os.getenv("CD")
@@ -67,6 +69,9 @@ if curDir == nil then
 end
 curDir = '"'..curDir..'"'
 
+
+-- Reset group to root
+group ""
 -- Apex Game Engine Project
 project "ApexGameEngine"
 	location "ApexGameEngine"
@@ -365,10 +370,11 @@ project "Sandbox"
 		libdirs (LinuxLibDirs)
 		links (LinuxLibs)
         
+		-- TODO: Consider replacing with 'runpathdirs' https://premake.github.io/docs/runpathdirs
 		postbuildcommands {
 			"echo \"cd $(realpath %{cfg.buildtarget.directory}) && export LD_LIBRARY_PATH=/home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/Assimp/build/bin:/home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/irrKlang/bin/linux-gcc-64/ && ./%{prj.name}\" > %{cfg.buildtarget.abspath}.sh"
 		}
-		
+
 	filter "configurations:Debug"
 		defines {
 			"APEX_DEBUG", "APEX_ENABLE_ASSERTS"
@@ -384,7 +390,7 @@ project "Sandbox"
 		optimize "on"
 
 
-
+group "Dependencies"
 project "Assimp"
 	location "ApexGameEngine/vendor/Assimp"
 	kind "Makefile"

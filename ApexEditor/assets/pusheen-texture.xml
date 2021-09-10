@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<!DOCTYPE ApexResources>
+<?apex-version 0.1?>
+<!--ApexGameEngine resource description file-->
+<Resources>
+  <Resource id="pusheen-texture">
+    <Data Type="1">
+      <Texture>
+        <Source>/assets/pusheen-thug-life.png</Source>
+      </Texture>
+    </Data>
+  </Resource>
+</Resources>

@@ -39,7 +39,8 @@ namespace Apex {
 		ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_OpenOnArrow;
 		flags |= (m_SelectedEntity == entity) ? ImGuiTreeNodeFlags_Selected : 0;
 		
-		bool opened = ImGui::TreeNodeEx((void*)(uint32_t)entity, flags, tag.c_str());
+		// TODO: Eliminate the need for copying string_view to string
+		bool opened = ImGui::TreeNodeEx((void*)(uint32_t)entity, flags, std::string(tag.str()).c_str());
 		if (ImGui::IsItemClicked()) {
 			m_SelectedEntity = entity;
 		}
@@ -47,7 +48,7 @@ namespace Apex {
 		if (opened) {
 			// Draw children
 			ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_OpenOnArrow;
-			bool opened = ImGui::TreeNodeEx((void*)98141, flags, tag.c_str());
+			bool opened = ImGui::TreeNodeEx((void*)98141, flags, std::string(tag.str()).c_str());
 			if (opened)
 				ImGui::TreePop();
 			

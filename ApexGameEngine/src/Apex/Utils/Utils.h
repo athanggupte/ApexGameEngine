@@ -84,3 +84,13 @@ struct std::hash<std::pair<T1, T2>>
 		return std::hash<T1>()(pair.first) ^ std::hash<T2>()(pair.second);
 	}
 };
+
+// https://stackoverflow.com/a/67059296
+template<class T> T& unmove(T&& t) { return t; }
+
+#include "base64.h"
+#define BASE64(bits) base64_encode((uint8_t*)&unmove(bits), sizeof(bits), false)
+#define BASE64_D(str) base64_decode(str, false)
+
+#define TO_STRING(val) fmt::format("{}", val)
+#define TO_CSTRING(val) TO_STRING(val).c_str()

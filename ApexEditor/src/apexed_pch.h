@@ -19,6 +19,7 @@
 
 #include "Apex/Core/Core.h"
 #include "Apex/Core/Log.h"
+#include "Apex/Utils/HashFNV1a.h"
 
 #ifdef APEX_PLATFORM_WINDOWS
 //	#include <Windows.h>

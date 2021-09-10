@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Scene.h"
+#include "Apex/Core/ECS/Components.h"
 
 namespace Apex {
 

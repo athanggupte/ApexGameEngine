@@ -21,7 +21,6 @@ int main(int argc, char** argv)
 	
 	APEX_CORE_INFO("Welcome to Apex Game Engine !");
 	
-	Apex::AssetManager::Init();
 	Apex::Random::Init();
 
 	//APEX_PROFILE_BEGIN_SESSION("StartUp", "ApexGameEngineProfile-StartUp.json");

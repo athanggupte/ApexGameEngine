@@ -27,6 +27,8 @@ namespace Apex {
 		m_Window->SetEventCallback(BIND_CALLBACK_FN(OnEvent));
 		m_Window->SetVSync(true);
 
+		m_ResourceManager = Apex::CreateScope<ResourceManager>();
+
 		Renderer::Init();
 		Renderer2D::Init();
 		PostProcess::Init();

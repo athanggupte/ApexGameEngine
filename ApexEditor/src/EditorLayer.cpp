@@ -4,13 +4,15 @@
 #include "EditorLayer.h"
 #include "Apex/Utils/Utils.h"
 #include "Apex/Utils/CustomDataStructures.h"
+#include "Apex/Core/ResourceManager/ResourceManager.h"
+#include "Apex/Core/ECS/SceneSerializer.h"
+#include "Apex/Core/ResourceManager/ResourceSerializer.h"
 
 // #include "EditorTools/NodeGraph/Node.h"
 // #include "EditorTools/NodeGraph/NodeGraph.h"
-// #include "EditorTools/PythonGraph/PythonGraph.h"
-// #include "EditorTools/ShaderGraph/ShaderGraph.h"
+ //#include "EditorTools/PythonGraph/PythonGraph.h"
+ //#include "EditorTools/ShaderGraph/ShaderGraph.h"
 
-#include <Apex/Core/ECS/SceneSerializer.h>
 
 #include <imgui.h>
 #include <glm/gtc/matrix_transform.hpp>
@@ -21,7 +23,6 @@ namespace Apex {
 		: Layer("ApexEditor"), m_BGColor{0.42f, 0.63f, 0.75f, 1.0f},
 		m_CameraController((float)Application::Get().GetWindow().GetWidth() / (float)Application::Get().GetWindow().GetHeight())
 	{
-		AssetManager::Init();
 		// Logger
 		m_LogSink = std::make_shared<EditorLogSink_mt>(&m_LogPanel);
 		// Log::GetCoreLogger()->sinks().push_back(m_LogSink);
@@ -33,29 +34,38 @@ namespace Apex {
 		FileSystem::Mount("/assets", APEX_INSTALL_LOCATION "/assets");
 
 		m_Scene = CreateRef<Scene>();
-		
+
+		auto& pusheenResource = Application::Get().GetResourceManager().AddResource<Texture>(HASH("pusheen-texture"), HASH("/assets/pusheen-thug-life.png"));
+		//Application::Get().GetResourceManager().AddResource(HASH("pusheen-texture"), Resource(HASH("/assets/pusheen-thug-life.png")));
+		//APEX_LOG_DEBUG("pusheen-texture :: type: {}", typeid(Application::Get().GetResourceManager().GetResource<Texture>(HASH("pusheen-texture"))).name());
+		Ref<ResourceSerializer> rs = ResourceSerializerFactory().SetFormat(ResourceSerializerFactory::Format::XML).Build(Application::Get().GetResourceManager());
+		rs->SerializeResource(FileSystem::MakeFile("/assets/pusheen-texture.xml"), pusheenResource);
+		pusheenResource.Load();
+
 		// Asset allocation
 		m_ImageTexture = Texture2D::Create(256U, 256U, HDRTextureSpec, "Image");
 		m_ComputeShader = ComputeShader::Create("/assets/Blur.compute");
-		m_Texture = Texture2D::Create("/assets/pusheen-thug-life.png");
+		// m_Texture = Texture2D::Create("/assets/pusheen-thug-life.png");
 		m_GameFramebuffer = Framebuffer::Create({ 1280u, 720u });
 
 		// Entity Initialization
-		auto pusheenEntity = m_Scene->CreateEntity("pusheen");
-		pusheenEntity.AddComponent<SpriteRendererComponent>(m_Texture, 2.f);
-		pusheenEntity.GetComponent<TransformComponent>() = TransformComponent({ 0.6f, 0.1f, 0.f }, { 0.5f, 0.5f, 1.f });
+		//auto pusheenEntity = m_Scene->CreateEntity(HASH("pusheen"));
+		//pusheenEntity.AddComponent<SpriteRendererComponent>(pusheenResource, 2.f);
+		//pusheenEntity.GetComponent<TransformComponent>() = TransformComponent({ 0.6f, 0.1f, 0.f }, { 0.5f, 0.5f, 1.f });
+		//
+		//auto squareEntity = m_Scene->CreateEntity(HASH("square"));
+		//squareEntity.AddComponent<SpriteRendererComponent>(glm::vec4{ 0.2f, 0.88f, 0.34f, 1.f });
+		//squareEntity.GetComponents<TransformComponent>() = TransformComponent({ -0.6f, -0.1f, 0.f }, { 0.5f, 0.5f, 1.f });
+		//
+		//auto cameraEntity = m_Scene->CreateEntity(HASH("camera"));
+		//cameraEntity.AddComponent<CameraComponent>(SceneCamera::ProjectionType::Orthographic);
+		//m_Scene->SetPrimaryCamera(cameraEntity);
 		
-		auto squareEntity = m_Scene->CreateEntity("square");
-		squareEntity.AddComponent<SpriteRendererComponent>(glm::vec4{ 0.2f, 0.88f, 0.34f, 1.f });
-		squareEntity.GetComponents<TransformComponent>() = TransformComponent({ -0.6f, -0.1f, 0.f }, { 0.5f, 0.5f, 1.f });
-		
-		auto cameraEntity = m_Scene->CreateEntity("camera");
-		cameraEntity.AddComponent<CameraComponent>(SceneCamera::ProjectionType::Orthographic);
-		m_Scene->SetPrimaryCamera(cameraEntity);
-		
+		m_Scene->OnSetup();
+
 		// Panels
 		m_SceneHeirarchyPanel.SetContext(m_Scene);
-		
+
 		// ImGui options
 		ImGui::GetIO().ConfigWindowsMoveFromTitleBarOnly = true;
 		ImGui::GetIO().Fonts->AddFontFromMemoryCompressedBase85TTF(font_cousine_compressed_data_base85, 12);
@@ -64,7 +74,6 @@ namespace Apex {
 	
 	void EditorLayer::OnDetach() 
 	{
-		AssetManager::Shutdown();
 		//m_Sound->drop();
 		//m_SoundEngine->drop();
 	}
@@ -92,14 +101,14 @@ namespace Apex {
 		RenderCommands::SetClearColor(m_BGColor);
 		RenderCommands::Clear();
 		
+		
 		if (!m_PlayScene) {
 			Renderer2D::BeginScene(m_CameraController.GetCamera());
-			m_Scene->Render2D();
+			m_Scene->DrawSprites();
 			Renderer2D::EndScene();
 		} else {
 			m_Scene->OnUpdate(ts);
 		}
-		
 		
 		m_GameFramebuffer->Unbind();
 	}
@@ -130,7 +139,7 @@ namespace Apex {
 		/*static EditorTools::ShaderGraph shaderGraph;
 		if (m_ShowNodeGraph) {
 			if (ImGui::Begin("Shader Graph", &m_ShowNodeGraph, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse)) {
-				shaderGraph.RenderShaderGraph();
+				
 			}
 			ImGui::End();
 		}*/
@@ -144,6 +153,7 @@ namespace Apex {
 		}
 		ImGui::End();
 		
+		m_SceneHeirarchyPanel.SetContext(m_Scene);
 		m_SceneHeirarchyPanel.OnImGuiRender();
 		auto entity = m_SceneHeirarchyPanel.GetSelectedEntity();
 		m_InspectorPanel.SetContext(entity, m_Scene);
@@ -337,13 +347,18 @@ namespace Apex {
 		}
 		if (ImGui::MenuItem("Open", "Ctrl+O")) {
 			auto filename = Utils::OpenFileDialog();
-			OpenFileStub(filename);
+			if (!filename.empty()) {
+				OpenFileStub(filename);
 
-			auto serializer = SceneSerializerFactory().SetFormat(SceneSerializerFactory::Format::XML).Build(m_Scene);
-			serializer->Deserialize(filename);
+				auto scene = CreateRef<Scene>();
+				auto serializer = SceneSerializerFactory().SetFormat(SceneSerializerFactory::Format::XML).Build(scene);
+				if (serializer->Deserialize(filename)) {
+					scene->OnSetup();
+					m_Scene = scene;
+				}
 
-			if (!filename.empty())
 				s_RecentFiles.Push(filename);
+			}
 		}
 		if (ImGui::BeginMenu("Open Recent", !s_RecentFiles.Empty())) {
 			std::string selectedFile = "";

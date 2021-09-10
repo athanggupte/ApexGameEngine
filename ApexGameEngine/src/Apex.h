@@ -2,7 +2,7 @@
 
 //-----Core-----------------------------
 #include "Apex/Application.h"
-#include "Apex/Core/AssetManager/AssetManager.h"
+#include "Apex/Core/ResourceManager/ResourceManager.h"
 #include "Apex/Core/Layers/Layer.h"
 #include "Apex/Core/Log.h"
 #include "Apex/Core/Timer.h"

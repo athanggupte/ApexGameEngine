@@ -11,7 +11,6 @@ namespace Apex {
 		XMLSceneSerializer(const Ref<Scene>& scene);
 		~XMLSceneSerializer() = default;
 
-
 	private:
 		virtual void SerializeSceneHeader(std::stringstream& out) override;
 		virtual void SerializeEntity(Entity& entity, std::stringstream& out) override;

@@ -58,7 +58,8 @@ namespace Apex {
 		
 		OrthographicCameraController2D m_CameraController;
 		Ref<Scene> m_Scene;
-		
+		// Ref<VFS::IFile> m_CurrentFile;
+
 		Ref<Texture2D> m_Texture;
 		Ref<Texture2D> m_ImageTexture;		
 		Ref<ComputeShader> m_ComputeShader;

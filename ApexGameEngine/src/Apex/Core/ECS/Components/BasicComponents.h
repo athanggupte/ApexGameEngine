@@ -11,6 +11,7 @@
 
 #include "Apex/Core/ECS/Components/SceneCamera.h"
 #include "Apex/Graphics/RenderPrimitives/Texture.h"
+#include "Apex/Core/ResourceManager/ResourceManager.h"
 
 #include "Apex/Core/ECS/ScriptableEntity.h"
 
@@ -18,15 +19,14 @@ namespace Apex {
 
 	struct TagComponent
 	{
-		std::string Tag;
+		StringHandle Tag;
 		
 		COMPONENT_DEFAULT_CTR(TagComponent);
 		
-		TagComponent(const std::string& tag)
+		TagComponent(StringHandle tag)
 			: Tag(tag) {}
 		
-		operator std::string& () { return Tag; }
-		operator const std::string& () const { return Tag; }
+		operator std::string_view () { return Tag.str(); }
 	};
 	
 	struct TransformComponent
@@ -58,7 +58,7 @@ namespace Apex {
 	struct SpriteRendererComponent
 	{
 		glm::vec4 Color = glm::vec4{ 1.f };
-		Ref<Texture2D> Texture = nullptr;
+		ResourceHandle_t Texture = nullptr;
 		float TilingFactor = 1.f;
 		bool useTexture = true;
 		bool visible = true;
@@ -67,9 +67,20 @@ namespace Apex {
 		
 		SpriteRendererComponent(const glm::vec4& color)
 			: Color(color) {}
-			
+		
+		SpriteRendererComponent(Handle texture, float tilingFactor = 1.f)
+			: Texture(texture), TilingFactor(tilingFactor) {}
+
+		SpriteRendererComponent(Resource& texture, float tilingFactor = 1.f)
+			: Texture(&texture), TilingFactor(tilingFactor) {}
+		
+		/*
+		SpriteRendererComponent(const Ref<Apex::Texture>& texture, float tilingFactor = 1.f)
+			: Texture(std::dynamic_pointer_cast<Texture2D>(texture)), TilingFactor(tilingFactor) {}
+
 		SpriteRendererComponent(const Ref<Texture2D>& texture, float tilingFactor = 1.f)
 			: Texture(texture), TilingFactor(tilingFactor) {}
+		*/
 	};
 
 	struct CameraComponent

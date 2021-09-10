@@ -15,10 +15,11 @@ namespace Apex {
 		Entity(entt::entity id, Scene* scene) : m_EntityId(id), m_Scene(scene) {}
 		
 		template<typename Component_t, typename... Args>
-		inline void AddComponent(Args&& ... args)
+		inline Component_t& AddComponent(Args&& ... args)
 		{
 			auto& component = m_Scene->m_Registry.emplace<Component_t>(m_EntityId, std::forward<Args>(args)...);
 			m_Scene->OnComponentAdded<Component_t>(*this, component);
+			return component;
 		}
 		
 		template<typename Component_t>

@@ -1,14 +1,7 @@
 #include <apexed_pch.h>
 #include "InspectorPanel.h"
-#define __STDC_WANT_LIB_EXT1__ 1
-#include <string.h>
-#ifdef __STDC_LIB_EXT1__
+#include <cstring>
 #define STRCPY(dest, size, src) strcpy_s(dest, size, src)
-#else
-//#warning Using unsafe `strcpy` as `strcpy_s` not available.
-#pragma message "Using unsafe `strcpy` as `strcpy_s` not available."
-#define STRCPY(dest, size, src) strcpy(dest, src)
-#endif
 
 #include "Apex/Core/ECS/Components.h"
 #include "Apex/Graphics/RenderPrimitives/Texture.h"
@@ -26,7 +19,7 @@
 namespace Apex {
 	
 	static Ref<Texture2D> s_PlaceholderTexture;
-	
+
 	InspectorPanel::InspectorPanel(Entity entity, const Ref<Scene>& scene)
 	{
 		SetContext(entity, scene);
@@ -55,19 +48,36 @@ namespace Apex {
 		ImGui::End();
 	}
 	
+	static char changedBuf[256]{ 0 };
+
 	void InspectorPanel::DrawComponents()
 	{
 		// Tag Component
 		{
+			static uint64_t counter = 0;
 			auto& tag = m_ContextEntity.GetComponent<TagComponent>().Tag;
 				
-			char buffer[256];
+			static char buffer[256];
 			memset(buffer, 0, sizeof(buffer));
-			STRCPY(buffer, sizeof(buffer), tag.c_str());
+			auto sz = tag.str().size();
+			memcpy_s(buffer, sizeof(buffer), tag.str().data(), tag.str().size());
 			
+			static bool isChanged = false;
+
 			if (ImGui::InputText("Tag", buffer, sizeof(buffer))) {
-				tag = std::string(buffer);
+				isChanged = true;
+				strcpy_s(changedBuf, sizeof(changedBuf), buffer);
 			}
+
+			if (isChanged) {
+				ImGui::SameLine();
+				if (ImGui::Button("OK")) {
+					tag = HASH(changedBuf);
+					isChanged = false;
+				}
+			}
+			counter++;
+
 		}
 		ImGui::Separator();
 		
@@ -156,6 +166,7 @@ namespace Apex {
 			bool opened = ImGui::TreeNodeEx((void*)typeid(SpriteRendererComponent).hash_code(), flags, "Sprite");
 			
 			if (opened) {
+				ImGui::Checkbox("Visible", &sprite.visible);
 				// Display component members
 				ImGui::Checkbox("Use Texture", &sprite.useTexture);
 				if (sprite.useTexture) {
@@ -168,19 +179,21 @@ namespace Apex {
 					ImVec2 uv1 = ImVec2(1.0f, 1.0f);                     // UV coordinates for (32,32) in our texture
 					ImVec4 bg_col = ImVec4(0.0f, 0.0f, 0.0f, 1.0f);      // Black background
 					ImVec4 tint_col = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);    // No tint
-					if (sprite.Texture) {
+					auto texture = std::get<Resource*>(sprite.Texture);
+					if (texture) {
 						// ImGui::Text("%s", sprite.Texture.GetGUID().GetString().c_str());
-						if (ImGui::ImageButton((void*)(intptr_t)sprite.Texture->GetID(), size, uv0, uv1, frame_padding, bg_col, tint_col)) {
+						ImGui::Text("%s", BASE64(texture->GetId()).c_str());
+						if (ImGui::ImageButton((void*)(intptr_t)texture->Get<Texture>()->GetID(), size, uv0, uv1, frame_padding, bg_col, tint_col)) {
 							auto filename = Utils::OpenFileDialog();
-							if (!filename.empty())
-								sprite.Texture = Texture2D::Create(filename);
+							//if (!filename.empty())
+							//	sprite.Texture = Texture2D::Create(filename);
 						}
 					} else {
 						ImGui::TextUnformatted("No image");
 						if (ImGui::ImageButton((void*)(intptr_t)s_PlaceholderTexture->GetID(), size, uv0, uv1, frame_padding, bg_col, tint_col)) {
 							auto filename = Utils::OpenFileDialog();
-							if (!filename.empty())
-								sprite.Texture = Texture2D::Create(filename);
+							//if (!filename.empty())
+							//	sprite.Texture = Texture2D::Create(filename);
 						}
 					}
 					ImGui::DragFloat("Tiling Factor", &sprite.TilingFactor);

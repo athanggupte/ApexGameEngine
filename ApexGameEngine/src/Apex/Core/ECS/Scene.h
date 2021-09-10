@@ -16,11 +16,14 @@ namespace Apex {
 		Scene();
 		~Scene() = default;
 		
-		Entity CreateEntity(const std::string& name = std::string());
+		Entity CreateEntity(StringHandle name);
+		Entity CreateEntity();
 		
+		void DrawSprites();
+
+		void OnSetup();
 		void OnUpdate(Timestep ts);
 		void OnEvent(Event&);
-		void Render2D();
 		void OnViewportResize(uint32_t width, uint32_t height);
 		
 		struct SceneOptions
@@ -41,6 +44,9 @@ namespace Apex {
 		friend class Entity;
 		friend class SceneHeirarchyPanel;
 		friend class SceneSerializer;
+		template<typename Archiver, typename... Types>
+		friend void Serialize(const Scene* scene, Archiver&& archiver);
+
 		
 		// Scene rendering
 		SceneOptions Options;

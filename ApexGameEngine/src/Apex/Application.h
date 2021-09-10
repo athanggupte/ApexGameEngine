@@ -5,6 +5,7 @@
 #include "Apex/Core/Events/Event.h"
 #include "Apex/Core/Events/ApplicationEvent.h"
 #include "Apex/Core/Timer.h"
+#include "Apex/Core/ResourceManager/ResourceManager.h"
 
 #include "Apex/ImGui/ImGuiLayer.h"
 
@@ -26,6 +27,7 @@ namespace Apex {
 
 		static inline Application& Get() { return *s_Instance; }
 		inline Window& GetWindow() { return *m_Window; }
+		inline ResourceManager& GetResourceManager() { return *m_ResourceManager; }
 		inline ImGuiLayer& GetImGuiLayer() { return *m_ImGuiLayer; }
 
 	private:
@@ -33,6 +35,7 @@ namespace Apex {
 		bool OnWindowResize(WindowResizeEvent& e);
 
 		Scope<Window> m_Window;
+		Scope<ResourceManager> m_ResourceManager;
 		ImGuiLayer* m_ImGuiLayer;
 		bool m_Running = true;
 		bool m_Minimized = false;
