@@ -2,6 +2,7 @@
 
 #include "Apex/Core/GUID.h"
 #include "Apex/Core/Strings.h"
+#include "Apex/Utils/Utils.h"
 #include "Apex/Core/FileSystem/FileHandle.h"
 
 #include "Apex/Graphics/RenderPrimitives/Shader.h"
@@ -11,6 +12,7 @@
 
 #include <typeindex>
 #include <variant>
+#include <optional>
 
 namespace Apex {
 	
@@ -153,22 +155,13 @@ namespace Apex {
 		template<typename Resource_t, typename... Args>
 		Resource& AddResource(Handle id, Args&&... args)
 		{
-			APEX_CORE_ASSERT(!Exists(id), "Resource '" + std::to_string(id) + "' already exists!");
+			APEX_CORE_ASSERT(!Exists(id), "Resource '" + TO_STRING(Strings::Get(id)) + "' already exists!");
 			auto& [it, success] = m_Registry.emplace(id, Resource(Resource::tag<Resource_t>{}, id, std::forward<Args>(args)...));
 			return it->second;
 		}
 		
-		Resource& Get(Handle id)
-		{
-			auto itr = m_Registry.find(id);
-			return itr->second;
-		}
-
-		const Resource& Get(Handle id) const
-		{
-			auto itr = m_Registry.find(id);
-			return itr->second;
-		}
+		Resource* Get(Handle id);
+		const Resource* const Get(Handle id) const;
 
 		//template<typename Resource_t>
 		//const Ref<Resource_t>& GetResource(Handle id)
@@ -177,7 +170,7 @@ namespace Apex {
 		//	return std::get<Ref<Resource_t>>(itr->second);
 		//}
 
-		bool Exists(Handle id)
+		inline bool Exists(Handle id)
 		{
 			return m_Registry.find(id) != m_Registry.end();
 		}
@@ -201,28 +194,7 @@ namespace Apex {
 		}
 
 	protected:
-		std::vector<Handle> TopologicalSort()
-		{
-			std::unordered_set<Handle> visited(m_DependencyGraph.size());
-			std::deque<Handle> queue;
-			for (auto& [node, adj] : m_DependencyGraph)
-				if (visited.count(node) == 0)
-					topologicalSortUtil(node, visited, queue);
-
-			return std::vector<Handle>(queue.begin(), queue.end());
-		}
-
-		void topologicalSortUtil(Handle node, std::unordered_set<Handle>& visited, std::deque<Handle>& queue)
-		{
-			visited.insert(node);
-
-			for (auto& child : m_DependencyGraph[node]) {
-				if (visited.count(child) == 0)
-					topologicalSortUtil(child, visited, queue);
-			}
-
-			queue.push_back(node);
-		}
+		std::vector<Handle> TopologicalSort();
 
 	private:
 		std::unordered_map<Handle, Resource> m_Registry;

@@ -25,7 +25,7 @@ namespace Apex {
 	{
 		// Logger
 		m_LogSink = std::make_shared<EditorLogSink_mt>(&m_LogPanel);
-		// Log::GetCoreLogger()->sinks().push_back(m_LogSink);
+		Log::GetCoreLogger()->sinks().push_back(m_LogSink);
 		Log::GetClientLogger()->sinks().push_back(m_LogSink);
 	}
 
@@ -35,12 +35,15 @@ namespace Apex {
 
 		m_Scene = CreateRef<Scene>();
 
-		auto& pusheenResource = Application::Get().GetResourceManager().AddResource<Texture>(HASH("pusheen-texture"), HASH("/assets/pusheen-thug-life.png"));
+		//auto& pusheenResource = Application::Get().GetResourceManager().AddResource<Texture>(HASH("pusheen-texture"), HASH("/assets/pusheen-thug-life.png"));
 		//Application::Get().GetResourceManager().AddResource(HASH("pusheen-texture"), Resource(HASH("/assets/pusheen-thug-life.png")));
-		//APEX_LOG_DEBUG("pusheen-texture :: type: {}", typeid(Application::Get().GetResourceManager().GetResource<Texture>(HASH("pusheen-texture"))).name());
 		Ref<ResourceSerializer> rs = ResourceSerializerFactory().SetFormat(ResourceSerializerFactory::Format::XML).Build(Application::Get().GetResourceManager());
-		rs->SerializeResource(FileSystem::MakeFile("/assets/pusheen-texture.xml"), pusheenResource);
-		pusheenResource.Load();
+		//rs->SerializeResource(FileSystem::MakeFile("/assets/pusheen-texture.xml"), pusheenResource);
+		rs->Deserialize(FileSystem::GetFileIfExists("/assets/pusheen-texture.xml"));
+		//auto& pusheenResource = Application::Get().GetResourceManager().Get(HASH("pusheen-texture"));
+		//pusheenResource.Load();
+		//APEX_LOG_DEBUG("pusheen-texture :: type: {}", typeid(pusheenResource.Get<Texture>()).name());
+		
 
 		// Asset allocation
 		m_ImageTexture = Texture2D::Create(256U, 256U, HDRTextureSpec, "Image");
@@ -130,11 +133,11 @@ namespace Apex {
 		if (show_imgui_demo_window) ImGui::ShowDemoWindow(&show_imgui_demo_window);
 		//ImGui::ShowMetricsWindow();
 
-// 		static EditorTools::NodeGraph nodeGraph(PythonGraph::nodeTypes, PythonGraph::CreateNode);
-// 		if (ImGui::Begin("Node Graph", &m_ShowNodeGraph, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse)) {
-// 			nodeGraph.RenderNodeGraph();
-// 		}
-// 		ImGui::End();
+ 		/*static EditorTools::NodeGraph nodeGraph(PythonGraph::nodeTypes, PythonGraph::CreateNode);
+ 		if (ImGui::Begin("Node Graph", &m_ShowNodeGraph, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse)) {
+ 			nodeGraph.RenderNodeGraph();
+ 		}
+ 		ImGui::End();*/
 		
 		/*static EditorTools::ShaderGraph shaderGraph;
 		if (m_ShowNodeGraph) {
@@ -290,13 +293,13 @@ namespace Apex {
 		if (ImGui::Button("Options"))
 			ImGui::OpenPopup("Options");
 		
-		static bool showInternalLogs = false;
+		/*static bool showInternalLogs = false;
 		if (ImGui::Checkbox("Show Internal Logs", &showInternalLogs)) {
 			if (showInternalLogs)
 				Log::GetCoreLogger()->sinks().push_back(m_LogSink);
 			else
 				Log::GetCoreLogger()->sinks().pop_back();
-		}
+		}*/
 		ImGui::End();
 		
 		if (m_LogPatternChanged)

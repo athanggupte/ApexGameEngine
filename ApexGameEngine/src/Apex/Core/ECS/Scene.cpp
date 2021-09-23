@@ -37,11 +37,17 @@ namespace Apex {
 			.each([&resourceManager](SpriteRendererComponent& sprite) {
 				if (std::holds_alternative<Handle>(sprite.Texture)) {
 					auto handle = std::get<Handle>(sprite.Texture);
-					if (handle)
-						sprite.Texture = &resourceManager.Get(handle);
-					else
+					auto textureResource = resourceManager.Get(handle);
+					if (!textureResource) {
+						APEX_CORE_ERROR("Texture resource {} not found!", Strings::Get(std::get<Handle>(sprite.Texture)));
 						sprite.Texture = (Resource*)nullptr;
+					}
+					else {
+						sprite.Texture = textureResource;
+					}
 				}
+				if (std::get<Resource*>(sprite.Texture) != nullptr)
+					std::get<Resource*>(sprite.Texture)->Load();
 			});
 	}
 

@@ -24,7 +24,7 @@ namespace Apex {
 
 		virtual bool DeserializeImpl(const std::string& buf) = 0;
 
-	private:
+	protected:
 		ResourceManager* m_ResourceManager;
 		
 	};

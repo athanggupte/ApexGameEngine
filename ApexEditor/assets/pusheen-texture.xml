@@ -4,7 +4,7 @@
 <!--ApexGameEngine resource description file-->
 <Resources>
   <Resource id="pusheen-texture">
-    <Data Type="1">
+    <Data type="1">
       <Texture>
         <Source>/assets/pusheen-thug-life.png</Source>
       </Texture>

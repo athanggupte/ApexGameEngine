@@ -54,4 +54,50 @@ namespace Apex {
 		APEX_LOG_INFO("Unloading shader from '{}'", resource.m_SourceFile.str());
 	}
 
+
+	// Resource management
+	Resource* ResourceManager::Get(Handle id)
+	{
+		auto itr = m_Registry.find(id);
+		// APEX_CORE_ASSERT(itr != m_Registry.end(), "Resource '" + std::to_string(id) + "' already exists!");
+		if (itr != m_Registry.end())
+			return &itr->second;
+		return nullptr;
+	}
+
+	const Resource* const ResourceManager::Get(Handle id) const
+	{
+		auto itr = m_Registry.find(id);
+		// APEX_CORE_ASSERT(itr != m_Registry.end(), "Resource '" + std::to_string(id) + "' already exists!");
+		if (itr != m_Registry.end())
+			return &itr->second;
+		return nullptr;
+	}
+
+
+	// Dependency management
+
+	void topologicalSortUtil(Handle node, std::unordered_set<Handle>& visited, std::deque<Handle>& queue, std::unordered_map<Handle, std::list<Handle>>& graph)
+	{
+		visited.insert(node);
+
+		for (auto& child : graph[node]) {
+			if (visited.count(child) == 0)
+				topologicalSortUtil(child, visited, queue, graph);
+		}
+
+		queue.push_back(node);
+	}
+
+	std::vector<Handle> ResourceManager::TopologicalSort()
+	{
+		std::unordered_set<Handle> visited(m_DependencyGraph.size());
+		std::deque<Handle> queue;
+		for (auto& [node, adj] : m_DependencyGraph)
+			if (visited.count(node) == 0)
+				topologicalSortUtil(node, visited, queue, m_DependencyGraph);
+
+		return std::vector<Handle>(queue.begin(), queue.end());
+	}
+
 }

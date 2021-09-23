@@ -3,6 +3,8 @@
 #include <cstring>
 #define STRCPY(dest, size, src) strcpy_s(dest, size, src)
 
+#include "Apex/Application.h"
+
 #include "Apex/Core/ECS/Components.h"
 #include "Apex/Graphics/RenderPrimitives/Texture.h"
 #include "Apex/Core/Input/Input.h"
@@ -185,15 +187,23 @@ namespace Apex {
 						ImGui::Text("%s", BASE64(texture->GetId()).c_str());
 						if (ImGui::ImageButton((void*)(intptr_t)texture->Get<Texture>()->GetID(), size, uv0, uv1, frame_padding, bg_col, tint_col)) {
 							auto filename = Utils::OpenFileDialog();
-							//if (!filename.empty())
-							//	sprite.Texture = Texture2D::Create(filename);
+							if (!filename.empty()) {
+								sprite.Texture = &Application::Get().GetResourceManager().AddResource<Texture>(HASH(Utils::GetFilename(filename)), HASH(filename.c_str()));
+								// TODO: Message/Event queue to pump messages
+								//m_ContextScene->OnSetup();
+								std::get<Resource*>(sprite.Texture)->Load();
+							}
 						}
 					} else {
 						ImGui::TextUnformatted("No image");
 						if (ImGui::ImageButton((void*)(intptr_t)s_PlaceholderTexture->GetID(), size, uv0, uv1, frame_padding, bg_col, tint_col)) {
 							auto filename = Utils::OpenFileDialog();
-							//if (!filename.empty())
-							//	sprite.Texture = Texture2D::Create(filename);
+							if (!filename.empty()) {
+								sprite.Texture = &Application::Get().GetResourceManager().AddResource<Texture>(HASH(Utils::GetFilename(filename)), HASH(filename.c_str()));
+								// TODO: Message/Event queue to pump messages
+								//m_ContextScene->OnSetup();
+								std::get<Resource*>(sprite.Texture)->Load();
+							}
 						}
 					}
 					ImGui::DragFloat("Tiling Factor", &sprite.TilingFactor);
