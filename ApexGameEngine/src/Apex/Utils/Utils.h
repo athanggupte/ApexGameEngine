@@ -1,18 +1,24 @@
 #pragma once
 
+#include "Apex/Core/FileSystem/VFS.h"
+
 namespace Apex {
 	
+	struct PixelData
+	{
+		uint8_t* pixels;
+		~PixelData();
+	};
+
 	struct ImageData
 	{
 		int32_t width, height, channels;
-		uint8_t* pixels;
-		
-		~ImageData();
+		Ref<PixelData> pixelData;
 	};
 	
 	namespace Utils {
-		
-		ImageData LoadImage(const std::string& path, int32_t targetChannels = 4);
+
+		ImageData LoadImage(const Ref<Apex::File>& file, int32_t targetChannels = 0);
 	
 		std::string GetFilename(const std::string& filepath);
 		
@@ -21,10 +27,11 @@ namespace Apex {
 			enum FileType
 			{
 				Any,
-				
+
 				// Project related file types
 				ApexProject,
 				ApexScene,
+				ApexResources,
 				ApexConfig,
 				
 				// Resources file types
