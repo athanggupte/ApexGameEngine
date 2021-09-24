@@ -3,6 +3,7 @@
 #include "Apex/StartUp.h"
 
 #include "EditorLayer.h"
+#include "Apex/Utils/Utils.h"
 
 namespace Apex {
 
@@ -10,9 +11,9 @@ namespace Apex {
 	{
 	public:
 		ApexEditor()
+			: Application(WindowProps("ApexEditor", 1366u, 768u))
 		{
 			PushLayer(new EditorLayer());
-			Application::Get().GetWindow().SetWindowIcon(Apex::Utils::LoadImage("/assets/Apex-Game-Engine-32.png"));
 		}
 	};
 

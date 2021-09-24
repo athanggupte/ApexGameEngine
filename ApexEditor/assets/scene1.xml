@@ -73,7 +73,7 @@
       </TransformComponent>
       <SpriteRendererComponent>
         <Texture use="true">
-          <ResourceId>FdfDA/HGVtw=</ResourceId>
+          <ResourceId>pusheen-texture</ResourceId>
           <TilingFactor>2</TilingFactor>
         </Texture>
         <Color>

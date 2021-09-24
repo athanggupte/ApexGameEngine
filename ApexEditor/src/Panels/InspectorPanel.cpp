@@ -3,6 +3,8 @@
 #include <cstring>
 #define STRCPY(dest, size, src) strcpy_s(dest, size, src)
 
+#include "Apex/Application.h"
+
 #include "Apex/Core/ECS/Components.h"
 #include "Apex/Graphics/RenderPrimitives/Texture.h"
 #include "Apex/Core/Input/Input.h"
@@ -179,21 +181,31 @@ namespace Apex {
 					ImVec2 uv1 = ImVec2(1.0f, 1.0f);                     // UV coordinates for (32,32) in our texture
 					ImVec4 bg_col = ImVec4(0.0f, 0.0f, 0.0f, 1.0f);      // Black background
 					ImVec4 tint_col = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);    // No tint
-					auto texture = std::get<Resource*>(sprite.Texture);
+					auto texture = Application::Get().GetResourceManager().Get(sprite.Texture);
 					if (texture) {
 						// ImGui::Text("%s", sprite.Texture.GetGUID().GetString().c_str());
 						ImGui::Text("%s", BASE64(texture->GetId()).c_str());
 						if (ImGui::ImageButton((void*)(intptr_t)texture->Get<Texture>()->GetID(), size, uv0, uv1, frame_padding, bg_col, tint_col)) {
 							auto filename = Utils::OpenFileDialog();
-							//if (!filename.empty())
-							//	sprite.Texture = Texture2D::Create(filename);
+							if (!filename.empty()) {
+								sprite.Texture = HASH(Utils::GetFilename(filename));
+								auto& textureResource = Application::Get().GetResourceManager().AddResource<Texture>(sprite.Texture, HASH(filename.c_str()));
+								// TODO: Message/Event queue to pump messages
+								//m_ContextScene->OnSetup();
+								textureResource.Load();
+							}
 						}
 					} else {
 						ImGui::TextUnformatted("No image");
 						if (ImGui::ImageButton((void*)(intptr_t)s_PlaceholderTexture->GetID(), size, uv0, uv1, frame_padding, bg_col, tint_col)) {
 							auto filename = Utils::OpenFileDialog();
-							//if (!filename.empty())
-							//	sprite.Texture = Texture2D::Create(filename);
+							if (!filename.empty()) {
+								sprite.Texture = HASH(Utils::GetFilename(filename));
+								auto& textureResource = Application::Get().GetResourceManager().AddResource<Texture>(sprite.Texture, HASH(filename.c_str()));
+								// TODO: Message/Event queue to pump messages
+								//m_ContextScene->OnSetup();
+								textureResource.Load();
+							}
 						}
 					}
 					ImGui::DragFloat("Tiling Factor", &sprite.TilingFactor);

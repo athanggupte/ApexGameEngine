@@ -12,7 +12,7 @@ namespace Apex {
 
 	void ResourceSerializer::SerializeResource(const Ref<File>& file, Handle handle)
 	{
-		SerializeResource(file, m_ResourceManager->Get(handle));
+		SerializeResource(file, *m_ResourceManager->Get(handle));
 	}
 
 	void ResourceSerializer::SerializeResource(const Ref<File>& file, Resource& resource)

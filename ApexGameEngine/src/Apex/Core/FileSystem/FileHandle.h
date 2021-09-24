@@ -29,6 +29,7 @@ namespace Apex {
 			const std::string& GetPhysicalPath() const { return m_PhysicalPath; }
 			
 		protected:
+			// TODO: Do I really need this here??
 			std::string m_PhysicalPath;
 		};
 		

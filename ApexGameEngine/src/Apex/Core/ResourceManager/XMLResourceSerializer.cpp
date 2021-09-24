@@ -36,7 +36,7 @@ namespace Apex {
 		// resourceNode.append_attribute("id").set_value(BASE64(resource.GetId()).c_str());
 		resourceNode.append_attribute("id").set_value(TO_CSTRING(Strings::Get(resource.GetId())));
 		auto dataNode = resourceNode.append_child("Data");
-		dataNode.append_attribute("Type").set_value((uint64_t)resource.GetType());
+		dataNode.append_attribute("type").set_value((uint64_t)resource.GetType());
 
 		pugi::xml_node typeNode;
 
@@ -57,6 +57,33 @@ namespace Apex {
 			typeNode.append_child("Source").append_child(pugi::node_pcdata).set_value(TO_CSTRING(resource.GetSource().str()));
 			break;
 		}
+	}
+
+	bool DeserializeResource(pugi::xml_node& node, ResourceManager& manager)
+	{
+		auto dataNode = node.child("Data");
+		auto type = (ResourceType)dataNode.attribute("type").as_ullong();
+		
+		pugi::xml_node typeNode;
+
+		switch (type) {
+		case ResourceType::FILE:
+			typeNode = dataNode.child("File");
+			manager.AddResource<File>(HASH(node.attribute("id").value()), HASH(typeNode.child("Source").child_value()));
+			break;
+		case ResourceType::TEXTURE:
+			typeNode = dataNode.child("Texture");
+			manager.AddResource<Texture>(HASH(node.attribute("id").value()), HASH(typeNode.child("Source").child_value()));
+			break;
+		case ResourceType::SHADER:
+			typeNode = dataNode.child("Shader");
+			manager.AddResource<Shader>(HASH(node.attribute("id").value()), HASH(typeNode.child("Source").child_value()));
+			break;
+		default:
+			return false;
+		}
+
+		return true;
 	}
 
 	bool XMLResourceSerializer::DeserializeImpl(const std::string& buf)
@@ -85,7 +112,8 @@ namespace Apex {
 			if (strcmp(child.name(), "Resource") != 0)
 				continue;
 
-			
+			if (!DeserializeResource(child, *m_ResourceManager))
+				return false;
 		}
 
 		return true;

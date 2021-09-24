@@ -1,7 +1,7 @@
 #include <apex_pch.h>
 #include "OpenGLComputeShader.h"
 
-#include "Apex/Core/FileSystem/VFS.h"
+#include "Apex/Core/FileSystem/FileSystem.h"
 
 #include <fstream>
 #include <glad/glad.h>

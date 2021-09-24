@@ -14,7 +14,7 @@ namespace Apex {
 	class Application
 	{
 	public:
-		Application();
+		Application(const WindowProps& windowProps = WindowProps());
 		virtual ~Application();
 
 		void Run();

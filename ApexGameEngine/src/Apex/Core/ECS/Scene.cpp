@@ -35,12 +35,14 @@ namespace Apex {
 
 		m_Registry.view<SpriteRendererComponent>()
 			.each([&resourceManager](SpriteRendererComponent& sprite) {
-				if (std::holds_alternative<Handle>(sprite.Texture)) {
-					auto handle = std::get<Handle>(sprite.Texture);
-					if (handle)
-						sprite.Texture = &resourceManager.Get(handle);
-					else
-						sprite.Texture = (Resource*)nullptr;
+				if (!sprite.Texture)
+					return;
+				auto textureResource = resourceManager.Get(sprite.Texture);
+				if (!textureResource) {
+					APEX_CORE_ERROR("Texture resource `{}` not found!", Strings::Get(sprite.Texture));
+				}
+				else {
+					textureResource->Load();
 				}
 			});
 	}
@@ -53,7 +55,7 @@ namespace Apex {
 		auto group = m_Registry.group<TransformComponent, SpriteRendererComponent>();
 		group.each([](TransformComponent& transform, SpriteRendererComponent& sprite) {
 			if (sprite.visible) {
-				auto texture = std::get<Resource*>(sprite.Texture);
+				auto texture = Application::Get().GetResourceManager().Get(sprite.Texture);
 				if (sprite.useTexture && texture)
 					Renderer2D::DrawQuad(transform.GetTransform(), std::dynamic_pointer_cast<Texture2D>(texture->Get<Texture>()), sprite.TilingFactor);
 				else

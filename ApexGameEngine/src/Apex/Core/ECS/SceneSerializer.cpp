@@ -6,7 +6,7 @@
 #include "Entity.h"
 #include "Components.h"
 
-#include "Apex/Core/FileSystem/VFS.h"
+#include "Apex/Core/FileSystem/FileSystem.h"
 
 #include <fstream>
 #include <pugixml.hpp>

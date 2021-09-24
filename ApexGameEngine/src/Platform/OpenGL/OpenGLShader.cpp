@@ -2,7 +2,7 @@
 #include "OpenGLShader.h"
 
 #include "Apex/Utils/Utils.h"
-#include "Apex/Core/FileSystem/VFS.h"
+#include "Apex/Core/FileSystem/FileSystem.h"
 
 #include <fstream>
 #include <glad/glad.h>

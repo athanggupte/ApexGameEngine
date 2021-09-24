@@ -168,7 +168,7 @@ namespace Apex {
 
 	void GLFWWindow::SetWindowIcon(const ImageData& imageData) const
 	{
-		GLFWimage glfwImage[1] = { { imageData.width, imageData.height, imageData.pixels } };
+		GLFWimage glfwImage[1] = { { imageData.width, imageData.height, imageData.pixelData->pixels } };
 		glfwSetWindowIcon(m_Window, 1, glfwImage);
 	}
 

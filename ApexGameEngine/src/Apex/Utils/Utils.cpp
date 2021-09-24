@@ -1,13 +1,15 @@
 #include "apex_pch.h" 
 #include "Utils.h"
 
+#define STBI_NO_JPEG
 #include <stb_image.h>
 
 namespace Apex {
 
-	Apex::ImageData::~ImageData()
+	Apex::PixelData::~PixelData()
 	{
-		stbi_image_free(pixels);
+		if (pixels)
+			stbi_image_free(pixels);
 	}
 
 	namespace Utils {
@@ -21,10 +23,27 @@ namespace Apex {
 			return filepath.substr(lastSlash, count);
 		}
 
-		ImageData LoadImage(const std::string& path, int32_t targetChannels)
+		ImageData LoadImage(const Ref<File>& file, int32_t targetChannels)
 		{
 			ImageData imageData;
-			imageData.pixels = stbi_load(path.c_str(), &imageData.width, &imageData.height, &imageData.channels, targetChannels);
+
+			if (file && file->OpenRead()) {
+				auto size = file->Size();
+				uint8_t* data = new uint8_t[size];
+				file->Read(data, size);
+				file->Close();
+
+				// imageData.pixels = stbi_load_from_memory(data, size, &imageData.width, &imageData.height, &imageData.channels, targetChannels);
+				imageData.pixelData = CreateRef<PixelData>();
+				imageData.pixelData->pixels = stbi_load(file->GetPhysicalPath().c_str(), &imageData.width, &imageData.height, &imageData.channels, targetChannels);
+				if (!imageData.pixelData->pixels)
+					APEX_CORE_ERROR("Could not load image!");
+				
+				APEX_CORE_ERROR("{}", stbi_failure_reason());
+				
+				delete[] data;
+			}
+			
 			return imageData;
 		}
 	}

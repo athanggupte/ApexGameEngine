@@ -1,7 +1,7 @@
 #pragma once
 
 #include "ResourceManager.h"
-#include "Apex/Core/FileSystem/VFS.h"
+#include "Apex/Core/FileSystem/FileSystem.h"
 
 namespace Apex {
 
@@ -24,7 +24,7 @@ namespace Apex {
 
 		virtual bool DeserializeImpl(const std::string& buf) = 0;
 
-	private:
+	protected:
 		ResourceManager* m_ResourceManager;
 		
 	};

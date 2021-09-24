@@ -78,12 +78,10 @@ namespace Apex {
         if (entity.HasComponent<SpriteRendererComponent>()) {
             const auto& sprite = entity.GetComponent<SpriteRendererComponent>();
             auto spriteNode = entityNode.append_child("SpriteRendererComponent");
-            
-            Handle textureHandle = std::visit(GetResourceHandleFn, sprite.Texture);
 
-            if (textureHandle > 0) {
+            if (sprite.Texture > 0) {
                 auto textureNode = spriteNode.append_child("Texture");
-                textureNode.append_child("ResourceId").append_child(pugi::node_pcdata).set_value(TO_CSTRING(Strings::Get(textureHandle)));
+                textureNode.append_child("ResourceId").append_child(pugi::node_pcdata).set_value(TO_CSTRING(Strings::Get(sprite.Texture)));
                 textureNode.append_child("TilingFactor").append_child(pugi::node_pcdata).set_value(TO_CSTRING(sprite.TilingFactor));
                 textureNode.append_attribute("use").set_value(sprite.useTexture);
             }
@@ -143,7 +141,7 @@ namespace Apex {
             auto& sprite = entity.AddComponent<SpriteRendererComponent>();
             auto textureNode = spriteNode.child("Texture");
             if (textureNode) {
-                sprite.Texture = (Handle)*(uint64_t*)(BASE64_D(std::string(textureNode.child_value("ResourceId")))).data();
+                sprite.Texture = HASH(textureNode.child_value("ResourceId"));
                 sprite.TilingFactor = std::stof(textureNode.child_value("TilingFactor"));
                 sprite.useTexture = textureNode.attribute("use").as_bool();
             }
