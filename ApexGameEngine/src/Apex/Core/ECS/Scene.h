@@ -16,23 +16,37 @@ namespace Apex {
 		Scene();
 		~Scene() = default;
 		
-		Entity CreateEntity(const std::string& name = std::string());
+		Entity CreateEntity(StringHandle name);
+		Entity CreateEntity();
 		
-		void OnUpdate(Timestep ts, bool play = false);
+		void DrawSprites();
+
+		void OnSetup();
+		void OnUpdate(Timestep ts);
 		void OnEvent(Event&);
-		void Render2D();
+		void OnViewportResize(uint32_t width, uint32_t height);
 		
 		struct SceneOptions
 		{
 			entt::entity PrimaryCamera = entt::null;
+			uint32_t ViewportWidth = 0u, ViewportHeight = 0u;
 		};
 		
 		void SetPrimaryCamera(const Entity&);
+	
+	protected:
+		template<typename Component_t>
+		void OnComponentAdded(Entity entity, Component_t& component);
 		
 	private:
 		entt::registry m_Registry;
 		
 		friend class Entity;
+		friend class SceneHeirarchyPanel;
+		friend class SceneSerializer;
+		template<typename Archiver, typename... Types>
+		friend void Serialize(const Scene* scene, Archiver&& archiver);
+
 		
 		// Scene rendering
 		SceneOptions Options;

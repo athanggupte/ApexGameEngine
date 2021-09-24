@@ -6,6 +6,7 @@
 #include "Apex/Core/Events/MouseEvent.h"
 
 #include "Platform/OpenGL/OpenGLContext.h"
+#include "Apex/Utils/Utils.h" // For ImageData
 
 namespace Apex {
 
@@ -163,6 +164,12 @@ namespace Apex {
 	bool GLFWWindow::IsVSync() const
 	{
 		return m_Data.VSync;
+	}
+
+	void GLFWWindow::SetWindowIcon(const ImageData& imageData) const
+	{
+		GLFWimage glfwImage[1] = { { imageData.width, imageData.height, imageData.pixelData->pixels } };
+		glfwSetWindowIcon(m_Window, 1, glfwImage);
 	}
 
 	void GLFWWindow::Shutdown()

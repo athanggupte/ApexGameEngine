@@ -2,7 +2,7 @@
 #include "OpenGLShader.h"
 
 #include "Apex/Utils/Utils.h"
-#include "Apex/Core/FileSystem/VFS.h"
+#include "Apex/Core/FileSystem/FileSystem.h"
 
 #include <fstream>
 #include <glad/glad.h>
@@ -26,7 +26,7 @@ namespace Apex {
 	{
 		std::string source;
 #ifdef APEX_USE_VFS
-		auto file = FileSystem::GetFile(filepath);
+		auto file = FileSystem::GetFileIfExists(filepath);
 		if (file && file->OpenRead()) {
 			source.resize(file->Size());
 			file->Read(&source[0], source.size());
@@ -52,7 +52,7 @@ namespace Apex {
 		auto lastDot = filepath.rfind('.');
 		auto count = lastDot == std::string::npos ? filepath.size() - lastSlash : lastDot - lastSlash;
 		m_Name = filepath.substr(lastSlash, count);*/
-		m_Name = GetFilename(filepath);
+		m_Name = Utils::GetFilename(filepath);
 
 		auto shaderSources = ParseSource(source);
 		Compile(shaderSources);

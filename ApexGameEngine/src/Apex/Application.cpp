@@ -3,7 +3,7 @@
 
 #include "Apex/Core/Log.h"
 #include "Apex/Core/Input/Input.h"
-#include "Apex/Core/FileSystem/VFS.h"
+#include "Apex/Core/FileSystem/FileSystem.h"
 #include "Apex/Graphics/Renderer/RenderCommands.h"
 #include "Apex/Graphics/Renderer/Renderer.h"
 #include "Apex/Graphics/Renderer/Renderer2D.h"
@@ -18,19 +18,21 @@ namespace Apex {
 
 	Application* Application::s_Instance = nullptr;
 
-	Application::Application()
+	Application::Application(const WindowProps& windowProps)
 	{
 		APEX_CORE_ASSERT(!s_Instance, "Application already exists.");
 		s_Instance = this;
 
-		m_Window = Apex::Scope<Window>(Window::Create());
+		m_Window = Apex::Scope<Window>(Window::Create(windowProps));
 		m_Window->SetEventCallback(BIND_CALLBACK_FN(OnEvent));
 		m_Window->SetVSync(true);
 
+		m_ResourceManager = Apex::CreateScope<ResourceManager>();
+
+		FileSystem::Init();
 		Renderer::Init();
 		Renderer2D::Init();
 		PostProcess::Init();
-		FileSystem::Init();
 
 		m_ImGuiLayer = new ImGuiLayer();
 		PushOverlay(m_ImGuiLayer);
@@ -42,6 +44,7 @@ namespace Apex {
 		Renderer::Shutdown();
 		Renderer2D::Shutdown();
 		PostProcess::Shutdown();
+		FileSystem::Shutdown();
 	}
 
 	void Application::Run()

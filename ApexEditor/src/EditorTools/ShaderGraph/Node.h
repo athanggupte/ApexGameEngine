@@ -8,6 +8,7 @@
 
 #include <imgui.h>
 #include <imgui_internal.h>
+#include <string>
 
 #include "Apex/Graphics/RenderPrimitives/Texture.h"
 #include "Apex/Utils/ComputeShader/ComputeShader.h"

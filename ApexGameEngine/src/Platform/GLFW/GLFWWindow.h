@@ -22,6 +22,8 @@ namespace Apex {
 		void SetVSync(bool enabled) override;
 		bool IsVSync() const override;
 
+		void SetWindowIcon(const ImageData& imageData) const override;
+		
 		inline virtual void* GetNativeWindow() const override { return m_Window; }
 
 	private:

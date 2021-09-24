@@ -22,9 +22,13 @@ namespace Apex {
 		void Begin();
 		void End();
 
+		void SetBlockMouseEvents(bool block) { m_BlockMouseEvents = block; }
+		void SetBlockKeyboardEvents(bool block) { m_BlockKeyboardEvents = block; }
+		
 	private:
 		float m_Time = 0.0f;
-		bool m_BlockEvents = true;
+		bool m_BlockMouseEvents = true;
+		bool m_BlockKeyboardEvents = true;
 	};
 
 }

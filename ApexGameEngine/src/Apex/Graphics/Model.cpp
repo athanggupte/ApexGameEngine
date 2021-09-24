@@ -3,7 +3,7 @@
 
 #include "assimp/Importer.hpp"
 #include "assimp/postprocess.h"
-#include "Apex/Core/FileSystem/VFS.h"
+#include "Apex/Core/FileSystem/FileSystem.h"
 #include "Apex/Utils/MathPrimitiveParser.h"
 
 
@@ -19,7 +19,7 @@ namespace Apex {
 	Model::Model(const std::string & path)
 	{
 		std::string filepath = "";
-		auto file = FileSystem::GetFile(path);
+		auto file = FileSystem::GetFileIfExists(path);
 		if (file)
 			filepath += file->GetPhysicalPath();
 		

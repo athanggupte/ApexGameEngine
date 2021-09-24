@@ -22,6 +22,7 @@ IncludeDirs["stb_image"] = "ApexGameEngine/vendor/stb_image/"
 IncludeDirs["Assimp"] = "ApexGameEngine/vendor/Assimp/include/"
 IncludeDirs["irrKlang"] = "ApexGameEngine/vendor/irrKlang/include/"
 IncludeDirs["entt"] = "ApexGameEngine/vendor/entt/single_include/"
+IncludeDirs["pugixml"] = "ApexGameEngine/vendor/pugixml/src/"
 IncludeDirs["ImGuizmoQuat"] = "ApexGameEngine/vendor/imguizmo_quat/imGuIZMO.quat/"
 IncludeDirs["ApexIK"] = "ApexGameEngine/modules/ApexIK/ApexIK/include/"
 
@@ -48,14 +49,29 @@ LinuxLibDirs = { "ApexGameEngine/vendor/Assimp/build/bin", "ApexGameEngine/vendo
 -- LinuxLibDirs["Assimp"] = "ApexGameEngine/vendor/Assimp/build/bin"
 -- LinuxLibDirs["irrKlang"] = "ApexGameEngine/vendor/irrKlang/bin/linux-gcc-64"
 
+group "Dependencies"
 -- Include other premake files
-include "ApexGameEngine/vendor/GLFW"
-include "ApexGameEngine/vendor/Glad"
-include "ApexGameEngine/vendor/imgui"
-include "ApexGameEngine/vendor/imguizmo_quat"
+	include "ApexGameEngine/vendor/GLFW"
+	include "ApexGameEngine/vendor/Glad"
+	include "ApexGameEngine/vendor/imgui"
+	include "ApexGameEngine/vendor/imguizmo_quat"
 
-include "ApexGameEngine/modules/ApexIK"
+group "Modules"
+	include "ApexGameEngine/modules/ApexIK"
 
+local linux_de = os.getenv("XDG_CURRENT_DESKTOP")
+local curDir = os.getenv("CD")
+if curDir == nil then
+	curDir = os.getenv("PWD")
+end
+if curDir == nil then
+	curDir = '.'
+end
+curDir = '"'..curDir..'"'
+
+
+-- Reset group to root
+group ""
 -- Apex Game Engine Project
 project "ApexGameEngine"
 	location "ApexGameEngine"
@@ -73,11 +89,16 @@ project "ApexGameEngine"
 	files {
 		"%{prj.name}/src/**.h",
 		"%{prj.name}/src/**.cpp",
+		-- STB Image --
 		"%{prj.name}/vendor/stb_image/**.h",
 		"%{prj.name}/vendor/stb_image/**.cpp",
+		-- GLM --
 		"%{prj.name}/vendor/glm/glm/**.hpp",
 		"%{prj.name}/vendor/glm/glm/**.inl",
-		"%{prj.name}/vendor/glm/glm/**.h"
+		"%{prj.name}/vendor/glm/glm/**.h",
+		-- PugiXML --
+		"%{prj.name}/vendor/pugixml/src/**.hpp",
+		-- "%{prj.name}/vendor/pugixml/src/**.cpp",
 	}
 
 	includedirs {
@@ -94,6 +115,7 @@ project "ApexGameEngine"
 		"%{IncludeDirs.irrKlang}",
 		"%{IncludeDirs.entt}",
 		"%{IncludeDirs.ImGuizmoQuat}",
+		"%{IncludeDirs.pugixml}",
 		-- Modules
 		"%{IncludeDirs.ApexIK}",
 	}
@@ -146,22 +168,32 @@ project "ApexGameEngine"
 		libdirs (LinuxLibDirs)
 		links (LinuxLibs)
 		
+		if linux_de == "KDE" then
+			defines { "LINUX_DE_KDE" }
+		elseif linux_de == "GNOME" then
+			defines { "LINUX_DE_GNOME" }
+		elseif linux_de == "lxqt" then
+			defines { "LINUX_DE_LXQT" }
+		end
+		
 	filter "configurations:Debug"
 		defines {
-			"APEX_DEBUG", "APEX_ENABLE_ASSERTS", "APEX_PROFILER_ENABLE"
+			"APEX_DEBUG", "APEX_ENABLE_ASSERTS", "APEX_PROFILER_ENABLE",
+			"APEX_HOME_DIR="..curDir
 		}
 		runtime "Debug"
 		symbols "on"
 
 	filter "configurations:Release"
 		defines {
-			"APEX_RELEASE", "APEX_PROFILER_ENABLE"
+			"APEX_RELEASE", "APEX_PROFILER_ENABLE",
+			"APEX_HOME_DIR="..curDir
 		}
 		runtime "Release"
 		optimize "on"
 
 	filter "configurations:Dist"
-		defines "APEX_DIST"
+		defines { "APEX_DIST", "APEX_HOME_DIR=\".\"" }
 		runtime "Release"
 		optimize "on"
 
@@ -182,18 +214,23 @@ project "ApexEditor"
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
 
+	pchheader "apexed_pch.h"
+	pchsource "ApexEditor/src/apexed_pch.cpp"
+	
 	files {
 		"%{prj.name}/src/**.h",
 		"%{prj.name}/src/**.cpp"
 	}
-    
-	configuration "not editor-tools"
+
+	if not _OPTIONS["editor-tools"] then
 		removefiles {
 			"%{prj.name}/src/EditorTools/**.h",
 			"%{prj.name}/src/EditorTools/**.cpp"
 		}
+	end
 
 	includedirs {
+		"ApexEditor/src",
 		"ApexGameEngine/src",
 		-- External Dependencies
 		"%{IncludeDirs.spdlog}",
@@ -281,6 +318,7 @@ project "Sandbox"
 	}
 
 	includedirs {
+		"Sandbox/src",
 		"ApexGameEngine/src",
 		-- External Dependencies
 		"%{IncludeDirs.spdlog}",
@@ -332,10 +370,11 @@ project "Sandbox"
 		libdirs (LinuxLibDirs)
 		links (LinuxLibs)
         
+		-- TODO: Consider replacing with 'runpathdirs' https://premake.github.io/docs/runpathdirs
 		postbuildcommands {
 			"echo \"cd $(realpath %{cfg.buildtarget.directory}) && export LD_LIBRARY_PATH=/home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/Assimp/build/bin:/home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/irrKlang/bin/linux-gcc-64/ && ./%{prj.name}\" > %{cfg.buildtarget.abspath}.sh"
 		}
-		
+
 	filter "configurations:Debug"
 		defines {
 			"APEX_DEBUG", "APEX_ENABLE_ASSERTS"
@@ -351,7 +390,7 @@ project "Sandbox"
 		optimize "on"
 
 
-
+group "Dependencies"
 project "Assimp"
 	location "ApexGameEngine/vendor/Assimp"
 	kind "Makefile"
@@ -364,10 +403,11 @@ project "Assimp"
 	}
 
 	filter "system:windows"
-		postbuildcommands {
+		buildcommands {
 			"{ECHO} Copy %{prj.location}/build/bin/Debug/assimp-vc142-mtd.dll to the directory containing the executable binaries after building"
 		}
+
 	filter "system:linux"
-		postbuildcommands {
+		buildcommands {
 			"{ECHO} Copy %{prj.location}/build/bin/Debug/assimp-vc142-mtd.so to the directory containing the executable binaries after building"
 		}

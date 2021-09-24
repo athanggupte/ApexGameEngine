@@ -2,11 +2,11 @@
 
 //-----Core-----------------------------
 #include "Apex/Application.h"
-#include "Apex/Core/AssetManager/AssetManager.h"
+#include "Apex/Core/ResourceManager/ResourceManager.h"
 #include "Apex/Core/Layers/Layer.h"
 #include "Apex/Core/Log.h"
 #include "Apex/Core/Timer.h"
-#include "Apex/Core/FileSystem/VFS.h"
+#include "Apex/Core/FileSystem/FileSystem.h"
 // Entity-Component-System
 #include "Apex/Core/ECS/Scene.h"
 #include "Apex/Core/ECS/Entity.h"
@@ -51,4 +51,4 @@
 #include "Apex/Graphics/PostProcessing/Blur.h"
 //------------------------------------//
 
-#include "Apex/StartUp.h" 
+// #include "Apex/StartUp.h"

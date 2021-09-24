@@ -6,6 +6,10 @@
 #define SPDLOG_ACTIVE_LEVEL SPDLOG_LEVEL_TRACE
 #endif
 
+#ifndef SPDLOG_HEADER_ONLY
+#define SPDLOG_HEADER_ONLY
+#endif
+
 #include "spdlog/spdlog.h"
 #include "spdlog/fmt/ostr.h"
 
