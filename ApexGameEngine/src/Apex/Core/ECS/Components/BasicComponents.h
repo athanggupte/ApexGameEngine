@@ -58,7 +58,7 @@ namespace Apex {
 	struct SpriteRendererComponent
 	{
 		glm::vec4 Color = glm::vec4{ 1.f };
-		ResourceHandle_t Texture = nullptr;
+		Handle Texture = 0;
 		float TilingFactor = 1.f;
 		bool useTexture = true;
 		bool visible = true;
@@ -70,9 +70,6 @@ namespace Apex {
 		
 		SpriteRendererComponent(Handle texture, float tilingFactor = 1.f)
 			: Texture(texture), TilingFactor(tilingFactor) {}
-
-		SpriteRendererComponent(Resource& texture, float tilingFactor = 1.f)
-			: Texture(&texture), TilingFactor(tilingFactor) {}
 		
 		/*
 		SpriteRendererComponent(const Ref<Apex::Texture>& texture, float tilingFactor = 1.f)

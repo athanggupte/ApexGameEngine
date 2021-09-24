@@ -27,11 +27,13 @@ namespace Apex {
 		m_LogSink = std::make_shared<EditorLogSink_mt>(&m_LogPanel);
 		Log::GetCoreLogger()->sinks().push_back(m_LogSink);
 		Log::GetClientLogger()->sinks().push_back(m_LogSink);
+		FileSystem::Mount("editor_assets", APEX_INSTALL_LOCATION "/assets");
+		Application::Get().GetWindow().SetWindowIcon(Apex::Utils::LoadImage(FileSystem::GetFileIfExists("editor_assets/Apex-Game-Engine-32.png")));
 	}
 
 	void EditorLayer::OnAttach()
 	{
-		FileSystem::Mount("/assets", APEX_INSTALL_LOCATION "/assets");
+		FileSystem::MountRoot(APEX_INSTALL_LOCATION "/assets");
 
 		m_Scene = CreateRef<Scene>();
 
@@ -39,7 +41,7 @@ namespace Apex {
 		//Application::Get().GetResourceManager().AddResource(HASH("pusheen-texture"), Resource(HASH("/assets/pusheen-thug-life.png")));
 		Ref<ResourceSerializer> rs = ResourceSerializerFactory().SetFormat(ResourceSerializerFactory::Format::XML).Build(Application::Get().GetResourceManager());
 		//rs->SerializeResource(FileSystem::MakeFile("/assets/pusheen-texture.xml"), pusheenResource);
-		rs->Deserialize(FileSystem::GetFileIfExists("/assets/pusheen-texture.xml"));
+		rs->Deserialize(FileSystem::GetFileIfExists("pusheen-texture.xml"));
 		//auto& pusheenResource = Application::Get().GetResourceManager().Get(HASH("pusheen-texture"));
 		//pusheenResource.Load();
 		//APEX_LOG_DEBUG("pusheen-texture :: type: {}", typeid(pusheenResource.Get<Texture>()).name());
@@ -47,8 +49,8 @@ namespace Apex {
 
 		// Asset allocation
 		m_ImageTexture = Texture2D::Create(256U, 256U, HDRTextureSpec, "Image");
-		m_ComputeShader = ComputeShader::Create("/assets/Blur.compute");
-		// m_Texture = Texture2D::Create("/assets/pusheen-thug-life.png");
+		m_ComputeShader = ComputeShader::Create("Blur.compute");
+		//m_Texture = Texture2D::Create("textures/pusheen-thug-life.png");
 		m_GameFramebuffer = Framebuffer::Create({ 1280u, 720u });
 
 		// Entity Initialization
@@ -72,7 +74,7 @@ namespace Apex {
 		// ImGui options
 		ImGui::GetIO().ConfigWindowsMoveFromTitleBarOnly = true;
 		ImGui::GetIO().Fonts->AddFontFromMemoryCompressedBase85TTF(font_cousine_compressed_data_base85, 12);
-		ImGui::GetIO().Fonts->AddFontFromFileTTF("assets/consola.ttf", 12);
+		ImGui::GetIO().Fonts->AddFontFromFileTTF("assets/fonts/consola.ttf", 12);
 	}
 	
 	void EditorLayer::OnDetach() 

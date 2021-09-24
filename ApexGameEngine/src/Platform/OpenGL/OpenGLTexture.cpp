@@ -3,7 +3,7 @@
 
 #include "Apex/Graphics/Renderer/Renderer.h"
 #include "Apex/Utils/Utils.h"
-#include "Apex/Core/FileSystem/VFS.h"
+#include "Apex/Core/FileSystem/FileSystem.h"
 
 #include <glad/glad.h>
 #include <stb_image.h>
@@ -166,8 +166,10 @@ namespace Apex {
 		auto file = FileSystem::GetFileIfExists(path);
 		if (file)
 			filepath += file->GetPhysicalPath();
-		else
-			APEX_CORE_ERROR("Texture file {} not found!", path);
+		else {
+			APEX_CORE_CRITICAL("Texture file {} not found!", path);
+			return;
+		}
 		
 		if (useHDR) {
 			data = (float*)stbi_loadf(filepath.c_str(), &width, &height, &channels, 0);

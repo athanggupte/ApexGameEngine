@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Apex/Core/FileSystem/VFS.h"
+#include "Apex/Core/FileSystem/FileSystem.h"
 
 namespace Apex {
 	

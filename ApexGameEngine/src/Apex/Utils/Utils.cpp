@@ -1,8 +1,6 @@
 #include "apex_pch.h" 
 #include "Utils.h"
 
-#include "Apex/Core/FileSystem/VFS.h"
-
 #define STBI_NO_JPEG
 #include <stb_image.h>
 

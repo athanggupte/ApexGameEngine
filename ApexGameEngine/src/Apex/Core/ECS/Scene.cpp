@@ -35,19 +35,15 @@ namespace Apex {
 
 		m_Registry.view<SpriteRendererComponent>()
 			.each([&resourceManager](SpriteRendererComponent& sprite) {
-				if (std::holds_alternative<Handle>(sprite.Texture)) {
-					auto handle = std::get<Handle>(sprite.Texture);
-					auto textureResource = resourceManager.Get(handle);
-					if (!textureResource) {
-						APEX_CORE_ERROR("Texture resource {} not found!", Strings::Get(std::get<Handle>(sprite.Texture)));
-						sprite.Texture = (Resource*)nullptr;
-					}
-					else {
-						sprite.Texture = textureResource;
-					}
+				if (!sprite.Texture)
+					return;
+				auto textureResource = resourceManager.Get(sprite.Texture);
+				if (!textureResource) {
+					APEX_CORE_ERROR("Texture resource `{}` not found!", Strings::Get(sprite.Texture));
 				}
-				if (std::get<Resource*>(sprite.Texture) != nullptr)
-					std::get<Resource*>(sprite.Texture)->Load();
+				else {
+					textureResource->Load();
+				}
 			});
 	}
 
@@ -59,7 +55,7 @@ namespace Apex {
 		auto group = m_Registry.group<TransformComponent, SpriteRendererComponent>();
 		group.each([](TransformComponent& transform, SpriteRendererComponent& sprite) {
 			if (sprite.visible) {
-				auto texture = std::get<Resource*>(sprite.Texture);
+				auto texture = Application::Get().GetResourceManager().Get(sprite.Texture);
 				if (sprite.useTexture && texture)
 					Renderer2D::DrawQuad(transform.GetTransform(), std::dynamic_pointer_cast<Texture2D>(texture->Get<Texture>()), sprite.TilingFactor);
 				else

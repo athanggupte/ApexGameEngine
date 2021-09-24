@@ -6,7 +6,7 @@ namespace Apex::VFS {
 	PhysicalFile::PhysicalFile(const std::string& filePath, bool binary)
 		: IFile(filePath), m_IsBinary(binary)
 	{
-		APEX_CORE_DEBUG("FilePath: {}", m_PhysicalPath);
+		APEX_CORE_DEBUG("Physical file loaded: {}", m_PhysicalPath);
 	}
 	
 	PhysicalFile::~PhysicalFile()

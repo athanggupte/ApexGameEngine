@@ -11,9 +11,9 @@ namespace Apex {
 	{
 	public:
 		ApexEditor()
+			: Application(WindowProps("ApexEditor", 1366u, 768u))
 		{
 			PushLayer(new EditorLayer());
-			Application::Get().GetWindow().SetWindowIcon(Apex::Utils::LoadImage(FileSystem::GetFileIfExists("/assets/Apex-Game-Engine-32.png")));
 		}
 	};
 

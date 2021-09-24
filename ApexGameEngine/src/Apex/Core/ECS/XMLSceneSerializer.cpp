@@ -78,12 +78,10 @@ namespace Apex {
         if (entity.HasComponent<SpriteRendererComponent>()) {
             const auto& sprite = entity.GetComponent<SpriteRendererComponent>();
             auto spriteNode = entityNode.append_child("SpriteRendererComponent");
-            
-            Handle textureHandle = std::visit(GetResourceHandleFn, sprite.Texture);
 
-            if (textureHandle > 0) {
+            if (sprite.Texture > 0) {
                 auto textureNode = spriteNode.append_child("Texture");
-                textureNode.append_child("ResourceId").append_child(pugi::node_pcdata).set_value(TO_CSTRING(Strings::Get(textureHandle)));
+                textureNode.append_child("ResourceId").append_child(pugi::node_pcdata).set_value(TO_CSTRING(Strings::Get(sprite.Texture)));
                 textureNode.append_child("TilingFactor").append_child(pugi::node_pcdata).set_value(TO_CSTRING(sprite.TilingFactor));
                 textureNode.append_attribute("use").set_value(sprite.useTexture);
             }

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "ResourceSerializer.h"
-#include "Apex/Core/FileSystem/VFS.h"
+#include "Apex/Core/FileSystem/FileSystem.h"
 
 #include <pugixml.hpp>
 
