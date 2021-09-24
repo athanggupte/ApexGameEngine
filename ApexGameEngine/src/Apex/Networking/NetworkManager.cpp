@@ -1,6 +1,6 @@
-#ifdef APEX_PLATFORM_WINDOWS
-
 #include <apex_pch.h>
+
+#ifdef APEX_PLATFORM_WINDOWS
 #include "NetworkManager.h"
 
 #include "Socket.h"

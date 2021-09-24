@@ -1,5 +1,10 @@
 #pragma once
 
+#include "Apex/Graphics/Model/Model.h"
+
+#define APEX_PROFILE_FUNC
+#define APEX_PROFILE_SCOPE
+
 class ModelLayer : public Apex::Layer
 {
 public:

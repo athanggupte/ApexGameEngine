@@ -3,6 +3,7 @@
 
 #include "Apex/Graphics/Renderer/Renderer.h"
 #include "Apex/Utils/Utils.h"
+#include "Apex/Core/FileSystem/FileSystem.h"
 
 #include <glad/glad.h>
 #include <stb_image.h>
@@ -161,10 +162,19 @@ namespace Apex {
 		stbi_set_flip_vertically_on_load(0);
 		void *data = nullptr;
 		
+		std::string filepath = "";
+		auto file = FileSystem::GetFileIfExists(path);
+		if (file)
+			filepath += file->GetPhysicalPath();
+		else {
+			APEX_CORE_CRITICAL("Texture file {} not found!", path);
+			return;
+		}
+		
 		if (useHDR) {
-			data = (float*)stbi_loadf(path.c_str(), &width, &height, &channels, 0);
+			data = (float*)stbi_loadf(filepath.c_str(), &width, &height, &channels, 0);
 		} else {
-			data = (stbi_uc*)stbi_load(path.c_str(), &width, &height, &channels, 0);
+			data = (stbi_uc*)stbi_load(filepath.c_str(), &width, &height, &channels, 0);
 		}
 		APEX_CORE_ASSERT(data, std::string("Failed to load image : " + path));
 
@@ -202,7 +212,7 @@ namespace Apex {
 
 		stbi_image_free(data);
 		
-		auto name = GetFilename(path);
+		auto name = Utils::GetFilename(path);
 		glObjectLabel(GL_TEXTURE, m_RendererID, -1, name.c_str());
 	}
 	

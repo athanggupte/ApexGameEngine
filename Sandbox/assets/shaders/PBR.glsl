@@ -18,7 +18,7 @@ void main()
 {
 	v_Position = vec3(u_Model * vec4(a_Position, 1.0));;
 	v_TexCoord = vec2(a_TexCoord.x, a_TexCoord.y * -1.0);
-	v_Normal   = vec4(u_ViewProjection * u_Model * vec4(a_Normal, 1.0)).rgb;
+	v_Normal   = mat3(transpose(inverse(u_Model))) * a_Normal;
 	v_LightSpacePosition = u_LightSpace * vec4(v_Position, 1.0);
 	gl_Position = u_ViewProjection * u_Model * vec4(a_Position, 1.0);
 }
@@ -106,7 +106,7 @@ vec3 GetNormalFromMap()
 	return normalize(TBN * tangentNormal);
 }
 
-float ShadowCalculation(vec3 normal, vec3 lightDir)
+/*float ShadowCalculation(vec3 normal, vec3 lightDir)
 {
     // perform perspective divide
     vec3 projCoords = v_LightSpacePosition.xyz / v_LightSpacePosition.w;
@@ -131,7 +131,7 @@ float ShadowCalculation(vec3 normal, vec3 lightDir)
 	//float shadow = currentDepth > closestDepth  ? 1.0 : 0.0;
 
     return shadow;
-}  
+}*/
 
 void main()
 {
@@ -175,7 +175,8 @@ void main()
 	
 	vec3 L = normalize(u_LightPositions[0] - v_Position);
 
-	float shadow = ShadowCalculation(N, L);
+	// float shadow = ShadowCalculation(N, L);
+	float shadow = 0.0;
 
 	vec3 color = ambient + (vec3(1.0 - shadow) * Lo);
 	

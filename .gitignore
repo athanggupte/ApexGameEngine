@@ -275,6 +275,11 @@ paket-files/
 __pycache__/
 *.pyc
 
+## Visual Studio project files
+*.sln
+*.vcxproj
+*.vcxproj.*
+
 
 ### premake-gmake ###
 Makefile
@@ -283,3 +288,7 @@ obj/
 
 ## Kate Editor
 .kateproject
+
+## KDevelop IDE
+*.kdev4
+.kdev4/

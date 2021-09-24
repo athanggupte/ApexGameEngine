@@ -15,16 +15,20 @@ namespace Apex {
 
 		virtual void OnAttach() override;
 		virtual void OnDetach() override;
-		virtual void OnUpdate() override {}
+		virtual void OnUpdate(Timestep) override {}
 		virtual void OnImGuiRender() override {}
 		virtual void OnEvent(Event& event) override;
 
 		void Begin();
 		void End();
 
+		void SetBlockMouseEvents(bool block) { m_BlockMouseEvents = block; }
+		void SetBlockKeyboardEvents(bool block) { m_BlockKeyboardEvents = block; }
+		
 	private:
 		float m_Time = 0.0f;
-		bool m_BlockEvents = true;
+		bool m_BlockMouseEvents = true;
+		bool m_BlockKeyboardEvents = true;
 	};
 
 }

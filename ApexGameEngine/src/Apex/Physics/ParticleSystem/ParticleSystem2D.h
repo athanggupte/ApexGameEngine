@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Apex/Core/Timer.h"
 #include "Apex/Graphics/RenderPrimitives/VertexArray.h"
 #include "Apex/Graphics/RenderPrimitives/Shader.h"
 
@@ -32,7 +33,7 @@ namespace Apex {
 		//ParticleSystem2D();
 		ParticleSystem2D(uint32_t batch_size = 100, uint32_t max_particles = 1000);
 
-		void OnUpdate();
+		void OnUpdate(Timestep dt);
 		void OnRender();
 
 		void Emit(const ParticleProps2D& particleProps);

@@ -16,6 +16,8 @@ namespace Apex {
 		virtual void Unbind() const override;
 
 		virtual void SetData(const void* data, uint32_t size) override;
+		virtual void* MapBuffer(bool read, bool write = true) override;
+		virtual void UnmapBuffer() override;
 		
 		inline virtual uint32_t GetCount() const override { return m_Count; }
 
@@ -43,6 +45,49 @@ namespace Apex {
 	private:
 		uint32_t m_RendererID;
 		uint32_t m_Count;
+	};
+
+	/*-------------------------Uniform Buffer----------------------------*/
+	class OpenGLUniformBuffer : public UniformBuffer
+	{
+	public:
+		OpenGLUniformBuffer(uint32_t size, uint32_t binding);
+		virtual ~OpenGLUniformBuffer();
+
+		virtual void Bind() const override;
+		virtual void Unbind() const override;
+
+		virtual void SetData(const void* data, uint32_t size, uint32_t offset = 0) override;
+		virtual void* MapBuffer(bool read, bool write = true) override;
+		virtual void UnmapBuffer() override;
+		
+		virtual uint32_t GetSize() const { return m_Size; }
+
+	private:
+		uint32_t m_RendererID;
+		uint32_t m_Size;
+	};
+
+	/*-------------------------Shader Storage Buffer----------------------------*/
+	class OpenGLShaderStorageBuffer : public ShaderStorageBuffer
+	{
+	public:
+		OpenGLShaderStorageBuffer(uint32_t size, uint32_t binding);
+		virtual ~OpenGLShaderStorageBuffer();
+
+		virtual void Bind() const override;
+		virtual void Unbind() const override;
+
+		virtual void SetData(const void* data, uint32_t size, uint32_t offset = 0) override;
+		virtual void ResetData(uint32_t size) override;
+		virtual void* MapBuffer(bool read, bool write = true) override;
+		virtual void UnmapBuffer() override;
+		
+		virtual uint32_t GetSize() const { return m_Size; }
+
+	private:
+		uint32_t m_RendererID;
+		uint32_t m_Size;
 	};
 
 }

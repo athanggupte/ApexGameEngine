@@ -3,6 +3,7 @@
 
 #include "Apex/Core/Log.h"
 #include "Apex/Core/Input/Input.h"
+#include "Apex/Core/FileSystem/FileSystem.h"
 #include "Apex/Graphics/Renderer/RenderCommands.h"
 #include "Apex/Graphics/Renderer/Renderer.h"
 #include "Apex/Graphics/Renderer/Renderer2D.h"
@@ -17,15 +18,18 @@ namespace Apex {
 
 	Application* Application::s_Instance = nullptr;
 
-	Application::Application()
+	Application::Application(const WindowProps& windowProps)
 	{
 		APEX_CORE_ASSERT(!s_Instance, "Application already exists.");
 		s_Instance = this;
 
-		m_Window = Apex::Scope<Window>(Window::Create());
+		m_Window = Apex::Scope<Window>(Window::Create(windowProps));
 		m_Window->SetEventCallback(BIND_CALLBACK_FN(OnEvent));
 		m_Window->SetVSync(true);
 
+		m_ResourceManager = Apex::CreateScope<ResourceManager>();
+
+		FileSystem::Init();
 		Renderer::Init();
 		Renderer2D::Init();
 		PostProcess::Init();
@@ -40,6 +44,7 @@ namespace Apex {
 		Renderer::Shutdown();
 		Renderer2D::Shutdown();
 		PostProcess::Shutdown();
+		FileSystem::Shutdown();
 	}
 
 	void Application::Run()
@@ -48,10 +53,11 @@ namespace Apex {
 		while (m_Running) {
 
 			Timer::UpdateTime();
+			auto timestep = Timer::GetTimestep();
 
 			if (!m_Minimized) {
 				for (Layer* layer : m_LayerStack)
-					layer->OnUpdate();
+					layer->OnUpdate(timestep);
 			}
 
 			//Render ImGui

@@ -74,15 +74,34 @@ namespace Apex {
 	};
 
 }
-#define APEX_PROFILER_ENABLE
+// #define APEX_PROFILER_ENABLE
+
+#ifndef __FUNCSIG__
+#define __FUNCSIG__ __PRETTY_FUNCTION__
+#endif
 
 #ifdef APEX_PROFILER_ENABLE
-	#define APEX_PROFILE_BEGIN_SESSION(name, filepath)	::Apex::Instrumentor::Get().BeginSession(name, "profiles\\"##filepath)
-	#define APEX_PROFILE_END_SESSION()					::Apex::Instrumentor::Get().EndSession()
-	#define APEX_PROFILE_SCOPE(name)					::Apex::InstrumentationTimer timer##__LINE__(__FUNCTION__##"::"##name)
-	#define APEX_PROFILE_FUNC()							::Apex::InstrumentationTimer timer##__LINE__(__FUNCSIG__)
-	#define APEX_PROFILE_EVENT(profile)					::Apex::Instrumentor::Get().WriteInstantEvent(profile)
+	
+	#if defined(APEX_PLATFORM_WINDOWS)
+		#define APEX_PROFILE_BEGIN_SESSION(name, filepath)	::Apex::Instrumentor::Get().BeginSession(name, "profiles\\"##filepath)
+		#define APEX_PROFILE_END_SESSION()					::Apex::Instrumentor::Get().EndSession()
+		#define APEX_PROFILE_SCOPE(name)					::Apex::InstrumentationTimer timer##__LINE__(__FUNCTION__##"::"##name)
+		#define APEX_PROFILE_FUNC()							::Apex::InstrumentationTimer timer##__LINE__(__FUNCSIG__)
+		#define APEX_PROFILE_EVENT(profile)					::Apex::Instrumentor::Get().WriteInstantEvent(profile)
+	#elif defined(APEX_PLATFORM_LINUX)
+		#define APEX_PROFILE_BEGIN_SESSION(name, filepath)	::Apex::Instrumentor::Get().BeginSession(name, "profiles/" filepath)
+		#define APEX_PROFILE_END_SESSION()					::Apex::Instrumentor::Get().EndSession()
+		#define APEX_PROFILE_SCOPE(name)					::Apex::InstrumentationTimer timer##__LINE__(__FUNCTION__ "::" name)
+		#define APEX_PROFILE_FUNC()							::Apex::InstrumentationTimer timer##__LINE__(__FUNCSIG__)
+		#define APEX_PROFILE_EVENT(profile)					::Apex::Instrumentor::Get().WriteInstantEvent(profile)
+	#endif
+		
 #else
+#ifdef _MSC_VER
+#pragma message("Profiler is disabled!")
+#elif defined(__GNUC__) || defined(__clang__)
+#warn Profiler is disabled!
+#endif
 	#define APEX_PROFILE_BEGIN_SESSION(name, filepath)	
 	#define APEX_PROFILE_END_SESSION()					
 	#define APEX_PROFILE_SCOPE(name)					

@@ -2,6 +2,7 @@
 #include "Texture.h"
 
 #include "Apex/Graphics/Renderer/Renderer.h"
+#include "Apex/Application.h"
 
 #include "Platform/OpenGL/OpenGLTexture.h"
 
@@ -56,7 +57,7 @@ namespace Apex {
 		return nullptr;
 	}
 #endif
-	
+
 	Ref<TextureDepth2D> TextureDepth2D::Create(uint32_t width, uint32_t height)
 	{
 		switch (Renderer::GetAPI())

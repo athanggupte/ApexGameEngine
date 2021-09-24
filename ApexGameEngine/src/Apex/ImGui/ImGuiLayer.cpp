@@ -63,9 +63,11 @@ namespace Apex {
 	
 	void ImGuiLayer::OnEvent(Event& event)
 	{
-		if (m_BlockEvents) {
-			ImGuiIO& io = ImGui::GetIO();
+		ImGuiIO& io = ImGui::GetIO();
+		if (m_BlockMouseEvents) {
 			event.Handled |= event.IsInCategory(EventCategoryMouse) & io.WantCaptureMouse;
+		}
+		if (m_BlockKeyboardEvents) {
 			event.Handled |= event.IsInCategory(EventCategoryKeyboard) & io.WantCaptureKeyboard;
 		}
 	}
