@@ -89,7 +89,7 @@ namespace Apex {
 		queue.push_back(node);
 	}
 
-	std::vector<Handle> ResourceManager::TopologicalSort()
+	void ResourceManager::TopologicalSort()
 	{
 		std::unordered_set<Handle> visited(m_DependencyGraph.size());
 		std::deque<Handle> queue;
@@ -97,7 +97,8 @@ namespace Apex {
 			if (visited.count(node) == 0)
 				topologicalSortUtil(node, visited, queue, m_DependencyGraph);
 
-		return std::vector<Handle>(queue.begin(), queue.end());
+		m_SortedOrder.assign(queue.begin(), queue.end());
+		m_Unsorted = false;
 	}
 
 }

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Apex/Core/FileSystem/FileSystem.h"
+#include "CustomDataStructures.h"
 
 namespace Apex {
 	
