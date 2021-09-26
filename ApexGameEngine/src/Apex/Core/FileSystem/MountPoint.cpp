@@ -81,14 +81,15 @@ namespace Apex::VFS {
 	{
 		APEX_CORE_ASSERT(!m_PhysicalPath.native().empty(), "Physical path not loaded!");
 
-		for (auto dirEntry : fs::directory_iterator(m_PhysicalPath / targetPath)) {
+		auto physicalTargetPath = m_PhysicalPath / targetPath;
+		for (auto dirEntry : fs::directory_iterator(physicalTargetPath)) {
 			FileSystem::Metadata metadata;
 			metadata.size = dirEntry.is_regular_file() ? dirEntry.file_size() : 0;
 			metadata.type = dirEntry.is_directory() ? FileSystem::Type::DIRECTORY :
 				dirEntry.is_regular_file() ?
 				(dirEntry.path().extension() == ".apkg" ? FileSystem::Type::PACKAGE : FileSystem::Type::FILE) :
 				FileSystem::Type::OTHER;
-			metadata.path = fs::relative(dirEntry.path(), targetPath);
+			metadata.path = fs::relative(dirEntry.path(), physicalTargetPath);
 
 			func(metadata);
 		}
@@ -98,14 +99,15 @@ namespace Apex::VFS {
 	{
 		APEX_CORE_ASSERT(!m_PhysicalPath.native().empty(), "Physical path not loaded!");
 
-		for (auto dirEntry : fs::recursive_directory_iterator(m_PhysicalPath / targetPath)) {
+		auto physicalTargetPath = m_PhysicalPath / targetPath;
+		for (auto dirEntry : fs::recursive_directory_iterator(physicalTargetPath)) {
 			FileSystem::Metadata metadata;
 			metadata.size = dirEntry.is_regular_file() ? dirEntry.file_size() : 0;
 			metadata.type = dirEntry.is_directory() ? FileSystem::Type::DIRECTORY :
 				dirEntry.is_regular_file() ?
 				(dirEntry.path().extension() == ".apkg" ? FileSystem::Type::PACKAGE : FileSystem::Type::FILE) :
 				FileSystem::Type::OTHER;
-			metadata.path = fs::relative(dirEntry.path(), targetPath);
+			metadata.path = fs::relative(dirEntry.path(), physicalTargetPath);
 
 			func(metadata);
 		}

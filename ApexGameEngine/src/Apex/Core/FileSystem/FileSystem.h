@@ -29,8 +29,8 @@ namespace Apex {
 			Type type;
 			fs::path path;
 
-			bool IsDirectory() { return (type == DIRECTORY) || (type == PACKAGE); }
-			bool IsFile() { return type == FILE; }
+			bool IsDirectory() const { return (type == DIRECTORY) || (type == PACKAGE); }
+			bool IsFile() const { return type == FILE; }
 		};
 
 		using VisitorFn = std::function<void(const Metadata&)>;
@@ -42,8 +42,8 @@ namespace Apex {
 		static bool Mount(const std::string& virtualPath, const std::string& physicalPath);
 		static Ref<File> GetFileIfExists(const std::string& filePath);
 		static Ref<File> MakeFile(const std::string& filePath, bool makeParents = false);
-		static void VisitDirectory(const std::string& path, VisitorFn func);
-		static void VisitDirectoryRecursive(const std::string& path, VisitorFn func);
+		static void VisitDirectory(const fs::path& dirPath, VisitorFn func);
+		static void VisitDirectoryRecursive(const fs::path& dirPath, VisitorFn func);
 #if 0
 		// Deprecated
 		static bool Mount(const std::string& virtualPath, const std::string& physicalPath);
