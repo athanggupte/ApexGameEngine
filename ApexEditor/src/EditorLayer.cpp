@@ -70,6 +70,8 @@ namespace Apex {
 
 		// Panels
 		m_SceneHeirarchyPanel.SetContext(m_Scene);
+		m_AssetExplorer.OnAttach();
+		m_AssetExplorer.SetContext("");
 
 		// ImGui options
 		ImGui::GetIO().ConfigWindowsMoveFromTitleBarOnly = true;
@@ -95,7 +97,7 @@ namespace Apex {
 			m_Scene->OnViewportResize((uint32_t)m_GameViewportSize.x, (uint32_t)m_GameViewportSize.y);
 		}
 		
-		if (m_ViewportFocussed)
+		if (m_ViewportFocused)
 			m_CameraController.OnUpdate(ts);
 		
 		
@@ -118,11 +120,6 @@ namespace Apex {
 		m_GameFramebuffer->Unbind();
 	}
 
-	void EditorLayer::OnEvent(Event& e)
-	{
-		m_CameraController.OnEvent(e);
-	}
-	
 	static bool show_imgui_demo_window = false;
 	
 	void EditorLayer::OnImGuiRender()
@@ -163,6 +160,7 @@ namespace Apex {
 		auto entity = m_SceneHeirarchyPanel.GetSelectedEntity();
 		m_InspectorPanel.SetContext(entity, m_Scene);
 		m_InspectorPanel.OnImGuiRender();
+		m_AssetExplorer.OnImGuiRender();
 		ShowLogger();
 
 // 		if (ImGui::Button("Parse Graph")) {
@@ -231,15 +229,25 @@ namespace Apex {
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{ 0.f, 0.f });
 		ImGui::Begin("Game View");
 		
-		m_ViewportFocussed = ImGui::IsWindowFocused();
+		m_ViewportFocused = ImGui::IsWindowFocused();
 		m_ViewportHovered = ImGui::IsWindowHovered();
-		Application::Get().GetImGuiLayer().SetBlockMouseEvents(!m_ViewportFocussed || !m_ViewportHovered);
-		Application::Get().GetImGuiLayer().SetBlockKeyboardEvents(!m_ViewportFocussed);
+		Application::Get().GetImGuiLayer().SetBlockMouseEvents(!m_ViewportFocused || !m_ViewportHovered);
+		Application::Get().GetImGuiLayer().SetBlockKeyboardEvents(!m_ViewportFocused);
 		
 		ImVec2 viewportSize = ImGui::GetContentRegionAvail();
 		m_GameViewportSize = *((glm::vec2*)&viewportSize);
-		
+
 		ImGui::Image((void*)(intptr_t)m_GameFramebuffer->GetColorAttachmentID(), { m_GameViewportSize.x, m_GameViewportSize.y }, { 0.f, 1.f }, { 1.f, 0.f });
+
+		if (ImGui::BeginDragDropTarget()) {
+			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ASSET_BROWSER_ITEM")) {
+				const char* path = (const char*)payload->Data;
+				SceneOpen(path);
+			}
+
+			ImGui::EndDragDropTarget();
+		}
+
 		ImGui::End();
 		ImGui::PopStyleVar();
 	}
@@ -310,13 +318,6 @@ namespace Apex {
 		m_LogPanel.OnImGuiRender();
 	}
 	
-	static ::SingleCopyStack<std::string, 16> s_RecentFiles;
-	
-	static void OpenFileStub(const std::string& filename)
-	{
-		APEX_LOG_INFO("File opened: {}", filename.c_str());
-	}
-	
 	void EditorLayer::ShowMainMenuBar()
 	{
 		if (ImGui::BeginMenuBar())
@@ -348,37 +349,20 @@ namespace Apex {
 	void EditorLayer::DrawFileMenu()
 	{
 		if (ImGui::MenuItem("New")) {
-			
+			SceneNew();
 		}
 		if (ImGui::MenuItem("Open", "Ctrl+O")) {
-			auto filename = Utils::OpenFileDialog();
-			if (!filename.empty()) {
-				OpenFileStub(filename);
-
-				auto scene = CreateRef<Scene>();
-				auto serializer = SceneSerializerFactory().SetFormat(SceneSerializerFactory::Format::XML).Build(scene);
-				if (serializer->Deserialize(filename)) {
-					scene->OnSetup();
-					m_Scene = scene;
-				}
-
-				s_RecentFiles.Push(filename);
-			}
+			SceneOpen();
 		}
-		if (ImGui::BeginMenu("Open Recent", !s_RecentFiles.Empty())) {
-			std::string selectedFile = "";
-			for (std::string file : s_RecentFiles)
+		if (ImGui::BeginMenu("Open Recent", !m_RecentFiles.Empty())) {
+			for (std::string file : m_RecentFiles)
 				if (ImGui::MenuItem(file.c_str())) {
-					OpenFileStub(file);
-					selectedFile = file;
+					SceneOpen(file);
 				}
-			if (!selectedFile.empty())
-				s_RecentFiles.Push(selectedFile);
 			ImGui::EndMenu();
 		}
 		if (ImGui::MenuItem("Save", "Ctrl+S")) {
-			auto serializer = SceneSerializerFactory().SetFormat(SceneSerializerFactory::Format::XML).Build(m_Scene);
-			serializer->Serialize("/assets/scene.xml");
+			
 		}
 		if (ImGui::MenuItem("Save As..", "Ctrl+Shift+S")) {
 			
@@ -438,6 +422,103 @@ namespace Apex {
 		}
 		ImGui::Image((void*)(intptr_t)m_ImageTexture->GetID(), { (float)m_ImageTexture->GetWidth(), (float)m_ImageTexture->GetHeight() },
 			{ 0, 0 }, { 1, 1 }, { 1.f, 1.f, 1.f, 1.f }, { 1.f, 1.f, 1.f, 1.f });
+	}
+
+	void EditorLayer::OnEvent(Event& e)
+	{
+		m_CameraController.OnEvent(e);
+
+		EventDispatcher dispatcher(e);
+		dispatcher.Dispatch<KeyPressedEvent>(APEX_BIND_EVENT_FN(OnKeyPressed));
+		dispatcher.Dispatch<MouseButtonPressedEvent>(APEX_BIND_EVENT_FN(OnMouseButtonPressed));
+	}
+
+	bool EditorLayer::OnKeyPressed(KeyPressedEvent& e)
+	{
+		if (e.GetRepeatCount() > 0)
+			return false;
+
+		bool mod_ctrl = Input::IsKeyPressed(APEX_KEY_LEFT_CONTROL) || Input::IsKeyPressed(APEX_KEY_RIGHT_CONTROL);
+		bool mod_shift = Input::IsKeyPressed(APEX_KEY_LEFT_SHIFT) || Input::IsKeyPressed(APEX_KEY_RIGHT_SHIFT);
+
+		switch (e.GetKeyCode())
+		{
+		case APEX_KEY_N:
+			if (mod_ctrl)
+				SceneNew();
+			break;
+		case APEX_KEY_O:
+			if (mod_ctrl)
+				SceneOpen();
+			break;
+		case APEX_KEY_S:
+			if (mod_ctrl && mod_shift) {
+				SceneSaveAs();
+			}
+			else if (mod_ctrl) {
+				SceneSave();
+			}
+			else if (!mod_shift) {
+				// Set gizmo to Scale
+			}
+			break;
+		case APEX_KEY_M:
+			// Set gizmo to Translate/Move
+			break;
+		case APEX_KEY_R:
+			// Set gizmo to Rotate
+			break;
+
+		}
+
+		return false;
+	}
+
+	bool EditorLayer::OnMouseButtonPressed(MouseButtonPressedEvent& e)
+	{
+		return false;
+	}
+
+	void EditorLayer::SceneNew()
+	{
+		m_Scene = CreateRef<Scene>();
+		m_SceneHeirarchyPanel.SetContext(m_Scene);
+	}
+
+	void EditorLayer::SceneOpen()
+	{
+		auto filename = Utils::OpenFileDialog();
+		if (!filename.empty()) {
+			SceneOpen(filename);
+		}
+	}
+
+	void EditorLayer::SceneOpen(const fs::path& path)
+	{
+		auto scene = CreateRef<Scene>();
+		auto serializer = SceneSerializerFactory().SetFormat(SceneSerializerFactory::Format::XML).Build(scene);
+		if (serializer->Deserialize(path.string())) {
+			scene->OnSetup();
+			m_Scene = scene;
+			m_RecentFiles.Push(path.string());
+		}
+
+	}
+
+	void EditorLayer::SceneSave()
+	{
+		if (!m_RecentFiles.Empty()) {
+			auto serializer = SceneSerializerFactory().SetFormat(SceneSerializerFactory::Format::XML).Build(m_Scene);
+			serializer->Serialize(m_RecentFiles.Top());
+		}
+	}
+
+	void EditorLayer::SceneSaveAs()
+	{
+	}
+
+	void EditorLayer::SceneSaveAs(const fs::path& path)
+	{
 	}
 	
 }
