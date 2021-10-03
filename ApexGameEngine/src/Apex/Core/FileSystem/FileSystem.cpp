@@ -195,29 +195,27 @@ namespace Apex {
 		return returnFile;
 	}
 
-	void FileSystem::VisitDirectory(const std::string& path, FileSystem::VisitorFn func)
+	void FileSystem::VisitDirectory(const fs::path& dirPath, FileSystem::VisitorFn func)
 	{
-		fs::path dirPath(path);
 		auto& [mountPoint, mountPointPath] = GetInnerMostMountPoint(dirPath);
 		auto relativePath = dirPath.lexically_relative(mountPointPath);
 		if (mountPoint->Contains(relativePath)) {
 			mountPoint->Visit(func, relativePath);
 		}
 		else {
-			APEX_CORE_ERROR("Directory `{0}` does not exist.", path);
+			APEX_CORE_ERROR("Directory `{0}` does not exist.", dirPath);
 		}
 	}
 
-	void FileSystem::VisitDirectoryRecursive(const std::string& path, FileSystem::VisitorFn func)
+	void FileSystem::VisitDirectoryRecursive(const fs::path& dirPath, FileSystem::VisitorFn func)
 	{
-		fs::path dirPath(path);
 		auto& [mountPoint, mountPointPath] = GetInnerMostMountPoint(dirPath);
 		auto relativePath = dirPath.lexically_relative(mountPointPath);
 		if (mountPoint->Contains(relativePath)) {
 			mountPoint->VisitRecursive(func, relativePath);
 		}
 		else {
-			APEX_CORE_ERROR("Directory `{0}` does not exist.", path);
+			APEX_CORE_ERROR("Directory `{0}` does not exist.", dirPath);
 		}
 	}
 

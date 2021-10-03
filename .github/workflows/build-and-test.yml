@@ -1,0 +1,74 @@
+name: Build and Test
+
+on: [ push, pull_request ]
+
+jobs:
+  build:
+    runs-on: ${{ matrix.platform.os }}
+    
+    strategy:
+      fail-fast: false
+      matrix:
+        config: [ Debug, Release ]
+        platform: 
+          - {
+              name: "Windows latest VS 2019",
+              os: windows-latest,
+              premake: vs2019,
+              cc: msvc,
+            }
+          - {
+              name: "Ubuntu 18.04 GCC",
+              os: ubuntu-18.04,
+              premake: gmake2,
+              cc: gcc,
+            }
+          - {
+              name: "Ubuntu 20.04 GCC",
+              os: ubuntu-20.04,
+              premake: gmake2,
+              cc: gcc,
+            }
+    
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: recursive
+
+      - name: Setup premake-5.0.0
+        uses: abel0b/setup-premake@v1
+      
+      - name: Generate build files
+        run: premake5 ${{ matrix.platform.premake }} #--build-tests=yes
+            
+      - name: Setup build env (Windows)
+        if: startsWith( matrix.platform.os, 'windows' )
+        uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: x64
+
+      - name: Build (MSVC)
+        if: startsWith( matrix.platform.cc, 'msvc' )
+        run: devenv GithubActionsTrial.sln /Rebuild "${{ matrix.config }}" /out build.log
+        
+      - name: Build (GCC)
+        if: startsWith( matrix.platform.cc, 'gcc' )
+        run: |
+          set -o pipefail
+          config=$(echo ${{ matrix.config }} | awk '{print tolower($0)}')
+          make all -j$((`nproc`+1)) config=$config 2>&1 | tee build.log
+
+      - name: Upload build.log artifact on failure
+        if: ${{ failure() }}
+        uses: actions/upload-artifact@v2
+        with:
+          name: "${{ matrix.config }}/${{ matrix.platform.name }}/build.log"
+          path: build.log
+
+      # - name: Run all tests (Windows)
+      #   if: startsWith( matrix.platform.os, 'windows' )
+      #   run: scripts\\run_tests.bat
+
+      # - name: Run all tests (Ubuntu)
+      #   if: startsWith( matrix.platform.os, 'ubuntu' )
+      #   run: scripts/run_tests.sh

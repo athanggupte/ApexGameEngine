@@ -23,10 +23,12 @@ namespace Apex {
 		FILE	= 0,
 		TEXTURE,
 		SHADER,
-		//MESH,
-		//AUDIO,
-		//ANIMATION,
 		//SCENE,
+		//SPRITE,
+		//MESH,
+		//MATERIAL,
+		//ANIMATION,
+		//AUDIO,
 
 		SIZE
 	};
@@ -37,9 +39,12 @@ namespace Apex {
 		case ResourceType::FILE:		return "FILE";
 		case ResourceType::TEXTURE:		return "TEXTURE";
 		case ResourceType::SHADER:		return "SHADER";
+		//case ResourceType::SCENE:		return "SCENE";
+		//case ResourceType::SPRITE:	return "SPRITE";
 		//case ResourceType::MESH:		return "MESH";
-		//case ResourceType::AUDIO:		return "AUDIO";
+		//case ResourceType::MATERIAL:	return "MATERIAL";
 		//case ResourceType::ANIMATION:	return "ANIMATION";
+		//case ResourceType::AUDIO:		return "AUDIO";
 		}
 	};
 
@@ -54,7 +59,7 @@ namespace Apex {
 
 	class Resource
 	{
-		using ResourcePtr_t = std::variant<Ref<VFS::IFile>, Ref<Texture>, Ref<Shader>>;
+		using ResourcePtr_t = std::variant<Ref<File>, Ref<Texture>, Ref<Shader>>;
 
 		struct _IsLoaded
 		{
@@ -186,20 +191,25 @@ namespace Apex {
 			else {
 				m_DependencyGraph.emplace(dependent, std::list<Handle>{ dependency });
 			}
+			m_Unsorted = true;
 		}
 		
-		std::vector<Handle> SolveDependencies()
+		Iterable<std::vector<Handle>> SolveDependencies()
 		{
-			return TopologicalSort();
+			if (m_Unsorted)
+				TopologicalSort();
+			return Iterable<std::vector<Handle>>(m_SortedOrder);
 		}
 
 	protected:
-		std::vector<Handle> TopologicalSort();
+		void TopologicalSort();
 
 	private:
 		std::unordered_map<Handle, Resource> m_Registry;
 		std::unordered_map<Handle, std::list<Handle>> m_DependencyGraph;
-		//std::vector<Handle> m_SortedOrder;
+		
+		std::vector<Handle> m_SortedOrder;
+		bool m_Unsorted = true; // similar to dirty bit
 
 		friend class ResourceSerializer;
 	};
