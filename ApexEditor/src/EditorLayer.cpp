@@ -21,7 +21,7 @@ namespace Apex {
 	
 	EditorLayer::EditorLayer()
 		: Layer("ApexEditor"), m_BGColor{0.42f, 0.63f, 0.75f, 1.0f},
-		m_CameraController((float)Application::Get().GetWindow().GetWidth() / (float)Application::Get().GetWindow().GetHeight())
+		m_CameraController(static_cast<float>(Application::Get().GetWindow().GetWidth()) / static_cast<float>(Application::Get().GetWindow().GetHeight()))
 	{
 		// Logger
 		m_LogSink = std::make_shared<EditorLogSink_mt>(&m_LogPanel);
@@ -37,15 +37,7 @@ namespace Apex {
 
 		m_Scene = CreateRef<Scene>();
 
-		//auto& pusheenResource = Application::Get().GetResourceManager().AddResource<Texture>(HASH("pusheen-texture"), HASH("/assets/pusheen-thug-life.png"));
-		//Application::Get().GetResourceManager().AddResource(HASH("pusheen-texture"), Resource(HASH("/assets/pusheen-thug-life.png")));
-		Ref<ResourceSerializer> rs = ResourceSerializerFactory().SetFormat(ResourceSerializerFactory::Format::XML).Build(Application::Get().GetResourceManager());
-		//rs->SerializeResource(FileSystem::MakeFile("/assets/pusheen-texture.xml"), pusheenResource);
-		rs->Deserialize(FileSystem::GetFileIfExists("pusheen-texture.xml"));
-		//auto& pusheenResource = Application::Get().GetResourceManager().Get(HASH("pusheen-texture"));
-		//pusheenResource.Load();
-		//APEX_LOG_DEBUG("pusheen-texture :: type: {}", typeid(pusheenResource.Get<Texture>()).name());
-		
+		auto& pusheenResource = Application::Get().GetResourceManager().AddResource<Texture>(HASH("pusheen-texture"), HASH("/assets/pusheen-thug-life.png"));
 
 		// Asset allocation
 		m_ImageTexture = Texture2D::Create(256U, 256U, HDRTextureSpec, "Image");
@@ -54,17 +46,33 @@ namespace Apex {
 		m_GameFramebuffer = Framebuffer::Create({ 1280u, 720u });
 
 		// Entity Initialization
-		//auto pusheenEntity = m_Scene->CreateEntity(HASH("pusheen"));
-		//pusheenEntity.AddComponent<SpriteRendererComponent>(pusheenResource, 2.f);
-		//pusheenEntity.GetComponent<TransformComponent>() = TransformComponent({ 0.6f, 0.1f, 0.f }, { 0.5f, 0.5f, 1.f });
-		//
-		//auto squareEntity = m_Scene->CreateEntity(HASH("square"));
-		//squareEntity.AddComponent<SpriteRendererComponent>(glm::vec4{ 0.2f, 0.88f, 0.34f, 1.f });
-		//squareEntity.GetComponents<TransformComponent>() = TransformComponent({ -0.6f, -0.1f, 0.f }, { 0.5f, 0.5f, 1.f });
-		//
 		//auto cameraEntity = m_Scene->CreateEntity(HASH("camera"));
 		//cameraEntity.AddComponent<CameraComponent>(SceneCamera::ProjectionType::Orthographic);
 		//m_Scene->SetPrimaryCamera(cameraEntity);
+
+		auto GetCubeMesh = []() {
+			float vertices[] = {
+				-0.5f, -0.5f, 0.0f, 0.0f, 0.0f,
+				 0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
+				 0.5f,  0.5f, 0.0f, 1.0f, 1.0f,
+				-0.5f,  0.5f, 0.0f, 0.0f, 1.0f
+			};
+
+			uint32_t indices[] = {
+				0, 1, 2,
+				0, 2, 3
+			};
+
+			BufferLayout layout = {
+				{ Apex::ShaderDataType::Float3, "a_Position" },
+				{ Apex::ShaderDataType::Float2, "a_TexCoord" }
+			};
+
+			return CreateRef<Mesh>(vertices, sizeof(vertices) / sizeof(float), indices, sizeof(indices) / sizeof(uint32_t), layout);
+		};
+
+		auto cubeEntity = m_Scene->CreateEntity(HASH("cube"));
+		cubeEntity.AddComponent<MeshRendererComponent>(GetCubeMesh(), Shader::Create(APEX_INSTALL_LOCATION "/assets/shaders/FlatShader3D.glsl"));
 		
 		m_Scene->OnSetup();
 
@@ -109,7 +117,7 @@ namespace Apex {
 		
 		if (!m_PlayScene) {
 			Renderer2D::BeginScene(m_CameraController.GetCamera());
-			m_Scene->DrawSprites();
+			m_Scene->OnEditorUpdate(ts);
 			Renderer2D::EndScene();
 		} else {
 			m_Scene->OnUpdate(ts);

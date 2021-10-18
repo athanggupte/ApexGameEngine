@@ -19,10 +19,10 @@ namespace Apex {
 		Entity CreateEntity(StringHandle name);
 		Entity CreateEntity();
 		
-		void DrawSprites();
 
 		void OnSetup();
 		void OnUpdate(Timestep ts);
+		void OnEditorUpdate(Timestep ts);
 		void OnEvent(Event&);
 		void OnViewportResize(uint32_t width, uint32_t height);
 		
@@ -35,6 +35,9 @@ namespace Apex {
 		void SetPrimaryCamera(const Entity&);
 	
 	protected:
+		void Render2D();
+		void Render3D();
+
 		template<typename Component_t>
 		void OnComponentAdded(Entity entity, Component_t& component);
 		

@@ -34,7 +34,7 @@ namespace Apex {
 	
 	void SceneHeirarchyPanel::DrawEntityNode(Entity entity)
 	{
-		auto& tag = entity.GetComponent<TagComponent>().Tag;
+		auto& tag = entity.GetComponent<TagComponent>().tag;
 		
 		ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_OpenOnArrow;
 		flags |= (m_SelectedEntity == entity) ? ImGuiTreeNodeFlags_Selected : 0;

@@ -52,7 +52,7 @@ namespace Apex {
         entityNode.append_attribute("id").set_value(BASE64(1297814978).c_str());
 
         if (entity.HasComponent<TagComponent>()) {
-            const auto& tag = entity.GetComponent<TagComponent>().Tag;
+            const auto& tag = entity.GetComponent<TagComponent>().tag;
             auto tagNode = entityNode.append_child("TagComponent");
             tagNode.append_child(pugi::node_pcdata).set_value(std::string(tag.str()).c_str());
         }
@@ -62,11 +62,11 @@ namespace Apex {
             auto transformNode = entityNode.append_child("TransformComponent");
 
             auto translationNode = transformNode.append_child("Translation");
-            SerializeVec(translationNode, transform.Translation);
+            SerializeVec(translationNode, transform.translation);
             auto rotationNode = transformNode.append_child("Rotation");
-            SerializeVec(rotationNode, transform.Rotation);
+            SerializeVec(rotationNode, transform.rotation);
             auto scaleNode = transformNode.append_child("Scale");
-            SerializeVec(scaleNode, transform.Scale);
+            SerializeVec(scaleNode, transform.scale);
         }
 
         /*if (entity.HasComponent<CameraComponent>()) {
@@ -79,15 +79,15 @@ namespace Apex {
             const auto& sprite = entity.GetComponent<SpriteRendererComponent>();
             auto spriteNode = entityNode.append_child("SpriteRendererComponent");
 
-            if (sprite.Texture > 0) {
+            if (sprite.texture > 0) {
                 auto textureNode = spriteNode.append_child("Texture");
-                textureNode.append_child("ResourceId").append_child(pugi::node_pcdata).set_value(TO_CSTRING(Strings::Get(sprite.Texture)));
-                textureNode.append_child("TilingFactor").append_child(pugi::node_pcdata).set_value(TO_CSTRING(sprite.TilingFactor));
+                textureNode.append_child("ResourceId").append_child(pugi::node_pcdata).set_value(TO_CSTRING(Strings::Get(sprite.texture)));
+                textureNode.append_child("TilingFactor").append_child(pugi::node_pcdata).set_value(TO_CSTRING(sprite.tilingFactor));
                 textureNode.append_attribute("use").set_value(sprite.useTexture);
             }
 
             auto colorNode = spriteNode.append_child("Color");
-            SerializeVec(colorNode, sprite.Color);
+            SerializeVec(colorNode, sprite.color);
         }
 
     }
@@ -120,9 +120,9 @@ namespace Apex {
         auto tagNode = node.child("TagComponent");
         if (!tagNode)
             return false;
-        entity.GetComponent<TagComponent>().Tag = HASH(tagNode.child_value());
+        entity.GetComponent<TagComponent>().tag = HASH(tagNode.child_value());
 
-        APEX_CORE_DEBUG("Importing entity '{}'", entity.GetComponent<TagComponent>().Tag.str());
+        APEX_CORE_DEBUG("Importing entity '{}'", entity.GetComponent<TagComponent>().tag.str());
 
         auto transformNode = node.child("TransformComponent");
         if (!transformNode)
@@ -130,23 +130,23 @@ namespace Apex {
 
         auto& transform = entity.GetComponent<TransformComponent>();
         auto translationNode = transformNode.child("Translation");
-        DeserializeVec(translationNode, transform.Translation);
+        DeserializeVec(translationNode, transform.translation);
         auto rotationNode = transformNode.child("Rotation");
-        DeserializeVec(rotationNode, transform.Rotation);
+        DeserializeVec(rotationNode, transform.rotation);
         auto scaleNode = transformNode.child("Scale");
-        DeserializeVec(scaleNode, transform.Scale);
+        DeserializeVec(scaleNode, transform.scale);
         
         auto spriteNode = node.child("SpriteRendererComponent");
         if (spriteNode) {
             auto& sprite = entity.AddComponent<SpriteRendererComponent>();
             auto textureNode = spriteNode.child("Texture");
             if (textureNode) {
-                sprite.Texture = HASH(textureNode.child_value("ResourceId"));
-                sprite.TilingFactor = std::stof(textureNode.child_value("TilingFactor"));
+                sprite.texture = HASH(textureNode.child_value("ResourceId"));
+                sprite.tilingFactor = std::stof(textureNode.child_value("TilingFactor"));
                 sprite.useTexture = textureNode.attribute("use").as_bool();
             }
             auto colorNode = spriteNode.child("Color");
-            DeserializeVec(colorNode, sprite.Color);
+            DeserializeVec(colorNode, sprite.color);
         }
 
         // Other Components

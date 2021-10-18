@@ -19,15 +19,15 @@ namespace Apex {
 		m_VAO->Unbind();
 	}
 
-	void Mesh::AddTexture(std::pair<std::string, Ref<Texture>>& nameTexturePair)
-	{
-		m_Textures.insert(nameTexturePair);
-	}
+	//void Mesh::AddTexture(std::pair<std::string, Ref<Texture>>& nameTexturePair)
+	//{
+	//	m_Textures.insert(nameTexturePair);
+	//}
 
-	void Mesh::AddTexture(std::string name, Ref<Texture> texture)
-	{
-		m_Textures[name] = texture;
-	}
+	//void Mesh::AddTexture(std::string name, Ref<Texture> texture)
+	//{
+	//	m_Textures[name] = texture;
+	//}
 
 
 }

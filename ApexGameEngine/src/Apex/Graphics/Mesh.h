@@ -18,18 +18,18 @@ namespace Apex {
 		virtual inline bool& Show() { return m_Show; }
 		virtual inline const bool& Show() const { return m_Show; }
 
-		virtual inline void SetTextures(std::unordered_map<std::string, Ref<Texture>> textures) { m_Textures = textures; }
-		virtual inline const std::unordered_map<std::string, Ref<Texture>>& GetTextures() const { return m_Textures; }
+		// virtual inline void SetTextures(std::unordered_map<std::string, Ref<Texture>> textures) { m_Textures = textures; }
+		// virtual inline const std::unordered_map<std::string, Ref<Texture>>& GetTextures() const { return m_Textures; }
 		
-		virtual void AddTexture(std::pair<std::string, Ref<Texture>>& nameTexturePair);
-		virtual void AddTexture(std::string name, Ref<Texture> texture);
+		//virtual void AddTexture(std::pair<std::string, Ref<Texture>>& nameTexturePair);
+		//virtual void AddTexture(std::string name, Ref<Texture> texture);
 
 		virtual inline bool HasNormals() const { return m_HasNormals; }
 		virtual inline bool HasTangents() const { return m_HasTangents; }
 		
 	private:
 		Ref<VertexArray> m_VAO;
-		std::unordered_map<std::string, Ref<Texture>> m_Textures;
+		// std::unordered_map<std::string, Ref<Texture>> m_Textures;
 		bool m_Show = true;
 		
 		bool m_HasNormals = true;

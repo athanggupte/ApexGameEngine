@@ -6,13 +6,14 @@
 #include "Apex/Core/ECS/ScriptableEntity.h"
 #include "Apex/Core/ECS/Components.h"
 #include "Apex/Core/ECS/Components/SceneCamera.h"
+#include "Apex/Graphics/Renderer/Renderer.h"
 #include "Apex/Graphics/Renderer/Renderer2D.h"
 
 namespace Apex {
 
 	Scene::Scene()
 	{
-		(void)m_Registry.group<TransformComponent, SpriteRendererComponent>();
+		// (void)m_Registry.group<TransformComponent, SpriteRendererComponent>();
 	}
 	
 	Entity Scene::CreateEntity(StringHandle name)
@@ -35,11 +36,11 @@ namespace Apex {
 
 		m_Registry.view<SpriteRendererComponent>()
 			.each([&resourceManager](SpriteRendererComponent& sprite) {
-				if (!sprite.Texture)
+				if (!sprite.texture)
 					return;
-				auto textureResource = resourceManager.Get(sprite.Texture);
+				auto textureResource = resourceManager.Get(sprite.texture);
 				if (!textureResource) {
-					APEX_CORE_ERROR("Texture resource `{}` not found!", Strings::Get(sprite.Texture));
+					APEX_CORE_ERROR("Texture resource `{}` not found!", Strings::Get(sprite.texture));
 				}
 				else {
 					textureResource->Load();
@@ -47,20 +48,30 @@ namespace Apex {
 			});
 	}
 
-	void Scene::DrawSprites()
+	void Scene::Render2D()
 	{
 		// IMP: When iterating components owned by a group outside the group donot add new
 		//      entities with the same list of components -> iterators get invalidated
 
-		auto group = m_Registry.group<TransformComponent, SpriteRendererComponent>();
-		group.each([](TransformComponent& transform, SpriteRendererComponent& sprite) {
+		auto view = m_Registry.view<TransformComponent, SpriteRendererComponent>();
+		view.each([](TransformComponent& transform, SpriteRendererComponent& sprite) {
 			if (sprite.visible) {
-				auto texture = Application::Get().GetResourceManager().Get(sprite.Texture);
+				auto texture = Application::Get().GetResourceManager().Get(sprite.texture);
 				if (sprite.useTexture && texture)
-					Renderer2D::DrawQuad(transform.GetTransform(), std::dynamic_pointer_cast<Texture2D>(texture->Get<Texture>()), sprite.TilingFactor);
+					Renderer2D::DrawQuad(transform.GetTransform(), std::dynamic_pointer_cast<Texture2D>(texture->Get<Texture>()), sprite.tilingFactor);
 				else
-					Renderer2D::DrawQuad(transform.GetTransform(), sprite.Color);
+					Renderer2D::DrawQuad(transform.GetTransform(), sprite.color);
 			}
+		});
+	}
+
+	void Scene::Render3D()
+	{
+		auto view = m_Registry.view<TransformComponent, MeshRendererComponent>();
+		view.each([](TransformComponent& transform, MeshRendererComponent& mesh_component) {
+			auto& mesh = mesh_component.mesh;
+			auto& shader = mesh_component.shader;
+			Renderer::Submit(shader, mesh->GetVAO(), transform.GetTransform());
 		});
 	}
 
@@ -74,21 +85,27 @@ namespace Apex {
 		// Render
 		if (Options.PrimaryCamera != entt::null) {
 			auto [camera, transform] = m_Registry.get<CameraComponent, TransformComponent>(Options.PrimaryCamera);
-			Renderer2D::BeginScene(camera.Camera, transform.GetTransform());
-			DrawSprites();
+			Renderer2D::BeginScene(camera.camera, transform.GetTransform());
+			Render2D();
 			Renderer2D::EndScene();
 		}
 		// PostProcess
 	}
-	
+
+	void Scene::OnEditorUpdate(Timestep ts)
+	{
+		Render3D();
+		Render2D();
+	}
+
 	void Scene::OnViewportResize(uint32_t width, uint32_t height)
 	{
 		Options.ViewportWidth = width;
 		Options.ViewportHeight = height;
 		
 		m_Registry.view<CameraComponent>().each([this](auto& cameraComponent) {
-			if (!cameraComponent.FixedAspectRatio)
-				cameraComponent.Camera.SetViewportSize(Options.ViewportWidth, Options.ViewportHeight);
+			if (!cameraComponent.fixedAspectRatio)
+				cameraComponent.camera.SetViewportSize(Options.ViewportWidth, Options.ViewportHeight);
 		});
 	}
 	
@@ -116,7 +133,7 @@ namespace Apex {
 	void Scene::OnComponentAdded(Entity entity, CameraComponent& component)
 	{
 		if (Options.ViewportWidth > 0 && Options.ViewportHeight > 0)
-			component.Camera.SetViewportSize(Options.ViewportWidth, Options.ViewportHeight);
+			component.camera.SetViewportSize(Options.ViewportWidth, Options.ViewportHeight);
 	}
 	
 	template<>
@@ -126,6 +143,11 @@ namespace Apex {
 	
 	template<>
 	void Scene::OnComponentAdded(Entity entity, ScriptComponent& component)
+	{
+	}
+
+	template<>
+	void Scene::OnComponentAdded(Entity entity, MeshRendererComponent& component)
 	{
 	}
 	
