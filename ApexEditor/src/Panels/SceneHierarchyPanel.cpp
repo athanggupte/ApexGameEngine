@@ -1,22 +1,22 @@
 #include "apexed_pch.h"
-#include "SceneHeirarchyPanel.h"
+#include "SceneHierarchyPanel.h"
 
 #include <imgui.h>
 #include "Apex/Core/ECS/Components.h"
 
 namespace Apex {
 	
-	SceneHeirarchyPanel::SceneHeirarchyPanel(const Ref<Scene>& context)
+	SceneHierarchyPanel::SceneHierarchyPanel(const Ref<Scene>& context)
 	{
 		SetContext(context);
 	}
 		
-	void SceneHeirarchyPanel::SetContext(const Ref<Scene>& context)
+	void SceneHierarchyPanel::SetContext(const Ref<Scene>& context)
 	{
 		m_Context = context;
 	}
 		
-	void SceneHeirarchyPanel::OnImGuiRender()
+	void SceneHierarchyPanel::OnImGuiRender()
 	{
 		ImGui::Begin("Scene");
 		
@@ -32,7 +32,7 @@ namespace Apex {
 		ImGui::End();
 	}
 	
-	void SceneHeirarchyPanel::DrawEntityNode(Entity entity)
+	void SceneHierarchyPanel::DrawEntityNode(Entity entity)
 	{
 		auto& tag = entity.GetComponent<TagComponent>().tag;
 		

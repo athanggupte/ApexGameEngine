@@ -3,7 +3,7 @@
 
 //#include <irrKlang.h>
 
-#include "Panels/SceneHeirarchyPanel.h"
+#include "Panels/SceneHierarchyPanel.h"
 #include "Panels/InspectorPanel.h"
 #include "Panels/LogPanel.h"
 
@@ -45,33 +45,36 @@ namespace Apex {
 		void ShowComputeShaderOutput();
 		
 	private:
-		bool m_ViewportFocussed = false;
+		// State
+		bool m_ViewportFocused = false;
 		bool m_ViewportHovered = false;
 		
 		bool m_Open;
 		bool m_ShowNodeGraph = true;
 
+		bool m_PlayScene = false;
+
 		glm::vec4 m_BGColor;
 
+		// Editor Resources
 		Ref<Framebuffer> m_GameFramebuffer;
 		glm::vec2 m_GameViewportSize;
-		
-		OrthographicCameraController2D m_CameraController;
+
+		Camera m_EditorCamera;
+		Unique<CameraController> m_EditorCameraController;
 		Ref<Scene> m_Scene;
-		// Ref<VFS::IFile> m_CurrentFile;
 
 		Ref<Texture2D> m_Texture;
 		Ref<Texture2D> m_ImageTexture;		
 		Ref<ComputeShader> m_ComputeShader;
 
-		bool m_PlayScene = false;
-		
+		// Panel data
 		std::shared_ptr<EditorLogSink_mt> m_LogSink;
 		LogPatternFlags_t m_LogPatternFlags = LogPattern::None;
 		bool m_LogPatternChanged = false;
 		LogPanel m_LogPanel;
 		
-		SceneHeirarchyPanel m_SceneHeirarchyPanel;
+		SceneHierarchyPanel m_SceneHierarchyPanel;
 		InspectorPanel m_InspectorPanel;
 		
 		//irrklang::ISoundEngine* m_SoundEngine;

@@ -2,10 +2,10 @@
 #include "Scene.h"
 
 #include "Apex/Application.h"
+#include "Apex/Core/Camera.h"
 #include "Apex/Core/ECS/Entity.h"
 #include "Apex/Core/ECS/ScriptableEntity.h"
 #include "Apex/Core/ECS/Components.h"
-#include "Apex/Core/ECS/Components/SceneCamera.h"
 #include "Apex/Graphics/Renderer/Renderer.h"
 #include "Apex/Graphics/Renderer/Renderer2D.h"
 
@@ -113,7 +113,7 @@ namespace Apex {
 	{
 		Options.PrimaryCamera = entity.m_EntityId;
 	}
-	
+
 	template<typename Component_t>
 	void Scene::OnComponentAdded(Entity entity, Component_t& component)
 	{

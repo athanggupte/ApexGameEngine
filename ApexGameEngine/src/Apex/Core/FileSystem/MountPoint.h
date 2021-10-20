@@ -31,7 +31,7 @@ namespace Apex {
 			virtual void OnMountImpl() = 0;
 
 		protected:
-			std::map<std::string, Scope<IMountPoint>> m_SubMountPoints;
+			std::map<std::string, Unique<IMountPoint>> m_SubMountPoints;
 			fs::path m_PhysicalPath;
 			bool m_IsMounted = false;
 

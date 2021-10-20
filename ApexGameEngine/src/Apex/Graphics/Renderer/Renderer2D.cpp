@@ -2,7 +2,6 @@
 #include "Renderer2D.h"
 
 #include "Apex/Core/Camera.h"
-#include "Apex/Core/ECS/Components/SceneCamera.h"
 #include "Apex/Graphics/RenderPrimitives/VertexArray.h"
 #include "Apex/Graphics/RenderPrimitives/Shader.h"
 #include "Apex/Graphics/RenderPrimitives/Texture.h"
@@ -164,20 +163,12 @@ namespace Apex {
 		delete[] s_RenderData.quadBufferBase;
 	}
 	
-	void Renderer2D::BeginScene(const SceneCamera& camera, const glm::mat4& transform)
+	void Renderer2D::BeginScene(const Camera& camera, const glm::mat4& transform)
 	{
 		auto viewProj = camera.GetProjection() * glm::inverse(transform);
 		
 		s_RenderData.textureShader->Bind();
 		s_RenderData.textureShader->SetUniMat4("u_ViewProjection", viewProj);
-		
-		ResetBatch();
-	}
-	
-	void Renderer2D::BeginScene(const Camera& camera)
-	{
-		s_RenderData.textureShader->Bind();
-		s_RenderData.textureShader->SetUniMat4("u_ViewProjection", camera.GetViewProjectionMatrix());
 		
 		ResetBatch();
 	}

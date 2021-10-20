@@ -7,7 +7,6 @@
 namespace Apex {
 
 	// Forward Declarations
-	class SceneCamera;
 	class Camera;
 	class VertexArray;
 	class Texture2D;
@@ -24,8 +23,7 @@ namespace Apex {
 		static void Init();
 		static void Shutdown();
 		
-		static void BeginScene(const SceneCamera& camera, const glm::mat4& transform);
-		static void BeginScene(const Camera& camera);
+		static void BeginScene(const Camera& camera, const glm::mat4& transform);
 		static void EndScene();
 		
 		// Primitives

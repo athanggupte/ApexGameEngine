@@ -18,7 +18,6 @@ namespace Apex {
 		
 		Entity CreateEntity(StringHandle name);
 		Entity CreateEntity();
-		
 
 		void OnSetup();
 		void OnUpdate(Timestep ts);
@@ -33,7 +32,14 @@ namespace Apex {
 		};
 		
 		void SetPrimaryCamera(const Entity&);
-	
+
+		// ECS functionality
+		template<typename... Component, typename... Exclude>
+		decltype(auto) View(entt::exclude_t<Exclude...> exclude = {})
+		{
+			return m_Registry.view<Component...>(exclude);
+		}
+
 	protected:
 		void Render2D();
 		void Render3D();
@@ -45,7 +51,7 @@ namespace Apex {
 		entt::registry m_Registry;
 		
 		friend class Entity;
-		friend class SceneHeirarchyPanel;
+		friend class SceneHierarchyPanel;
 		friend class SceneSerializer;
 		template<typename Archiver, typename... Types>
 		friend void Serialize(const Scene* scene, Archiver&& archiver);

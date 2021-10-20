@@ -119,7 +119,7 @@ namespace Apex {
 						bool isSelected = projectionTypeStrings[i] == currentProjectionTypeStr;
 						if (ImGui::Selectable(projectionTypeStrings[i], isSelected)) {
 							currentProjectionTypeStr = projectionTypeStrings[i];
-							camera.SetProjectionType((SceneCamera::ProjectionType)i);
+							camera.SetProjectionType((Camera::ProjectionType)i);
 						}
 						
 						if (isSelected)
@@ -129,7 +129,7 @@ namespace Apex {
 					ImGui::EndCombo();
 				}
 				
-				if (cameraComp.camera.GetProjectionType() == SceneCamera::ProjectionType::Perspective) {
+				if (cameraComp.camera.GetProjectionType() == Camera::ProjectionType::Perspective) {
 					float perspFov = glm::degrees(camera.GetPerspectiveVerticalFov());
 					if (ImGui::DragFloat("Vertical FOV", &perspFov))
 						camera.SetPerspectiveVerticalFov(glm::radians(perspFov));

@@ -14,7 +14,7 @@
 
 namespace Apex {
 	
-	using MountPointPtr = Scope<VFS::IMountPoint>;
+	using MountPointPtr = Unique<VFS::IMountPoint>;
 	
 
 	static constexpr const char dirRegexStr[] = R"(([a-zA-Z0-9_-]+)(/[a-zA-Z0-9_-]+)*/?)";
@@ -22,7 +22,7 @@ namespace Apex {
 	static constexpr const char fileRegexStr[] = R"(([a-zA-Z0-9_-]+/)*([a-zA-Z0-9_-])+\.[a-z0-9]+)";
 	static const std::regex fileRegex(fileRegexStr);
 	
-	static Scope<VFS::IMountPoint> CreateMountPoint(const fs::path& phyPath)
+	static Unique<VFS::IMountPoint> CreateMountPoint(const fs::path& phyPath)
 	{
 		if (!fs::exists(phyPath)) {
 			APEX_CORE_ERROR("Path `{}` does not exist!", phyPath);
@@ -30,7 +30,7 @@ namespace Apex {
 		}
 		
 		if (fs::is_directory(phyPath))
-			return CreateScope<VFS::PhysicalMountPoint>(phyPath);
+			return CreateUnique<VFS::PhysicalMountPoint>(phyPath);
 		else if (phyPath.extension() == ".apkg")
 			return nullptr;
 	}
@@ -49,7 +49,7 @@ namespace Apex {
 	void FileSystem::Init()
 	{
 		s_Data = new VFSData();
-		s_Data->Root = CreateScope<VFS::PhysicalMountPoint>();
+		s_Data->Root = CreateUnique<VFS::PhysicalMountPoint>();
 		Mount("internal_assets", APEX_INSTALL_LOCATION "/assets");
 	}
 

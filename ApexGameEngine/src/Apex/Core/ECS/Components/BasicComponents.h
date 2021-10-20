@@ -9,7 +9,7 @@
 #define REGISTER_COMPONENT(name) static constexpr const char* TypeName = name;\
 								COMPONENT_DEFAULT_CTR(name)
 
-#include "Apex/Core/ECS/Components/SceneCamera.h"
+#include "Apex/Core/Camera.h"
 #include "Apex/Graphics/RenderPrimitives/Texture.h"
 #include "Apex/Core/ResourceManager/ResourceManager.h"
 
@@ -82,12 +82,12 @@ namespace Apex {
 
 	struct CameraComponent
 	{
-		SceneCamera camera;
+		Camera camera{ Camera::ProjectionType::Orthographic };
 		bool fixedAspectRatio = false;
 		
 		COMPONENT_DEFAULT_CTR(CameraComponent);
 
-		explicit CameraComponent(const SceneCamera& camera)
+		explicit CameraComponent(const Camera& camera)
 			: camera{ camera } {}
 		
 // 		CameraComponent(const glm::mat4& projection)

@@ -19,6 +19,18 @@ namespace Apex {
 		m_VAO->Unbind();
 	}
 
+	Mesh::Mesh(float* vertices, size_t vCount, const BufferLayout& layout)
+	{
+		m_VAO = VertexArray::Create();
+		Ref<VertexBuffer> vbo = VertexBuffer::Create(vertices, vCount * sizeof(float));
+		
+		vbo->SetLayout(layout);
+		
+		m_VAO->AddVertexBuffer(vbo);
+		
+		m_VAO->Unbind();
+	}
+
 	//void Mesh::AddTexture(std::pair<std::string, Ref<Texture>>& nameTexturePair)
 	//{
 	//	m_Textures.insert(nameTexturePair);

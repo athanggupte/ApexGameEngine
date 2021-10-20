@@ -4,7 +4,6 @@
 
 namespace Apex {
 	
-	class SceneCamera;
 	class Camera;
 	class Shader;
 	class Mesh;
@@ -15,8 +14,7 @@ namespace Apex {
 		static void Init();
 		static void Shutdown();
 		
-		static void BeginScene(const SceneCamera& camera, const glm::mat4& transform);
-		static void BeginScene(const Camera& camera);
+		static void BeginScene(const Camera& camera, const glm::mat4& transform);
 		static void EndScene();
 		
 		static void SetupLights();
