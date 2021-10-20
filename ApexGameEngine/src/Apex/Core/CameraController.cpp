@@ -11,17 +11,22 @@
 
 namespace Apex {
 	
-	OrthographicCameraController2D::OrthographicCameraController2D(float aspectRatio, float zoomLevel,
-																   const glm::vec3& position, float rotation, float movementSpeed, float rotationSpeed)
-		: m_AspectRatio(aspectRatio), m_ZoomLevel(zoomLevel),
-		m_Camera(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel),
+	OrthographicCameraController2D::OrthographicCameraController2D(Camera& camera,
+		float zoomLevel, const glm::vec3& position, float rotation, float movementSpeed, float rotationSpeed)
+		: CameraController(camera), m_ZoomLevel(zoomLevel),
 		m_CameraPosition(position), m_CameraRotation(rotation),
 		m_MovementSpeed(movementSpeed), m_RotationSpeed(rotationSpeed)
 	{
-		m_Camera.SetPosition(m_CameraPosition);
-		m_Camera.SetRotation(m_CameraRotation);
+		m_Camera->SetProjectionType(Camera::ProjectionType::Orthographic);
+		m_Camera->SetOrthographicSize(m_ZoomLevel * 2.f);
 	}
-	
+
+	glm::mat4 OrthographicCameraController2D::GetTransform() const
+	{
+		return glm::translate(glm::mat4(1.0f), m_CameraPosition)
+			* glm::rotate(glm::mat4(1.0f), glm::radians(m_CameraRotation), { 0.f, 0.f, 1.f });
+	}
+
 	void OrthographicCameraController2D::OnUpdate(Timestep ts)
 	{
 		if (m_IsDragging) {
@@ -41,9 +46,6 @@ namespace Apex {
 			//m_CameraRotation += Input::IsMouseButtonPressed(APEX_MOUSE_BUTTON_RIGHT) ? (glm::acos(glm::dot(startPos, endPos)) * m_RotationSpeed) : 0.0f;
 			
 			m_DragStartPos = { newMousePos.first, newMousePos.second };
-			
-			m_Camera.SetPosition(m_CameraPosition);
-			m_Camera.SetRotation(m_CameraRotation);
 		}
 	}
 	
@@ -56,17 +58,17 @@ namespace Apex {
 		dispatcher.Dispatch<WindowResizeEvent>(APEX_BIND_EVENT_FN(OrthographicCameraController2D::OnWindowResize));
 	}
 
-	void OrthographicCameraController2D::OnResize(float width, float height)
+	void OrthographicCameraController2D::OnResize(uint32_t width, uint32_t height)
 	{
-		m_AspectRatio = width / height;
-		m_Camera.SetProjection(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel);
+		m_Camera->SetViewportSize(width, height);
 	}
 	
 	bool OrthographicCameraController2D::OnMouseScrolled(MouseScrolledEvent& e)
 	{
+		APEX_CORE_DEBUG("OrthographicCameraController2D:: MouseScrolled");
 		m_ZoomLevel -= e.GetOffsetY() * 0.25f;
 		m_ZoomLevel = glm::clamp(m_ZoomLevel, 0.125f, 8.f);
-		m_Camera.SetProjection(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel);
+		m_Camera->SetOrthographicSize(m_ZoomLevel * 2.f);
 		return false;
 	}
 	
@@ -88,7 +90,7 @@ namespace Apex {
 	
 	bool OrthographicCameraController2D::OnWindowResize(WindowResizeEvent& e)
 	{
-		OnResize((float)e.GetWidth(), (float)e.GetHeight());
+		OnResize(e.GetWidth(), e.GetHeight());
 		return false;
 	}
 }

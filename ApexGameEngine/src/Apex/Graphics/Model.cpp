@@ -126,8 +126,8 @@ namespace Apex {
 			};
 		}
 		Mesh _mesh(vertices.data(), vertices.size(), indices.data(), indices.size(), layout);
-		if(s_LoadTextures)
-			_mesh.SetTextures(ProcessMaterial(material, aiTextureType_DIFFUSE, "TextureDiffuse"));
+		//if(s_LoadTextures)
+		//	_mesh.SetTextures(ProcessMaterial(material, aiTextureType_DIFFUSE, "TextureDiffuse"));
 		
 		_mesh.m_HasTangents = mesh->HasTangentsAndBitangents();
 		

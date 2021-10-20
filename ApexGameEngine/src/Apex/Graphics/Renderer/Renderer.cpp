@@ -17,9 +17,9 @@ namespace Apex {
 		APEX_CORE_TRACE("Apex::Renderer initialized successfully!");
 	}
 
-	void Renderer::BeginScene(const Camera& camera)
+	void Renderer::BeginScene(const Camera& camera, const glm::mat4& transform)
 	{
-		s_SceneData->ViewProjectionMatrix = camera.GetViewProjectionMatrix();
+		s_SceneData->ViewProjectionMatrix = camera.GetProjection() * glm::inverse(transform);
 	}
 
 	void Renderer::EndScene()
@@ -35,7 +35,10 @@ namespace Apex {
 		shader->SetUniMat4("u_Model", modelMatrix);
 
 		vertexArray->Bind();
-		RenderCommands::DrawIndexed(vertexArray);
+		if (vertexArray->GetIndexBuffers().empty())
+			RenderCommands::Draw(vertexArray);
+		else
+			RenderCommands::DrawIndexed(vertexArray);
 	}
 
 	void Renderer::SubmitArray(const Ref<Shader>& shader, const Ref<VertexArray>& vertexArray, glm::mat4 modelMatrices[], size_t count)

@@ -23,11 +23,11 @@ namespace Apex {
 		APEX_CORE_ASSERT(!s_Instance, "Application already exists.");
 		s_Instance = this;
 
-		m_Window = Apex::Scope<Window>(Window::Create(windowProps));
+		m_Window = Apex::Unique<Window>(Window::Create(windowProps));
 		m_Window->SetEventCallback(BIND_CALLBACK_FN(OnEvent));
 		m_Window->SetVSync(true);
 
-		m_ResourceManager = Apex::CreateScope<ResourceManager>();
+		m_ResourceManager = Apex::CreateUnique<ResourceManager>();
 
 		FileSystem::Init();
 		Renderer::Init();

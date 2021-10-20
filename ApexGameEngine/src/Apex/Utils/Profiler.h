@@ -76,10 +76,6 @@ namespace Apex {
 }
 // #define APEX_PROFILER_ENABLE
 
-#ifndef __FUNCSIG__
-#define __FUNCSIG__ __PRETTY_FUNCTION__
-#endif
-
 #ifdef APEX_PROFILER_ENABLE
 	
 	#if defined(APEX_PLATFORM_WINDOWS)

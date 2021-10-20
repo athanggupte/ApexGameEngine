@@ -10,7 +10,6 @@
 #include "Apex/Graphics/Mesh.h"
 
 #include "Apex/Core/Camera.h"
-#include "Apex/Core/ECS/Components/SceneCamera.h"
 
 #include "Apex/Utils/Utils.h"
 #include "Apex/Utils/Profiler.h"
@@ -210,7 +209,7 @@ namespace Apex {
 		delete s_Data;
 	}
 	
-	void ForwardRenderer::BeginScene(const SceneCamera& camera, const glm::mat4& transform)
+	void ForwardRenderer::BeginScene(const Camera& camera, const glm::mat4& transform)
 	{
 		APEX_PROFILE_FUNC();
 		
@@ -222,19 +221,6 @@ namespace Apex {
 		s_Data->SetGlobalUniform(glm::value_ptr(camera.GetProjection()), Camera_Projection);
 		s_Data->SetGlobalUniform(glm::value_ptr(glm::inverse(transform)), Camera_View);
 		s_Data->SetGlobalUniform(glm::value_ptr(glm::vec4(transform[3])), Camera_Position);
-	}
-	
-	void ForwardRenderer::BeginScene(const Camera& camera)
-	{
-		APEX_PROFILE_FUNC();
-		
-		// s_Data->MeshShaderIndexCache.clear();
-		
-		s_Data->MappedUniformBufferPtr = s_Data->RenderUniformBuffer->MapBuffer(false);
-		
-		s_Data->SetGlobalUniform(glm::value_ptr(camera.GetProjectionMatrix()), Camera_Projection);
-		s_Data->SetGlobalUniform(glm::value_ptr(camera.GetViewMatrix()), Camera_View);
-		s_Data->SetGlobalUniform(glm::value_ptr(glm::vec4(glm::inverse(camera.GetViewMatrix())[3])), Camera_Position);
 	}
 	
 	void ForwardRenderer::EndScene()

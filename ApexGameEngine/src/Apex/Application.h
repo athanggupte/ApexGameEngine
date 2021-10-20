@@ -34,8 +34,8 @@ namespace Apex {
 		bool OnWindowClose(WindowCloseEvent& e);
 		bool OnWindowResize(WindowResizeEvent& e);
 
-		Scope<Window> m_Window;
-		Scope<ResourceManager> m_ResourceManager;
+		Unique<Window> m_Window;
+		Unique<ResourceManager> m_ResourceManager;
 		ImGuiLayer* m_ImGuiLayer;
 		bool m_Running = true;
 		bool m_Minimized = false;

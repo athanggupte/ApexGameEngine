@@ -5,86 +5,57 @@
 
 namespace Apex {
 
-	//////////////////////////////////////////////////////////////////////
-	/*----------------------Orthographic Camera-------------------------*/
-	//////////////////////////////////////////////////////////////////////
-
-	OrthographicCamera::OrthographicCamera(float left, float right, float bottom, float top, float nearZ, float farZ)
-		: Camera(glm::ortho(left, right, bottom, top, nearZ, farZ), glm::mat4(1.0f))
+	Camera::Camera(ProjectionType projType)
+		: m_ProjectionType(projType)
 	{
-		m_ViewProjectionMatrix = m_ProjectionMatrix * m_ViewMatrix;
+		RecalculateProjection();
 	}
 
-	void OrthographicCamera::LookAt(const glm::vec3& center)
+	Camera::Camera(ProjectionType projType, uint32_t viewportWidth, uint32_t viewportHeight)
+		: m_ProjectionType(projType), m_AspectRatio(static_cast<float>(viewportWidth) / static_cast<float>(viewportHeight))
 	{
-		m_ViewMatrix = glm::lookAt(m_Position, center, glm::vec3(0.0f, 1.0f, 0.0f));
-		m_ViewProjectionMatrix = m_ProjectionMatrix * m_ViewMatrix;
+		RecalculateProjection();
 	}
 
-	void OrthographicCamera::RecalculateViewMatrix()
+	void Camera::SetViewportSize(uint32_t width, uint32_t height)
 	{
-		glm::mat4 transform = glm::translate(glm::mat4(1.0f), m_Position) * glm::rotate(glm::mat4(1.0f), glm::radians(m_Rotation), glm::vec3(0.f, 0.f, 1.f));
-
-		m_ViewMatrix = glm::inverse(transform);
-		m_ViewProjectionMatrix = m_ProjectionMatrix * m_ViewMatrix;
+		m_AspectRatio = static_cast<float>(width) / static_cast<float>(height);
+		RecalculateProjection();
 	}
-
-	void OrthographicCamera::SetProjection(float left, float right, float bottom, float top, float nearZ, float farZ)
+	
+	void Camera::SetOrthographic(float size, float nearClip, float farClip)
 	{
-		m_ProjectionMatrix = glm::ortho(left, right, bottom, top, nearZ, farZ);
-		m_ViewProjectionMatrix = m_ProjectionMatrix * m_ViewMatrix;
+		m_ProjectionType = ProjectionType::Orthographic;
+		m_OrthographicSize = size;
+		m_OrthographicNear = nearClip;
+		m_OrthographicFar = farClip;
+		RecalculateProjection();
 	}
-
-	//////////////////////////////////////////////////////////////////////
-	/*----------------------Perspective Camera--------------------------*/
-	//////////////////////////////////////////////////////////////////////
-
-	PerspectiveCamera::PerspectiveCamera(float fovAngle, float aspectRatio, float nearZ, float farZ)
-		: Camera(glm::perspective((float)glm::radians(fovAngle), aspectRatio, nearZ, farZ), glm::mat4(1.0f))
+	
+	void Camera::SetPerspective(float fov, float nearClip, float farClip)
 	{
-		m_ViewProjectionMatrix = m_ProjectionMatrix * m_ViewMatrix;
+		m_ProjectionType = ProjectionType::Perspective;
+		m_PerspectiveFovY = fov;
+		m_PerspectiveNear = nearClip;
+		m_PerspectiveFar = farClip;
+		RecalculateProjection();
 	}
-
-	void PerspectiveCamera::LookAt(glm::vec3 center)
+	
+	void Camera::RecalculateProjection()
 	{
-		m_ViewMatrix = glm::lookAt(m_Position, center, m_WorldUp);
-		m_ViewProjectionMatrix = m_ProjectionMatrix * m_ViewMatrix;
-	}
-
-	void PerspectiveCamera::Move(const glm::vec3 & movement)
-	{
-		m_Position -= m_Front * movement.z;
-		m_Position += m_Right * movement.x;
-		m_Position += m_Up * movement.y;
-		RecalculateViewMatrix();
-	}
-
-	void PerspectiveCamera::Rotate(float pitch, float yaw, float roll)
-	{
-		m_Pitch += pitch;
-		m_Yaw += yaw;
-		m_Roll += roll;
+		m_Projection = (m_ProjectionType == ProjectionType::Perspective)
 		
-		if (m_Pitch > 360.f || m_Pitch < -360.f)
-			m_Pitch = 0.f;
-		if (m_Yaw > 360.f || m_Yaw < -360.f)
-			m_Yaw = 0.f;
-
-		RecalculateViewMatrix();
+						? glm::perspective(m_PerspectiveFovY, 
+										   m_AspectRatio,
+										   m_PerspectiveNear,
+										   m_PerspectiveFar)
+		
+						: glm::ortho(-m_OrthographicSize/2.f * m_AspectRatio,
+									 m_OrthographicSize/2.f * m_AspectRatio,
+									 -m_OrthographicSize/2.f,
+									 m_OrthographicSize/2.f,
+									 m_OrthographicNear,
+									 m_OrthographicFar);
 	}
-
-	void PerspectiveCamera::RecalculateViewMatrix()
-	{
-		m_Front.x = cos(glm::radians(m_Pitch)) * cos(glm::radians(m_Yaw));
-		m_Front.z = cos(glm::radians(m_Pitch)) * sin(glm::radians(m_Yaw));
-		m_Front.y = sin(glm::radians(m_Pitch));
-
-		m_Front = glm::normalize(m_Front);
-		m_Right = glm::normalize(glm::cross(m_Front, m_WorldUp));
-		m_Up = glm::normalize(glm::cross(m_Right, m_Front));
-
-		m_ViewMatrix = glm::lookAt(m_Position, m_Position + m_Front, m_Up);
-		m_ViewProjectionMatrix = m_ProjectionMatrix * m_ViewMatrix;
-	}
-
+	
 }

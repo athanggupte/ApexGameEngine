@@ -57,7 +57,7 @@ namespace Apex {
 		// Tag Component
 		{
 			static uint64_t counter = 0;
-			auto& tag = m_ContextEntity.GetComponent<TagComponent>().Tag;
+			auto& tag = m_ContextEntity.GetComponent<TagComponent>().tag;
 				
 			static char buffer[256];
 			memset(buffer, 0, sizeof(buffer));
@@ -94,9 +94,9 @@ namespace Apex {
 			if (opened) {
 				auto dragSpeed = (Input::IsKeyPressed(APEX_KEY_LEFT_SHIFT)) ? 0.001f : 0.5f;
 					
-				ImGui::DragFloat3("Translation", glm::value_ptr(transformComp.Translation), dragSpeed);
-				ImGui::DragFloat3("Rotation", glm::value_ptr(transformComp.Rotation), dragSpeed);
-				ImGui::DragFloat3("Scale", glm::value_ptr(transformComp.Scale), dragSpeed);
+				ImGui::DragFloat3("Translation", glm::value_ptr(transformComp.translation), dragSpeed);
+				ImGui::DragFloat3("Rotation", glm::value_ptr(transformComp.rotation), dragSpeed);
+				ImGui::DragFloat3("Scale", glm::value_ptr(transformComp.scale), dragSpeed);
 				ImGui::TreePop();
 			}
 			ImGui::Separator();
@@ -104,7 +104,7 @@ namespace Apex {
 		
 		if (m_ContextEntity.HasComponent<CameraComponent>()) {
 			auto& cameraComp = m_ContextEntity.GetComponent<CameraComponent>();
-			auto& camera = cameraComp.Camera;
+			auto& camera = cameraComp.camera;
 			
 			ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_DefaultOpen;
 			
@@ -113,13 +113,13 @@ namespace Apex {
 			if (opened) {
 				constexpr const char* projectionTypeStrings[] = { "Perspective", "Orthographic" };
 				constexpr const size_t projectionTypesLen = sizeof(projectionTypeStrings) / sizeof(projectionTypeStrings[0]);
-				const char* currentProjectionTypeStr = projectionTypeStrings[(int)cameraComp.Camera.GetProjectionType()];
+				const char* currentProjectionTypeStr = projectionTypeStrings[(int)cameraComp.camera.GetProjectionType()];
 				if (ImGui::BeginCombo("Projection", currentProjectionTypeStr)) {
 					for (int i=0; i<projectionTypesLen; i++) {
 						bool isSelected = projectionTypeStrings[i] == currentProjectionTypeStr;
 						if (ImGui::Selectable(projectionTypeStrings[i], isSelected)) {
 							currentProjectionTypeStr = projectionTypeStrings[i];
-							camera.SetProjectionType((SceneCamera::ProjectionType)i);
+							camera.SetProjectionType((Camera::ProjectionType)i);
 						}
 						
 						if (isSelected)
@@ -129,7 +129,7 @@ namespace Apex {
 					ImGui::EndCombo();
 				}
 				
-				if (cameraComp.Camera.GetProjectionType() == SceneCamera::ProjectionType::Perspective) {
+				if (cameraComp.camera.GetProjectionType() == Camera::ProjectionType::Perspective) {
 					float perspFov = glm::degrees(camera.GetPerspectiveVerticalFov());
 					if (ImGui::DragFloat("Vertical FOV", &perspFov))
 						camera.SetPerspectiveVerticalFov(glm::radians(perspFov));
@@ -181,15 +181,15 @@ namespace Apex {
 					ImVec2 uv1 = ImVec2(1.0f, 1.0f);                     // UV coordinates for (32,32) in our texture
 					ImVec4 bg_col = ImVec4(0.0f, 0.0f, 0.0f, 1.0f);      // Black background
 					ImVec4 tint_col = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);    // No tint
-					auto texture = Application::Get().GetResourceManager().Get(sprite.Texture);
+					auto texture = Application::Get().GetResourceManager().Get(sprite.texture);
 					if (texture) {
 						// ImGui::Text("%s", sprite.Texture.GetGUID().GetString().c_str());
 						ImGui::Text("%s", BASE64(texture->GetId()).c_str());
 						if (ImGui::ImageButton((void*)(intptr_t)texture->Get<Texture>()->GetID(), size, uv0, uv1, frame_padding, bg_col, tint_col)) {
 							auto filename = Utils::OpenFileDialog();
 							if (!filename.empty()) {
-								sprite.Texture = HASH(Utils::GetFilename(filename));
-								auto& textureResource = Application::Get().GetResourceManager().AddResource<Texture>(sprite.Texture, HASH(filename.c_str()));
+								sprite.texture = HASH(Utils::GetFilename(filename));
+								auto& textureResource = Application::Get().GetResourceManager().AddResource<Texture>(sprite.texture, HASH(filename.c_str()));
 								// TODO: Message/Event queue to pump messages
 								//m_ContextScene->OnSetup();
 								textureResource.Load();
@@ -200,17 +200,17 @@ namespace Apex {
 						if (ImGui::ImageButton((void*)(intptr_t)s_PlaceholderTexture->GetID(), size, uv0, uv1, frame_padding, bg_col, tint_col)) {
 							auto filename = Utils::OpenFileDialog();
 							if (!filename.empty()) {
-								sprite.Texture = HASH(Utils::GetFilename(filename));
-								auto& textureResource = Application::Get().GetResourceManager().AddResource<Texture>(sprite.Texture, HASH(filename.c_str()));
+								sprite.texture = HASH(Utils::GetFilename(filename));
+								auto& textureResource = Application::Get().GetResourceManager().AddResource<Texture>(sprite.texture, HASH(filename.c_str()));
 								// TODO: Message/Event queue to pump messages
 								//m_ContextScene->OnSetup();
 								textureResource.Load();
 							}
 						}
 					}
-					ImGui::DragFloat("Tiling Factor", &sprite.TilingFactor);
+					ImGui::DragFloat("Tiling Factor", &sprite.tilingFactor);
 				} else {
-					ImGui::ColorEdit4("Color", glm::value_ptr(sprite.Color));
+					ImGui::ColorEdit4("Color", glm::value_ptr(sprite.color));
 				}
 				ImGui::TreePop();
 			}
@@ -225,10 +225,10 @@ namespace Apex {
 			bool opened = ImGui::TreeNodeEx((void*)typeid(ScriptComponent).hash_code(), flags, "Script");
 			
 			if (opened) {
-				ImGui::InputText("Script File", &scriptComp.Filename);
+				ImGui::InputText("Script File", &scriptComp.filename);
 				ImGui::SameLine();
 				if (ImGui::Button("...##script_file_select")) {
-					scriptComp.Filename = Utils::OpenFileDialog();
+					scriptComp.filename = Utils::OpenFileDialog();
 				}
 				ImGui::TreePop();
 			}

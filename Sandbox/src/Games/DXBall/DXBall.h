@@ -335,12 +335,12 @@ namespace DXBall {
 		}
 
 	private:
-		Apex::Scope<Ball> m_Ball_1;
-		//Apex::Scope<Ball> m_Ball_2;
+		Apex::Unique<Ball> m_Ball_1;
+		//Apex::Unique<Ball> m_Ball_2;
 
-		std::vector<Apex::Scope<Brick>> m_Bricks;
-		Apex::Scope<Paddle> m_Paddle;
-		std::vector<Apex::Scope<Ball>> m_Balls;
+		std::vector<Apex::Unique<Brick>> m_Bricks;
+		Apex::Unique<Paddle> m_Paddle;
+		std::vector<Apex::Unique<Ball>> m_Balls;
 		int m_NumberOfBalls = 12;
 
 		Apex::ParticleSystem2D m_ParticleSystem;
@@ -452,9 +452,9 @@ namespace DXBall {
 
 	private:
 		uint32_t m_PlayerIndex;
-		Apex::Scope<Lobby> m_Lobby;
+		Apex::Unique<Lobby> m_Lobby;
 
-		std::vector<Apex::Scope<Brick>> m_Bricks;
+		std::vector<Apex::Unique<Brick>> m_Bricks;
 		Apex::OrthographicCamera m_Camera;
 	};
 }
