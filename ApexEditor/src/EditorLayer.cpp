@@ -41,8 +41,8 @@ namespace Apex {
 
 		m_Scene = CreateRef<Scene>();
 
-		auto& pusheenResource = Application::Get().GetResourceManager().AddResource<Texture>(HASH("pusheen-texture"), HASH("editor_assets/textures/pusheen-thug-life.png"));
-		auto& texturedUnlit3dShader = Application::Get().GetResourceManager().AddResource<Shader>(HASH("textured-unlit-3d"), HASH("editor_assets/shaders/TexturedUnlit3D.glsl"));
+		auto& pusheenResource = Application::Get().GetResourceManager().AddResource<Texture>(HASH("pusheen-texture"), "editor_assets/textures/pusheen-thug-life.png");
+		auto& texturedUnlit3dShader = Application::Get().GetResourceManager().AddResource<Shader>(HASH("textured-unlit-3d"), "editor_assets/shaders/TexturedUnlit3D.glsl");
 		texturedUnlit3dShader.Load();
 
 		// Asset allocation
@@ -119,11 +119,6 @@ namespace Apex {
 		}
 		
 		m_GameFramebuffer->Unbind();
-	}
-
-	void EditorLayer::OnEvent(Event& e)
-	{
-		m_EditorCameraController->OnEvent(e);
 	}
 	
 	static bool show_imgui_demo_window = false;
@@ -293,11 +288,12 @@ namespace Apex {
 		ImVec2 viewportSize = ImGui::GetContentRegionAvail();
 		m_GameViewportSize = *((glm::vec2*)&viewportSize);
 
-		ImGui::Image((void*)(intptr_t)m_GameFramebuffer->GetColorAttachmentID(), { m_GameViewportSize.x, m_GameViewportSize.y }, { 0.f, 1.f }, { 1.f, 0.f });
+		ImGui::Image(reinterpret_cast<void*>(static_cast<intptr_t>(m_GameFramebuffer->GetColorAttachmentID())),
+		             {m_GameViewportSize.x, m_GameViewportSize.y}, {0.f, 1.f}, {1.f, 0.f});
 
 		if (ImGui::BeginDragDropTarget()) {
 			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ASSET_BROWSER_ITEM")) {
-				const char* path = (const char*)payload->Data;
+				const char* path = static_cast<const char*>(payload->Data);
 				SceneOpen(path);
 			}
 
@@ -482,7 +478,7 @@ namespace Apex {
 
 	void EditorLayer::OnEvent(Event& e)
 	{
-		m_CameraController.OnEvent(e);
+		m_EditorCameraController->OnEvent(e);
 
 		EventDispatcher dispatcher(e);
 		dispatcher.Dispatch<KeyPressedEvent>(APEX_BIND_EVENT_FN(OnKeyPressed));
@@ -538,7 +534,7 @@ namespace Apex {
 	void EditorLayer::SceneNew()
 	{
 		m_Scene = CreateRef<Scene>();
-		m_SceneHeirarchyPanel.SetContext(m_Scene);
+		m_SceneHierarchyPanel.SetContext(m_Scene);
 	}
 
 	void EditorLayer::SceneOpen()

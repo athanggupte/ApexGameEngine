@@ -18,6 +18,7 @@ namespace Apex {
 		
 	protected:
 		void DrawComponents();
+		void DrawAddComponentsMenu();
 		
 	private:
 		Ref<Scene> m_ContextScene;
