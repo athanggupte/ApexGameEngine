@@ -6,54 +6,54 @@ namespace Apex {
 	// Load
 	void Resource::_LoadResource::operator() (const Ref<VFS::IFile>& texture)
 	{
-		APEX_LOG_INFO("Loading file '{}'", resource.m_SourceFile.str());
+		APEX_LOG_INFO("Loading file '{}'", resource.m_SourceFile);
 	}
 	
 	void Resource::_LoadResource::operator() (const Ref<Texture>& texture)
 	{
-		APEX_LOG_INFO("Loading texture from '{}'", resource.m_SourceFile.str());
-		resource.m_Ptr = Texture2D::Create(std::string(resource.m_SourceFile.str()));
+		APEX_LOG_INFO("Loading texture from '{}'", resource.m_SourceFile);
+		resource.m_Ptr = Texture2D::Create(resource.m_SourceFile.string());
 	}
 	
 	void Resource::_LoadResource::operator() (const Ref<Shader>& texture)
 	{
-		APEX_LOG_INFO("Loading shader from '{}'", resource.m_SourceFile.str());
-		resource.m_Ptr = Shader::Create(std::string(resource.m_SourceFile.str()));
+		APEX_LOG_INFO("Loading shader from '{}'", resource.m_SourceFile);
+		resource.m_Ptr = Shader::Create(resource.m_SourceFile.string());
 	}
 
 	// Reload
 	void Resource::_ReloadResource::operator() (const Ref<VFS::IFile>& texture)
 	{
-		APEX_LOG_INFO("Reloading file '{}'", resource.m_SourceFile.str());
+		APEX_LOG_INFO("Reloading file '{}'", resource.m_SourceFile);
 	}
 
 	void Resource::_ReloadResource::operator() (const Ref<Texture>& texture)
 	{
-		APEX_LOG_INFO("Reloading texture from '{}'", resource.m_SourceFile.str());
-		resource.m_Ptr = Texture2D::Create(std::string(resource.m_SourceFile.str()));
+		APEX_LOG_INFO("Reloading texture from '{}'", resource.m_SourceFile);
+		resource.m_Ptr = Texture2D::Create(resource.m_SourceFile.string());
 	}
 
 	void Resource::_ReloadResource::operator() (const Ref<Shader>& texture)
 	{
-		APEX_LOG_INFO("Reloading shader from '{}'", resource.m_SourceFile.str());
-		resource.m_Ptr = Shader::Create(std::string(resource.m_SourceFile.str()));
+		APEX_LOG_INFO("Reloading shader from '{}'", resource.m_SourceFile);
+		resource.m_Ptr = Shader::Create(resource.m_SourceFile.string());
 	}
 
 	// Unload
 	void Resource::_UnloadResource::operator() (const Ref<VFS::IFile>& texture)
 	{
-		APEX_LOG_INFO("Unloading file '{}'", resource.m_SourceFile.str());
+		APEX_LOG_INFO("Unloading file '{}'", resource.m_SourceFile);
 	}
 
 	void Resource::_UnloadResource::operator() (const Ref<Texture>& texture)
 	{
-		APEX_LOG_INFO("Unloading texture from '{}'", resource.m_SourceFile.str());
+		APEX_LOG_INFO("Unloading texture from '{}'", resource.m_SourceFile);
 		resource.m_Ptr = Ref<Texture>(nullptr);
 	}
 
 	void Resource::_UnloadResource::operator() (const Ref<Shader>& texture)
 	{
-		APEX_LOG_INFO("Unloading shader from '{}'", resource.m_SourceFile.str());
+		APEX_LOG_INFO("Unloading shader from '{}'", resource.m_SourceFile);
 		resource.m_Ptr = Ref<Shader>(nullptr);
 	}
 
@@ -68,13 +68,37 @@ namespace Apex {
 		return nullptr;
 	}
 
-	const Resource* const ResourceManager::Get(Handle id) const
+	const Resource* ResourceManager::Get(Handle id) const
 	{
 		auto itr = m_Registry.find(id);
 		// APEX_CORE_ASSERT(itr != m_Registry.end(), "Resource '" + std::to_string(id) + "' already exists!");
 		if (itr != m_Registry.end())
 			return &itr->second;
 		return nullptr;
+	}
+
+	bool ResourceManager::Exists(Handle id)
+	{
+		return m_Registry.find(id) != m_Registry.end();
+	}
+
+	void ResourceManager::AddDependency(Handle dependent, Handle dependency)
+	{
+		auto it = m_DependencyGraph.find(dependent);
+		if (it != m_DependencyGraph.end()) {
+			it->second.push_back(dependency);
+		}
+		else {
+			m_DependencyGraph.emplace(dependent, std::list<Handle>{ dependency });
+		}
+		m_Unsorted = true;
+	}
+
+	Iterable<std::vector<Handle>> ResourceManager::SolveDependencies()
+	{
+		if (m_Unsorted)
+			TopologicalSort();
+		return Iterable<std::vector<Handle>>(m_SortedOrder);
 	}
 
 

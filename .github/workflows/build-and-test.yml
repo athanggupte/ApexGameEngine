@@ -49,7 +49,7 @@ jobs:
 
       - name: Build (MSVC)
         if: startsWith( matrix.platform.cc, 'msvc' )
-        run: devenv GithubActionsTrial.sln /Rebuild "${{ matrix.config }}" /out build.log
+        run: devenv ApexGameEngine.sln /Rebuild "${{ matrix.config }}" /out build.log
         
       - name: Build (GCC)
         if: startsWith( matrix.platform.cc, 'gcc' )

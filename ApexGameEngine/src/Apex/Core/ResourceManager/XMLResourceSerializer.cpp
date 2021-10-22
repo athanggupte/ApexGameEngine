@@ -44,17 +44,17 @@ namespace Apex {
 		case ResourceType::FILE:
 			typeNode = dataNode.append_child("File");
 			// auto& resourceData = resource.Get<File>();
-			typeNode.append_child("Source").append_child(pugi::node_pcdata).set_value(TO_CSTRING(resource.GetSource().str()));
+			typeNode.append_child("Source").append_child(pugi::node_pcdata).set_value(TO_CSTRING(resource.GetSource()));
 			break;
 		case ResourceType::TEXTURE:
 			typeNode = dataNode.append_child("Texture");
 			// auto& resourceData = resource.Get<Texture>();
-			typeNode.append_child("Source").append_child(pugi::node_pcdata).set_value(TO_CSTRING(resource.GetSource().str()));
+			typeNode.append_child("Source").append_child(pugi::node_pcdata).set_value(TO_CSTRING(resource.GetSource()));
 			break;
 		case ResourceType::SHADER:
 			typeNode = dataNode.append_child("Shader");
 			// auto& resourceData = resource.Get<Shader>();
-			typeNode.append_child("Source").append_child(pugi::node_pcdata).set_value(TO_CSTRING(resource.GetSource().str()));
+			typeNode.append_child("Source").append_child(pugi::node_pcdata).set_value(TO_CSTRING(resource.GetSource()));
 			break;
 		}
 	}
@@ -69,15 +69,15 @@ namespace Apex {
 		switch (type) {
 		case ResourceType::FILE:
 			typeNode = dataNode.child("File");
-			manager.AddResource<File>(HASH(node.attribute("id").value()), HASH(typeNode.child("Source").child_value()));
+			manager.AddResource<File>(HASH(node.attribute("id").value()), typeNode.child("Source").child_value());
 			break;
 		case ResourceType::TEXTURE:
 			typeNode = dataNode.child("Texture");
-			manager.AddResource<Texture>(HASH(node.attribute("id").value()), HASH(typeNode.child("Source").child_value()));
+			manager.AddResource<Texture>(HASH(node.attribute("id").value()), typeNode.child("Source").child_value());
 			break;
 		case ResourceType::SHADER:
 			typeNode = dataNode.child("Shader");
-			manager.AddResource<Shader>(HASH(node.attribute("id").value()), HASH(typeNode.child("Source").child_value()));
+			manager.AddResource<Shader>(HASH(node.attribute("id").value()), typeNode.child("Source").child_value());
 			break;
 		default:
 			return false;

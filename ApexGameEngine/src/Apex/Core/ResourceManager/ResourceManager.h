@@ -3,7 +3,7 @@
 #include "Apex/Core/GUID.h"
 #include "Apex/Core/Strings.h"
 #include "Apex/Utils/Utils.h"
-#include "Apex/Core/FileSystem/FileHandle.h"
+#include "Apex/Core/FileSystem/FileSystem.h"
 
 #include "Apex/Graphics/RenderPrimitives/Shader.h"
 #include "Apex/Graphics/RenderPrimitives/Texture.h"
@@ -18,7 +18,7 @@ namespace Apex {
 	
 	using Handle = uint64_t;
 	
-	enum class ResourceType : size_t
+	enum class ResourceType : uint32_t
 	{
 		FILE	= 0,
 		TEXTURE,
@@ -52,9 +52,9 @@ namespace Apex {
 	struct fn_name \
 	{ \
 		Resource& resource; \
-		void operator() (const Ref<VFS::IFile>& texture); \
+		void operator() (const Ref<File>& file); \
 		void operator() (const Ref<Texture>& texture); \
-		void operator() (const Ref<Shader>& texture); \
+		void operator() (const Ref<Shader>& shader); \
 	}
 
 	class Resource
@@ -78,16 +78,16 @@ namespace Apex {
 
 	public:
 		template<typename Resource_t>
-		Resource(tag<Resource_t>, Handle id , StringHandle filepath)
+		Resource(tag<Resource_t>, Handle id , const fs::path& filepath)
 			: m_Id(id), m_Ptr(std::move(Ref<Resource_t>(nullptr))), m_SourceFile(filepath)
 		{
 		}
 
 		~Resource() = default;
 
-		ResourceType GetType() const { return (ResourceType)m_Ptr.index(); }
-		Handle GetId() const { return m_Id; }
-		StringHandle GetSource() const { return m_SourceFile; }
+		[[nodiscard]] ResourceType GetType() const { return static_cast<ResourceType>(m_Ptr.index()); }
+		[[nodiscard]] Handle GetId() const { return m_Id; }
+		[[nodiscard]] fs::path GetSource() const { return m_SourceFile; }
 
 		template<typename Resource_t>
 		const Ref<Resource_t>& Get()
@@ -125,7 +125,7 @@ namespace Apex {
 	private:
 		Handle m_Id;
 		ResourcePtr_t m_Ptr;
-		StringHandle m_SourceFile;
+		fs::path m_SourceFile;
 		//std::vector<Resource*> m_Dependencies;
 		//std::list<Resource*> m_Observers;
 		bool m_IsLoaded = false;
@@ -134,8 +134,8 @@ namespace Apex {
 	};
 
 	using ResourceHandle_t = std::variant<Resource*, Handle>;
-	
-	auto GetResourceHandleFn = [](auto& texture) -> Handle {
+
+	inline auto GetResourceHandleFn = [](auto& texture) -> Handle {
 		using T = std::decay_t<decltype(texture)>;
 		if constexpr (std::is_same_v<Resource*, T>) {
 			if (texture)
@@ -166,40 +166,15 @@ namespace Apex {
 		}
 		
 		Resource* Get(Handle id);
-		const Resource* const Get(Handle id) const;
+		[[nodiscard]] const Resource* Get(Handle id) const;
 
-		//template<typename Resource_t>
-		//const Ref<Resource_t>& GetResource(Handle id)
-		//{
-		//	auto itr = m_Registry.find(id);
-		//	return std::get<Ref<Resource_t>>(itr->second);
-		//}
-
-		inline bool Exists(Handle id)
-		{
-			return m_Registry.find(id) != m_Registry.end();
-		}
+		bool Exists(Handle id);
 
 		// Dependency Graph
 
-		void AddDependency(Handle dependent, Handle dependency)
-		{
-			auto it = m_DependencyGraph.find(dependent);
-			if (it != m_DependencyGraph.end()) {
-				it->second.push_back(dependency);
-			}
-			else {
-				m_DependencyGraph.emplace(dependent, std::list<Handle>{ dependency });
-			}
-			m_Unsorted = true;
-		}
-		
-		Iterable<std::vector<Handle>> SolveDependencies()
-		{
-			if (m_Unsorted)
-				TopologicalSort();
-			return Iterable<std::vector<Handle>>(m_SortedOrder);
-		}
+		void AddDependency(Handle dependent, Handle dependency);
+
+		Iterable<std::vector<Handle>> SolveDependencies();
 
 	protected:
 		void TopologicalSort();

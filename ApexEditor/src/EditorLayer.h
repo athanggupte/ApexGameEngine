@@ -6,6 +6,7 @@
 #include "Panels/SceneHierarchyPanel.h"
 #include "Panels/InspectorPanel.h"
 #include "Panels/LogPanel.h"
+#include "Panels/AssetExplorer.h"
 
 #include <glm/glm.hpp>
 
@@ -43,6 +44,19 @@ namespace Apex {
 		void DrawFileMenu();
 		void DrawEditMenu();
 		void ShowComputeShaderOutput();
+
+		// Event Functions
+		bool OnKeyPressed(KeyPressedEvent& e);
+		bool OnMouseButtonPressed(MouseButtonPressedEvent& e);
+
+		// Scene functions
+		void SceneNew();
+		void SceneOpen();
+		void SceneOpen(const fs::path& path);
+		void SceneSave();
+		void SceneSaveAs();
+		void SceneSaveAs(const fs::path& path);
+
 		
 	private:
 		// State
@@ -76,6 +90,9 @@ namespace Apex {
 		
 		SceneHierarchyPanel m_SceneHierarchyPanel;
 		InspectorPanel m_InspectorPanel;
+		AssetExplorer m_AssetExplorer;
+
+		::SingleCopyStack<std::string, 16> m_RecentFiles;
 		
 		//irrklang::ISoundEngine* m_SoundEngine;
 		//irrklang::ISound* m_Sound;

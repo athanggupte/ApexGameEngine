@@ -45,6 +45,7 @@ namespace Apex {
 		
 		if (m_ContextEntity) {
 			DrawComponents();
+			DrawAddComponentsMenu();
 		}
 		
 		ImGui::End();
@@ -56,11 +57,9 @@ namespace Apex {
 	{
 		// Tag Component
 		{
-			static uint64_t counter = 0;
 			auto& tag = m_ContextEntity.GetComponent<TagComponent>().tag;
 				
-			static char buffer[256];
-			memset(buffer, 0, sizeof(buffer));
+			static char buffer[256] = {};
 			auto sz = tag.str().size();
 			memcpy_s(buffer, sizeof(buffer), tag.str().data(), tag.str().size());
 			
@@ -78,13 +77,12 @@ namespace Apex {
 					isChanged = false;
 				}
 			}
-			counter++;
 
+			ImGui::Separator();
 		}
-		ImGui::Separator();
 		
 		// Transform Component
-		if (m_ContextEntity.HasComponent<TransformComponent>()) {
+		{
 			auto& transformComp = m_ContextEntity.GetComponent<TransformComponent>();
 			
 			ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_DefaultOpen;
@@ -101,7 +99,8 @@ namespace Apex {
 			}
 			ImGui::Separator();
 		}
-		
+
+		// Camera Component
 		if (m_ContextEntity.HasComponent<CameraComponent>()) {
 			auto& cameraComp = m_ContextEntity.GetComponent<CameraComponent>();
 			auto& camera = cameraComp.camera;
@@ -159,7 +158,8 @@ namespace Apex {
 				ImGui::TreePop();
 			}
 		}
-		
+
+		// Sprite RendererComponent
 		if (m_ContextEntity.HasComponent<SpriteRendererComponent>()) {
 			auto& sprite = m_ContextEntity.GetComponent<SpriteRendererComponent>();
 			
@@ -172,42 +172,36 @@ namespace Apex {
 				// Display component members
 				ImGui::Checkbox("Use Texture", &sprite.useTexture);
 				if (sprite.useTexture) {
-					ImGui::TextUnformatted("Texture");
-					ImGui::SameLine();
-					
-					ImVec2 size = ImVec2(100.0f, 100.0f);                // Image Size
-					int frame_padding = -1;                              // -1 == uses default padding (style.FramePadding)
-					ImVec2 uv0 = ImVec2(0.0f, 0.0f);                     // UV coordinates for lower-left
-					ImVec2 uv1 = ImVec2(1.0f, 1.0f);                     // UV coordinates for (32,32) in our texture
-					ImVec4 bg_col = ImVec4(0.0f, 0.0f, 0.0f, 1.0f);      // Black background
-					ImVec4 tint_col = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);    // No tint
-					auto texture = Application::Get().GetResourceManager().Get(sprite.texture);
-					if (texture) {
-						// ImGui::Text("%s", sprite.Texture.GetGUID().GetString().c_str());
-						ImGui::Text("%s", BASE64(texture->GetId()).c_str());
-						if (ImGui::ImageButton((void*)(intptr_t)texture->Get<Texture>()->GetID(), size, uv0, uv1, frame_padding, bg_col, tint_col)) {
-							auto filename = Utils::OpenFileDialog();
-							if (!filename.empty()) {
-								sprite.texture = HASH(Utils::GetFilename(filename));
-								auto& textureResource = Application::Get().GetResourceManager().AddResource<Texture>(sprite.texture, HASH(filename.c_str()));
-								// TODO: Message/Event queue to pump messages
-								//m_ContextScene->OnSetup();
-								textureResource.Load();
-							}
-						}
+					const ImVec2 size = ImVec2(100.0f, 100.0f);                // Image Size
+					const int frame_padding = -1;                              // -1 == uses default padding (style.FramePadding)
+					const ImVec2 uv0 = ImVec2(0.0f, 0.0f);                     // UV coordinates for lower-left
+					const ImVec2 uv1 = ImVec2(1.0f, 1.0f);                     // UV coordinates for (32,32) in our texture
+					const ImVec4 bg_col = ImVec4(0.0f, 0.0f, 0.0f, 1.0f);      // Black background
+					const ImVec4 tint_col = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);    // No tint
+					if (auto texture = Application::Get().GetResourceManager().Get(sprite.texture)) {
+						ImGui::InputText("Texture", &fmt::format("{}", Strings::Get(texture->GetId())), ImGuiInputTextFlags_ReadOnly);
+						ImGui::Image((void*)(intptr_t)texture->Get<Texture>()->GetID(), size, uv0, uv1, tint_col, bg_col);
 					} else {
-						ImGui::TextUnformatted("No image");
-						if (ImGui::ImageButton((void*)(intptr_t)s_PlaceholderTexture->GetID(), size, uv0, uv1, frame_padding, bg_col, tint_col)) {
-							auto filename = Utils::OpenFileDialog();
-							if (!filename.empty()) {
+						ImGui::InputText("Texture", "No texture", sizeof("No texture"), ImGuiInputTextFlags_ReadOnly);
+						ImGui::Image((void*)(intptr_t)s_PlaceholderTexture->GetID(), size, uv0, uv1, tint_col, bg_col);
+					}
+					if (ImGui::BeginDragDropTarget()) {
+						if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ASSET_BROWSER_ITEM")) {
+							if (const auto filename = static_cast<const char*>(payload->Data); filename != nullptr) {
 								sprite.texture = HASH(Utils::GetFilename(filename));
-								auto& textureResource = Application::Get().GetResourceManager().AddResource<Texture>(sprite.texture, HASH(filename.c_str()));
-								// TODO: Message/Event queue to pump messages
-								//m_ContextScene->OnSetup();
-								textureResource.Load();
+								if (auto textureResource = Application::Get().GetResourceManager().Get(sprite.texture)) {
+									if (!textureResource->IsLoaded())
+										textureResource->Load();
+								} else {
+									textureResource = &Application::Get().GetResourceManager().AddResource<Texture>(sprite.texture, filename);
+									// TODO: Message/Event queue to pump messages
+									textureResource->Load();
+								}
 							}
 						}
+						ImGui::EndDragDropTarget();
 					}
+
 					ImGui::DragFloat("Tiling Factor", &sprite.tilingFactor);
 				} else {
 					ImGui::ColorEdit4("Color", glm::value_ptr(sprite.color));
@@ -216,7 +210,8 @@ namespace Apex {
 			}
 			ImGui::Separator();
 		}
-		
+
+		// Script Component
 		if (m_ContextEntity.HasComponent<ScriptComponent>()) {
 			auto& scriptComp = m_ContextEntity.GetComponent<ScriptComponent>();
 			
@@ -234,7 +229,11 @@ namespace Apex {
 			}
 			ImGui::Separator();
 		}
-		
+
+	}
+
+	void InspectorPanel::DrawAddComponentsMenu()
+	{
 		if (ImGui::BeginPopup("Add Component")) {
 			if (!m_ContextEntity.HasComponent<CameraComponent>())
 				if (ImGui::MenuItem("Camera"))
@@ -269,8 +268,5 @@ namespace Apex {
 		
 		if (ImGui::Button("Add Component"))
 			ImGui::OpenPopup("Add Component");
-		
-		
 	}
-	
 }
