@@ -4,6 +4,8 @@
 #include "Apex/Graphics/Mesh.h"
 
 namespace Apex::Primitives {
+	
+	// Cube
 
 	namespace detail 
 	{
@@ -92,5 +94,51 @@ namespace Apex::Primitives {
 	BufferLayout Cube::GetLayout()
 	{
 		return detail::cube_buffer_layout;
+	}
+
+	// Plane
+
+	namespace detail 
+	{
+		static float plane_vertices[] = {
+			-0.5f, 0.f,  0.5f,    1.f, 0.f, 0.f, 1.f,
+			 0.5f, 0.f,  0.5f,    0.f, 0.f, 1.f, 1.f,
+			 0.5f, 0.f, -0.5f,    0.f, 1.f, 0.f, 1.f,
+
+			 0.5f, 0.f, -0.5f,    0.f, 1.f, 1.f, 1.f,
+			-0.5f, 0.f, -0.5f,    1.f, 1.f, 0.f, 1.f,
+			-0.5f, 0.f,  0.5f,    1.f, 0.f, 1.f, 1.f,
+			
+		};
+
+		static BufferLayout plane_buffer_layout = {
+			{ Apex::ShaderDataType::Float3, "a_Position" },
+			{ Apex::ShaderDataType::Float4, "a_Color" },
+		};
+
+		static Ref<Mesh> plane_mesh;
+	}
+
+	Ref<Mesh> Plane::GetMesh()
+	{
+		if (!detail::plane_mesh)
+			detail::plane_mesh = CreateRef<Mesh>(detail::plane_vertices, std::size(detail::plane_vertices), detail::plane_buffer_layout);
+
+		return detail::plane_mesh;
+	}
+
+	float* Plane::GetVertices()
+	{
+		return detail::plane_vertices;
+	}
+
+	size_t Plane::GetVertexCount()
+	{
+		return sizeof(detail::plane_vertices) / sizeof(float);
+	}
+
+	BufferLayout Plane::GetLayout()
+	{
+		return detail::plane_buffer_layout;
 	}
 }

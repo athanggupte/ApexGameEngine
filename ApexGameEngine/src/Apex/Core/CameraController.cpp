@@ -10,14 +10,17 @@
 #include "Apex/Utils/MathPrimitiveParser.h"
 
 namespace Apex {
-	
+
+	////////////////////////////////////////////////////////
+	////////////// Orthographic Controller /////////////////
+	////////////////////////////////////////////////////////
+
 	OrthographicCameraController2D::OrthographicCameraController2D(Camera& camera,
 		float zoomLevel, const glm::vec3& position, float rotation, float movementSpeed, float rotationSpeed)
 		: CameraController(camera), m_ZoomLevel(zoomLevel),
 		m_CameraPosition(position), m_CameraRotation(rotation),
 		m_MovementSpeed(movementSpeed), m_RotationSpeed(rotationSpeed)
 	{
-		m_Camera->SetProjectionType(Camera::ProjectionType::Orthographic);
 		m_Camera->SetOrthographicSize(m_ZoomLevel * 2.f);
 	}
 
@@ -92,6 +95,105 @@ namespace Apex {
 	{
 		OnResize(e.GetWidth(), e.GetHeight());
 		return false;
+	}
+
+	
+	////////////////////////////////////////////////////////
+	/////////////// Perspective Controller /////////////////
+	////////////////////////////////////////////////////////
+
+	constexpr static glm::vec3 worldUp = { 0.f, 1.f, 0.f };
+
+	PerspectiveCameraController::PerspectiveCameraController(Camera& camera, const glm::vec3& camera_position,
+		const glm::vec3& camera_rotation, float movement_speed, float rotation_speed)
+		: CameraController(camera), m_CameraPosition(camera_position),
+		m_MovementSpeed(movement_speed), m_RotationSpeed(rotation_speed)
+	{
+		m_CameraDirection = { 0.f, 0.f, 1.f };
+	}
+
+	glm::mat4 PerspectiveCameraController::GetTransform() const
+	{
+		glm::mat4 rotation = glm::mat4{
+			{ m_CameraRight.x, m_CameraUp.x, m_CameraDirection.x, 0.f },
+			{ m_CameraRight.y, m_CameraUp.y, m_CameraDirection.y, 0.f },
+			{ m_CameraRight.z, m_CameraUp.z, m_CameraDirection.z, 0.f },
+			{ 0.f, 0.f, 0.f, 1.f  },
+		};
+		rotation = glm::transpose(rotation);
+
+		return glm::translate(glm::mat4(1.f), m_CameraPosition) * rotation;
+	}
+
+	void PerspectiveCameraController::OnUpdate(Timestep ts)
+	{
+		glm::vec3 localDisplacement{ 0.f };
+		bool changed = false;
+
+		if (Input::IsKeyPressed(APEX_KEY_W))
+		{
+			localDisplacement.z += m_MovementSpeed * ts;
+			changed = true;
+		}
+		if (Input::IsKeyPressed(APEX_KEY_S))
+		{
+			localDisplacement.z -= m_MovementSpeed * ts;
+			changed = true;
+		}
+		if (Input::IsKeyPressed(APEX_KEY_A))
+		{
+			localDisplacement.x -= m_MovementSpeed * ts;
+			changed = true;
+		}
+		if (Input::IsKeyPressed(APEX_KEY_D))
+		{
+			localDisplacement.x += m_MovementSpeed * ts;
+			changed = true;
+		}
+		if (Input::IsKeyPressed(APEX_KEY_E))
+		{
+			localDisplacement.y += m_MovementSpeed * ts;
+			changed = true;
+		}
+		if (Input::IsKeyPressed(APEX_KEY_Q))
+		{
+			localDisplacement.y -= m_MovementSpeed * ts;
+			changed = true;
+		}
+
+		// If there is no displacement then don't do costly calculation
+		if (!changed)
+			return;
+
+		m_CameraRight = glm::normalize(glm::cross(worldUp, m_CameraDirection));
+		m_CameraUp = glm::cross(m_CameraDirection, m_CameraRight);
+
+		m_CameraPosition += glm::mat3{ m_CameraRight, m_CameraUp, -m_CameraDirection } * localDisplacement;
+	}
+
+	void PerspectiveCameraController::OnEvent(Event& e)
+	{
+		EventDispatcher dispatcher(e);
+	}
+
+	void PerspectiveCameraController::OnResize(uint32_t width, uint32_t height)
+	{
+		m_Camera->SetViewportSize(width, height);
+	}
+
+	void PerspectiveCameraController::LookAt(const glm::vec3& target)
+	{
+		auto lookAtMat = glm::lookAt(m_CameraPosition, target, worldUp);
+		APEX_CORE_DEBUG("{}", MathParser::ParseMatrix(glm::inverse(lookAtMat)));
+
+		m_CameraDirection = glm::normalize(m_CameraPosition - target);
+		m_CameraRight = glm::normalize(glm::cross(worldUp, m_CameraDirection));
+		m_CameraUp = glm::cross(m_CameraDirection, m_CameraRight);
+	}
+
+	void PerspectiveCameraController::FocusAt(const glm::vec3& target_position, const glm::vec3& viewing_direction,
+		const float& distance)
+	{
 	}
 }
 

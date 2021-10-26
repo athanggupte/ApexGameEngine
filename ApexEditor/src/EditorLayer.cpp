@@ -22,11 +22,17 @@ namespace Apex {
 	
 	EditorLayer::EditorLayer()
 		: Layer("ApexEditor"), m_BGColor{0.42f, 0.63f, 0.75f, 1.0f},
-		m_EditorCamera(Camera::ProjectionType::Orthographic, Application::Get().GetWindow().GetWidth(), Application::Get().GetWindow().GetHeight()),
-		m_EditorCameraController(std::move(CreateUnique<OrthographicCameraController2D>(m_EditorCamera, 1.f, glm::vec3{ 0.f, 0.f, 0.f })))
+		m_EditorCamera(Camera::ProjectionType::Perspective, Application::Get().GetWindow().GetWidth(), Application::Get().GetWindow().GetHeight()),
+		m_OrthographicCameraController(m_EditorCamera, 1.f, glm::vec3{ 0.f, 0.f, 5.f }),
+		m_PerspectiveCameraController(m_EditorCamera, { -5.f, 5.f, 5.f }),
+		m_EditorCameraController(&m_PerspectiveCameraController)
 	{
 		m_EditorCamera.SetOrthographicNear(0.f);
-		m_EditorCamera.SetOrthographicFar(10.f);
+		m_EditorCamera.SetOrthographicFar(10000.f);
+
+		m_PerspectiveCameraController.LookAt({ 0.f, 0.f, 0.f });
+		m_PerspectiveCameraController.MovementSpeed() = 1.0f;
+
 		// Logger
 		m_LogSink = std::make_shared<EditorLogSink_mt>(&m_LogPanel);
 		Log::GetCoreLogger()->sinks().push_back(m_LogSink);
@@ -60,6 +66,10 @@ namespace Apex {
 
 		auto cubeEntity = m_Scene->CreateEntity(HASH("cube"));
 		cubeEntity.AddComponent<MeshRendererComponent>(cubeMesh, texturedUnlit3dShader.Get<Shader>());
+
+		auto planeEntity = m_Scene->CreateEntity(HASH("plane"));
+		planeEntity.AddComponent<MeshRendererComponent>(Primitives::Plane::GetMesh(), texturedUnlit3dShader.Get<Shader>());
+
 		pusheenResource.Load();
 		pusheenResource.Get<Texture>()->Bind(0);
 		
@@ -74,6 +84,12 @@ namespace Apex {
 		ImGui::GetIO().ConfigWindowsMoveFromTitleBarOnly = true;
 		ImGui::GetIO().Fonts->AddFontFromMemoryCompressedBase85TTF(font_cousine_compressed_data_base85, 12);
 		ImGui::GetIO().Fonts->AddFontFromFileTTF("assets/fonts/consola.ttf", 12);
+#ifdef APEX_PLATFORM_WINDOWS
+		auto font_cfg = ImFontConfig();
+		font_cfg.OversampleH = 7;
+		font_cfg.OversampleV = 5;
+		auto font = ImGui::GetIO().Fonts->AddFontFromFileTTF("C:\\Windows\\Fonts\\segoeui.ttf", 16.f, &font_cfg);
+#endif
 	}
 	
 	void EditorLayer::OnDetach() 
@@ -125,7 +141,7 @@ namespace Apex {
 	
 	void EditorLayer::OnImGuiRender()
 	{
-		auto font2 = ImGui::GetIO().Fonts->Fonts[1];
+		auto font2 = ImGui::GetIO().Fonts->Fonts[2];
 		ImGui::PushFont(font2);
 		BeginDockspace();
 		ShowMainMenuBar();
@@ -213,7 +229,10 @@ namespace Apex {
 			m_InspectorPanel.SetContext(entity, m_Scene);
 		m_InspectorPanel.OnImGuiRender();
 		m_AssetExplorer.OnImGuiRender();
+
+		ImGui::PushFont(ImGui::GetIO().Fonts->Fonts[1]);
 		ShowLogger();
+		ImGui::PopFont();
 
 // 		if (ImGui::Button("Parse Graph")) {
 // 			APEX_LOG_INFO("Node Graph Output:");

@@ -59,6 +59,13 @@ namespace Apex {
 
 		
 	private:
+		enum class CameraMode
+		{
+			ORTHOGRAPHIC,
+			ISOMETRIC,
+			PERSPECTIVE,
+		};
+
 		// State
 		bool m_ViewportFocused = false;
 		bool m_ViewportHovered = false;
@@ -75,7 +82,10 @@ namespace Apex {
 		glm::vec2 m_GameViewportSize;
 
 		Camera m_EditorCamera;
-		Unique<CameraController> m_EditorCameraController;
+		OrthographicCameraController2D m_OrthographicCameraController;
+		PerspectiveCameraController m_PerspectiveCameraController;
+		CameraController* m_EditorCameraController;
+
 		Ref<Scene> m_Scene;
 
 		Ref<Texture2D> m_Texture;
