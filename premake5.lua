@@ -17,6 +17,7 @@ IncludeDirs["spdlog"] = "ApexGameEngine/vendor/spdlog/include/"
 IncludeDirs["GLFW"] = "ApexGameEngine/vendor/GLFW/include/"
 IncludeDirs["Glad"] = "ApexGameEngine/vendor/Glad/include/"
 IncludeDirs["ImGui"] = "ApexGameEngine/vendor/imgui/"
+IncludeDirs["FreeType"] = "ApexGameEngine/vendor/freetype/include"
 IncludeDirs["glm"] = "ApexGameEngine/vendor/glm/"
 IncludeDirs["stb_image"] = "ApexGameEngine/vendor/stb_image/"
 IncludeDirs["Assimp"] = "ApexGameEngine/vendor/Assimp/include/"
@@ -31,21 +32,27 @@ DLLs = {}
 DLLs["Assimp"] = "assimp-vc142-mtd"
 
 -- Platform library linkages
-WinLibs = { "opengl32.lib", "assimp-vc142-mtd", "irrKlang" }
+WinLibs = { "opengl32.lib", "freetyped", "assimp-vc142-mtd", "irrKlang" }
 -- WinLibs["OpenGL"] = "opengl32.lib"
 -- WinLibs["Assimp"] = "%{DLLs.Assimp}"
 -- WinLibs["irrKlang"] = "irrKlang"
 
-WinLibDirs = { "ApexGameEngine/vendor/Assimp/build/lib/Debug", "ApexGameEngine/vendor/irrKlang/lib" }
--- WinLibDirs["Assimp"] = "ApexGameEngine/vendor/Assimp/build/code/Debug"
--- WinLibDirs["irrKlang"] = "ApexGameEngine/vendor/irrKlang/lib"
+WinLibDirs = {
+	"ApexGameEngine/vendor/freetype/build/Debug",
+	"ApexGameEngine/vendor/Assimp/build/lib/Debug",
+	"ApexGameEngine/vendor/irrKlang/lib",
+}
 
-LinuxLibs = { "GL", "dl", "m", "pthread", "uuid", "assimp", "IrrKlang" }
+LinuxLibs = { "GL", "dl", "m", "pthread", "uuid", "freetype", "assimp", "IrrKlang" }
 -- LinuxLibs["OpenGL"] = "GL"
 -- LinuxLibs["Assimp"] = "assimp"
 -- LinuxLibs["irrKlang"] = "IrrKlang"
 
-LinuxLibDirs = { "ApexGameEngine/vendor/Assimp/build/bin", "ApexGameEngine/vendor/irrKlang/bin/linux-gcc-64" }
+LinuxLibDirs = {
+	"ApexGameEngine/vendor/freetype/build/Debug",
+	"ApexGameEngine/vendor/Assimp/build/bin",
+	"ApexGameEngine/vendor/irrKlang/bin/linux-gcc-64",
+}
 -- LinuxLibDirs["Assimp"] = "ApexGameEngine/vendor/Assimp/build/bin"
 -- LinuxLibDirs["irrKlang"] = "ApexGameEngine/vendor/irrKlang/bin/linux-gcc-64"
 
@@ -108,6 +115,7 @@ project "ApexGameEngine"
 		"%{IncludeDirs.GLFW}",
 		"%{IncludeDirs.Glad}",
 		"%{IncludeDirs.ImGui}",
+		"%{IncludeDirs.FreeType}",
 		"%{IncludeDirs.glm}",
 		"%{IncludeDirs.stb_image}",
 		"%{prj.name}/vendor/Assimp/build/include",
@@ -235,6 +243,7 @@ project "ApexEditor"
 		-- External Dependencies
 		"%{IncludeDirs.spdlog}",
 		"%{IncludeDirs.ImGui}",
+		"%{IncludeDirs.FreeType}",
 		"%{IncludeDirs.glm}",
 		"ApexGameEngine/vendor/Assimp/build/include",
 		"%{IncludeDirs.Assimp}",
@@ -323,6 +332,7 @@ project "Sandbox"
 		-- External Dependencies
 		"%{IncludeDirs.spdlog}",
 		"%{IncludeDirs.ImGui}",
+		"%{IncludeDirs.FreeType}",
 		"%{IncludeDirs.glm}",
 		"ApexGameEngine/vendor/Assimp/build/include",
 		"%{IncludeDirs.Assimp}",
@@ -390,6 +400,12 @@ project "Sandbox"
 		optimize "on"
 
 
+if os.istarget "windows" then
+	CMAKE = "%CMAKE_PATH%\\cmake"
+else
+	CMAKE = "cmake"
+end
+
 group "Dependencies"
 project "Assimp"
 	location "ApexGameEngine/vendor/Assimp"
@@ -398,8 +414,8 @@ project "Assimp"
 	buildcommands {
 		"{MKDIR} build",
 		"{CHDIR} build",
-		"cmake -DASSIMP_BUILD_ASSIMP_TOOLS=OFF -DASSIMP_BUILD_SAMPLES=OFF -DASSIMP_BUILD_TESTS=OFF ..",
-		"cmake --build . "
+		"%{CMAKE} -DASSIMP_BUILD_ASSIMP_TOOLS=OFF -DASSIMP_BUILD_SAMPLES=OFF -DASSIMP_BUILD_TESTS=OFF ..",
+		"%{CMAKE} --build . "
 	}
 
 	filter "system:windows"
@@ -411,3 +427,14 @@ project "Assimp"
 		buildcommands {
 			"{ECHO} Copy %{prj.location}/build/bin/Debug/assimp-vc142-mtd.so to the directory containing the executable binaries after building"
 		}
+
+project "FreeType"
+	location "ApexGameEngine/vendor/freetype"
+	kind "Makefile"
+
+	buildcommands {
+		"{MKDIR} build",
+		"{CHDIR} build",
+		"%{CMAKE} ..",
+		"%{CMAKE} --build . "
+	}
