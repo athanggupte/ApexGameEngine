@@ -48,7 +48,7 @@ namespace Apex {
 		{
 		}
 
-		uint32_t GetComponentCount() const
+		[[nodiscard]] uint32_t GetComponentCount() const
 		{
 			switch (e_Type)
 			{
@@ -81,14 +81,14 @@ namespace Apex {
 		{
 			CalculateOffsetAndStride();
 		}
-	
-		inline const std::vector<BufferElement>& GetElements() const { return m_Elements; }
-		inline uint32_t GetStride() const { return m_Stride; }
 
-		inline std::vector<BufferElement>::iterator begin() { return m_Elements.begin(); }
-		inline std::vector<BufferElement>::iterator end() { return m_Elements.end(); }
-		inline std::vector<BufferElement>::const_iterator begin() const { return m_Elements.begin(); }
-		inline std::vector<BufferElement>::const_iterator end() const { return m_Elements.end(); }
+		[[nodiscard]] const std::vector<BufferElement>& GetElements() const { return m_Elements; }
+		[[nodiscard]] uint32_t GetStride() const { return m_Stride; }
+
+		std::vector<BufferElement>::iterator begin() { return m_Elements.begin(); }
+		std::vector<BufferElement>::iterator end() { return m_Elements.end(); }
+		[[nodiscard]] std::vector<BufferElement>::const_iterator begin() const { return m_Elements.begin(); }
+		[[nodiscard]] std::vector<BufferElement>::const_iterator end() const { return m_Elements.end(); }
 
 	private:
 		void CalculateOffsetAndStride()
@@ -105,87 +105,67 @@ namespace Apex {
 
 	private:
 		std::vector<BufferElement> m_Elements;
-		uint32_t m_Stride;
+		uint32_t m_Stride = 0;
 	};
 
-
-	/*-------------------------Vertex Buffer----------------------------*/
-	class VertexBuffer
+	/*-------------------------Buffer----------------------------*/
+	class Buffer
 	{
 	public:
-		virtual ~VertexBuffer() = default;
+		virtual ~Buffer() = default;
+
+		[[nodiscard]] virtual uint32_t GetHandle() const = 0;
+		[[nodiscard]] virtual uint32_t GetSize() const = 0;
 
 		virtual void Bind() const = 0;
 		virtual void Unbind() const = 0;
 
-		virtual void SetData(const void* data, uint32_t size) = 0;
-		virtual void* MapBuffer(bool read, bool write) = 0;
-		virtual void UnmapBuffer() = 0;
-		
-		virtual uint32_t GetCount() const = 0;
+		virtual void SetData(const void* data, uint32_t size, uint32_t offset = 0u) const = 0;
+		[[nodiscard]] virtual void* MapBuffer(bool read, bool write = true) const = 0;
+		virtual void UnmapBuffer() const = 0;
+	};
 
-		virtual const BufferLayout& GetLayout() const = 0;
+
+	/*-------------------------Vertex Buffer----------------------------*/
+	class VertexBuffer : virtual public Buffer
+	{
+	public:
+		[[nodiscard]] virtual const BufferLayout& GetLayout() const = 0;
 		virtual void SetLayout(const BufferLayout& layout) = 0;
 
+		// Creation utility
 		static Ref<VertexBuffer> Create(uint32_t size);
 		static Ref<VertexBuffer> Create(float* vertices, uint32_t size);
 	};
 
 
 	/*-------------------------Index Buffer-----------------------------*/
-	class IndexBuffer
+	class IndexBuffer : virtual public Buffer
 	{
 	public:
-		virtual ~IndexBuffer() = default;
+		[[nodiscard]] virtual uint32_t GetCount() const = 0;
 
-		virtual void Bind() const = 0;
-		virtual void Unbind() const = 0;
-		
-// 		virtual void SetData(const void* data, uint32_t size) = 0;
-// 		virtual void* MapBuffer(bool read, bool write) = 0;
-// 		virtual void UnmapBuffer(bool read, bool write) = 0;
-
-		virtual uint32_t GetCount() const = 0;
-
+		// Creation utility
 		static Ref<IndexBuffer> Create(uint32_t* indices, uint32_t count);
 	};
 
 
 	/*-------------------------Uniform Buffer-----------------------------*/
-	class UniformBuffer
+	class UniformBuffer : virtual public Buffer
 	{
 	public:
-		virtual ~UniformBuffer() = default;
-		
-		virtual void Bind() const = 0;
-		virtual void Unbind() const = 0;
-		
-		virtual void SetData(const void* data, uint32_t size, uint32_t offset = 0) = 0;
-		virtual void* MapBuffer(bool read, bool write = 0) = 0;
-		virtual void UnmapBuffer() = 0;
-		
-		virtual uint32_t GetSize() const = 0;
-		
+		// Creation utility
 		static Ref<UniformBuffer> Create(uint32_t size, uint32_t binding);
 	};
 
 
 	/*-------------------------Shader Storage Buffer-----------------------------*/
-	class ShaderStorageBuffer
+	class ShaderStorageBuffer : virtual public Buffer
 	{
 	public:
-		virtual ~ShaderStorageBuffer() = default;
-		
-		virtual void Bind() const = 0;
-		virtual void Unbind() const = 0;
-		
-		virtual void SetData(const void* data, uint32_t size, uint32_t offset = 0) = 0;
 		virtual void ResetData(uint32_t size) = 0;
-		virtual void* MapBuffer(bool read, bool write = true) = 0;
-		virtual void UnmapBuffer() = 0;
 		
-		virtual uint32_t GetSize() const = 0;
-		
+		// Creation utility
 		static Ref<ShaderStorageBuffer> Create(uint32_t size, uint32_t binding);
 	};
 

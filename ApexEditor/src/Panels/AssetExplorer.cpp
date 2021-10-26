@@ -40,9 +40,9 @@ namespace Apex {
 	{
 		ImGui::Begin("Asset Explorer");
 
-		bool goToParent_disabled = (m_Context == "");
+		bool goToParentDisabled = (m_Context == "");
 
-		ImGui::BeginDisabled(goToParent_disabled);
+		ImGui::BeginDisabled(goToParentDisabled);
 		if (ImGui::ArrowButton("ParentDirectory", ImGuiDir_Up)) {
 			m_Context = m_Context.parent_path();
 		}
@@ -53,7 +53,7 @@ namespace Apex {
 			m_Context = "";
 
 		fs::path tempPath = "";
-		for (auto it = m_Context.begin(); it != m_Context.end(); it++) {
+		for (auto it = m_Context.begin(); it != m_Context.end(); ++it) {
 			ImGui::SameLine();
 			tempPath /= *it;
 			if (ImGui::Button(it->string().c_str())) {
@@ -63,16 +63,19 @@ namespace Apex {
 
 		static float thumbnailSize = 92.f;
 		static float padding = 12.f;
-		float cellSize = thumbnailSize + padding;
+		const float cellSize = thumbnailSize + padding;
 
-		float panelWidth = ImGui::GetContentRegionAvail().x;
-		int columnCount = std::max((int)(panelWidth / cellSize), 1);
+		const float panelWidth = ImGui::GetContentRegionAvail().x;
+		const int columnCount = std::max(static_cast<int>(panelWidth / cellSize), 1);
 
-		ImGui::Columns(columnCount, 0, false);
+		ImGui::Columns(columnCount, nullptr, false);
 
 		FileSystem::VisitDirectory(m_Context, [this](const FileSystem::Metadata& metadata) {
-			std::string pathStr = metadata.path.string();
-			std::string filenameStr = metadata.path.filename().string();
+			const std::string pathStr = metadata.path.string();
+			const std::string filenameStr = metadata.path.filename().string();
+
+			if (metadata.path.filename().extension() == ".apxmeta")
+				return;
 
 			ImGui::PushID(pathStr.c_str());
 			

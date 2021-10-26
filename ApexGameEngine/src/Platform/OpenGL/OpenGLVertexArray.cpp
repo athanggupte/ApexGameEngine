@@ -27,8 +27,8 @@ namespace Apex {
 
 	OpenGLVertexArray::OpenGLVertexArray()
 	{
-		//glCreateVertexArrays(1, &m_RendererID);
-		glGenVertexArrays(1, &m_RendererID);
+		glCreateVertexArrays(1, &m_RendererID);
+		// glGenVertexArrays(1, &m_RendererID);
 	}
 
 	OpenGLVertexArray::~OpenGLVertexArray()
@@ -48,26 +48,25 @@ namespace Apex {
 
 	void OpenGLVertexArray::AddVertexBuffer(const Ref<VertexBuffer> vertexBuffer)
 	{
-		glBindVertexArray(m_RendererID);
-		vertexBuffer->Bind();
+		// glBindVertexArray(m_RendererID);
+		// vertexBuffer->Bind();
+		glVertexArrayVertexBuffer(m_RendererID, m_VertexBuffers.size(), vertexBuffer->GetHandle(), 0, vertexBuffer->GetLayout().GetStride());
 
-		APEX_CORE_ASSERT(vertexBuffer->GetLayout().GetElements().size(), "Vertex Buffer has no layout!");
+		APEX_CORE_ASSERT(vertexBuffer->GetLayout().GetElements().size() > 0, "Vertex Buffer has no layout!");
 
-		uint32_t index = 0;
 		const BufferLayout& layout = vertexBuffer->GetLayout();
 		for (const auto& element : layout) {
-			glEnableVertexAttribArray(index);
-			glVertexAttribPointer(index,
+			glEnableVertexArrayAttrib(m_RendererID, m_NumAttribs);
+			glVertexArrayAttribFormat(m_RendererID, m_NumAttribs,
 				element.GetComponentCount(),
 				ShaderDataTypeToOpenGLBaseType(element.e_Type),
 				element.e_Normalized ? GL_TRUE : GL_FALSE,
-				layout.GetStride(),
-				(const void*)element.e_Offset);
-			index++;
+				element.e_Offset);
+			glVertexArrayAttribBinding(m_RendererID, m_NumAttribs, m_VertexBuffers.size());
+			m_NumAttribs++;
 		}
 
 		m_VertexBuffers.push_back(vertexBuffer);
-		glBindVertexArray(0);
 	}
 
 	void OpenGLVertexArray::AddIndexBuffer(const Ref<IndexBuffer> indexBuffer)

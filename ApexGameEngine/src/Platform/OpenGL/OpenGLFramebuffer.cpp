@@ -38,22 +38,21 @@ namespace Apex {
 		
 		// Create Framebuffer
 		glCreateFramebuffers(1, &m_RendererID);
-		glBindFramebuffer(GL_FRAMEBUFFER, m_RendererID);
 
 		// Create Depth attachment
 		if (m_DepthAttachment) {
-			m_DepthAttachment->Resize(m_Specification.width, m_Specification.height);
-			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_TEXTURE_2D, m_DepthAttachment->GetID(), 0);
+			if (m_Specification.width > m_DepthAttachment->GetWidth() || m_Specification.height > m_DepthAttachment->GetHeight()) {
+				m_DepthAttachment->Invalidate(m_Specification.width, m_Specification.height);
+				glNamedFramebufferTexture(m_RendererID, GL_DEPTH_STENCIL_ATTACHMENT, m_DepthAttachment->GetID(), 0);
+			}
 		}
 		
 		// Create Renderbuffer if depth attachment not set
 		if (!m_DepthAttachment && m_Specification.useDepth) {
 			glCreateRenderbuffers(1, &m_RenderBuffer);
-			glBindRenderbuffer(GL_RENDERBUFFER, m_RenderBuffer);
-			glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, m_Specification.width, m_Specification.height);
+			glNamedRenderbufferStorage(m_RenderBuffer, GL_DEPTH24_STENCIL8, m_Specification.width, m_Specification.height);
 
-			glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, m_RenderBuffer);
-			glBindRenderbuffer(GL_RENDERBUFFER, 0);
+			glNamedFramebufferRenderbuffer(m_RendererID, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, m_RenderBuffer);
 		}
 
 		// Invalidating Color attachments
@@ -62,23 +61,19 @@ namespace Apex {
 		// Create color attachments owned by Framebuffer
 		for (auto i = 0; i < m_Specification.numColorAttachments; i++) {
 			m_ColorAttachments[i] = Texture2D::Create(m_Specification.width, m_Specification.height, SimpleTextureSpec);
-			glFramebufferTexture2D(GL_FRAMEBUFFER, OpenGLColorAttachments[i], GL_TEXTURE_2D, m_ColorAttachments[i]->GetID(), 0);
+			glNamedFramebufferTexture(m_RendererID, OpenGLColorAttachments[i], m_ColorAttachments[i]->GetID(), 0);
 		}
 		
 		// Reset color attachments added externally
 		for (auto i = m_Specification.numColorAttachments; i < m_ActiveAttachments; i++) {
-			m_ColorAttachments[i]->Resize(m_Specification.width, m_Specification.height);
-			glFramebufferTexture2D(GL_FRAMEBUFFER, OpenGLColorAttachments[i], GL_TEXTURE_2D, m_ColorAttachments[i]->GetID(), 0);
+			if (m_Specification.width > m_ColorAttachments[i]->GetWidth() || m_Specification.height > m_ColorAttachments[i]->GetHeight()) {
+				m_ColorAttachments[i]->Invalidate(m_Specification.width, m_Specification.height);
+				glNamedFramebufferTexture(m_RendererID, OpenGLColorAttachments[i], m_ColorAttachments[i]->GetID(), 0);
+			}
 		}
 		
 		// Specify Active attachments
-		glDrawBuffers(m_ActiveAttachments, OpenGLColorAttachments);
-		
-		// Check for completeness
-		//APEX_CORE_ASSERT(glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE, "Framebuffer not complete!");
-		
-		// Bind default framebuffer
-		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+		glNamedFramebufferDrawBuffers(m_ActiveAttachments, m_ActiveAttachments, OpenGLColorAttachments);
 	}
 	
 	void OpenGLFramebuffer::Resize(uint32_t width, uint32_t height)
@@ -86,39 +81,14 @@ namespace Apex {
 		m_Specification.width = width;
 		m_Specification.height = height;
 		
-		glBindFramebuffer(GL_FRAMEBUFFER, m_RendererID);
-		
-		if (m_RenderBuffer) {
-			glDeleteRenderbuffers(1, &m_RenderBuffer);
-			
-			glCreateRenderbuffers(1, &m_RenderBuffer);
-			glBindRenderbuffer(GL_RENDERBUFFER, m_RenderBuffer);
-			glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, m_Specification.width, m_Specification.height);
-
-			glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, m_RenderBuffer);
-			glBindRenderbuffer(GL_RENDERBUFFER, 0);
-		}
-		
-		
-		for (auto i = 0; i < m_ActiveAttachments; i++) {
-			m_ColorAttachments[i]->Resize(m_Specification.width, m_Specification.height);
-			glFramebufferTexture2D(GL_FRAMEBUFFER, OpenGLColorAttachments[i], GL_TEXTURE_2D, m_ColorAttachments[i]->GetID(), 0);
-		}
-		
-		// Create Depth attachment
-		if (m_DepthAttachment) {
-				m_DepthAttachment->Resize(m_Specification.width, m_Specification.height);
-		}
-		
-		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+		Invalidate();
 	}
 	
 	void OpenGLFramebuffer::Bind() const
 	{
 		glBindFramebuffer(GL_FRAMEBUFFER, m_RendererID);
 		glViewport(0, 0, m_Specification.width, m_Specification.height);
-		APEX_CORE_ASSERT(glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE, "Framebuffer not complete!");
-		//glBindFramebuffer(GL_FRAMEBUFFER, 0);
+		APEX_CORE_ASSERT(IsComplete(), "Framebuffer not complete!");
 	}
 	
 	void OpenGLFramebuffer::Unbind() const
@@ -142,31 +112,28 @@ namespace Apex {
 	
 	void OpenGLFramebuffer::AttachColorTexture(const Ref<Texture2D>& texture)
 	{
-		APEX_CORE_ASSERT(texture->GetWidth() >= m_Specification.width && texture->GetHeight() >= m_Specification.height, "Insufficient size of color attachment!");
+		APEX_CORE_ASSERT(texture->GetWidth() >= m_Specification.width && texture->GetHeight() >= m_Specification.height, "Insufficient size of attachment!");
 		
 		if (m_ActiveAttachments >= m_Specification.maxColorAttachments) {
 			APEX_CORE_ERROR("Attempting to attach more than maximum attachments to Framebuffer!");
 			return;
 		}
-		glBindFramebuffer(GL_FRAMEBUFFER, m_RendererID);
-		glFramebufferTexture2D(GL_FRAMEBUFFER, OpenGLColorAttachments[m_ActiveAttachments], GL_TEXTURE_2D, texture->GetID(), 0);
-		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+		glNamedFramebufferTexture(m_RendererID, OpenGLColorAttachments[m_ActiveAttachments], texture->GetID(), 0);
 		m_ColorAttachments[m_ActiveAttachments] = texture;
 		m_ActiveAttachments++;
 	}
 	
 	void OpenGLFramebuffer::AttachDepthTexture(const Ref<TextureDepth2D>& texture)
 	{
+		APEX_CORE_ASSERT(texture->GetWidth() >= m_Specification.width && texture->GetHeight() >= m_Specification.height, "Insufficient size of attachment!");
+
+		glNamedFramebufferTexture(m_RendererID, GL_DEPTH_STENCIL_ATTACHMENT, texture->GetID(), 0);
 		m_DepthAttachment = texture;
-		glBindFramebuffer(GL_FRAMEBUFFER, m_RendererID);
-		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_TEXTURE_2D, texture->GetID(), 0);
-		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	}
 	
 	bool OpenGLFramebuffer::IsComplete() const
 	{
-		glBindFramebuffer(GL_FRAMEBUFFER, m_RendererID);
-		return glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE;
+		return glCheckNamedFramebufferStatus(m_RendererID, GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE;
 	}
 
 

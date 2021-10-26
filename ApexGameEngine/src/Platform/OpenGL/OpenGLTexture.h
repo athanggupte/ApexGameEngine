@@ -11,21 +11,22 @@ namespace Apex {
 	public:
 		OpenGLTexture2D(const std::string& path, bool useHDR);
 		OpenGLTexture2D(uint32_t width, uint32_t height, const TextureSpec& spec, const std::string& name);
-		virtual ~OpenGLTexture2D();
+		~OpenGLTexture2D() override;
 
-		inline virtual uint32_t GetWidth() const override { return m_Width; }
-		inline virtual uint32_t GetHeight() const override { return m_Height; }
+		[[nodiscard]] uint32_t GetWidth() const override { return m_Width; }
+		[[nodiscard]] uint32_t GetHeight() const override { return m_Height; }
+
+		[[nodiscard]] uint32_t GetID() const override { return m_RendererID; }
+
+		[[nodiscard]] const std::string& GetPath() const override { return m_Path; }
+
+		void Bind(uint32_t slot = 0) const override;
+		void BindImage(uint32_t unit, bool read, bool write) const override;
 		
-		inline virtual uint32_t GetID() const override { return m_RendererID; }
-
-		inline virtual const std::string& GetPath() const { return m_Path; }
-
-		virtual void Bind(uint32_t slot = 0) const override;
-		virtual void BindImage(uint32_t unit, bool read, bool write) const override;
-		
-		virtual void Resize(uint32_t width, uint32_t height) override;
-		virtual void SetData(void* data, uint32_t size) override;
-		virtual const TextureSpec& GetSpec() const override { return m_Specification; }
+		// virtual void Resize(uint32_t width, uint32_t height) override;
+		void Invalidate(uint32_t width, uint32_t height) override;
+		void SetData(void* data, uint32_t size) override;
+		[[nodiscard]] const TextureSpec& GetSpec() const override { return m_Specification; }
 	private:
 		std::string m_Path;
 		uint32_t m_Width, m_Height;
@@ -33,7 +34,6 @@ namespace Apex {
 		GLenum m_InternalFormat, m_AccessFormat, m_DataType;
 		uint32_t m_PixelSize;
 		
-		bool m_Mutable = true;
 		TextureSpec m_Specification;
 	};
 
@@ -68,21 +68,21 @@ namespace Apex {
 	{
 	public:
 		OpenGLTextureDepth2D(uint32_t width, uint32_t height);
-		virtual ~OpenGLTextureDepth2D();
+		~OpenGLTextureDepth2D() override;
 
-		inline virtual uint32_t GetWidth() const override { return m_Width; }
-		inline virtual uint32_t GetHeight() const override { return m_Height; }
+		[[nodiscard]] uint32_t GetWidth() const override { return m_Width; }
+		[[nodiscard]] uint32_t GetHeight() const override { return m_Height; }
 
-		inline virtual uint32_t GetID() const override { return m_RendererID; }
+		[[nodiscard]] uint32_t GetID() const override { return m_RendererID; }
 
-		virtual void Bind(uint32_t slot = 0) const override;
-		virtual void Resize(uint32_t width, uint32_t height) override;
+		void Bind(uint32_t slot = 0) const override;
+		void Invalidate(uint32_t width, uint32_t height) override;
+
 	protected:
-		virtual void SetData(void* data, uint32_t size) override {}
+		void SetData(void* data, uint32_t size) override {}
 		
 	private:
-		virtual const std::string& GetPath() const { return m_Path; }
-
+		[[nodiscard]] const std::string& GetPath() const override { return m_Path; }
 	private:
 		const std::string m_Path = "<N/A>";
 		uint32_t m_Width, m_Height;

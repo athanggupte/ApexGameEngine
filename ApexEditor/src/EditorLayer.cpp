@@ -206,10 +206,11 @@ namespace Apex {
 		}
 		ImGui::End();
 		
-		m_SceneHierarchyPanel.SetContext(m_Scene);
+		// m_SceneHierarchyPanel.SetContext(m_Scene);
 		m_SceneHierarchyPanel.OnImGuiRender();
 		auto entity = m_SceneHierarchyPanel.GetSelectedEntity();
-		m_InspectorPanel.SetContext(entity, m_Scene);
+		if (entity)
+			m_InspectorPanel.SetContext(entity, m_Scene);
 		m_InspectorPanel.OnImGuiRender();
 		m_AssetExplorer.OnImGuiRender();
 		ShowLogger();
@@ -553,6 +554,8 @@ namespace Apex {
 			scene->OnSetup();
 			m_Scene = scene;
 			m_RecentFiles.Push(path.string());
+			m_SceneHierarchyPanel.SetContext(m_Scene);
+			m_InspectorPanel.SetContext({}, scene);
 		}
 
 	}
