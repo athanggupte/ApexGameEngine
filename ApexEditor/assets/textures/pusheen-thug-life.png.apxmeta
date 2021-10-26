@@ -6,7 +6,7 @@
   <Resource id="pusheen-texture">
     <Data type="1">
       <Texture>
-        <Source>textures/pusheen-thug-life.png</Source>
+        <Source>pusheen-thug-life.png</Source>
       </Texture>
     </Data>
   </Resource>

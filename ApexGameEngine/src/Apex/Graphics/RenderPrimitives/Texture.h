@@ -44,24 +44,25 @@ namespace Apex {
 	};
 	
 	// Default TextureSpecs
-	inline static const TextureSpec SimpleTextureSpec{ TextureAccessFormat::RGBA, TextureInternalFormat::RGBA8, TextureDataType::UBYTE };
-	inline static const TextureSpec HDRTextureSpec{ TextureAccessFormat::RGBA, TextureInternalFormat::RGBA16, TextureDataType::FLOAT };
+	inline static constexpr TextureSpec SimpleTextureSpec{ TextureAccessFormat::RGBA, TextureInternalFormat::RGBA8, TextureDataType::UBYTE };
+	inline static constexpr TextureSpec HDRTextureSpec{ TextureAccessFormat::RGBA, TextureInternalFormat::RGBA16, TextureDataType::FLOAT };
 	
 	
 	class Texture
 	{
 	public:
 		virtual ~Texture() = default;
-		virtual uint32_t GetWidth() const = 0;
-		virtual uint32_t GetHeight() const = 0;
+		[[nodiscard]] virtual uint32_t GetWidth() const = 0;
+		[[nodiscard]] virtual uint32_t GetHeight() const = 0;
 
-		virtual uint32_t GetID() const = 0;
+		[[nodiscard]] virtual uint32_t GetID() const = 0;
 
 		virtual void Bind(uint32_t slot = 0) const = 0;
 		virtual void SetData(void* data, uint32_t size) = 0;
-		virtual void Resize(uint32_t width, uint32_t height) = 0;
-		
-		virtual const std::string& GetPath() const = 0;
+		// virtual void Resize(uint32_t width, uint32_t height) = 0;
+		virtual void Invalidate(uint32_t width, uint32_t height) = 0;
+
+		[[nodiscard]] virtual const std::string& GetPath() const = 0;
 		
 		virtual void SetRows(uint32_t rows) { this->m_NumberOfRows = rows; this->m_MaxIndex = rows * rows; }
 		virtual uint32_t GetRows() { return this->m_NumberOfRows; }
@@ -78,7 +79,7 @@ namespace Apex {
 		static Ref<Texture2D> Create(uint32_t width, uint32_t height, const TextureSpec& spec, const std::string& name = "");
 
 		virtual void BindImage(uint32_t unit, bool read, bool write) const = 0;
-		virtual const TextureSpec& GetSpec() const = 0;
+		[[nodiscard]] virtual const TextureSpec& GetSpec() const = 0;
 	};
 
 //#define SEPARATE_HDR

@@ -23,7 +23,7 @@ namespace Apex {
 		uint32_t m_RendererID;
 		std::vector<Ref<VertexBuffer>> m_VertexBuffers;
 		std::vector<Ref<IndexBuffer>> m_IndexBuffers;
-
+		uint32_t m_NumAttribs = 0;
 	};
 
 }

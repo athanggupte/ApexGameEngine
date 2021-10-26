@@ -4,90 +4,113 @@
 
 namespace Apex {
 
+	/*-------------------------Buffer----------------------------*/
+	class OpenGLBuffer : virtual public Buffer
+	{
+	public:
+		OpenGLBuffer(void* data, uint32_t size);
+		virtual ~OpenGLBuffer() override;
+
+		[[nodiscard]] uint32_t GetHandle() const override { return m_RendererID; }
+		[[nodiscard]] virtual uint32_t GetSize() const override { return m_Size; }
+
+		void SetData(const void* data, uint32_t size, uint32_t offset) const override;
+		[[nodiscard]] void* MapBuffer(bool read, bool write) const override;
+		void UnmapBuffer() const override;
+
+	protected:
+		uint32_t m_RendererID = 0;
+		uint32_t m_Size;
+	};
+
 	/*-------------------------Vertex Buffer----------------------------*/
-	class OpenGLVertexBuffer : public VertexBuffer
+	class OpenGLVertexBuffer final : public VertexBuffer, OpenGLBuffer
 	{
 	public:
 		OpenGLVertexBuffer(uint32_t size);
 		OpenGLVertexBuffer(float* vertices, uint32_t size);
-		virtual ~OpenGLVertexBuffer();
 
-		virtual void Bind() const override;
-		virtual void Unbind() const override;
+		void Bind() const override;
+		void Unbind() const override;
 
-		virtual void SetData(const void* data, uint32_t size) override;
-		virtual void* MapBuffer(bool read, bool write = true) override;
-		virtual void UnmapBuffer() override;
-		
-		inline virtual uint32_t GetCount() const override { return m_Count; }
+		[[nodiscard]] const BufferLayout& GetLayout() const override { return m_Layout; }
+		void SetLayout(const BufferLayout& layout) override { m_Layout = layout; }
 
-		inline virtual const BufferLayout& GetLayout() const override { return m_Layout; }
-		inline virtual void SetLayout(const BufferLayout& layout) override { m_Layout = layout; }
+		// Explicitly specify which base class functions to use
+		// To suppress warning: C4250 inherits by dominance
+		[[nodiscard]] uint32_t GetHandle() const override { return OpenGLBuffer::GetHandle(); }
+		[[nodiscard]] uint32_t GetSize() const override { return OpenGLBuffer::GetSize(); }
+		void SetData(const void* data, uint32_t size, uint32_t offset) const override { return OpenGLBuffer::SetData(data, size, offset); }
+		[[nodiscard]] void* MapBuffer(bool read, bool write) const override { return OpenGLBuffer::MapBuffer(read, write); }
+		void UnmapBuffer() const override { return OpenGLBuffer::UnmapBuffer(); }
 		
 	private:
-		uint32_t m_RendererID;
-		uint32_t m_Count;
 		BufferLayout m_Layout;
 	};
 
 	/*-------------------------Index Buffer----------------------------*/
-	class OpenGLIndexBuffer : public IndexBuffer
+	class OpenGLIndexBuffer final : public IndexBuffer, OpenGLBuffer
 	{
 	public:
 		OpenGLIndexBuffer(uint32_t* indices, uint32_t count);
-		virtual ~OpenGLIndexBuffer();
 
-		virtual void Bind() const override;
-		virtual void Unbind() const override;
+		void Bind() const override;
+		void Unbind() const override;
 
-		inline virtual uint32_t GetCount() const override { return m_Count; }
+		[[nodiscard]] uint32_t GetCount() const override { return m_Count; }
+
+		// Explicitly specify which base class functions to use
+		// To suppress warning: C4250 inherits by dominance
+		[[nodiscard]] uint32_t GetHandle() const override { return OpenGLBuffer::GetHandle(); }
+		[[nodiscard]] uint32_t GetSize() const override { return OpenGLBuffer::GetSize(); }
+		void SetData(const void* data, uint32_t size, uint32_t offset) const override { return OpenGLBuffer::SetData(data, size, offset); }
+		[[nodiscard]] void* MapBuffer(bool read, bool write) const override { return OpenGLBuffer::MapBuffer(read, write); }
+		void UnmapBuffer() const override { return OpenGLBuffer::UnmapBuffer(); }
 
 	private:
-		uint32_t m_RendererID;
 		uint32_t m_Count;
 	};
 
 	/*-------------------------Uniform Buffer----------------------------*/
-	class OpenGLUniformBuffer : public UniformBuffer
+	class OpenGLUniformBuffer final : public UniformBuffer, OpenGLBuffer
 	{
 	public:
 		OpenGLUniformBuffer(uint32_t size, uint32_t binding);
-		virtual ~OpenGLUniformBuffer();
-
-		virtual void Bind() const override;
-		virtual void Unbind() const override;
-
-		virtual void SetData(const void* data, uint32_t size, uint32_t offset = 0) override;
-		virtual void* MapBuffer(bool read, bool write = true) override;
-		virtual void UnmapBuffer() override;
 		
-		virtual uint32_t GetSize() const { return m_Size; }
+		void Bind() const override;
+		void Unbind() const override;
+
+		// Explicitly specify which base class functions to use
+		// To suppress warning: C4250 inherits by dominance
+		[[nodiscard]] uint32_t GetHandle() const override { return OpenGLBuffer::GetHandle(); }
+		[[nodiscard]] uint32_t GetSize() const override { return OpenGLBuffer::GetSize(); }
+		void SetData(const void* data, uint32_t size, uint32_t offset) const override { return OpenGLBuffer::SetData(data, size, offset); }
+		[[nodiscard]] void* MapBuffer(bool read, bool write) const override { return OpenGLBuffer::MapBuffer(read, write); }
+		void UnmapBuffer() const override { return OpenGLBuffer::UnmapBuffer(); }
 
 	private:
-		uint32_t m_RendererID;
-		uint32_t m_Size;
 	};
 
 	/*-------------------------Shader Storage Buffer----------------------------*/
-	class OpenGLShaderStorageBuffer : public ShaderStorageBuffer
+	class OpenGLShaderStorageBuffer final : public ShaderStorageBuffer, public OpenGLBuffer
 	{
 	public:
 		OpenGLShaderStorageBuffer(uint32_t size, uint32_t binding);
-		virtual ~OpenGLShaderStorageBuffer();
 
-		virtual void Bind() const override;
-		virtual void Unbind() const override;
-
-		virtual void SetData(const void* data, uint32_t size, uint32_t offset = 0) override;
-		virtual void ResetData(uint32_t size) override;
-		virtual void* MapBuffer(bool read, bool write = true) override;
-		virtual void UnmapBuffer() override;
+		void Bind() const override;
+		void Unbind() const override;
 		
-		virtual uint32_t GetSize() const { return m_Size; }
+		void ResetData(uint32_t size) override;
+
+		// Explicitly specify which base class functions to use
+		// To suppress warning: C4250 inherits by dominance
+		[[nodiscard]] uint32_t GetHandle() const override { return OpenGLBuffer::GetHandle(); }
+		[[nodiscard]] uint32_t GetSize() const override { return OpenGLBuffer::GetSize(); }
+		void SetData(const void* data, uint32_t size, uint32_t offset) const override { return OpenGLBuffer::SetData(data, size, offset); }
+		[[nodiscard]] void* MapBuffer(bool read, bool write) const override { return OpenGLBuffer::MapBuffer(read, write); }
+		void UnmapBuffer() const override { return OpenGLBuffer::UnmapBuffer(); }
 
 	private:
-		uint32_t m_RendererID;
-		uint32_t m_Size;
 	};
 
 }

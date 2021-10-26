@@ -14,7 +14,7 @@ namespace Apex {
 	using IF = TextureInternalFormat;
 	using DT = TextureDataType;
 	
-	inline static GLenum GetOpenGLAccessFormat(TextureAccessFormat accessFormat)
+	constexpr static GLenum GetOpenGLAccessFormat(TextureAccessFormat accessFormat)
 	{
 		switch (accessFormat)
 		{
@@ -35,7 +35,7 @@ namespace Apex {
 	
 #define GET_GL_INTERNAL_FORMAT(internalFormat, dataTypeSuffix) GL_##internalFormat##dataTypeSuffix
 	
-	inline static GLenum GetOpenGLInternalFormat(TextureInternalFormat internalFormat, TextureDataType dataType)
+	constexpr static GLenum GetOpenGLInternalFormat(TextureInternalFormat internalFormat, TextureDataType dataType)
 	{
 		switch (dataType)
 		{
@@ -112,7 +112,7 @@ namespace Apex {
 		}
 	}
 	
-	inline static GLenum GetOpenGLDataType(TextureDataType dataType)
+	constexpr static GLenum GetOpenGLDataType(TextureDataType dataType)
 	{
 		switch (dataType)
 		{
@@ -126,7 +126,7 @@ namespace Apex {
 		}
 	}
 	
-	inline static uint32_t GetOpenGLPixelSize(TextureInternalFormat internalFormat)
+	constexpr static uint32_t GetOpenGLPixelSize(TextureInternalFormat internalFormat)
 	{
 		return (((uint32_t)internalFormat & 0xf0) >> 4) * (1 << ((uint32_t)internalFormat & 0x0f));
 	}
@@ -144,27 +144,25 @@ namespace Apex {
 		m_PixelSize = GetOpenGLPixelSize(spec.internalFormat);
 		
 		glCreateTextures(GL_TEXTURE_2D, 1, &m_RendererID);
-		//glTextureStorage2D(m_RendererID, 1, m_InternalFormat, m_Width, m_Height);
-		glBindTexture(GL_TEXTURE_2D, m_RendererID);
-		glTexImage2D(GL_TEXTURE_2D, 0, m_InternalFormat, m_Width, m_Height, 0, m_AccessFormat, m_DataType, nullptr);
-		
-		if(!name.empty())
-			glObjectLabel(GL_TEXTURE, m_RendererID, -1, name.c_str());
 
 		glTextureParameteri(m_RendererID, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		glTextureParameteri(m_RendererID, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		
+		glTextureStorage2D(m_RendererID, 1, m_InternalFormat, m_Width, m_Height);
+
+		if(!name.empty())
+			glObjectLabel(GL_TEXTURE, m_RendererID, -1, name.c_str());
 	}
 	
 	OpenGLTexture2D::OpenGLTexture2D(const std::string & path, bool useHDR)
-		: m_Path(path), m_Mutable(false)
+		: m_Path(path)
 	{
 		int width, height, channels;
 		stbi_set_flip_vertically_on_load(0);
 		void *data = nullptr;
 		
-		std::string filepath = "";
-		auto file = FileSystem::GetFileIfExists(path);
-		if (file)
+		std::string filepath;
+		if (const auto file = FileSystem::GetFileIfExists(path))
 			filepath += file->GetPhysicalPath();
 		else {
 			APEX_CORE_CRITICAL("Texture file {} not found!", path);
@@ -172,28 +170,37 @@ namespace Apex {
 		}
 		
 		if (useHDR) {
-			data = (float*)stbi_loadf(filepath.c_str(), &width, &height, &channels, 0);
+			data = stbi_loadf(filepath.c_str(), &width, &height, &channels, 0);
 		} else {
-			data = (stbi_uc*)stbi_load(filepath.c_str(), &width, &height, &channels, 0);
+			data = stbi_load(filepath.c_str(), &width, &height, &channels, 0);
 		}
 		APEX_CORE_ASSERT(data, std::string("Failed to load image : " + path));
 
 		m_Width = width;
 		m_Height = height;
 
-		GLenum internalFormat = 0, accessFormat = 0, dataType = 0;
+		GLenum internalFormat = 0, accessFormat = 0;
 
 		if (channels == 1) {
 			internalFormat = useHDR ? GL_R16F : GL_R8;
 			accessFormat = GL_RED;
+
+			m_Specification.accessFormat = TextureAccessFormat::RED;
+			m_Specification.internalFormat = useHDR ? TextureInternalFormat::R16 : TextureInternalFormat::R8;
 		}
 		else if (channels == 3) {
 			internalFormat = useHDR ? GL_RGB16F : GL_RGB8;
 			accessFormat = GL_RGB;
+			
+			m_Specification.accessFormat = TextureAccessFormat::RGB;
+			m_Specification.internalFormat = useHDR ? TextureInternalFormat::RGB16 : TextureInternalFormat::RGB8;
 		}
 		else if (channels == 4) {
 			internalFormat = useHDR ? GL_RGBA16F : GL_RGBA8;
 			accessFormat = GL_RGBA;
+			
+			m_Specification.accessFormat = TextureAccessFormat::RGBA;
+			m_Specification.internalFormat = useHDR ? TextureInternalFormat::RGBA16 : TextureInternalFormat::RGBA8;
 		}
 		
 		APEX_CORE_ASSERT(internalFormat && accessFormat, "Image format not supported : " + path + "\nChannels : " + std::to_string(channels));
@@ -201,18 +208,19 @@ namespace Apex {
 		m_AccessFormat = accessFormat;
 		m_InternalFormat = internalFormat;
 		m_DataType = useHDR ? GL_FLOAT : GL_UNSIGNED_BYTE;
+		m_Specification.dataType = useHDR ? TextureDataType::FLOAT : TextureDataType::UBYTE;
 
 		glCreateTextures(GL_TEXTURE_2D, 1, &m_RendererID);
-		glTextureStorage2D(m_RendererID, 1, m_InternalFormat, m_Width, m_Height);
 
 		glTextureParameteri(m_RendererID, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 		glTextureParameteri(m_RendererID, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
+		glTextureStorage2D(m_RendererID, 1, m_InternalFormat, m_Width, m_Height);
 		glTextureSubImage2D(m_RendererID, 0, 0, 0, m_Width, m_Height, m_AccessFormat, m_DataType, data);
 
 		stbi_image_free(data);
-		
-		auto name = Utils::GetFilename(path);
+
+		const auto name = Utils::GetFilename(path);
 		glObjectLabel(GL_TEXTURE, m_RendererID, -1, name.c_str());
 	}
 	
@@ -226,30 +234,34 @@ namespace Apex {
 		glBindTextureUnit(slot, m_RendererID);
 	}	
 
-	void OpenGLTexture2D::SetData(void* data, uint32_t size)
-	{
-		APEX_CORE_ASSERT(size == m_PixelSize * m_Width * m_Height, "Size of data not equal to size of texture!");
-		glTextureSubImage2D(m_RendererID, 0, 0, 0, m_Width, m_Height, m_AccessFormat, m_DataType, data);
-	}
-
-	void OpenGLTexture2D::Resize(uint32_t width, uint32_t height)
-	{
-		if (!m_Mutable)
-			APEX_CORE_ERROR("Cannot resize immutable texture!");
-		
-		m_Width = width;
-		m_Height = height;
-		glBindTexture(GL_TEXTURE_2D, m_RendererID);
-		glTexImage2D(GL_TEXTURE_2D, 0, m_InternalFormat, m_Width, m_Height, 0, m_AccessFormat, m_DataType, nullptr);
-	}
-
 	void OpenGLTexture2D::BindImage(uint32_t unit, bool read, bool write) const
 	{
 		APEX_CORE_ASSERT(read || write, "Image should be atleast readable or writable");
 		glBindImageTexture(unit, m_RendererID, 0, GL_FALSE, 0, (read && write) ? GL_READ_WRITE : (read) ? GL_READ_ONLY : GL_WRITE_ONLY, m_InternalFormat);
 		Renderer::SetImageAccessBit();
 	}
-	
+
+	void OpenGLTexture2D::SetData(void* data, uint32_t size)
+	{
+		APEX_CORE_ASSERT(size == m_PixelSize * m_Width * m_Height, "Size of data not equal to size of texture!");
+		glTextureSubImage2D(m_RendererID, 0, 0, 0, m_Width, m_Height, m_AccessFormat, m_DataType, data);
+	}
+
+	void OpenGLTexture2D::Invalidate(uint32_t width, uint32_t height)
+	{
+		m_Width = width;
+		m_Height = height;
+
+		glDeleteTextures(1, &m_RendererID);
+
+		glCreateTextures(GL_TEXTURE_2D, 1, &m_RendererID);
+
+		glTextureParameteri(m_RendererID, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTextureParameteri(m_RendererID, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		
+		glTextureStorage2D(m_RendererID, 1, m_InternalFormat, m_Width, m_Height);
+	}
+
 	//////////////////////////////////////////////////////////////////////
 	/*------------------------Texture 2D HDR----------------------------*/
 	//////////////////////////////////////////////////////////////////////
@@ -335,10 +347,7 @@ namespace Apex {
 	OpenGLTextureDepth2D::OpenGLTextureDepth2D(uint32_t width, uint32_t height)
 		: m_Width(width), m_Height(height)
 	{
-		glGenTextures(1, &m_RendererID);
-		glBindTexture(GL_TEXTURE_2D, m_RendererID);
-
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, m_Width, m_Height, 0, GL_DEPTH_COMPONENT, GL_FLOAT, nullptr);
+		glCreateTextures(GL_TEXTURE_2D, 1, &m_RendererID);
 		
 		glTextureParameteri(m_RendererID, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 		glTextureParameteri(m_RendererID, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
@@ -346,6 +355,9 @@ namespace Apex {
 		glTextureParameteri(m_RendererID, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
 		float borderColor[] = { 1.0f, 1.0f, 1.0f, 1.0f };
 		glTextureParameterfv(m_RendererID, GL_TEXTURE_BORDER_COLOR, borderColor);
+
+		/*TODO: Make depth texture internal format customizable*/
+		glTextureStorage2D(m_RendererID, 1, GL_DEPTH24_STENCIL8, m_Width, m_Height);
 	}
 
 	OpenGLTextureDepth2D::~OpenGLTextureDepth2D()
@@ -358,12 +370,19 @@ namespace Apex {
 		glBindTextureUnit(slot, m_RendererID);
 	}
 
-	void OpenGLTextureDepth2D::Resize(uint32_t width, uint32_t height)
+	void OpenGLTextureDepth2D::Invalidate(uint32_t width, uint32_t height)
 	{
 		m_Width = width;
 		m_Height = height;
-		glBindTexture(GL_TEXTURE_2D, m_RendererID);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, m_Width, m_Height, 0, GL_DEPTH_COMPONENT, GL_FLOAT, nullptr);
+
+		glDeleteTextures(1, &m_RendererID);
+
+		glCreateTextures(GL_TEXTURE_2D, 1, &m_RendererID);
+
+		glTextureParameteri(m_RendererID, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTextureParameteri(m_RendererID, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		
+		glTextureStorage2D(m_RendererID, 1, GL_DEPTH24_STENCIL8, m_Width, m_Height);
 	}
 	
 	//////////////////////////////////////////////////////////////////////
