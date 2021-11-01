@@ -111,7 +111,7 @@ namespace DXBall {
 			Apex::RenderCommands::SetClearColor({ 0.0f, 0.0f, 0.0f, 1.0f });
 			Apex::RenderCommands::Clear();
 			Apex::Renderer::BeginScene(m_Camera);
-			//m_ParticleTexture->Bind(0);
+			//m_ParticleTexture->BindTextures(0);
 			m_ParticleSystem.OnRender();
 			m_ParticleTexture->Bind(0);
 			//m_Ball_1->Render();

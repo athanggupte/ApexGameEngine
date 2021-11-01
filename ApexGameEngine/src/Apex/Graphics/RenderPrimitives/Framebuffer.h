@@ -42,7 +42,7 @@ namespace Apex {
 	public:
 		virtual ~DepthBuffer() = default;
 
-		virtual void Bind() const = 0;
+		virtual void BindTextures() const = 0;
 		virtual void Unbind() const = 0;
 
 		virtual const Ref<TextureDepth2D>& GetDepthTexture() const = 0;

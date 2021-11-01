@@ -66,8 +66,8 @@ namespace Apex::Primitives {
 		};
 
 		static BufferLayout cube_buffer_layout = {
-			{ Apex::ShaderDataType::Float3, "a_Position" },
-			{ Apex::ShaderDataType::Float4, "a_Color" },
+			{ ShaderDataType::Float3, VertexElementType::Position },
+			{ ShaderDataType::Float4, VertexElementType::Color },
 		};
 
 		static Ref<Mesh> cube_mesh;
@@ -101,19 +101,20 @@ namespace Apex::Primitives {
 	namespace detail 
 	{
 		static float plane_vertices[] = {
-			-0.5f, 0.f,  0.5f,    1.f, 0.f, 0.f, 1.f,
-			 0.5f, 0.f,  0.5f,    0.f, 0.f, 1.f, 1.f,
-			 0.5f, 0.f, -0.5f,    0.f, 1.f, 0.f, 1.f,
+			-0.5f, 0.f,  0.5f,    1.f, 0.f, 0.f, 1.f,    0.f, 1.f,
+			 0.5f, 0.f,  0.5f,    0.f, 0.f, 1.f, 1.f,    1.f, 1.f,
+			 0.5f, 0.f, -0.5f,    0.f, 1.f, 0.f, 1.f,    1.f, 0.f,
 
-			 0.5f, 0.f, -0.5f,    0.f, 1.f, 1.f, 1.f,
-			-0.5f, 0.f, -0.5f,    1.f, 1.f, 0.f, 1.f,
-			-0.5f, 0.f,  0.5f,    1.f, 0.f, 1.f, 1.f,
+			 0.5f, 0.f, -0.5f,    0.f, 1.f, 1.f, 1.f,    1.f, 0.f,
+			-0.5f, 0.f, -0.5f,    1.f, 1.f, 0.f, 1.f,    0.f, 0.f,
+			-0.5f, 0.f,  0.5f,    1.f, 0.f, 1.f, 1.f,    0.f, 1.f,
 			
 		};
 
 		static BufferLayout plane_buffer_layout = {
-			{ Apex::ShaderDataType::Float3, "a_Position" },
-			{ Apex::ShaderDataType::Float4, "a_Color" },
+			{ ShaderDataType::Float3, VertexElementType::Position },
+			{ ShaderDataType::Float4, VertexElementType::Color },
+			{ ShaderDataType::Float2, VertexElementType::TextureCoords },
 		};
 
 		static Ref<Mesh> plane_mesh;

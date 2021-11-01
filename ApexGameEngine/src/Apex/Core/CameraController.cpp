@@ -174,6 +174,18 @@ namespace Apex {
 	void PerspectiveCameraController::OnEvent(Event& e)
 	{
 		EventDispatcher dispatcher(e);
+		dispatcher.Dispatch<MouseScrolledEvent>([this] (MouseScrolledEvent& e)
+		{
+			static float scrollTotal = 0;
+			scrollTotal += e.GetOffsetY();
+			scrollTotal = glm::clamp(scrollTotal, -10.f, 14.f);
+			m_MovementSpeed = glm::pow(1.25, scrollTotal);
+			m_MovementSpeed = glm::clamp(m_MovementSpeed, 0.125f, 16.f);
+
+			APEX_CORE_TRACE("scroll Total: {0} | MovementSpeed: {1}", scrollTotal, m_MovementSpeed);
+
+			return false;
+		});
 	}
 
 	void PerspectiveCameraController::OnResize(uint32_t width, uint32_t height)

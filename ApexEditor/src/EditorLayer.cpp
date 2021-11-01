@@ -8,6 +8,7 @@
 #include "Apex/Core/ECS/SceneSerializer.h"
 #include "Apex/Core/ResourceManager/ResourceSerializer.h"
 
+#include "Panels/PieMenu.h"
 #include "Primitives.h"
 // #include "EditorTools/NodeGraph/Node.h"
 // #include "EditorTools/NodeGraph/NodeGraph.h"
@@ -47,31 +48,50 @@ namespace Apex {
 
 		m_Scene = CreateRef<Scene>();
 
-		auto& pusheenResource = Application::Get().GetResourceManager().AddResource<Texture>(HASH("pusheen-texture"), "editor_assets/textures/pusheen-thug-life.png");
-		auto& texturedUnlit3dShader = Application::Get().GetResourceManager().AddResource<Shader>(HASH("textured-unlit-3d"), "editor_assets/shaders/TexturedUnlit3D.glsl");
-		texturedUnlit3dShader.Load();
+		auto& resourceManager = Application::Get().GetResourceManager();
 
-		// Asset allocation
+		/* Shader initialization */
+		auto& gridShader = resourceManager.AddResourceFromFile<Shader>(RESNAME("shader_InfiniteGridXZ"), "editor_assets/shaders/InfiniteGridXZ.glsl");
+		gridShader.Load();
+		auto& debugVerticesShader = resourceManager.AddResourceFromFile<Shader>(RESNAME("shader_DebugVerticesUnlit"), "editor_assets/shaders/DebugVerticesUnlit.glsl");
+		debugVerticesShader.Load();
+		auto& debugTrianglesShader = resourceManager.AddResourceFromFile<Shader>(RESNAME("shader_DebugTrianglesUnlit"), "editor_assets/shaders/DebugTrianglesUnlit.glsl");
+		debugTrianglesShader.Load();
+		auto& unlitMaterial = resourceManager.AddResource<Material>(RESNAME("material_Unlit"), CreateRef<Material>());
+
+		/* Asset allocation */
 		m_ImageTexture = Texture2D::Create(256U, 256U, HDRTextureSpec, "Image");
 		m_ComputeShader = ComputeShader::Create("Blur.compute");
-		//m_Texture = Texture2D::Create("textures/pusheen-thug-life.png");
 		m_GameFramebuffer = Framebuffer::Create({ 1280u, 720u });
 
-		// Entity Initialization
-		//auto cameraEntity = m_Scene->CreateEntity(HASH("camera"));
-		//cameraEntity.AddComponent<CameraComponent>(Camera::ProjectionType::Orthographic);
-		//m_Scene->SetPrimaryCamera(cameraEntity);
+		auto& cubeMesh = resourceManager.AddResource<Mesh>(RESNAME("default-cube"),Primitives::Cube::GetMesh());
+		auto& planeMesh = resourceManager.AddResource<Mesh>(RESNAME("default-plane"), Primitives::Plane::GetMesh());
+		auto& pusheenTexture = resourceManager.AddResourceFromFile<Texture>(RESNAME("pusheen-texture"), "editor_assets/textures/pusheen-thug-life.png");
+		auto& suzanneMesh = resourceManager.AddResourceFromFile<Mesh>(RESNAME("suzanne-mesh"), "editor_assets/meshes/suzanne/source/suzanne.fbx");
+		auto& suzanneTexture = resourceManager.AddResourceFromFile<Texture>(RESNAME("suzanne-texture"), "editor_assets/meshes/suzanne/textures/suzanne_DefaultMaterial_BaseColor.png");
 
-		auto cubeMesh = CreateRef<Mesh>(Primitives::Cube::GetVertices(), Primitives::Cube::GetVertexCount(), Primitives::Cube::GetLayout());
+		suzanneMesh.Load();
+		pusheenTexture.Load();
+		suzanneTexture.Load();
 
-		auto cubeEntity = m_Scene->CreateEntity(HASH("cube"));
-		cubeEntity.AddComponent<MeshRendererComponent>(cubeMesh, texturedUnlit3dShader.Get<Shader>());
+		{
+			auto& material = unlitMaterial.Get<Material>();
+			material->SetShader(Shader::Create("editor_assets/shaders/AlbedoUnlit.glsl"));
+			material->AddTexture("Albedo", suzanneTexture.Get<Texture>());
+		}
+
+		/* Entity initialization */
+		/*auto cubeEntity = m_Scene->CreateEntity(HASH("cube"));
+		cubeEntity.AddComponent<MeshRendererComponent>(cubeMesh.GetId(), debugTrianglesShader.GetId());
 
 		auto planeEntity = m_Scene->CreateEntity(HASH("plane"));
-		planeEntity.AddComponent<MeshRendererComponent>(Primitives::Plane::GetMesh(), texturedUnlit3dShader.Get<Shader>());
+		planeEntity.AddComponent<MeshRendererComponent>(planeMesh.GetId(), debugTrianglesShader.GetId());
+		planeEntity.GetComponent<TransformComponent>().scale *= glm::vec3(5.f, 1.f, 5.f);*/
 
-		pusheenResource.Load();
-		pusheenResource.Get<Texture>()->Bind(0);
+		auto suzanneEntity = m_Scene->CreateEntity(HASH("suzanne"));
+		suzanneEntity.AddComponent<MeshRendererComponent>(suzanneMesh.GetId(), unlitMaterial.GetId());
+
+		pusheenTexture.Get<Texture>()->Bind(0);
 		
 		m_Scene->OnSetup();
 
@@ -123,13 +143,26 @@ namespace Apex {
 		
 		
 		if (!m_PlayScene) {
-			// auto view = m_Scene->View<MeshRendererComponent, TransformComponent>();
 			Renderer::BeginScene(m_EditorCamera, m_EditorCameraController->GetTransform());
 			Renderer2D::BeginScene(m_EditorCamera, m_EditorCameraController->GetTransform());
 			RenderCommands::SetDepthTest(true);
 			m_Scene->OnEditorUpdate(ts);
 			Renderer2D::EndScene();
 			Renderer::EndScene();
+
+
+			// Render the Grid
+			auto cameraTransform = m_EditorCameraController->GetTransform();
+			glm::mat4 gridTransform = glm::mat4(1.f);
+			gridTransform[3] = glm::vec4(cameraTransform[3].x, 0.f, cameraTransform[3].z, 1.f);
+
+			auto& gridShader = Application::Get().GetResourceManager().Get(RESNAME("shader_InfiniteGridXZ"))->Get<Shader>();
+			gridShader->Bind();
+			gridShader->SetUniMat4("u_ViewProjection", m_EditorCamera.GetProjection() * glm::inverse(cameraTransform));
+			gridShader->SetUniMat4("u_ModelMatrix", gridTransform);
+			RenderCommands::SetCulling(false);
+			RenderCommands::Draw(6);
+			RenderCommands::SetCulling(true);
 		} else {
 			m_Scene->OnUpdate(ts);
 		}
@@ -163,65 +196,82 @@ namespace Apex {
 			ImGui::End();
 		}*/
 
-		ImGui::Begin("Rendering");
-		ImGui::DragFloat4("Background", &m_BGColor[0], 0.001f, 0.0f, 1.0f);
-		{
-			ImGui::Separator();
-			ImGui::Checkbox("Play", &m_PlayScene);
-			ImGui::Separator();
-			if (ImGui::TreeNode("Camera")) {
-				constexpr const char* projectionTypeStrings[] = { "Perspective", "Orthographic" };
-				constexpr const size_t projectionTypesLen = std::size(projectionTypeStrings);
-				const char* currentProjectionTypeStr = projectionTypeStrings[(int)m_EditorCamera.GetProjectionType()];
-				if (ImGui::BeginCombo("Projection", currentProjectionTypeStr)) {
-					for (int i=0; i<projectionTypesLen; i++) {
-						bool isSelected = projectionTypeStrings[i] == currentProjectionTypeStr;
-						if (ImGui::Selectable(projectionTypeStrings[i], isSelected)) {
-							currentProjectionTypeStr = projectionTypeStrings[i];
-							m_EditorCamera.SetProjectionType(static_cast<Camera::ProjectionType>(i));
+		if (ImGui::Begin("Rendering")) {
+			if (ImGui::Button("Import")) {
+				ImGui::OpenPopup("Import Asset");
+			}
+
+			if (ImGui::IsPopupOpen("Import Asset")) {
+				ImGui::PushStyleVar(ImGuiStyleVar_PopupRounding, 0.1f);
+			}
+			if (ImGui::BeginPopupModal("Import Asset", nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse)) {
+				ImGui::Text("Importing asset");
+				if (ImGui::Button("Continue"))
+					ImGui::CloseCurrentPopup();
+				ImGui::EndPopup();
+
+				ImGui::PopStyleVar();
+			}
+
+			ImGui::DragFloat4("Background", &m_BGColor[0], 0.001f, 0.0f, 1.0f);
+			{
+				ImGui::Separator();
+				ImGui::Checkbox("Play", &m_PlayScene);
+				ImGui::Separator();
+				if (ImGui::TreeNode("Camera")) {
+					constexpr const char* projectionTypeStrings[] = { "Perspective", "Orthographic" };
+					constexpr const size_t projectionTypesLen = std::size(projectionTypeStrings);
+					const char* currentProjectionTypeStr = projectionTypeStrings[(int)m_EditorCamera.GetProjectionType()];
+					if (ImGui::BeginCombo("Projection", currentProjectionTypeStr)) {
+						for (int i=0; i<projectionTypesLen; i++) {
+							bool isSelected = projectionTypeStrings[i] == currentProjectionTypeStr;
+							if (ImGui::Selectable(projectionTypeStrings[i], isSelected)) {
+								currentProjectionTypeStr = projectionTypeStrings[i];
+								m_EditorCamera.SetProjectionType(static_cast<Camera::ProjectionType>(i));
+							}
+							
+							if (isSelected)
+								ImGui::SetItemDefaultFocus();
 						}
 						
-						if (isSelected)
-							ImGui::SetItemDefaultFocus();
+						ImGui::EndCombo();
+					}
+
+					ImGui::Text(fmt::format("Transform: {0}", MathParser::ParseMatrix(m_EditorCameraController->GetTransform())).c_str());
+
+					if (m_EditorCamera.GetProjectionType() == Camera::ProjectionType::Perspective) {
+						float perspFov = glm::degrees(m_EditorCamera.GetPerspectiveVerticalFov());
+						if (ImGui::DragFloat("Vertical FOV", &perspFov))
+							m_EditorCamera.SetPerspectiveVerticalFov(glm::radians(perspFov));
+						
+						float perspNear = m_EditorCamera.GetPerspectiveNear();
+						if (ImGui::DragFloat("Near", &perspNear))
+							m_EditorCamera.SetPerspectiveNear(perspNear);
+						
+						float perspFar = m_EditorCamera.GetPerspectiveFar();
+						if (ImGui::DragFloat("Far", &perspFar))
+							m_EditorCamera.SetPerspectiveFar(perspFar);
+					}
+					else {
+						float orthoSize = m_EditorCamera.GetOrthographicSize();
+						if (ImGui::DragFloat("Size", &orthoSize))
+							m_EditorCamera.SetOrthographicSize(orthoSize);
+						
+						float orthoNear = m_EditorCamera.GetOrthographicNear();
+						if (ImGui::DragFloat("Near", &orthoNear))
+							m_EditorCamera.SetOrthographicNear(orthoNear);
+						
+						float orthoFar = m_EditorCamera.GetOrthographicFar();
+						if (ImGui::DragFloat("Far", &orthoFar))
+							m_EditorCamera.SetOrthographicFar(orthoFar);
 					}
 					
-					ImGui::EndCombo();
+					ImGui::TreePop();
 				}
-
-				ImGui::Text(fmt::format("Transform: {0}", MathParser::ParseMatrix(m_EditorCameraController->GetTransform())).c_str());
-
-				if (m_EditorCamera.GetProjectionType() == Camera::ProjectionType::Perspective) {
-					float perspFov = glm::degrees(m_EditorCamera.GetPerspectiveVerticalFov());
-					if (ImGui::DragFloat("Vertical FOV", &perspFov))
-						m_EditorCamera.SetPerspectiveVerticalFov(glm::radians(perspFov));
-					
-					float perspNear = m_EditorCamera.GetPerspectiveNear();
-					if (ImGui::DragFloat("Near", &perspNear))
-						m_EditorCamera.SetPerspectiveNear(perspNear);
-					
-					float perspFar = m_EditorCamera.GetPerspectiveFar();
-					if (ImGui::DragFloat("Far", &perspFar))
-						m_EditorCamera.SetPerspectiveFar(perspFar);
-				}
-				else {
-					float orthoSize = m_EditorCamera.GetOrthographicSize();
-					if (ImGui::DragFloat("Size", &orthoSize))
-						m_EditorCamera.SetOrthographicSize(orthoSize);
-					
-					float orthoNear = m_EditorCamera.GetOrthographicNear();
-					if (ImGui::DragFloat("Near", &orthoNear))
-						m_EditorCamera.SetOrthographicNear(orthoNear);
-					
-					float orthoFar = m_EditorCamera.GetOrthographicFar();
-					if (ImGui::DragFloat("Far", &orthoFar))
-						m_EditorCamera.SetOrthographicFar(orthoFar);
-				}
-				
-				ImGui::TreePop();
 			}
 		}
 		ImGui::End();
-		
+
 		// m_SceneHierarchyPanel.SetContext(m_Scene);
 		m_SceneHierarchyPanel.OnImGuiRender();
 		auto entity = m_SceneHierarchyPanel.GetSelectedEntity();
@@ -241,7 +291,7 @@ namespace Apex {
 
 		ShowSettings();
 		ShowGameViewport();
-		
+
 		EndDockspace();
 		
 		ImGui::PopFont();
@@ -306,7 +356,7 @@ namespace Apex {
 		Application::Get().GetImGuiLayer().SetBlockKeyboardEvents(!m_ViewportFocused);
 		
 		ImVec2 viewportSize = ImGui::GetContentRegionAvail();
-		m_GameViewportSize = *((glm::vec2*)&viewportSize);
+		m_GameViewportSize = *reinterpret_cast<glm::vec2*>(&viewportSize);
 
 		ImGui::Image(reinterpret_cast<void*>(static_cast<intptr_t>(m_GameFramebuffer->GetColorAttachmentID())),
 		             {m_GameViewportSize.x, m_GameViewportSize.y}, {0.f, 1.f}, {1.f, 0.f});
@@ -319,6 +369,31 @@ namespace Apex {
 
 			ImGui::EndDragDropTarget();
 		}
+
+		auto curWinMin = ImGui::GetWindowContentRegionMin();
+		curWinMin.x += ImGui::GetWindowPos().x + 10.f;
+		curWinMin.y += ImGui::GetWindowPos().y + 10.f;
+		ImGui::SetNextWindowPos(curWinMin);
+		auto curWinWidth = ImGui::GetWindowContentRegionWidth();
+		
+		ImGui::BeginChild("##camera_controls", ImVec2(curWinWidth, 50.f), false, ImGuiWindowFlags_NoBackground);
+		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.4f, 0.2f, 0.6f, 0.2f));
+
+		if (m_EditorCameraController == &m_PerspectiveCameraController) {
+			if (ImGui::Button("Ortho")) {
+				m_EditorCameraController = &m_OrthographicCameraController;
+				m_EditorCamera.SetProjectionType(Camera::ProjectionType::Orthographic);
+			}
+		}
+		else if (m_EditorCameraController == &m_OrthographicCameraController) {
+			if (ImGui::Button("Persp")) {
+				m_EditorCameraController = &m_PerspectiveCameraController;
+				m_EditorCamera.SetProjectionType(Camera::ProjectionType::Perspective);
+			}
+		}
+
+		ImGui::PopStyleColor();
+		ImGui::EndChild();
 
 		ImGui::End();
 		ImGui::PopStyleVar();

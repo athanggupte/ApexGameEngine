@@ -30,6 +30,17 @@ namespace Apex {
 		return CreateEntity(HASH("Unnamed Entity"));
 	}
 
+	static void LoadResource(Handle resourceHandle)
+	{
+		if (const auto resource = Application::Get().GetResourceManager().Get(resourceHandle); !resource) {
+			APEX_CORE_ERROR("Resource `{}` not found!", Strings::Get(resourceHandle));
+		}
+		else {
+			if (!resource->IsLoaded())
+				resource->Load();
+		}
+	}
+
 	void Scene::OnSetup()
 	{
 		auto& resourceManager = Application::Get().GetResourceManager();
@@ -38,13 +49,15 @@ namespace Apex {
 			.each([&resourceManager](SpriteRendererComponent& sprite) {
 				if (!sprite.texture)
 					return;
-				auto textureResource = resourceManager.Get(sprite.texture);
-				if (!textureResource) {
-					APEX_CORE_ERROR("Texture resource `{}` not found!", Strings::Get(sprite.texture));
-				}
-				else {
-					textureResource->Load();
-				}
+				LoadResource(sprite.texture);
+			});
+
+		m_Registry.view<MeshRendererComponent>()
+			.each([&resourceManager](MeshRendererComponent& meshComp) {
+				if (!meshComp.mesh || !meshComp.material)
+					return;
+				LoadResource(meshComp.mesh);
+				LoadResource(meshComp.material);
 			});
 	}
 
@@ -53,12 +66,14 @@ namespace Apex {
 		// IMP: When iterating components owned by a group outside the group donot add new
 		//      entities with the same list of components -> iterators get invalidated
 
-		auto view = m_Registry.view<TransformComponent, SpriteRendererComponent>();
-		view.each([](TransformComponent& transform, SpriteRendererComponent& sprite) {
+		const auto view = m_Registry.view<TransformComponent, SpriteRendererComponent>();
+		view.each([](const TransformComponent& transform, const SpriteRendererComponent& sprite) {
 			if (sprite.visible) {
-				auto texture = Application::Get().GetResourceManager().Get(sprite.texture);
-				if (sprite.useTexture && texture)
-					Renderer2D::DrawQuad(transform.GetTransform(), std::dynamic_pointer_cast<Texture2D>(texture->Get<Texture>()), sprite.tilingFactor);
+				const auto pTextureResource = Application::Get().GetResourceManager().Get(sprite.texture);
+				if (sprite.useTexture && pTextureResource) {
+					if (auto& texture = pTextureResource->Get<Texture>())
+						Renderer2D::DrawQuad(transform.GetTransform(), std::dynamic_pointer_cast<Texture2D>(texture), sprite.tilingFactor);
+				}
 				else
 					Renderer2D::DrawQuad(transform.GetTransform(), sprite.color);
 			}
@@ -67,11 +82,19 @@ namespace Apex {
 
 	void Scene::Render3D()
 	{
-		auto view = m_Registry.view<TransformComponent, MeshRendererComponent>();
-		view.each([](TransformComponent& transform, MeshRendererComponent& mesh_component) {
-			auto& mesh = mesh_component.mesh;
-			auto& shader = mesh_component.shader;
-			Renderer::Submit(shader, mesh->GetVAO(), transform.GetTransform());
+		const auto view = m_Registry.view<TransformComponent, MeshRendererComponent>();
+		view.each([](const TransformComponent& transform, const MeshRendererComponent& mesh_component) {
+			const auto pMeshResource = Application::Get().GetResourceManager().Get(mesh_component.mesh);
+			const auto pMaterialResource = Application::Get().GetResourceManager().Get(mesh_component.material);
+			if (pMeshResource && pMaterialResource) {
+				auto& mesh = pMeshResource->Get<Mesh>();
+				auto& material = pMaterialResource->Get<Material>();
+
+				if (const auto& shader = material->GetShader(); mesh && shader) {
+					material->Bind();
+					Renderer::Submit(shader, mesh->GetVAO(), transform.GetTransform());
+				}
+			}
 		});
 	}
 

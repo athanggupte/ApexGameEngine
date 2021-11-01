@@ -46,8 +46,8 @@ namespace Apex {
 		};
 		squareVB = VertexBuffer::Create(squareVertices, sizeof(squareVertices));
 		squareVB->SetLayout({
-			{ ShaderDataType::Float3, "a_Position" },
-			{ ShaderDataType::Float2, "a_TexCoord" }
+			{ ShaderDataType::Float3, VertexElementType::Position },
+			{ ShaderDataType::Float2, VertexElementType::TextureCoords }
 			});
 		m_QuadVA->AddVertexBuffer(squareVB);
 

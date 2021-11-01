@@ -7,29 +7,29 @@ namespace Apex {
 	class OpenGLRendererAPI : public RendererAPI
 	{
 	public:
-		virtual void Init() override;
+		void Init() override;
 
-		virtual void SetClearColor(const glm::vec4& color) override;
-		virtual void Clear() override;
+		void SetClearColor(const glm::vec4& color) override;
+		void Clear() override;
 
-		virtual void Draw(const Ref<VertexArray>& vertexArray) override;
-		virtual void DrawIndexed(const Ref<VertexArray>& vertexArray, uint32_t indexCount) override;
-		virtual void DrawInstanced(const Ref<VertexArray>& vertexArray, size_t count) override;
+		void Draw(uint32_t vertexCount) override;
+		void Draw(const Ref<VertexArray>& vertexArray) override;
+		void DrawIndexed(const Ref<VertexArray>& vertexArray, uint32_t indexCount) override;
+		void DrawInstanced(const Ref<VertexArray>& vertexArray, size_t count) override;
 
-		virtual void SetDepthTest(bool value) override;
-		virtual void SetDepthWriteMode(bool value) override;
-		virtual void SetDepthTestFunction(DepthStencilMode criterion) override;
-		
-		virtual void SetStencilTest(bool value) override;
-		virtual void SetStencilTestFunction(DepthStencilMode criterion, int8_t refValue, uint8_t mask) override;
-		virtual void SetStencilWriteMask(uint32_t mask) override;
-		virtual void SetStencilAction(DepthStencilAction onStencilFail = DepthStencilAction::KEEP, DepthStencilAction onDepthFail = DepthStencilAction::KEEP, DepthStencilAction onPass = DepthStencilAction::KEEP) override;
-		
-		virtual void SetCulling(bool value) override;
-		virtual void SetBlendMode(BlendingMode sourceMode, BlendingMode destMode) override;
-		virtual void SetViewport(uint32_t x, uint32_t y, size_t width, size_t height) override;
-		virtual void ImageAccessBarrier() override;
+		void SetDepthTest(bool value) override;
+		void SetDepthWriteMode(bool value) override;
+		void SetDepthTestFunction(DepthStencilMode criterion) override;
 
+		void SetStencilTest(bool value) override;
+		void SetStencilTestFunction(DepthStencilMode criterion, int8_t refValue, uint8_t mask) override;
+		void SetStencilWriteMask(uint32_t mask) override;
+		void SetStencilAction(DepthStencilAction onStencilFail = DepthStencilAction::KEEP, DepthStencilAction onDepthFail = DepthStencilAction::KEEP, DepthStencilAction onPass = DepthStencilAction::KEEP) override;
+
+		void SetCulling(bool value) override;
+		void SetBlendMode(BlendingMode sourceMode, BlendingMode destMode) override;
+		void SetViewport(uint32_t x, uint32_t y, size_t width, size_t height) override;
+		void ImageAccessBarrier() override;
 	};
 
 }

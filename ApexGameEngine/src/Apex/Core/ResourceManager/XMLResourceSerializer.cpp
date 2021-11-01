@@ -69,15 +69,15 @@ namespace Apex {
 		switch (type) {
 		case ResourceType::FILE:
 			typeNode = dataNode.child("File");
-			manager.AddResource<File>(HASH(node.attribute("id").value()), typeNode.child("Source").child_value());
+			manager.AddResourceFromFile<File>(RESNAME(node.attribute("id").value()), typeNode.child("Source").child_value());
 			break;
 		case ResourceType::TEXTURE:
 			typeNode = dataNode.child("Texture");
-			manager.AddResource<Texture>(HASH(node.attribute("id").value()), typeNode.child("Source").child_value());
+			manager.AddResourceFromFile<Texture>(RESNAME(node.attribute("id").value()), typeNode.child("Source").child_value());
 			break;
 		case ResourceType::SHADER:
 			typeNode = dataNode.child("Shader");
-			manager.AddResource<Shader>(HASH(node.attribute("id").value()), typeNode.child("Source").child_value());
+			manager.AddResourceFromFile<Shader>(RESNAME(node.attribute("id").value()), typeNode.child("Source").child_value());
 			break;
 		default:
 			return false;

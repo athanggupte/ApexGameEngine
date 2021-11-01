@@ -22,9 +22,9 @@ namespace Apex {
 	{
 		uint64_t hash;
 
-		operator uint64_t() { return hash; }
+		explicit operator uint64_t() const { return hash; }
 		std::string_view str() { return Strings::Get(hash); }
-		const std::string_view str() const { return Strings::Get(hash); }
+		[[nodiscard]] const std::string_view str() const { return Strings::Get(hash); }
 	};
 
 }

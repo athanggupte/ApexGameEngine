@@ -24,6 +24,11 @@ namespace Apex {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 	}
 
+	void OpenGLRendererAPI::Draw(uint32_t vertexCount)
+	{
+		glDrawArraysInstancedBaseInstance(GL_TRIANGLES, 0, vertexCount, 1, 0);
+	}
+
 	void OpenGLRendererAPI::Draw(const Ref<VertexArray>& vertexArray)
 	{
 		vertexArray->Bind();

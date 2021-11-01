@@ -19,10 +19,10 @@ namespace Apex {
 	
 	void Material::AddTexture(const std::string & name, const Ref<Texture>& texture)
 	{
-		auto& shaderUniforms = m_Shader->GetActiveUniformLocations();
+		// auto& shaderUniforms = m_Shader->GetActiveUniformLocations();
 		auto str = "u_" + name;
 		APEX_CORE_TRACE("uniform name : {0}", str);
-		APEX_CORE_ASSERT(shaderUniforms.find(str) != shaderUniforms.end(), "Texture does not map to any uniform in attached Shader");
+		// APEX_CORE_ASSERT(shaderUniforms.find(str) != shaderUniforms.end(), "Texture does not map to any uniform in attached Shader");
 		m_Textures[name] = texture;
 	}
 	

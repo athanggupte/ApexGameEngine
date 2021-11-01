@@ -141,7 +141,7 @@ namespace Apex {
             auto& sprite = entity.AddComponent<SpriteRendererComponent>();
             auto textureNode = spriteNode.child("Texture");
             if (textureNode) {
-                sprite.texture = HASH(textureNode.child_value("ResourceId"));
+                sprite.texture = RESNAME(textureNode.child_value("ResourceId"));
                 sprite.tilingFactor = std::stof(textureNode.child_value("TilingFactor"));
                 sprite.useTexture = textureNode.attribute("use").as_bool();
             }

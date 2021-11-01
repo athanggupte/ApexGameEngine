@@ -1,19 +1,19 @@
 ﻿#pragma once
 #include "Apex/Graphics/Mesh.h"
 
-namespace Apex
-{
+namespace Apex {
+
+	// TODO: Merge MeshRendererComponent and ModelRendererComponent into one!!!!
 
 	struct MeshRendererComponent
 	{
-		Ref<Mesh> mesh = nullptr;
-		Ref<Shader> shader = nullptr;
+		Handle mesh = 0;
+		Handle material = 0;
 
 		COMPONENT_DEFAULT_CTR(MeshRendererComponent);
 
-		MeshRendererComponent(const Ref<Mesh>& _mesh, const Ref<Shader>& _shader)
-			: mesh(_mesh), shader(_shader) {}
+		MeshRendererComponent(Handle _mesh, Handle _material)
+			: mesh(_mesh), material(_material) {}
 	};
-
 
 }

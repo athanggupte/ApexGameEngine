@@ -12,6 +12,8 @@ namespace Apex {
 		inline static void SetClearColor(const glm::vec4& color) { s_RendererAPI->SetClearColor(color); }
 		inline static void Clear() { s_RendererAPI->Clear(); }
 
+		inline static void Draw(uint32_t vertexCount) { s_RendererAPI->Draw(vertexCount); }
+
 		inline static void Draw(const Ref<VertexArray>& vertexArray) { s_RendererAPI->Draw(vertexArray); }
 		inline static void DrawIndexed(const Ref<VertexArray>& vertexArray, uint32_t indexCount = 0) { s_RendererAPI->DrawIndexed(vertexArray, indexCount); }
 		inline static void DrawInstanced(const Ref<VertexArray>& vertexArray, size_t count) { s_RendererAPI->DrawInstanced(vertexArray, count); }

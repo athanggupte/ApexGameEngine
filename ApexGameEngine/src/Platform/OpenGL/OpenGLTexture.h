@@ -52,7 +52,7 @@ namespace Apex {
 
 		inline virtual const std::string& GetPath() const { return m_Path; }
 
-		virtual void Bind(uint32_t slot = 0) const override;
+		virtual void BindTextures(uint32_t slot = 0) const override;
 		virtual void BindImage(uint32_t unit, bool read, bool write) const override;
 	protected:
 		virtual void SetData(void* data, uint32_t size) override {}
@@ -101,7 +101,7 @@ namespace Apex {
 
 		inline virtual uint32_t GetID() const override { return m_RendererID; }
 
-		virtual void Bind(uint32_t slot) const override;
+		virtual void BindTextures(uint32_t slot) const override;
 		virtual void BindImage(uint32_t unit, bool read, bool write) const override;
 
 	private:

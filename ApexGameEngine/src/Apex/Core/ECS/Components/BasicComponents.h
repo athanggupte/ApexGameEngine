@@ -41,10 +41,10 @@ namespace Apex {
 		
 		TransformComponent(const glm::vec3& _translation, const glm::vec3& _scale = { 1.f, 1.f, 1.f })
 			: translation(_translation), scale(_scale) {}
-		
-		glm::mat4 GetTransform()
+
+		[[nodiscard]] glm::mat4 GetTransform() const
 		{
-			glm::mat4 _rotation = glm::rotate(glm::mat4(1.f), rotation.x, { 1.f, 0.f, 0.f })
+			const glm::mat4 _rotation = glm::rotate(glm::mat4(1.f), rotation.x, { 1.f, 0.f, 0.f })
 							   * glm::rotate(glm::mat4(1.f), rotation.y, { 0.f, 1.f, 0.f })
 							   * glm::rotate(glm::mat4(1.f), rotation.z, { 0.f, 0.f, 1.f });
 			

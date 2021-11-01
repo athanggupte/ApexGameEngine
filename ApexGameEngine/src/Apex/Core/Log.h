@@ -44,7 +44,7 @@ namespace Apex {
 #define APEX_CORE_INFO(...)			SPDLOG_LOGGER_INFO(Apex::Log::GetCoreLogger(), __VA_ARGS__)
 #define APEX_CORE_WARN(...)			SPDLOG_LOGGER_WARN(Apex::Log::GetCoreLogger(), __VA_ARGS__)
 #define APEX_CORE_ERROR(...)		SPDLOG_LOGGER_ERROR(Apex::Log::GetCoreLogger(), __VA_ARGS__)
-#define APEX_CORE_CRITICAL(...)		SPDLOG_LOGGER_CRITICAL(Apex::Log::GetCoreLogger(), __VA_ARGS__); __DEBUG_BREAK__;
+#define APEX_CORE_CRITICAL(...)		SPDLOG_LOGGER_CRITICAL(Apex::Log::GetCoreLogger(), __VA_ARGS__); __DEBUG_BREAK__
 
 
 //Client Log Macros
@@ -60,4 +60,4 @@ namespace Apex {
 #define APEX_LOG_INFO(...)				SPDLOG_LOGGER_INFO(Apex::Log::GetClientLogger(), __VA_ARGS__)
 #define APEX_LOG_WARN(...)				SPDLOG_LOGGER_WARN(Apex::Log::GetClientLogger(), __VA_ARGS__)
 #define APEX_LOG_ERROR(...)				SPDLOG_LOGGER_ERROR(Apex::Log::GetClientLogger(), __VA_ARGS__)
-#define APEX_LOG_CRITICAL(...)			SPDLOG_LOGGER_CRITICAL(Apex::Log::GetClientLogger(), __VA_ARGS__); __DEBUG_BREAK__;
+#define APEX_LOG_CRITICAL(...)			SPDLOG_LOGGER_CRITICAL(Apex::Log::GetClientLogger(), __VA_ARGS__); __DEBUG_BREAK__

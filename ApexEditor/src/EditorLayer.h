@@ -22,12 +22,12 @@ namespace Apex {
 	{
 	public:
 		EditorLayer();
-		
-		virtual void OnAttach() override;
-		virtual void OnDetach() override;
-		virtual void OnUpdate(Timestep ts) override;
-		virtual void OnEvent(Event& e) override;
-		virtual void OnImGuiRender() override;
+
+		void OnAttach() override;
+		void OnDetach() override;
+		void OnUpdate(Timestep ts) override;
+		void OnEvent(Event& e) override;
+		void OnImGuiRender() override;
 		
 		// UI
 		/* UI function naming convention

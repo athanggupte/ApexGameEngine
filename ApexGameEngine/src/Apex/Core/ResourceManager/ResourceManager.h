@@ -10,6 +10,9 @@
 
 // #include "ResourceLibrary.h"
 
+#include "Apex/Graphics/Mesh.h"
+#include "Apex/Graphics/Material.h"
+
 #include <typeindex>
 #include <variant>
 #include <optional>
@@ -17,7 +20,9 @@
 namespace Apex {
 	
 	using Handle = uint64_t;
-	
+
+#define RESNAME(_str_) static_cast<Handle>(HASH(_str_))
+
 	enum class ResourceType : uint32_t
 	{
 		FILE	= 0,
@@ -25,8 +30,9 @@ namespace Apex {
 		SHADER,
 		//SCENE,
 		//SPRITE,
-		//MESH,
-		//MATERIAL,
+		//MODEL,
+		MESH,
+		MATERIAL,
 		//ANIMATION,
 		//AUDIO,
 
@@ -41,8 +47,9 @@ namespace Apex {
 		case ResourceType::SHADER:		return "SHADER";
 		//case ResourceType::SCENE:		return "SCENE";
 		//case ResourceType::SPRITE:	return "SPRITE";
-		//case ResourceType::MESH:		return "MESH";
-		//case ResourceType::MATERIAL:	return "MATERIAL";
+		//case ResourceType::MODEL:		return "MODEL";
+		case ResourceType::MESH:		return "MESH";
+		case ResourceType::MATERIAL:	return "MATERIAL";
 		//case ResourceType::ANIMATION:	return "ANIMATION";
 		//case ResourceType::AUDIO:		return "AUDIO";
 		}
@@ -54,12 +61,20 @@ namespace Apex {
 		Resource& resource; \
 		void operator() (const Ref<File>& file); \
 		void operator() (const Ref<Texture>& texture); \
-		void operator() (const Ref<Shader>& shader); \
+		void operator() (const Ref<Shader>& material); \
+		void operator() (const Ref<Mesh>& mesh); \
+		void operator() (const Ref<Material>& material); \
 	}
 
 	class Resource
 	{
-		using ResourcePtr_t = std::variant<Ref<File>, Ref<Texture>, Ref<Shader>>;
+		using ResourcePtr_t = std::variant<
+			Ref<File>,
+			Ref<Texture>,
+			Ref<Shader>,
+			Ref<Mesh>,
+			Ref<Material>
+		>;
 
 		struct _IsLoaded
 		{
@@ -77,6 +92,12 @@ namespace Apex {
 		template<typename Tag> using type_t = typename Tag::type;
 
 	public:
+		template<typename Resource_t>
+		Resource(Handle id, const Ref<Resource_t>& ptr)
+			: m_Id(id), m_Ptr(ptr)
+		{
+		}
+
 		template<typename Resource_t>
 		Resource(tag<Resource_t>, Handle id , const fs::path& filepath)
 			: m_Id(id), m_Ptr(std::move(Ref<Resource_t>(nullptr))), m_SourceFile(filepath)
@@ -156,12 +177,20 @@ namespace Apex {
 	public:
 		ResourceManager() = default;
 		~ResourceManager() = default;
-
-		template<typename Resource_t, typename... Args>
-		Resource& AddResource(Handle id, Args&&... args)
+		
+		template<typename Resource_t>
+		Resource& AddResource(Handle id, const Ref<Resource_t>& ptr)
 		{
 			APEX_CORE_ASSERT(!Exists(id), "Resource '" + TO_STRING(Strings::Get(id)) + "' already exists!");
-			auto& [it, success] = m_Registry.emplace(id, Resource(Resource::tag<Resource_t>{}, id, std::forward<Args>(args)...));
+			auto& [it, success] = m_Registry.try_emplace(id, id, ptr);
+			return it->second;
+		}
+
+		template<typename Resource_t>
+		Resource& AddResourceFromFile(Handle id, const std::string& filepath)
+		{
+			APEX_CORE_ASSERT(!Exists(id), "Resource '" + TO_STRING(Strings::Get(id)) + "' already exists!");
+			auto& [it, success] = m_Registry.try_emplace(id, Resource::tag<Resource_t>{}, id, filepath);
 			return it->second;
 		}
 		

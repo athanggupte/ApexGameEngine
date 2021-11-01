@@ -1,8 +1,8 @@
 #include "apex_pch.h"
 #include "Model.h"
 
-#include "assimp/Importer.hpp"
-#include "assimp/postprocess.h"
+#include <assimp/Importer.hpp>
+#include <assimp/postprocess.h>
 #include "Apex/Core/FileSystem/FileSystem.h"
 #include "Apex/Utils/MathPrimitiveParser.h"
 
@@ -18,7 +18,7 @@ namespace Apex {
 
 	Model::Model(const std::string & path)
 	{
-		std::string filepath = "";
+		std::string filepath;
 		auto file = FileSystem::GetFileIfExists(path);
 		if (file)
 			filepath += file->GetPhysicalPath();
@@ -40,7 +40,7 @@ namespace Apex {
 	{
 		for (uint32_t i = 0; i < node->mNumMeshes; i++) {
 			aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
-			std::string meshId = "";
+			std::string meshId;
 			if (mesh->mName.length)
 				meshId += mesh->mName.C_Str() + std::to_string(m_Meshes.size());
 			else
@@ -112,17 +112,17 @@ namespace Apex {
 		BufferLayout layout;
 		if (mesh->HasTangentsAndBitangents()) {
 			layout = {
-				{ Apex::ShaderDataType::Float3, "a_Position" },
-				{ Apex::ShaderDataType::Float2, "a_TexCoord" },
-				{ Apex::ShaderDataType::Float3, "a_Normal" },
-				{ Apex::ShaderDataType::Float3, "a_Tangent" },
-				{ Apex::ShaderDataType::Float3, "a_Bitangent" },
+				{ ShaderDataType::Float3, VertexElementType::Position },
+				{ ShaderDataType::Float2, VertexElementType::TextureCoords },
+				{ ShaderDataType::Float3, VertexElementType::Normal },
+				{ ShaderDataType::Float3, VertexElementType::Tangent },
+				{ ShaderDataType::Float3, VertexElementType::Bitangent },
 			};
 		} else {
 			layout = {
-				{ Apex::ShaderDataType::Float3, "a_Position" },
-				{ Apex::ShaderDataType::Float2, "a_TexCoord" },
-				{ Apex::ShaderDataType::Float3, "a_Normal" },
+				{ ShaderDataType::Float3, VertexElementType::Position },
+				{ ShaderDataType::Float2, VertexElementType::TextureCoords },
+				{ ShaderDataType::Float3, VertexElementType::Normal },
 			};
 		}
 		Mesh _mesh(vertices.data(), vertices.size(), indices.data(), indices.size(), layout);

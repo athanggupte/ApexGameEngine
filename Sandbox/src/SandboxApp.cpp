@@ -103,10 +103,10 @@ public:
 // 								* glm::scale(glm::mat4(1.f), glm::vec3(m_Props[i].Scale));
 // 			
 // 			for (auto t=0; t<m_Textures[i].size(); t++)
-// 				m_Textures[i][t]->Bind(t);
+// 				m_Textures[i][t]->BindTextures(t);
 // 			
 // 			if (!m_Props[i].UseAlbedoTexture)
-// 				m_WhiteTexture->Bind(0);
+// 				m_WhiteTexture->BindTextures(0);
 // 			
 // 			for (auto& [id, mesh] : m_Models[i]->GetMeshes()) {
 // 				Apex::ForwardRenderer::SubmitMesh(mesh, (mesh->HasTangents() && m_Props[i].UseNormalTexture) ? m_PhongNormalShader : m_PhongShader, modelTransform);
@@ -222,7 +222,7 @@ public:
 		
 		// Execute Compute Shader
 		m_NoiseTexture->BindImage(0U, false, true);
-		computeShader->Bind();
+		computeShader->BindTextures();
 		computeShader->Dispatch(m_NoiseTexture->GetWidth(), m_NoiseTexture->GetHeight(), 1U);
 		
 		m_BallEntity = m_Scene->CreateEntity();

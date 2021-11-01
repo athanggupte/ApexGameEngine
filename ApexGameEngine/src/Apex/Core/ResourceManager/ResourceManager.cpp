@@ -4,7 +4,7 @@
 namespace Apex {
 	
 	// Load
-	void Resource::_LoadResource::operator() (const Ref<VFS::IFile>& texture)
+	void Resource::_LoadResource::operator() (const Ref<VFS::IFile>& file)
 	{
 		APEX_LOG_INFO("Loading file '{}'", resource.m_SourceFile);
 	}
@@ -15,14 +15,28 @@ namespace Apex {
 		resource.m_Ptr = Texture2D::Create(resource.m_SourceFile.string());
 	}
 	
-	void Resource::_LoadResource::operator() (const Ref<Shader>& texture)
+	void Resource::_LoadResource::operator() (const Ref<Shader>& shader)
 	{
 		APEX_LOG_INFO("Loading shader from '{}'", resource.m_SourceFile);
 		resource.m_Ptr = Shader::Create(resource.m_SourceFile.string());
 	}
 
+	void Resource::_LoadResource::operator() (const Ref<Mesh>& mesh)
+	{
+		APEX_LOG_INFO("Loading mesh from '{}'", resource.m_SourceFile);
+		if (!resource.m_SourceFile.empty())
+			resource.m_Ptr = CreateRef<Mesh>(resource.m_SourceFile.string());
+	}
+
+	void Resource::_LoadResource::operator() (const Ref<Material>& material)
+	{
+		APEX_LOG_INFO("Loading material from '{}'", resource.m_SourceFile);
+		if (!resource.m_SourceFile.empty())
+			resource.m_Ptr = CreateRef<Material>(resource.m_SourceFile.string());
+	}
+
 	// Reload
-	void Resource::_ReloadResource::operator() (const Ref<VFS::IFile>& texture)
+	void Resource::_ReloadResource::operator() (const Ref<VFS::IFile>& file)
 	{
 		APEX_LOG_INFO("Reloading file '{}'", resource.m_SourceFile);
 	}
@@ -33,14 +47,28 @@ namespace Apex {
 		resource.m_Ptr = Texture2D::Create(resource.m_SourceFile.string());
 	}
 
-	void Resource::_ReloadResource::operator() (const Ref<Shader>& texture)
+	void Resource::_ReloadResource::operator() (const Ref<Shader>& shader)
 	{
 		APEX_LOG_INFO("Reloading shader from '{}'", resource.m_SourceFile);
 		resource.m_Ptr = Shader::Create(resource.m_SourceFile.string());
 	}
+	
+	void Resource::_ReloadResource::operator() (const Ref<Mesh>& mesh)
+	{
+		APEX_LOG_INFO("Reloading mesh from '{}'", resource.m_SourceFile);
+		if (!resource.m_SourceFile.empty())
+			resource.m_Ptr = CreateRef<Mesh>(resource.m_SourceFile.string());
+	}
+
+	void Resource::_ReloadResource::operator() (const Ref<Material>& material)
+	{
+		APEX_LOG_INFO("Reloading material from '{}'", resource.m_SourceFile);
+		if (!resource.m_SourceFile.empty())
+			resource.m_Ptr = CreateRef<Material>(resource.m_SourceFile.string());
+	}
 
 	// Unload
-	void Resource::_UnloadResource::operator() (const Ref<VFS::IFile>& texture)
+	void Resource::_UnloadResource::operator() (const Ref<VFS::IFile>& file)
 	{
 		APEX_LOG_INFO("Unloading file '{}'", resource.m_SourceFile);
 	}
@@ -51,12 +79,23 @@ namespace Apex {
 		resource.m_Ptr = Ref<Texture>(nullptr);
 	}
 
-	void Resource::_UnloadResource::operator() (const Ref<Shader>& texture)
+	void Resource::_UnloadResource::operator() (const Ref<Shader>& shader)
 	{
 		APEX_LOG_INFO("Unloading shader from '{}'", resource.m_SourceFile);
 		resource.m_Ptr = Ref<Shader>(nullptr);
 	}
 
+	void Resource::_UnloadResource::operator() (const Ref<Mesh>& mesh)
+	{
+		APEX_LOG_INFO("Unloading mesh from '{}'", resource.m_SourceFile);
+		resource.m_Ptr = Ref<Mesh>(nullptr);
+	}
+
+	void Resource::_UnloadResource::operator() (const Ref<Material>& material)
+	{
+		APEX_LOG_INFO("Unloading material from '{}'", resource.m_SourceFile);
+		resource.m_Ptr = Ref<Material>(nullptr);
+	}
 
 	// Resource management
 	Resource* ResourceManager::Get(Handle id)
@@ -98,7 +137,7 @@ namespace Apex {
 	{
 		if (m_Unsorted)
 			TopologicalSort();
-		return Iterable<std::vector<Handle>>(m_SortedOrder);
+		return Iterable(m_SortedOrder);
 	}
 
 

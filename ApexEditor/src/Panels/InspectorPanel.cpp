@@ -53,8 +53,24 @@ namespace Apex {
 	
 	static char changedBuf[256]{ 0 };
 
+	template<typename Resource_t>
+	static void LoadResource(Handle handle, const char* filename)
+	{
+		if (auto resource = Application::Get().GetResourceManager().Get(handle)) {
+			if (!resource->IsLoaded())
+				resource->Load();
+		} else {
+			resource = &Application::Get().GetResourceManager().AddResourceFromFile<Resource_t>(handle, filename);
+			// TODO: Message/Event queue to pump messages
+			resource->Load();
+		}
+	}
+
 	void InspectorPanel::DrawComponents()
 	{
+		constexpr ImGuiTreeNodeFlags treeNodeFlags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_DefaultOpen | 
+			ImGuiTreeNodeFlags_SpanAvailWidth | ImGuiTreeNodeFlags_Framed | ImGuiTreeNodeFlags_FramePadding;
+
 		// Tag Component
 		{
 			auto& tag = m_ContextEntity.GetComponent<TagComponent>().tag;
@@ -84,10 +100,8 @@ namespace Apex {
 		// Transform Component
 		{
 			auto& transformComp = m_ContextEntity.GetComponent<TransformComponent>();
-			
-			ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_DefaultOpen;
-			
-			bool opened = ImGui::TreeNodeEx((void*)typeid(TransformComponent).hash_code(), flags, "Transform");
+
+			bool opened = ImGui::TreeNodeEx((void*)typeid(TransformComponent).hash_code(), treeNodeFlags, "Transform");
 			
 			if (opened) {
 				auto dragSpeed = (Input::IsKeyPressed(APEX_KEY_LEFT_SHIFT)) ? 0.001f : 0.5f;
@@ -104,21 +118,17 @@ namespace Apex {
 		if (m_ContextEntity.HasComponent<CameraComponent>()) {
 			auto& cameraComp = m_ContextEntity.GetComponent<CameraComponent>();
 			auto& camera = cameraComp.camera;
-			
-			ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_DefaultOpen;
-			
-			bool opened = ImGui::TreeNodeEx((void*)typeid(CameraComponent).hash_code(), flags, "Camera");
-			
-			if (opened) {
+
+			if (ImGui::TreeNodeEx((void*)typeid(CameraComponent).hash_code(), treeNodeFlags, "Camera")) {
 				constexpr const char* projectionTypeStrings[] = { "Perspective", "Orthographic" };
-				constexpr const size_t projectionTypesLen = sizeof(projectionTypeStrings) / sizeof(projectionTypeStrings[0]);
+				constexpr const size_t projectionTypesLen = std::size(projectionTypeStrings);
 				const char* currentProjectionTypeStr = projectionTypeStrings[(int)cameraComp.camera.GetProjectionType()];
 				if (ImGui::BeginCombo("Projection", currentProjectionTypeStr)) {
 					for (int i=0; i<projectionTypesLen; i++) {
 						bool isSelected = projectionTypeStrings[i] == currentProjectionTypeStr;
 						if (ImGui::Selectable(projectionTypeStrings[i], isSelected)) {
 							currentProjectionTypeStr = projectionTypeStrings[i];
-							camera.SetProjectionType((Camera::ProjectionType)i);
+							camera.SetProjectionType(static_cast<Camera::ProjectionType>(i));
 						}
 						
 						if (isSelected)
@@ -159,15 +169,11 @@ namespace Apex {
 			}
 		}
 
-		// Sprite RendererComponent
+		// Sprite Renderer Component
 		if (m_ContextEntity.HasComponent<SpriteRendererComponent>()) {
 			auto& sprite = m_ContextEntity.GetComponent<SpriteRendererComponent>();
-			
-			ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_DefaultOpen;
-			
-			bool opened = ImGui::TreeNodeEx((void*)typeid(SpriteRendererComponent).hash_code(), flags, "Sprite");
-			
-			if (opened) {
+
+			if (ImGui::TreeNodeEx((void*)typeid(SpriteRendererComponent).hash_code(), treeNodeFlags, "Sprite Renderer")) {
 				ImGui::Checkbox("Visible", &sprite.visible);
 				// Display component members
 				ImGui::Checkbox("Use Texture", &sprite.useTexture);
@@ -188,15 +194,8 @@ namespace Apex {
 					if (ImGui::BeginDragDropTarget()) {
 						if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ASSET_BROWSER_ITEM")) {
 							if (const auto filename = static_cast<const char*>(payload->Data); filename != nullptr) {
-								sprite.texture = HASH(Utils::GetFilename(filename));
-								if (auto textureResource = Application::Get().GetResourceManager().Get(sprite.texture)) {
-									if (!textureResource->IsLoaded())
-										textureResource->Load();
-								} else {
-									textureResource = &Application::Get().GetResourceManager().AddResource<Texture>(sprite.texture, filename);
-									// TODO: Message/Event queue to pump messages
-									textureResource->Load();
-								}
+								sprite.texture = RESNAME(Utils::GetFilename(filename));
+								LoadResource<Texture>(sprite.texture, filename);
 							}
 						}
 						ImGui::EndDragDropTarget();
@@ -211,13 +210,61 @@ namespace Apex {
 			ImGui::Separator();
 		}
 
+		// Mesh Renderer Component
+		if (m_ContextEntity.HasComponent<MeshRendererComponent>()) {
+			auto& meshComp = m_ContextEntity.GetComponent<MeshRendererComponent>();
+
+			if (ImGui::TreeNodeEx((void*)typeid(SpriteRendererComponent).hash_code(), treeNodeFlags, "Mesh Renderer")) {
+				auto meshResName = TO_STRING(Strings::Get(meshComp.mesh));
+				auto materialResName = TO_STRING(Strings::Get(meshComp.material));
+
+				ImGui::InputText("Mesh", meshResName.data(), meshResName.size(), ImGuiInputTextFlags_ReadOnly);
+				if (ImGui::BeginDragDropTarget()) {
+					if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ASSET_BROWSER_ITEM")) {
+						if (const auto filename = static_cast<const char*>(payload->Data); filename != nullptr) {
+							meshComp.mesh = RESNAME(Utils::GetFilename(filename));
+							LoadResource<Mesh>(meshComp.mesh, filename);
+						}
+					}
+				}
+
+				// ImGui::InputText("Material", materialResName.data(), materialResName.size(), ImGuiInputTextFlags_ReadOnly);
+				if (ImGui::TreeNodeEx((void*)typeid(Material).hash_code(), ImGuiTreeNodeFlags_DefaultOpen, "Material")) {
+					if (auto materialResource = Application::Get().GetResourceManager().Get(meshComp.material)) {
+						auto& material = materialResource->Get<Material>();
+						for (auto& [name, texture] : material->GetTextures()) {
+							// ImGui::InputText(name.c_str(), "", 0, ImGuiInputTextFlags_ReadOnly);
+							const ImVec2 size = ImVec2(100.0f, 100.0f);                // Image Size
+							const int frame_padding = -1;                              // -1 == uses default padding (style.FramePadding)
+							const ImVec2 uv0 = ImVec2(0.0f, 0.0f);                     // UV coordinates for lower-left
+							const ImVec2 uv1 = ImVec2(1.0f, 1.0f);                     // UV coordinates for (32,32) in our texture
+							const ImVec4 bg_col = ImVec4(0.0f, 0.0f, 0.0f, 1.0f);      // Black background
+							const ImVec4 tint_col = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);    // No tint
+							ImGui::InputText("Texture", &fmt::format("{}", Utils::GetFilename(texture->GetPath())), ImGuiInputTextFlags_ReadOnly);
+							ImGui::Image((void*)(intptr_t)texture->GetID(), size, uv0, uv1, tint_col, bg_col);
+						}
+					}
+					ImGui::TreePop();
+				}
+				if (ImGui::BeginDragDropTarget()) {
+					if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ASSET_BROWSER_ITEM")) {
+						if (const auto filename = static_cast<const char*>(payload->Data); filename != nullptr) {
+							meshComp.material = RESNAME(Utils::GetFilename(filename));
+							LoadResource<Material>(meshComp.material, filename);
+						}
+					}
+				}
+
+				ImGui::TreePop();
+			}
+			ImGui::Separator();
+		}
+
 		// Script Component
 		if (m_ContextEntity.HasComponent<ScriptComponent>()) {
 			auto& scriptComp = m_ContextEntity.GetComponent<ScriptComponent>();
 			
-			ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_DefaultOpen;
-			
-			bool opened = ImGui::TreeNodeEx((void*)typeid(ScriptComponent).hash_code(), flags, "Script");
+			bool opened = ImGui::TreeNodeEx((void*)typeid(ScriptComponent).hash_code(), treeNodeFlags, "Script");
 			
 			if (opened) {
 				ImGui::InputText("Script File", &scriptComp.filename);
@@ -240,9 +287,16 @@ namespace Apex {
 					m_ContextEntity.AddComponent<CameraComponent>();
 			
 			if (!m_ContextEntity.HasComponent<SpriteRendererComponent>())
-				if (ImGui::MenuItem("Sprite"))
+				if (ImGui::MenuItem("Sprite Renderer"))
 					m_ContextEntity.AddComponent<SpriteRendererComponent>();
-			
+
+			if (!m_ContextEntity.HasComponent<MeshRendererComponent>())
+				if (ImGui::MenuItem("Mesh Renderer")) {
+					auto& meshComp = m_ContextEntity.AddComponent<MeshRendererComponent>();
+					meshComp.mesh = RESNAME("default-cube");
+					meshComp.material = RESNAME("shader_DebugTrianglesUnlit");
+				}
+
 			if (!m_ContextEntity.HasComponent<ScriptComponent>())
 				if (ImGui::MenuItem("Script"))
 					m_ContextEntity.AddComponent<ScriptComponent>();

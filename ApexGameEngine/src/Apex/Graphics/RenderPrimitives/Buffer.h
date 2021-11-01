@@ -11,7 +11,7 @@ namespace Apex {
 		Bool
 	};
 
-	static uint32_t ShaderDataTypeSize(ShaderDataType type)
+	[[nodiscard]] constexpr uint32_t ShaderDataTypeSize(const ShaderDataType type)
 	{
 		switch (type)
 		{
@@ -27,45 +27,67 @@ namespace Apex {
 			case ShaderDataType::Mat3:		return 4 * 3 * 3;
 			case ShaderDataType::Mat4:		return 4 * 4 * 4;
 			case ShaderDataType::Bool:		return 1;
-			default:	APEX_CORE_CRITICAL("Unknown ShaderDataType!");	return 0;
+			case ShaderDataType::None:
+				APEX_CORE_CRITICAL("Unknown ShaderDataType!");
+				return 0;
 		}
+		return 0;
 	}
 
+	[[nodiscard]] constexpr uint32_t ShaderDataTypeComponentCount(const ShaderDataType type)
+	{
+		switch (type)
+		{
+			case ShaderDataType::Int: return 1;
+			case ShaderDataType::Int2: return 2;
+			case ShaderDataType::Int3: return 3;
+			case ShaderDataType::Int4: return 4;
+			case ShaderDataType::Float: return 1;
+			case ShaderDataType::Float2: return 2;
+			case ShaderDataType::Float3: return 3;
+			case ShaderDataType::Float4: return 4;
+			case ShaderDataType::Mat2: return 2 * 2;
+			case ShaderDataType::Mat3: return 3 * 3;
+			case ShaderDataType::Mat4: return 4 * 4;
+			case ShaderDataType::Bool: return 1;
+			case ShaderDataType::None:
+				APEX_CORE_CRITICAL("Unknown ShaderDataType!");
+				return 0;
+		}
+		return 0;
+	}
+
+	enum class VertexElementType
+	{
+		Position = 0,
+		Color,
+		TextureCoords,
+		TextureIndex,
+		Normal,
+		Tangent,
+		Bitangent,
+		Binormal,
+
+		UserDefined,
+
+		// For counting purposes
+		SIZE
+	};
 
 	/*-------------------------Buffer Element---------------------------*/
 	struct BufferElement
 	{
-		std::string e_Name;
-		ShaderDataType e_Type;
+		ShaderDataType e_DataType;
+		VertexElementType e_Type;
 		uint32_t e_Size;
 		uint32_t e_Offset;
 		bool e_Normalized;
 
 		//BufferElement() {}
 
-		BufferElement(ShaderDataType type, const std::string name, bool normalized = false)
-			: e_Name(name), e_Type(type), e_Size(ShaderDataTypeSize(type)), e_Offset(0), e_Normalized(normalized)
+		BufferElement(ShaderDataType data_type, VertexElementType type, bool normalized = false)
+			: e_DataType(data_type), e_Type(type), e_Size(ShaderDataTypeSize(data_type)), e_Offset(0), e_Normalized(normalized)
 		{
-		}
-
-		[[nodiscard]] uint32_t GetComponentCount() const
-		{
-			switch (e_Type)
-			{
-				case ShaderDataType::Int:		return 1;
-				case ShaderDataType::Int2:		return 2;
-				case ShaderDataType::Int3:		return 3;
-				case ShaderDataType::Int4:		return 4;
-				case ShaderDataType::Float:		return 1;
-				case ShaderDataType::Float2:	return 2;
-				case ShaderDataType::Float3:	return 3;
-				case ShaderDataType::Float4:	return 4;
-				case ShaderDataType::Mat2:		return 2 * 2;
-				case ShaderDataType::Mat3:		return 3 * 3;
-				case ShaderDataType::Mat4:		return 4 * 4;
-				case ShaderDataType::Bool:		return 1;
-				default:	APEX_CORE_CRITICAL("Unknown ShaderDataType!");	return 0;
-			}
 		}
 	};
 
@@ -74,13 +96,18 @@ namespace Apex {
 	class BufferLayout
 	{
 	public:
-		BufferLayout() {}
+		BufferLayout() = default;
 
 		BufferLayout(const std::initializer_list<BufferElement>& elements)
 			: m_Elements(elements) 
 		{
+			UpdateElementTypes();
 			CalculateOffsetAndStride();
 		}
+
+		void AddElement(BufferElement element);
+
+		[[nodiscard]] bool HasVertexElementType(VertexElementType type) const;
 
 		[[nodiscard]] const std::vector<BufferElement>& GetElements() const { return m_Elements; }
 		[[nodiscard]] uint32_t GetStride() const { return m_Stride; }
@@ -91,21 +118,13 @@ namespace Apex {
 		[[nodiscard]] std::vector<BufferElement>::const_iterator end() const { return m_Elements.end(); }
 
 	private:
-		void CalculateOffsetAndStride()
-		{
-			uint32_t offset = 0;
-			m_Stride = 0;
-			for (auto& element : m_Elements) {
-				element.e_Offset = offset;
-				offset += element.e_Size;
-				m_Stride += element.e_Size;
-				//APEX_CORE_TRACE("Element::{0} | Type::{1} | Offset::{2} | Stride::{3}", element.e_Name, (uint32_t)element.e_Type, element.e_Offset, m_Stride);
-			}
-		}
+		void UpdateElementTypes();
+		void CalculateOffsetAndStride();
 
 	private:
 		std::vector<BufferElement> m_Elements;
 		uint32_t m_Stride = 0;
+		uint16_t m_ElementTypes = 0;
 	};
 
 	/*-------------------------Buffer----------------------------*/

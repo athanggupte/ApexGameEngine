@@ -37,8 +37,8 @@ namespace Apex {
 		// Create vertex buffer (VBO), and set to VAO
 		auto screenVB = VertexBuffer::Create(screenVertices, sizeof(screenVertices));
 		screenVB->SetLayout({
-			{ ShaderDataType::Float2, "a_Position" },
-			{ ShaderDataType::Float2, "a_TexCoord" }
+			{ ShaderDataType::Float2, VertexElementType::Position },
+			{ ShaderDataType::Float2, VertexElementType::TextureCoords }
 		});
 		s_Data->screenVertexArray->AddVertexBuffer(screenVB);
 		
