@@ -7,12 +7,12 @@ namespace Apex {
 
 	struct MeshRendererComponent
 	{
-		Handle mesh = 0;
-		Handle material = 0;
+		Resource<Mesh> mesh;
+		Resource<Material> material;
 
 		COMPONENT_DEFAULT_CTR(MeshRendererComponent);
 
-		MeshRendererComponent(Handle _mesh, Handle _material)
+		MeshRendererComponent(const Resource<Mesh>& _mesh, const Resource<Material>& _material)
 			: mesh(_mesh), material(_material) {}
 	};
 

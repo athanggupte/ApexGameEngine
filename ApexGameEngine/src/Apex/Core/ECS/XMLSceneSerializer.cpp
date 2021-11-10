@@ -1,6 +1,7 @@
 #include "apex_pch.h"
 #include "XMLSceneSerializer.h"
 
+#include "Apex/Application.h"
 #include "Apex/Utils/Utils.h"
 
 namespace Apex {
@@ -79,15 +80,35 @@ namespace Apex {
             const auto& sprite = entity.GetComponent<SpriteRendererComponent>();
             auto spriteNode = entityNode.append_child("SpriteRendererComponent");
 
-            if (sprite.texture > 0) {
+            if (sprite.texture.IsValid()) {
                 auto textureNode = spriteNode.append_child("Texture");
-                textureNode.append_child("ResourceId").append_child(pugi::node_pcdata).set_value(TO_CSTRING(Strings::Get(sprite.texture)));
+                textureNode.append_child("ResourceId").append_child(pugi::node_pcdata).set_value(TO_CSTRING(Strings::Get(sprite.texture.GetId())));
                 textureNode.append_child("TilingFactor").append_child(pugi::node_pcdata).set_value(TO_CSTRING(sprite.tilingFactor));
                 textureNode.append_attribute("use").set_value(sprite.useTexture);
             }
 
             auto colorNode = spriteNode.append_child("Color");
             SerializeVec(colorNode, sprite.color);
+        }
+
+        if (entity.HasComponent<MeshRendererComponent>()) {
+            const auto& meshComp = entity.GetComponent<MeshRendererComponent>();
+            auto meshCompNode = entityNode.append_child("MeshRendererComponent");
+
+        	auto meshNode = meshCompNode.append_child("Mesh");
+            if (meshComp.mesh.IsValid()) {
+                meshNode.append_child("ResourceId").append_child(pugi::node_pcdata).set_value(TO_CSTRING(Strings::Get(meshComp.mesh.GetId())));
+            } else {
+	            meshNode.append_child("ResourceId").append_child(pugi::node_pcdata).set_value("");
+            }
+
+            auto materialNode = meshCompNode.append_child("Material");
+            if (meshComp.material.IsValid()) {
+                materialNode.append_child("ResourceId").append_child(pugi::node_pcdata).set_value(TO_CSTRING(Strings::Get(meshComp.material.GetId())));
+            } else {
+	            meshNode.append_child("ResourceId").append_child(pugi::node_pcdata).set_value("");
+            }
+
         }
 
     }
@@ -117,36 +138,44 @@ namespace Apex {
 
     bool DeserializeEntity(pugi::xml_node& node, Entity& entity)
     {
-        auto tagNode = node.child("TagComponent");
+	    const auto tagNode = node.child("TagComponent");
         if (!tagNode)
             return false;
         entity.GetComponent<TagComponent>().tag = HASH(tagNode.child_value());
 
         APEX_CORE_DEBUG("Importing entity '{}'", entity.GetComponent<TagComponent>().tag.str());
 
-        auto transformNode = node.child("TransformComponent");
+	    const auto transformNode = node.child("TransformComponent");
         if (!transformNode)
             return false;
 
         auto& transform = entity.GetComponent<TransformComponent>();
-        auto translationNode = transformNode.child("Translation");
+        const auto translationNode = transformNode.child("Translation");
         DeserializeVec(translationNode, transform.translation);
-        auto rotationNode = transformNode.child("Rotation");
+	    const auto rotationNode = transformNode.child("Rotation");
         DeserializeVec(rotationNode, transform.rotation);
-        auto scaleNode = transformNode.child("Scale");
+	    const auto scaleNode = transformNode.child("Scale");
         DeserializeVec(scaleNode, transform.scale);
-        
-        auto spriteNode = node.child("SpriteRendererComponent");
-        if (spriteNode) {
+
+        if (const auto spriteNode = node.child("SpriteRendererComponent")) {
             auto& sprite = entity.AddComponent<SpriteRendererComponent>();
-            auto textureNode = spriteNode.child("Texture");
-            if (textureNode) {
-                sprite.texture = RESNAME(textureNode.child_value("ResourceId"));
+            if (const auto textureNode = spriteNode.child("Texture")) {
+                sprite.texture = Application::Get().GetResourceManager().Get<Texture>(RESNAME(textureNode.child_value("ResourceId")));
                 sprite.tilingFactor = std::stof(textureNode.child_value("TilingFactor"));
                 sprite.useTexture = textureNode.attribute("use").as_bool();
             }
-            auto colorNode = spriteNode.child("Color");
+            const auto colorNode = spriteNode.child("Color");
             DeserializeVec(colorNode, sprite.color);
+        }
+
+        if (const auto meshCompNode = node.child("MeshRendererComponent")) {
+            auto& meshComp = entity.AddComponent<MeshRendererComponent>();
+            if (const auto meshNode = meshCompNode.child("Mesh")) {
+                meshComp.mesh = Application::Get().GetResourceManager().Get<Mesh>(RESNAME(meshNode.child_value("ResourceId")));
+            }
+            if (const auto materialNode = meshCompNode.child("Material")) {
+                meshComp.material = Application::Get().GetResourceManager().Get<Material>(RESNAME(materialNode.child_value("ResourceId")));
+            }
         }
 
         // Other Components
@@ -156,7 +185,7 @@ namespace Apex {
 
     bool XMLSceneSerializer::DeserializeImpl(const std::string& buf)
     {
-        auto result = m_Document.load_buffer_inplace((void*)buf.data(), buf.size(), pugi::parse_default | pugi::parse_doctype | pugi::parse_pi);
+	    const auto result = m_Document.load_buffer_inplace((void*)buf.data(), buf.size(), pugi::parse_default | pugi::parse_doctype | pugi::parse_pi);
         if (!result)
             return false;
 
@@ -172,11 +201,11 @@ namespace Apex {
                 return false;
         }
 
-        auto sceneNode = m_Document.child("Scene");
+	    const auto sceneNode = m_Document.child("Scene");
         if (!sceneNode)
             return false;
 
-        auto entitiesNode = sceneNode.child("Entities");
+    	const auto entitiesNode = sceneNode.child("Entities");
         if (!entitiesNode)
             return true;
 

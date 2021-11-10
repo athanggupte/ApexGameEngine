@@ -13,15 +13,15 @@ namespace Apex {
 		Material(const std::string&) {}
 		virtual ~Material() = default;
 
-		virtual void Bind();
-		virtual void Unbind();
+		virtual void Bind() const;
+		virtual void Unbind() const;
 
-		inline void SetShader(const Ref<Shader>& shader) { m_Shader = shader; }
-		inline Ref<Shader> GetShader() { return m_Shader; }
+		void SetShader(const Ref<Shader>& shader) { m_Shader = shader; }
+		[[nodiscard]] Ref<Shader> GetShader() const { return m_Shader; }
 
 		void AddTexture(const std::string& name, const Ref<Texture>& texture);
 		Ref<Texture> GetTexture(const std::string& name);
-		bool TextureExists(const std::string& name);
+		bool TextureExists(const std::string& name) const;
 
 		Iterable<std::unordered_map<std::string, Ref<Texture>>> GetTextures() { return Iterable(m_Textures); }
 

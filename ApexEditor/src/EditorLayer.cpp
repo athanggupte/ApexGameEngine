@@ -6,7 +6,6 @@
 #include "Apex/Utils/CustomDataStructures.h"
 #include "Apex/Core/ResourceManager/ResourceManager.h"
 #include "Apex/Core/ECS/SceneSerializer.h"
-#include "Apex/Core/ResourceManager/ResourceSerializer.h"
 
 #include "Panels/PieMenu.h"
 #include "Primitives.h"
@@ -51,34 +50,35 @@ namespace Apex {
 		auto& resourceManager = Application::Get().GetResourceManager();
 
 		/* Shader initialization */
-		auto& gridShader = resourceManager.AddResourceFromFile<Shader>(RESNAME("shader_InfiniteGridXZ"), "editor_assets/shaders/InfiniteGridXZ.glsl");
-		gridShader.Load();
-		auto& debugVerticesShader = resourceManager.AddResourceFromFile<Shader>(RESNAME("shader_DebugVerticesUnlit"), "editor_assets/shaders/DebugVerticesUnlit.glsl");
-		debugVerticesShader.Load();
-		auto& debugTrianglesShader = resourceManager.AddResourceFromFile<Shader>(RESNAME("shader_DebugTrianglesUnlit"), "editor_assets/shaders/DebugTrianglesUnlit.glsl");
-		debugTrianglesShader.Load();
-		auto& unlitMaterial = resourceManager.AddResource<Material>(RESNAME("material_Unlit"), CreateRef<Material>());
+		auto gridShader = resourceManager.AddResourceFromFile<Shader>(RESNAME("shader_InfiniteGridXZ"), "editor_assets/shaders/InfiniteGridXZ.glsl");
+		auto debugVerticesShader = resourceManager.AddResourceFromFile<Shader>(RESNAME("shader_DebugVerticesUnlit"), "editor_assets/shaders/DebugVerticesUnlit.glsl");
+		auto debugTrianglesShader = resourceManager.AddResourceFromFile<Shader>(RESNAME("shader_DebugTrianglesUnlit"), "editor_assets/shaders/DebugTrianglesUnlit.glsl");
+		auto unlitMaterial = resourceManager.AddResource<Material>(RESNAME("material_Unlit"), CreateRef<Material>());
+
+		/*resourceManager.Load(gridShader.GetId());
+		resourceManager.Load(debugVerticesShader.GetId());
+		resourceManager.Load(debugTrianglesShader.GetId());
+		resourceManager.Load(unlitMaterial.GetId());*/
 
 		/* Asset allocation */
 		m_ImageTexture = Texture2D::Create(256U, 256U, HDRTextureSpec, "Image");
 		m_ComputeShader = ComputeShader::Create("Blur.compute");
 		m_GameFramebuffer = Framebuffer::Create({ 1280u, 720u });
 
-		auto& cubeMesh = resourceManager.AddResource<Mesh>(RESNAME("default-cube"),Primitives::Cube::GetMesh());
-		auto& planeMesh = resourceManager.AddResource<Mesh>(RESNAME("default-plane"), Primitives::Plane::GetMesh());
-		auto& pusheenTexture = resourceManager.AddResourceFromFile<Texture>(RESNAME("pusheen-texture"), "editor_assets/textures/pusheen-thug-life.png");
-		auto& suzanneMesh = resourceManager.AddResourceFromFile<Mesh>(RESNAME("suzanne-mesh"), "editor_assets/meshes/suzanne/source/suzanne.fbx");
-		auto& suzanneTexture = resourceManager.AddResourceFromFile<Texture>(RESNAME("suzanne-texture"), "editor_assets/meshes/suzanne/textures/suzanne_DefaultMaterial_BaseColor.png");
+		auto cubeMesh = resourceManager.AddResource<Mesh>(RESNAME("default-cube"),Primitives::Cube::GetMesh());
+		auto planeMesh = resourceManager.AddResource<Mesh>(RESNAME("default-plane"), Primitives::Plane::GetMesh());
+		auto pusheenTexture = resourceManager.AddResourceFromFile<Texture>(RESNAME("pusheen-texture"), "editor_assets/textures/pusheen-thug-life.png");
+		auto suzanneMesh = resourceManager.AddResourceFromFile<Mesh>(RESNAME("suzanne-mesh"), "editor_assets/meshes/suzanne/source/suzanne.fbx");
+		auto suzanneTexture = resourceManager.AddResourceFromFile<Texture>(RESNAME("suzanne-texture"), "editor_assets/meshes/suzanne/textures/suzanne_DefaultMaterial_BaseColor.png");
 
-		suzanneMesh.Load();
-		pusheenTexture.Load();
-		suzanneTexture.Load();
+		/* Load All Resources */
+		resourceManager.LoadAllResources();
 
 		{
-			auto& material = unlitMaterial.Get<Material>();
-			material->SetShader(Shader::Create("editor_assets/shaders/AlbedoUnlit.glsl"));
-			material->AddTexture("Albedo", suzanneTexture.Get<Texture>());
+			unlitMaterial->SetShader(Shader::Create("editor_assets/shaders/AlbedoUnlit.glsl"));
+			unlitMaterial->AddTexture("Albedo", suzanneTexture.Get());
 		}
+
 
 		/* Entity initialization */
 		/*auto cubeEntity = m_Scene->CreateEntity(HASH("cube"));
@@ -89,9 +89,9 @@ namespace Apex {
 		planeEntity.GetComponent<TransformComponent>().scale *= glm::vec3(5.f, 1.f, 5.f);*/
 
 		auto suzanneEntity = m_Scene->CreateEntity(HASH("suzanne"));
-		suzanneEntity.AddComponent<MeshRendererComponent>(suzanneMesh.GetId(), unlitMaterial.GetId());
+		suzanneEntity.AddComponent<MeshRendererComponent>(suzanneMesh, unlitMaterial);
 
-		pusheenTexture.Get<Texture>()->Bind(0);
+		// pusheenTexture->Bind(0);
 		
 		m_Scene->OnSetup();
 
@@ -156,7 +156,7 @@ namespace Apex {
 			glm::mat4 gridTransform = glm::mat4(1.f);
 			gridTransform[3] = glm::vec4(cameraTransform[3].x, 0.f, cameraTransform[3].z, 1.f);
 
-			auto& gridShader = Application::Get().GetResourceManager().Get(RESNAME("shader_InfiniteGridXZ"))->Get<Shader>();
+			auto gridShader = Application::Get().GetResourceManager().Get<Shader>(RESNAME("shader_InfiniteGridXZ"));
 			gridShader->Bind();
 			gridShader->SetUniMat4("u_ViewProjection", m_EditorCamera.GetProjection() * glm::inverse(cameraTransform));
 			gridShader->SetUniMat4("u_ModelMatrix", gridTransform);

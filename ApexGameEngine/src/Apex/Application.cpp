@@ -4,6 +4,7 @@
 #include "Apex/Core/Log.h"
 #include "Apex/Core/Input/Input.h"
 #include "Apex/Core/FileSystem/FileSystem.h"
+#include "Apex/Core/ResourceManager/ResourceManager.h"
 #include "Apex/Graphics/Renderer/RenderCommands.h"
 #include "Apex/Graphics/Renderer/Renderer.h"
 #include "Apex/Graphics/Renderer/Renderer2D.h"

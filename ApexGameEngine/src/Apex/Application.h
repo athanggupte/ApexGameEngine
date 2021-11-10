@@ -5,11 +5,12 @@
 #include "Apex/Core/Events/Event.h"
 #include "Apex/Core/Events/ApplicationEvent.h"
 #include "Apex/Core/Timer.h"
-#include "Apex/Core/ResourceManager/ResourceManager.h"
 
 #include "Apex/ImGui/ImGuiLayer.h"
 
 namespace Apex {
+
+	class ResourceManager;
 
 	class Application
 	{
