@@ -3,7 +3,7 @@
 
 namespace Apex {
 
-	void Material::Bind()
+	void Material::Bind() const
 	{
 		m_Shader->Bind();
 		int slot = -1;
@@ -13,7 +13,7 @@ namespace Apex {
 		}
 	}
 	
-	void Material::Unbind()
+	void Material::Unbind() const
 	{
 	}
 	
@@ -32,7 +32,7 @@ namespace Apex {
 		return m_Textures[name];
 	}
 
-	bool Material::TextureExists(const std::string & name)
+	bool Material::TextureExists(const std::string & name) const
 	{
 		return m_Textures.find(name) != m_Textures.end();
 	}

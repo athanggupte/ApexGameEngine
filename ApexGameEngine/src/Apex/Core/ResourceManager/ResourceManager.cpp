@@ -2,133 +2,75 @@
 #include "ResourceManager.h"
 
 namespace Apex {
-	
-	// Load
-	void Resource::_LoadResource::operator() (const Ref<VFS::IFile>& file)
-	{
-		APEX_LOG_INFO("Loading file '{}'", resource.m_SourceFile);
-	}
-	
-	void Resource::_LoadResource::operator() (const Ref<Texture>& texture)
-	{
-		APEX_LOG_INFO("Loading texture from '{}'", resource.m_SourceFile);
-		resource.m_Ptr = Texture2D::Create(resource.m_SourceFile.string());
-	}
-	
-	void Resource::_LoadResource::operator() (const Ref<Shader>& shader)
-	{
-		APEX_LOG_INFO("Loading shader from '{}'", resource.m_SourceFile);
-		resource.m_Ptr = Shader::Create(resource.m_SourceFile.string());
-	}
-
-	void Resource::_LoadResource::operator() (const Ref<Mesh>& mesh)
-	{
-		APEX_LOG_INFO("Loading mesh from '{}'", resource.m_SourceFile);
-		if (!resource.m_SourceFile.empty())
-			resource.m_Ptr = CreateRef<Mesh>(resource.m_SourceFile.string());
-	}
-
-	void Resource::_LoadResource::operator() (const Ref<Material>& material)
-	{
-		APEX_LOG_INFO("Loading material from '{}'", resource.m_SourceFile);
-		if (!resource.m_SourceFile.empty())
-			resource.m_Ptr = CreateRef<Material>(resource.m_SourceFile.string());
-	}
-
-	// Reload
-	void Resource::_ReloadResource::operator() (const Ref<VFS::IFile>& file)
-	{
-		APEX_LOG_INFO("Reloading file '{}'", resource.m_SourceFile);
-	}
-
-	void Resource::_ReloadResource::operator() (const Ref<Texture>& texture)
-	{
-		APEX_LOG_INFO("Reloading texture from '{}'", resource.m_SourceFile);
-		resource.m_Ptr = Texture2D::Create(resource.m_SourceFile.string());
-	}
-
-	void Resource::_ReloadResource::operator() (const Ref<Shader>& shader)
-	{
-		APEX_LOG_INFO("Reloading shader from '{}'", resource.m_SourceFile);
-		resource.m_Ptr = Shader::Create(resource.m_SourceFile.string());
-	}
-	
-	void Resource::_ReloadResource::operator() (const Ref<Mesh>& mesh)
-	{
-		APEX_LOG_INFO("Reloading mesh from '{}'", resource.m_SourceFile);
-		if (!resource.m_SourceFile.empty())
-			resource.m_Ptr = CreateRef<Mesh>(resource.m_SourceFile.string());
-	}
-
-	void Resource::_ReloadResource::operator() (const Ref<Material>& material)
-	{
-		APEX_LOG_INFO("Reloading material from '{}'", resource.m_SourceFile);
-		if (!resource.m_SourceFile.empty())
-			resource.m_Ptr = CreateRef<Material>(resource.m_SourceFile.string());
-	}
-
-	// Unload
-	void Resource::_UnloadResource::operator() (const Ref<VFS::IFile>& file)
-	{
-		APEX_LOG_INFO("Unloading file '{}'", resource.m_SourceFile);
-	}
-
-	void Resource::_UnloadResource::operator() (const Ref<Texture>& texture)
-	{
-		APEX_LOG_INFO("Unloading texture from '{}'", resource.m_SourceFile);
-		resource.m_Ptr = Ref<Texture>(nullptr);
-	}
-
-	void Resource::_UnloadResource::operator() (const Ref<Shader>& shader)
-	{
-		APEX_LOG_INFO("Unloading shader from '{}'", resource.m_SourceFile);
-		resource.m_Ptr = Ref<Shader>(nullptr);
-	}
-
-	void Resource::_UnloadResource::operator() (const Ref<Mesh>& mesh)
-	{
-		APEX_LOG_INFO("Unloading mesh from '{}'", resource.m_SourceFile);
-		resource.m_Ptr = Ref<Mesh>(nullptr);
-	}
-
-	void Resource::_UnloadResource::operator() (const Ref<Material>& material)
-	{
-		APEX_LOG_INFO("Unloading material from '{}'", resource.m_SourceFile);
-		resource.m_Ptr = Ref<Material>(nullptr);
-	}
-
-	// Resource management
-	Resource* ResourceManager::Get(Handle id)
-	{
-		auto itr = m_Registry.find(id);
-		// APEX_CORE_ASSERT(itr != m_Registry.end(), "Resource '" + std::to_string(id) + "' already exists!");
-		if (itr != m_Registry.end())
-			return &itr->second;
-		return nullptr;
-	}
-
-	const Resource* ResourceManager::Get(Handle id) const
-	{
-		auto itr = m_Registry.find(id);
-		// APEX_CORE_ASSERT(itr != m_Registry.end(), "Resource '" + std::to_string(id) + "' already exists!");
-		if (itr != m_Registry.end())
-			return &itr->second;
-		return nullptr;
-	}
 
 	bool ResourceManager::Exists(Handle id)
 	{
 		return m_Registry.find(id) != m_Registry.end();
 	}
 
+	void ResourceManager::Load(Handle id)
+	{
+		const auto itr = m_Registry.find(id);
+		APEX_CORE_ASSERT(itr != m_Registry.end(), "Resource '" + TO_STRING(Strings::Get(id)) + "' does NOT exist!");
+
+		auto& [index, resourceData] = itr->second;
+
+		if (!resourceData.sourceFile.empty()) {
+			switch (resourceData.type) {
+			case ResourceType::FILE: break;
+			case ResourceType::TEXTURE:
+				m_TexturePool[index] = Texture2D::Create(resourceData.sourceFile.string());
+				break;
+			case ResourceType::SHADER:
+				m_ShaderPool[index] = Shader::Create(resourceData.sourceFile.string());
+				break;
+			case ResourceType::MESH:
+				m_MeshPool[index] = CreateRef<Mesh>(resourceData.sourceFile.string());
+				break;
+			case ResourceType::MATERIAL:
+				m_MaterialPool[index] = CreateRef<Material>(resourceData.sourceFile.string());
+				break;
+			case ResourceType::NONE:
+			default: APEX_CORE_CRITICAL("Unknown resource type!");
+			}
+		}
+	}
+
+	void ResourceManager::LoadAllResources()
+	{
+		for (auto& [id, data] : m_Registry) {
+			auto& [index, resourceData] = data;
+
+			if (!resourceData.sourceFile.empty()) {
+				switch (resourceData.type) {
+				case ResourceType::FILE: break;
+				case ResourceType::TEXTURE:
+					m_TexturePool[index] = Texture2D::Create(resourceData.sourceFile.string());
+					break;
+				case ResourceType::SHADER:
+					m_ShaderPool[index] = Shader::Create(resourceData.sourceFile.string());
+					break;
+				case ResourceType::MESH:
+					m_MeshPool[index] = CreateRef<Mesh>(resourceData.sourceFile.string());
+					break;
+				case ResourceType::MATERIAL:
+					m_MaterialPool[index] = CreateRef<Material>(resourceData.sourceFile.string());
+					break;
+				case ResourceType::NONE:
+				default: APEX_CORE_CRITICAL("Unknown resource type!");
+				}
+			}
+		}
+	}
+
 	void ResourceManager::AddDependency(Handle dependent, Handle dependency)
 	{
-		auto it = m_DependencyGraph.find(dependent);
+		const auto it = m_DependencyGraph.find(dependent);
 		if (it != m_DependencyGraph.end()) {
 			it->second.push_back(dependency);
 		}
 		else {
-			m_DependencyGraph.emplace(dependent, std::list<Handle>{ dependency });
+			m_DependencyGraph.emplace(dependent, std::list{ dependency });
 		}
 		m_Unsorted = true;
 	}
@@ -167,4 +109,18 @@ namespace Apex {
 		m_Unsorted = false;
 	}
 
+	// TODO: DELETE SOON!
+	//////// TESTING ONLY //////
+
+	void test_main()
+	{
+		ResourceManager mgr;
+
+		auto texture = mgr.AddResource<Texture>(RESNAME("test-texture-1"), Texture2D::Create("assets/textures/pusheen-thug-life.png"));
+		texture->Bind();
+		{
+			auto texture1 = mgr.Get<Texture>(RESNAME("test-texture-1"));
+			APEX_CORE_TRACE("{}", texture1->GetID());
+		}
+	}
 }

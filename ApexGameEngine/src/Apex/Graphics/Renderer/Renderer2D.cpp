@@ -203,6 +203,7 @@ namespace Apex {
 		}*/
 		
 		//APEX_CORE_DEBUG("Number of textures bound: {}", s_RenderData.textureSlotIndex);
+		s_RenderData.textureShader->Bind();
 		for (uint32_t i = 0; i < s_RenderData.textureSlotIndex; i++) {
 			s_RenderData.textureSlots[i]->Bind(i);
 		}

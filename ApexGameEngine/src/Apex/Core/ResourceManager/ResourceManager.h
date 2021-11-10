@@ -25,7 +25,8 @@ namespace Apex {
 
 	enum class ResourceType : uint32_t
 	{
-		FILE	= 0,
+		NONE = 0,
+		FILE,
 		TEXTURE,
 		SHADER,
 		//SCENE,
@@ -55,167 +56,196 @@ namespace Apex {
 		}
 	};
 
-#define RESOURCE_FN_DISTINCT(fn_name) \
-	struct fn_name \
-	{ \
-		Resource& resource; \
-		void operator() (const Ref<File>& file); \
-		void operator() (const Ref<Texture>& texture); \
-		void operator() (const Ref<Shader>& material); \
-		void operator() (const Ref<Mesh>& mesh); \
-		void operator() (const Ref<Material>& material); \
+	template<typename Resource_t>
+	constexpr ResourceType GetResourceType()
+	{
+		if constexpr (std::is_same_v<Resource_t, File>) return ResourceType::FILE;
+		if constexpr (std::is_same_v<Resource_t, Texture>) return ResourceType::TEXTURE;
+		if constexpr (std::is_same_v<Resource_t, Shader>) return ResourceType::SHADER;
+		if constexpr (std::is_same_v<Resource_t, Mesh>) return ResourceType::MESH;
+		if constexpr (std::is_same_v<Resource_t, Material>) return ResourceType::MATERIAL;
+		else return ResourceType::NONE;
 	}
 
+	class ResourceManager;
+
+	template<typename Resource_t>
 	class Resource
 	{
-		using ResourcePtr_t = std::variant<
-			Ref<File>,
-			Ref<Texture>,
-			Ref<Shader>,
-			Ref<Mesh>,
-			Ref<Material>
-		>;
-
-		struct _IsLoaded
-		{
-			template<typename ResourceType_t>
-			bool operator() (const ResourceType_t& resource) { return resource == nullptr; }
-		};
-		
-		RESOURCE_FN_DISTINCT(_LoadResource);
-		RESOURCE_FN_DISTINCT(_ReloadResource);
-		RESOURCE_FN_DISTINCT(_UnloadResource);
-
-		// From: https://stackoverflow.com/a/31616949
-		template<typename...> struct types { using type = types; };
-		template<typename T>  struct tag   { using type = T; };
-		template<typename Tag> using type_t = typename Tag::type;
-
-	public:
-		template<typename Resource_t>
-		Resource(Handle id, const Ref<Resource_t>& ptr)
-			: m_Id(id), m_Ptr(ptr)
+	private:
+		Resource(Handle id, Ref<Resource_t>* ptr, size_t index)
+			: m_Id(id), m_Ptr(ptr), m_Index(index)
 		{
 		}
 
-		template<typename Resource_t>
-		Resource(tag<Resource_t>, Handle id , const fs::path& filepath)
-			: m_Id(id), m_Ptr(std::move(Ref<Resource_t>(nullptr))), m_SourceFile(filepath)
+	public:
+		Resource()
+			: m_Id(0)
 		{
 		}
 
 		~Resource() = default;
 
-		[[nodiscard]] ResourceType GetType() const { return static_cast<ResourceType>(m_Ptr.index()); }
-		[[nodiscard]] Handle GetId() const { return m_Id; }
-		[[nodiscard]] fs::path GetSource() const { return m_SourceFile; }
-
-		template<typename Resource_t>
-		const Ref<Resource_t>& Get()
-		{
-			return std::get<Ref<Resource_t>>(m_Ptr);
-		}
-
-		template<typename Func>
-		decltype(auto) Apply(Func&& func)
-		{
-			return std::visit(func, m_Ptr);
-		}
+		//Resource(const Resource&) = default;
+		//Resource(Resource&&) = default;
 		
-		bool IsLoaded()
+		[[nodiscard]] Handle GetId() const { return m_Id; }
+
+		Resource_t* operator -> () { return (*m_Ptr).template operator-><Resource_t>(); }
+		Resource_t& operator * () { return (*m_Ptr).template operator*<Resource_t>(); }
+
+		const Resource_t* operator -> () const { return (*m_Ptr).template operator-><Resource_t>(); }
+		const Resource_t& operator * () const { return (*m_Ptr).template operator-><Resource_t>(); }
+
+		[[nodiscard]] auto& Get() { return *m_Ptr; }
+		[[nodiscard]] const auto& Get() const { return *m_Ptr; }
+
+		[[nodiscard]] bool IsValid() const
 		{
-			return std::visit(_IsLoaded{}, m_Ptr);
+			return m_Id && m_Ptr;
 		}
 
-	// protected:
-		void Load()
+		[[nodiscard]] bool IsLoaded() const
 		{
-			std::visit(_LoadResource{ *this }, m_Ptr);
-		}
-
-		void Reload()
-		{
-			std::visit(_ReloadResource{ *this }, m_Ptr);
-		}
-
-		void Unload()
-		{
-			std::visit(_UnloadResource{ *this }, m_Ptr);
+			APEX_CORE_ASSERT(IsValid(), "Resource is not validated!");
+			return static_cast<bool>(*m_Ptr);
 		}
 
 	private:
 		Handle m_Id;
-		ResourcePtr_t m_Ptr;
-		fs::path m_SourceFile;
-		//std::vector<Resource*> m_Dependencies;
-		//std::list<Resource*> m_Observers;
-		bool m_IsLoaded = false;
+		Ref<Resource_t>* m_Ptr = nullptr;
+		size_t m_Index = -1;
 
 		friend class ResourceManager;
 	};
 
-	using ResourceHandle_t = std::variant<Resource*, Handle>;
-
-	inline auto GetResourceHandleFn = [](auto& texture) -> Handle {
-		using T = std::decay_t<decltype(texture)>;
-		if constexpr (std::is_same_v<Resource*, T>) {
-			if (texture)
-				return texture->GetId();
-			else
-				return 0;
-		}
-		else if constexpr (std::is_same_v<Handle, T>) {
-			return texture;
-		}
-	};
-
-#undef RESOURCE_FN_DISTINCT
-
 	class ResourceManager
 	{
+		template<typename T> using Pool = BucketList<Ref<T>>;
 
+	public:
+		struct ResourceData
+		{
+			ResourceType type;
+			fs::path sourceFile;
+			// std::list<Handle> dependencies;
+		};
+
+	private:
+		struct IndexData
+		{
+			size_t index;
+			ResourceData resourceData;
+
+			IndexData(size_t index, ResourceType type, const fs::path& sourceFile)
+				: index(index), resourceData{ type, sourceFile }
+			{
+			}
+
+		};
+
+		// using IndexData = std::pair<size_t, ResourceData>;
 	public:
 		ResourceManager() = default;
 		~ResourceManager() = default;
 		
 		template<typename Resource_t>
-		Resource& AddResource(Handle id, const Ref<Resource_t>& ptr)
+		Resource<Resource_t> AddResource(Handle id, const Ref<Resource_t>& ptr)
 		{
 			APEX_CORE_ASSERT(!Exists(id), "Resource '" + TO_STRING(Strings::Get(id)) + "' already exists!");
-			auto& [it, success] = m_Registry.try_emplace(id, id, ptr);
-			return it->second;
+			auto& resourcePool = GetPoolToUse<Resource_t>();
+			size_t index = resourcePool.size();
+			auto& [it, success] = m_Registry.try_emplace(id, index, GetResourceType<Resource_t>(), "");
+			APEX_CORE_ASSERT(success, "Could not add resource!");
+			resourcePool.push_back(ptr);
+			return Resource<Resource_t>{ id, &resourcePool.back(), index };
+			// resourcePool.push_back(Resource<Resource_t>{ id, ptr, index, this });
+			// return resourcePool.back();
 		}
 
 		template<typename Resource_t>
-		Resource& AddResourceFromFile(Handle id, const std::string& filepath)
+		Resource<Resource_t> AddResourceFromFile(Handle id, const std::string& filepath)
 		{
 			APEX_CORE_ASSERT(!Exists(id), "Resource '" + TO_STRING(Strings::Get(id)) + "' already exists!");
-			auto& [it, success] = m_Registry.try_emplace(id, Resource::tag<Resource_t>{}, id, filepath);
-			return it->second;
+			auto& resourcePool = GetPoolToUse<Resource_t>();
+			size_t index = resourcePool.size();
+			auto& [it, success] = m_Registry.try_emplace(id, index, GetResourceType<Resource_t>(), filepath);
+			APEX_CORE_ASSERT(success, "Could not add resource!");
+			resourcePool.push_back(nullptr);
+			return Resource<Resource_t>{ id, &resourcePool.back(), index };
+			// resourcePool.push_back(Resource<Resource_t>{ id, nullptr, index, this });
+			// return resourcePool.back();
 		}
 		
-		Resource* Get(Handle id);
-		[[nodiscard]] const Resource* Get(Handle id) const;
+		template<typename Resource_t>
+		[[nodiscard]] Resource<Resource_t> Get(Handle id)
+		{
+			const auto itr = m_Registry.find(id);
+			auto& resourcePool = GetPoolToUse<Resource_t>();
+			APEX_CORE_ASSERT(itr != m_Registry.end(), fmt::format("Resource '{}' not found!", Strings::Get(id)));
+			if (itr != m_Registry.end()) {
+				APEX_CORE_ASSERT(itr->second.resourceData.type == GetResourceType<Resource_t>(), fmt::format("Invalid resource types! Expected '{0}', got '{1}'!", GetResourceType<Resource_t>(), itr->second.resourceData.type));
+				return Resource<Resource_t>{ id, &resourcePool[itr->second.index], itr->second.index };
+			}
+			return Resource<Resource_t>{};
+		}
 
 		bool Exists(Handle id);
+		void Load(Handle id);
+
+		void LoadAllResources();
 
 		// Dependency Graph
-
 		void AddDependency(Handle dependent, Handle dependency);
-
 		Iterable<std::vector<Handle>> SolveDependencies();
 
 	protected:
 		void TopologicalSort();
 
 	private:
-		std::unordered_map<Handle, Resource> m_Registry;
+		template<typename T>
+		Pool<T>& GetPoolToUse() { static_assert("Unknown type!"); }
+
+	private:
+		std::unordered_map<Handle, IndexData> m_Registry;
 		std::unordered_map<Handle, std::list<Handle>> m_DependencyGraph;
+
+		// Resource Pools
+		Pool<Texture> m_TexturePool;
+		Pool<Shader> m_ShaderPool;
+		Pool<Mesh> m_MeshPool;
+		Pool<Material> m_MaterialPool;
+
 		
 		std::vector<Handle> m_SortedOrder;
 		bool m_Unsorted = true; // similar to dirty bit
 
 		friend class ResourceSerializer;
 	};
+
+	template<>
+	inline ResourceManager::Pool<Texture>& ResourceManager::GetPoolToUse<Texture>()
+	{
+		return m_TexturePool;
+	}
+
+	template<>
+	inline ResourceManager::Pool<Shader>& ResourceManager::GetPoolToUse<Shader>()
+	{
+		return m_ShaderPool;
+	}
+
+	template<>
+	inline ResourceManager::Pool<Mesh>& ResourceManager::GetPoolToUse<Mesh>()
+	{
+		return m_MeshPool;
+	}
+
+	template<>
+	inline ResourceManager::Pool<Material>& ResourceManager::GetPoolToUse<Material>()
+	{
+		return m_MaterialPool;
+	}
+	
 
 }

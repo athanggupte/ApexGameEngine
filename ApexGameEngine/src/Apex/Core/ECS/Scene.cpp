@@ -30,34 +30,22 @@ namespace Apex {
 		return CreateEntity(HASH("Unnamed Entity"));
 	}
 
-	static void LoadResource(Handle resourceHandle)
-	{
-		if (const auto resource = Application::Get().GetResourceManager().Get(resourceHandle); !resource) {
-			APEX_CORE_ERROR("Resource `{}` not found!", Strings::Get(resourceHandle));
-		}
-		else {
-			if (!resource->IsLoaded())
-				resource->Load();
-		}
-	}
-
 	void Scene::OnSetup()
 	{
 		auto& resourceManager = Application::Get().GetResourceManager();
 
 		m_Registry.view<SpriteRendererComponent>()
 			.each([&resourceManager](SpriteRendererComponent& sprite) {
-				if (!sprite.texture)
-					return;
-				LoadResource(sprite.texture);
+				if (sprite.texture.IsValid())
+					resourceManager.Load(sprite.texture.GetId());
 			});
 
 		m_Registry.view<MeshRendererComponent>()
 			.each([&resourceManager](MeshRendererComponent& meshComp) {
-				if (!meshComp.mesh || !meshComp.material)
-					return;
-				LoadResource(meshComp.mesh);
-				LoadResource(meshComp.material);
+				if (meshComp.mesh.IsValid())
+					resourceManager.Load(meshComp.mesh.GetId());
+				if (meshComp.material.IsValid())
+					resourceManager.Load(meshComp.material.GetId());
 			});
 	}
 
@@ -69,10 +57,12 @@ namespace Apex {
 		const auto view = m_Registry.view<TransformComponent, SpriteRendererComponent>();
 		view.each([](const TransformComponent& transform, const SpriteRendererComponent& sprite) {
 			if (sprite.visible) {
-				const auto pTextureResource = Application::Get().GetResourceManager().Get(sprite.texture);
-				if (sprite.useTexture && pTextureResource) {
-					if (auto& texture = pTextureResource->Get<Texture>())
-						Renderer2D::DrawQuad(transform.GetTransform(), std::dynamic_pointer_cast<Texture2D>(texture), sprite.tilingFactor);
+				if (sprite.useTexture) {
+					if (sprite.texture.IsValid() && sprite.texture.IsLoaded()) {
+						Renderer2D::DrawQuad(transform.GetTransform(), std::dynamic_pointer_cast<Texture2D>(sprite.texture.Get()), sprite.tilingFactor);
+					} else {
+						Renderer2D::DrawQuad(transform.GetTransform(), { 0.95f, 0.2f, 0.98f, 1.0f });
+					}
 				}
 				else
 					Renderer2D::DrawQuad(transform.GetTransform(), sprite.color);
@@ -84,15 +74,10 @@ namespace Apex {
 	{
 		const auto view = m_Registry.view<TransformComponent, MeshRendererComponent>();
 		view.each([](const TransformComponent& transform, const MeshRendererComponent& mesh_component) {
-			const auto pMeshResource = Application::Get().GetResourceManager().Get(mesh_component.mesh);
-			const auto pMaterialResource = Application::Get().GetResourceManager().Get(mesh_component.material);
-			if (pMeshResource && pMaterialResource) {
-				auto& mesh = pMeshResource->Get<Mesh>();
-				auto& material = pMaterialResource->Get<Material>();
-
-				if (const auto& shader = material->GetShader(); mesh && shader) {
-					material->Bind();
-					Renderer::Submit(shader, mesh->GetVAO(), transform.GetTransform());
+			if (mesh_component.mesh.IsValid() && mesh_component.material.IsValid()) {
+				if (const auto& shader = mesh_component.material->GetShader()) {
+					mesh_component.material->Bind();
+					Renderer::Submit(shader, mesh_component.mesh->GetVAO(), transform.GetTransform());
 				}
 			}
 		});
