@@ -2,6 +2,7 @@
 #include "LogPanel.h"
 
 #include "Apex/Core/Log.h"
+#include "UI/ImGuiCustom.h"
 
 namespace Apex {
 	
@@ -45,7 +46,7 @@ namespace Apex {
 		ImGui::SameLine();
 		m_Filter.Draw("Filter", 100.f);
 		ImGui::SameLine();
-		bool clear = ImGui::Button("Clear");
+		bool clear = Apex::Button("Clear");
 		
 		ImGui::Separator();
 		ImGui::BeginChild("logspace", ImVec2(0, 0), false, ImGuiWindowFlags_HorizontalScrollbar);

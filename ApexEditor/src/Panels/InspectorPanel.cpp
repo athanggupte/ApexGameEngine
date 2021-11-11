@@ -16,6 +16,8 @@
 #include <glm/gtc/type_ptr.hpp>
 
 // ImGui implementations for std::string
+#include "UI/ImGuiCustom.h"
+
 #include <misc/cpp/imgui_stdlib.cpp>
 
 namespace Apex {
@@ -81,7 +83,7 @@ namespace Apex {
 
 			if (isChanged) {
 				ImGui::SameLine();
-				if (ImGui::Button("OK")) {
+				if (Apex::Button("OK")) {
 					tag = HASH(changedBuf);
 					isChanged = false;
 				}
@@ -158,7 +160,7 @@ namespace Apex {
 						camera.SetOrthographicFar(orthoFar);
 				}
 
-				if (ImGui::Button("Delete Component")) {
+				if (Apex::Button("Delete Component")) {
 					m_ContextEntity.RemoveComponent<CameraComponent>();
 				}
 
@@ -208,7 +210,7 @@ namespace Apex {
 					ImGui::ColorEdit4("Color", glm::value_ptr(sprite.color));
 				}
 
-				if (ImGui::Button("Delete Component")) {
+				if (Apex::Button("Delete Component")) {
 					m_ContextEntity.RemoveComponent<SpriteRendererComponent>();
 				}
 				ImGui::TreePop();
@@ -277,7 +279,7 @@ namespace Apex {
 					}
 				}
 
-				if (ImGui::Button("Delete Component")) {
+				if (Apex::Button("Delete Component")) {
 					m_ContextEntity.RemoveComponent<MeshRendererComponent>();
 				}
 				ImGui::TreePop();
@@ -345,7 +347,7 @@ namespace Apex {
 			ImGui::EndPopup();
 		}
 		
-		if (ImGui::Button("Add Component"))
+		if (Apex::Button("Add Component"))
 			ImGui::OpenPopup("Add Component");
 	}
 }

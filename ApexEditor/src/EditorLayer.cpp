@@ -15,6 +15,8 @@
  //#include "EditorTools/ShaderGraph/ShaderGraph.h"
 
 
+#include "UI/ImGuiCustom.h"
+
 #include <imgui.h>
 #include <glm/gtc/matrix_transform.hpp>
 
@@ -101,6 +103,8 @@ namespace Apex {
 		m_AssetExplorer.SetContext("");
 
 		// ImGui options
+		SetImGuiStyle();
+
 		ImGui::GetIO().ConfigWindowsMoveFromTitleBarOnly = true;
 		ImGui::GetIO().Fonts->AddFontFromMemoryCompressedBase85TTF(font_cousine_compressed_data_base85, 12);
 		ImGui::GetIO().Fonts->AddFontFromFileTTF("assets/fonts/consola.ttf", 12);
@@ -197,7 +201,7 @@ namespace Apex {
 		}*/
 
 		if (ImGui::Begin("Rendering")) {
-			if (ImGui::Button("Import")) {
+			if (Apex::Button("Import")) {
 				ImGui::OpenPopup("Import Asset");
 			}
 
@@ -206,7 +210,7 @@ namespace Apex {
 			}
 			if (ImGui::BeginPopupModal("Import Asset", nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse)) {
 				ImGui::Text("Importing asset");
-				if (ImGui::Button("Continue"))
+				if (Apex::Button("Continue"))
 					ImGui::CloseCurrentPopup();
 				ImGui::EndPopup();
 
@@ -284,7 +288,7 @@ namespace Apex {
 		ShowLogger();
 		ImGui::PopFont();
 
-// 		if (ImGui::Button("Parse Graph")) {
+// 		if (Apex::Button("Parse Graph")) {
 // 			APEX_LOG_INFO("Node Graph Output:");
 // 			APEX_LOG_INFO(nodeGraph.Parse().c_str());
 // 		}
@@ -380,13 +384,13 @@ namespace Apex {
 		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.4f, 0.2f, 0.6f, 0.2f));
 
 		if (m_EditorCameraController == &m_PerspectiveCameraController) {
-			if (ImGui::Button("Ortho")) {
+			if (Apex::Button("Ortho")) {
 				m_EditorCameraController = &m_OrthographicCameraController;
 				m_EditorCamera.SetProjectionType(Camera::ProjectionType::Orthographic);
 			}
 		}
 		else if (m_EditorCameraController == &m_OrthographicCameraController) {
-			if (ImGui::Button("Persp")) {
+			if (Apex::Button("Persp")) {
 				m_EditorCameraController = &m_PerspectiveCameraController;
 				m_EditorCamera.SetProjectionType(Camera::ProjectionType::Perspective);
 			}
@@ -447,7 +451,7 @@ namespace Apex {
 			}
 			ImGui::EndPopup();
 		}
-		if (ImGui::Button("Options"))
+		if (Apex::Button("Options"))
 			ImGui::OpenPopup("Options");
 		
 		/*static bool showInternalLogs = false;
@@ -540,7 +544,7 @@ namespace Apex {
 
 	void EditorLayer::ShowComputeShaderOutput()
 	{
-		if (ImGui::Button("Run-Basic-Texture")) {
+		if (Apex::Button("Run-Basic-Texture")) {
 			m_ComputeShader->Bind();
 			m_ImageTexture->BindImage(0, false, true);
 
@@ -549,7 +553,7 @@ namespace Apex {
 
 			m_ComputeShader->Dispatch(m_ImageTexture->GetWidth(), m_ImageTexture->GetHeight(), 1U);
 		}
-		if (ImGui::Button("Run-Blur-Texture")) {
+		if (Apex::Button("Run-Blur-Texture")) {
 			m_ComputeShader->Bind();
 			m_ImageTexture->BindImage(0, false, true);
 			
@@ -558,7 +562,7 @@ namespace Apex {
 			
 			m_ComputeShader->Dispatch(m_ImageTexture->GetWidth(), m_ImageTexture->GetHeight(), 1U);
 		}
-		if (ImGui::Button("Run-Blur-Screen")) {
+		if (Apex::Button("Run-Blur-Screen")) {
 			m_ComputeShader->Bind();
 			m_ImageTexture->BindImage(0, false, true);
 

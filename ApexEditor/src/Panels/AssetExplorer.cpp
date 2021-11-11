@@ -2,6 +2,7 @@
 #include "AssetExplorer.h"
 
 #include "Apex/Application.h"
+#include "UI/ImGuiCustom.h"
 
 #include <imgui.h>
 #include <imgui_internal.h>
@@ -49,14 +50,14 @@ namespace Apex {
 		ImGui::EndDisabled();
 
 		ImGui::SameLine();
-		if (ImGui::Button("/"))
+		if (Apex::Button("/"))
 			m_Context = "";
 
 		fs::path tempPath = "";
 		for (auto it = m_Context.begin(); it != m_Context.end(); ++it) {
 			ImGui::SameLine();
 			tempPath /= *it;
-			if (ImGui::Button(it->string().c_str())) {
+			if (Apex::Button(it->string().c_str())) {
 				m_Context = tempPath;
 			}
 		}
