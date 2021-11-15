@@ -1,3 +1,5 @@
+include "dependencies.lua"
+
 workspace "ApexGameEngine"
 	architecture "x64"
 	configurations	{
@@ -8,53 +10,8 @@ workspace "ApexGameEngine"
 	startproject "Sandbox"
 
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
-
 WinCRunTime_Type = "Off"
 
--- Include directories relative to the root (solution) directory
-IncludeDirs = {}
-IncludeDirs["spdlog"] = "ApexGameEngine/vendor/spdlog/include/"
-IncludeDirs["GLFW"] = "ApexGameEngine/vendor/GLFW/include/"
-IncludeDirs["Glad"] = "ApexGameEngine/vendor/Glad/include/"
-IncludeDirs["ImGui"] = "ApexGameEngine/vendor/imgui/"
-IncludeDirs["FreeType"] = "ApexGameEngine/vendor/freetype/include"
-IncludeDirs["glm"] = "ApexGameEngine/vendor/glm/"
-IncludeDirs["stb_image"] = "ApexGameEngine/vendor/stb_image/"
-IncludeDirs["Assimp"] = "ApexGameEngine/vendor/Assimp/include/"
-IncludeDirs["irrKlang"] = "ApexGameEngine/vendor/irrKlang/include/"
-IncludeDirs["entt"] = "ApexGameEngine/vendor/entt/single_include/"
-IncludeDirs["pugixml"] = "ApexGameEngine/vendor/pugixml/src/"
-IncludeDirs["ImGuizmoQuat"] = "ApexGameEngine/vendor/imguizmo_quat/imGuIZMO.quat/"
-IncludeDirs["ApexIK"] = "ApexGameEngine/modules/ApexIK/ApexIK/include/"
-
--- DLLs
-DLLs = {}
-DLLs["Assimp"] = "assimp-vc142-mtd"
-
--- Platform library linkages
-WinLibs = { "opengl32.lib", "freetyped", "assimp-vc142-mtd", "irrKlang" }
--- WinLibs["OpenGL"] = "opengl32.lib"
--- WinLibs["Assimp"] = "%{DLLs.Assimp}"
--- WinLibs["irrKlang"] = "irrKlang"
-
-WinLibDirs = {
-	"ApexGameEngine/vendor/freetype/build/Debug",
-	"ApexGameEngine/vendor/Assimp/build/lib/Debug",
-	"ApexGameEngine/vendor/irrKlang/lib",
-}
-
-LinuxLibs = { "GL", "dl", "m", "pthread", "uuid", "freetype", "assimp", "IrrKlang" }
--- LinuxLibs["OpenGL"] = "GL"
--- LinuxLibs["Assimp"] = "assimp"
--- LinuxLibs["irrKlang"] = "IrrKlang"
-
-LinuxLibDirs = {
-	"ApexGameEngine/vendor/freetype/build/Debug",
-	"ApexGameEngine/vendor/Assimp/build/bin",
-	"ApexGameEngine/vendor/irrKlang/bin/linux-gcc-64",
-}
--- LinuxLibDirs["Assimp"] = "ApexGameEngine/vendor/Assimp/build/bin"
--- LinuxLibDirs["irrKlang"] = "ApexGameEngine/vendor/irrKlang/bin/linux-gcc-64"
 
 group "Dependencies"
 -- Include other premake files
@@ -124,6 +81,7 @@ project "ApexGameEngine"
 		"%{IncludeDirs.entt}",
 		"%{IncludeDirs.ImGuizmoQuat}",
 		"%{IncludeDirs.pugixml}",
+		"%{IncludeDirs.VulkanSDK}",
 		-- Modules
 		"%{IncludeDirs.ApexIK}",
 	}
@@ -161,8 +119,18 @@ project "ApexGameEngine"
 			"GLFW_INCLUDE_NONE"
 		}
 		
-		libdirs (WinLibDirs)
-		links (WinLibs)
+		libdirs {
+			"%{WinLibDirs.FreeType}",
+			"%{WinLibDirs.Assimp}",
+			"%{WinLibDirs.irrKlang}",
+		}
+
+		links {
+			"%{WinLibs.OpenGL}",
+			"%{WinLibs.FreeType}",
+			"%{WinLibs.Assimp}",
+			"%{WinLibs.irrKlang}",
+		}
         
 	filter "system:linux"
 		systemversion "latest"
@@ -173,8 +141,18 @@ project "ApexGameEngine"
 			"GLFW_INCLUDE_NONE"
 		}
 		
-		libdirs (LinuxLibDirs)
-		links (LinuxLibs)
+		libdirs {
+			"%{LinuxLibDirs.FreeType}",
+			"%{LinuxLibDirs.Assimp}",
+			"%{LinuxLibDirs.irrKlang}",
+		}
+
+		links {
+			"%{LinuxLibs.OpenGL}",
+			"%{LinuxLibs.FreeType}",
+			"%{LinuxLibs.Assimp}",
+			"%{LinuxLibs.irrKlang}",
+		}
 		
 		if linux_de == "KDE" then
 			defines { "LINUX_DE_KDE" }
@@ -183,6 +161,20 @@ project "ApexGameEngine"
 		elseif linux_de == "lxqt" then
 			defines { "LINUX_DE_LXQT" }
 		end
+		
+	filter { "system:windows", "configurations:Debug" }
+		links {
+			"%{WinLibs.ShaderC_Debug}",
+			"%{WinLibs.SPIRV_Cross_Debug}",
+			"%{WinLibs.SPIRV_Cross_GLSL_Debug}",
+		}
+	
+	filter { "system:windows", "configurations:Release or Dist" }
+		links {
+			"%{WinLibs.ShaderC_Release}",
+			"%{WinLibs.SPIRV_Cross_Release}",
+			"%{WinLibs.SPIRV_Cross_GLSL_Release}",
+		}
 		
 	filter "configurations:Debug"
 		defines {
@@ -256,11 +248,11 @@ project "ApexEditor"
 
 	links {
 		"ApexGameEngine",
-		"GLFW",
-		"Glad",
-		"ImGui",
-		"ImGuizmoQuat",
-		"ApexIK",
+		-- "GLFW",
+		-- "Glad",
+		-- "ImGui",
+		-- "ImGuizmoQuat",
+		-- "ApexIK",
 	}
 
 	targetDir = path.getabsolute("bin/" .. outputdir .. "/%{prj.name}")
@@ -278,8 +270,8 @@ project "ApexEditor"
 			"APEX_PLATFORM_WINDOWS"
 		}
         
-		libdirs (WinLibDirs)
-		links (WinLibs)
+		-- libdirs (WinLibDirs)
+		-- links (WinLibs)
 		
 	filter "system:linux"
 		systemversion "latest"
@@ -288,8 +280,8 @@ project "ApexEditor"
 			"APEX_PLATFORM_LINUX"
 		}
 		
-		libdirs (LinuxLibDirs)
-		links (LinuxLibs)
+		-- libdirs (LinuxLibDirs)
+		-- links (LinuxLibs)
 
 		postbuildcommands {
 			"echo \"cd $(realpath %{cfg.buildtarget.directory}) && export LD_LIBRARY_PATH=/home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/Assimp/build/bin:/home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/irrKlang/bin/linux-gcc-64/ && ./%{prj.name}\" > %{cfg.buildtarget.abspath}.sh"
@@ -345,11 +337,11 @@ project "Sandbox"
 
 	links {
 		"ApexGameEngine",
-		"GLFW",
-		"Glad",
-		"ImGui",
-		"ImGuizmoQuat",
-		"ApexIK",
+		-- "GLFW",
+		-- "Glad",
+		-- "ImGui",
+		-- "ImGuizmoQuat",
+		-- "ApexIK",
 	}
 	
 	targetDir = path.getabsolute("bin/" .. outputdir .. "/%{prj.name}")
@@ -367,8 +359,8 @@ project "Sandbox"
 			"APEX_PLATFORM_WINDOWS"
 		}
 		
-		libdirs (WinLibDirs)
-		links (WinLibs)
+		-- libdirs (WinLibDirs)
+		-- links (WinLibs)
 
 	filter "system:linux"
 		systemversion "latest"
@@ -377,8 +369,8 @@ project "Sandbox"
 			"APEX_PLATFORM_LINUX"
 		}
 		
-		libdirs (LinuxLibDirs)
-		links (LinuxLibs)
+		-- libdirs (LinuxLibDirs)
+		-- links (LinuxLibs)
         
 		-- TODO: Consider replacing with 'runpathdirs' https://premake.github.io/docs/runpathdirs
 		postbuildcommands {
