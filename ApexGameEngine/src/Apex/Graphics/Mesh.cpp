@@ -59,12 +59,12 @@ namespace Apex {
 	{
 		std::string filepath;
 		if (const auto file = FileSystem::GetFileIfExists(path))
-			filepath += file->GetPhysicalPath();
-		
+			filepath = file->GetPhysicalPath().string();
+
 		Assimp::Importer importer;
 		const aiScene* scene = importer.ReadFile(filepath, aiProcess_Triangulate | aiProcess_GenUVCoords | aiProcess_FlipUVs | aiProcess_JoinIdenticalVertices |
 														   aiProcess_GenNormals | aiProcess_FixInfacingNormals | aiProcess_CalcTangentSpace |
-														   aiProcess_OptimizeMeshes | aiProcess_FindInvalidData |
+														   aiProcess_OptimizeMeshes | aiProcess_ValidateDataStructure |
 												 0);
 
 		APEX_CORE_ASSERT(!(!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode), importer.GetErrorString());

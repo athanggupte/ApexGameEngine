@@ -2,6 +2,7 @@
 #include "AssetExplorer.h"
 
 #include "Apex/Application.h"
+#include "Apex/Graphics/RenderPrimitives/Texture.h"
 
 #include <imgui.h>
 #include <imgui_internal.h>
@@ -31,9 +32,9 @@ namespace Apex {
 	void AssetExplorer::SetContext(const fs::path& path)
 	{
 		m_Context = path;
-		FileSystem::VisitDirectoryRecursive(m_Context, [](const FileSystem::Metadata& metadata) {
+		/*FileSystem::VisitDirectoryRecursive(m_Context, [](const FileSystem::Metadata& metadata) {
 			APEX_CORE_DEBUG("{0}: {1}", (metadata.IsDirectory() ? "Dir" : metadata.IsFile() ? "File" : "Other"), metadata.path);
-		});
+		});*/
 	}
 
 	void AssetExplorer::OnImGuiRender()
@@ -61,7 +62,7 @@ namespace Apex {
 			}
 		}
 
-		static float thumbnailSize = 92.f;
+		static float thumbnailSize = 72.f;
 		static float padding = 12.f;
 		const float cellSize = thumbnailSize + padding;
 

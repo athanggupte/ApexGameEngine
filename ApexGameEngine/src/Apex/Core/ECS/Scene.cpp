@@ -6,13 +6,26 @@
 #include "Apex/Core/ECS/Entity.h"
 #include "Apex/Core/ECS/ScriptableEntity.h"
 #include "Apex/Core/ECS/Components.h"
+
 #include "Apex/Graphics/Renderer/Renderer.h"
 #include "Apex/Graphics/Renderer/Renderer2D.h"
+#include "Apex/Graphics/RenderPrimitives/Shader.h"
+#include "Apex/Graphics/RenderPrimitives/Texture.h"
+#include "Apex/Graphics/Mesh.h"
+#include "Apex/Graphics/Material.h"
 
 namespace Apex {
 
+	static Ref<Texture2D> errorTexture;
+	
 	Scene::Scene()
 	{
+		if (!errorTexture) {
+			constexpr auto errorTextureSpec = TextureSpec{ TextureAccessFormat::RGBA, TextureInternalFormat::RGBA8, TextureDataType::UBYTE };
+			errorTexture = Texture2D::Create(1U, 1U, errorTextureSpec, "error");
+			uint32_t errorTextureData = 0xfff933f2;
+			errorTexture->SetData(&errorTextureData, sizeof(errorTextureData));
+		}
 		// (void)m_Registry.group<TransformComponent, SpriteRendererComponent>();
 	}
 	
@@ -72,12 +85,21 @@ namespace Apex {
 
 	void Scene::Render3D()
 	{
+		errorTexture->Bind(0);
 		const auto view = m_Registry.view<TransformComponent, MeshRendererComponent>();
-		view.each([](const TransformComponent& transform, const MeshRendererComponent& mesh_component) {
+		view.each([](const TransformComponent& transform, MeshRendererComponent& mesh_component) {
 			if (mesh_component.mesh.IsValid() && mesh_component.material.IsValid()) {
-				if (const auto& shader = mesh_component.material->GetShader()) {
-					mesh_component.material->Bind();
-					Renderer::Submit(shader, mesh_component.mesh->GetVAO(), transform.GetTransform());
+				if (const auto shader = mesh_component.material->GetShader(); shader.IsValid()) {
+					int slot = 0;
+					for (auto& [name, texture] : mesh_component.material->GetTextures()) {
+						if (texture.IsValid()) {
+							texture->Bind(++slot);
+							shader->SetUniInt1(name, slot);
+						} else {
+							shader->SetUniInt1(name, 0);
+						}
+					}
+					Renderer::Submit(shader.Get(), mesh_component.mesh->GetVAO(), transform.GetTransform());
 				}
 			}
 		});

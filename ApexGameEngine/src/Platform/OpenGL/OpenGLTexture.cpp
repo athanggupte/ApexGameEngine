@@ -154,8 +154,8 @@ namespace Apex {
 			glObjectLabel(GL_TEXTURE, m_RendererID, -1, name.c_str());
 	}
 	
-	OpenGLTexture2D::OpenGLTexture2D(const std::string & path, bool useHDR)
-		: m_Path(path)
+	OpenGLTexture2D::OpenGLTexture2D(const fs::path& path, bool useHDR)
+		: m_Path(path.string())
 	{
 		int width, height, channels;
 		stbi_set_flip_vertically_on_load(0);
@@ -163,7 +163,7 @@ namespace Apex {
 		
 		std::string filepath;
 		if (const auto file = FileSystem::GetFileIfExists(path))
-			filepath += file->GetPhysicalPath();
+			filepath = file->GetPhysicalPath().string();
 		else {
 			APEX_CORE_CRITICAL("Texture file {} not found!", path);
 			return;
@@ -174,7 +174,7 @@ namespace Apex {
 		} else {
 			data = stbi_load(filepath.c_str(), &width, &height, &channels, 0);
 		}
-		APEX_CORE_ASSERT(data, std::string("Failed to load image : " + path));
+		APEX_CORE_ASSERT(data, fmt::format("Failed to load image : {0}", path));
 
 		m_Width = width;
 		m_Height = height;
@@ -203,7 +203,7 @@ namespace Apex {
 			m_Specification.internalFormat = useHDR ? TextureInternalFormat::RGBA16 : TextureInternalFormat::RGBA8;
 		}
 		
-		APEX_CORE_ASSERT(internalFormat && accessFormat, "Image format not supported : " + path + "\nChannels : " + std::to_string(channels));
+		APEX_CORE_ASSERT(internalFormat && accessFormat, fmt::format("Image format not supported : {0}\nChannels : {1}", path, channels));
 		
 		m_AccessFormat = accessFormat;
 		m_InternalFormat = internalFormat;
@@ -220,8 +220,7 @@ namespace Apex {
 
 		stbi_image_free(data);
 
-		const auto name = Utils::GetFilename(path);
-		glObjectLabel(GL_TEXTURE, m_RendererID, -1, name.c_str());
+		glObjectLabel(GL_TEXTURE, m_RendererID, -1, path.filename().string().c_str());
 	}
 	
 	OpenGLTexture2D::~OpenGLTexture2D()

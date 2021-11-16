@@ -12,27 +12,13 @@ namespace Apex {
     OpenGLComputeShader::OpenGLComputeShader(const std::string& filepath)
     {
 		std::string source;
-		std::ifstream in(filepath, std::ios::in | std::ios::binary);
-#ifdef APEX_USE_VFS
+		
 		auto file = FileSystem::GetFileIfExists(filepath);
 		if (file && file->OpenRead()) {
 			source.resize(file->Size());
 			file->Read(&source[0], source.size());
 			file->Close();
 		}
-#else
-		std::ifstream in(filepath, std::ios::in | std::ios::binary);
-		if (in) {
-			in.seekg(0, std::ios::end);
-			source.resize(in.tellg());
-			in.seekg(0, std::ios::beg);
-			in.read(&source[0], source.size());
-			in.close();
-		}
-		else {
-			APEX_CORE_ERROR("Could not open file : {0}", filepath);
-		}
-#endif
 
 		// Extract name from filepath
 		auto lastSlash = filepath.find_last_of("/\\");

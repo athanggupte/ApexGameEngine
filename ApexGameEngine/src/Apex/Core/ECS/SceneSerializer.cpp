@@ -3,12 +3,8 @@
 
 #include "XMLSceneSerializer.h"
 
-#include "Entity.h"
-#include "Components.h"
-
 #include "Apex/Core/FileSystem/FileSystem.h"
 
-#include <fstream>
 #include <pugixml.hpp>
 
 namespace Apex {
@@ -18,7 +14,7 @@ namespace Apex {
     {
     }
 
-    void SceneSerializer::Serialize(const std::string& filepath)
+    void SceneSerializer::Serialize(const fs::path& filepath)
     {
         std::stringstream ss;
 
@@ -40,7 +36,7 @@ namespace Apex {
         }
     }
 
-    bool SceneSerializer::Deserialize(const std::string& filepath)
+    bool SceneSerializer::Deserialize(const fs::path& filepath)
     {
         auto file = FileSystem::GetFileIfExists(filepath);
         if (file && file->OpenRead()) {

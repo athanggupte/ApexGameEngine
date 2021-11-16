@@ -1,33 +1,34 @@
 #pragma once
 
+#include "Apex/Core/ResourceManager/ResourceManager.h"
 #include "Apex/Graphics/RenderPrimitives/Shader.h"
 #include "Apex/Graphics/RenderPrimitives/Texture.h"
-#include "Apex/Utils/CustomDataStructures.h"
+#include "Apex/Utils/CustomDataStructures/Iterable.hpp"
 
 namespace Apex {
 
 	class Material
 	{
 	public:
-		Material() {}
-		Material(const std::string&) {}
+		Material() = default;
+		Material(const fs::path&) {}
 		virtual ~Material() = default;
 
 		virtual void Bind() const;
 		virtual void Unbind() const;
 
-		void SetShader(const Ref<Shader>& shader) { m_Shader = shader; }
-		[[nodiscard]] Ref<Shader> GetShader() const { return m_Shader; }
+		void SetShader(const Resource<Shader>& shader);
+		[[nodiscard]] Resource<Shader> GetShader() const { return m_Shader; }
 
-		void AddTexture(const std::string& name, const Ref<Texture>& texture);
-		Ref<Texture> GetTexture(const std::string& name);
-		bool TextureExists(const std::string& name) const;
+		void AddTexture(const std::string& name, const Resource<Texture>& texture);
+		[[nodiscard]] Resource<Texture> GetTexture(const std::string& name) const;
+		[[nodiscard]] bool TextureExists(const std::string& name) const;
 
-		Iterable<std::unordered_map<std::string, Ref<Texture>>> GetTextures() { return Iterable(m_Textures); }
+		auto GetTextures() { return Iterable(m_Textures); }
 
 	private:
-		Ref<Shader> m_Shader;
-		std::unordered_map<std::string, Ref<Texture>> m_Textures;
+		Resource<Shader> m_Shader;
+		std::unordered_map<std::string, Resource<Texture>> m_Textures;
 	};
 
 }

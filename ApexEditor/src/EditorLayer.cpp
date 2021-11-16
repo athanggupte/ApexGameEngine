@@ -15,6 +15,8 @@
  //#include "EditorTools/ShaderGraph/ShaderGraph.h"
 
 
+#include "Apex/Graphics/Material.h"
+
 #include <imgui.h>
 #include <glm/gtc/matrix_transform.hpp>
 
@@ -46,39 +48,41 @@ namespace Apex {
 		FileSystem::MountRoot(APEX_INSTALL_LOCATION "/assets");
 
 		m_Scene = CreateRef<Scene>();
+		m_GameFramebuffer = Framebuffer::Create({ 1280u, 720u });
 
 		auto& resourceManager = Application::Get().GetResourceManager();
 
-		/* Shader initialization */
+		/* Initialize Shaders */
 		auto gridShader = resourceManager.AddResourceFromFile<Shader>(RESNAME("shader_InfiniteGridXZ"), "editor_assets/shaders/InfiniteGridXZ.glsl");
 		auto debugVerticesShader = resourceManager.AddResourceFromFile<Shader>(RESNAME("shader_DebugVerticesUnlit"), "editor_assets/shaders/DebugVerticesUnlit.glsl");
 		auto debugTrianglesShader = resourceManager.AddResourceFromFile<Shader>(RESNAME("shader_DebugTrianglesUnlit"), "editor_assets/shaders/DebugTrianglesUnlit.glsl");
-		auto unlitMaterial = resourceManager.AddResource<Material>(RESNAME("material_Unlit"), CreateRef<Material>());
+		auto albedoUnlitShader = resourceManager.AddResourceFromFile<Shader>(RESNAME("shader_AlbedoUnlit"), "editor_assets/shaders/AlbedoUnlit.glsl");
 
 		/*resourceManager.Load(gridShader.GetId());
 		resourceManager.Load(debugVerticesShader.GetId());
 		resourceManager.Load(debugTrianglesShader.GetId());
 		resourceManager.Load(unlitMaterial.GetId());*/
 
-		/* Asset allocation */
+		/* Initialize Textures */
 		m_ImageTexture = Texture2D::Create(256U, 256U, HDRTextureSpec, "Image");
 		m_ComputeShader = ComputeShader::Create("Blur.compute");
-		m_GameFramebuffer = Framebuffer::Create({ 1280u, 720u });
 
+		auto pusheenTexture = resourceManager.AddResourceFromFile<Texture>(RESNAME("pusheen-texture"), "editor_assets/textures/pusheen-thug-life.png");
+		auto suzanneTexture = resourceManager.AddResourceFromFile<Texture>(RESNAME("suzanne_DefaultMaterial_BaseColor"), "editor_assets/meshes/suzanne/textures/suzanne_DefaultMaterial_BaseColor.png");
+
+		/* Initialize Meshes */
 		auto cubeMesh = resourceManager.AddResource<Mesh>(RESNAME("default-cube"),Primitives::Cube::GetMesh());
 		auto planeMesh = resourceManager.AddResource<Mesh>(RESNAME("default-plane"), Primitives::Plane::GetMesh());
-		auto pusheenTexture = resourceManager.AddResourceFromFile<Texture>(RESNAME("pusheen-texture"), "editor_assets/textures/pusheen-thug-life.png");
 		auto suzanneMesh = resourceManager.AddResourceFromFile<Mesh>(RESNAME("suzanne-mesh"), "editor_assets/meshes/suzanne/source/suzanne.fbx");
-		auto suzanneTexture = resourceManager.AddResourceFromFile<Texture>(RESNAME("suzanne-texture"), "editor_assets/meshes/suzanne/textures/suzanne_DefaultMaterial_BaseColor.png");
+
+		/* Initialize Materials */
+		auto _suzanneMaterial = CreateRef<Material>();
+		_suzanneMaterial->SetShader(albedoUnlitShader);
+		_suzanneMaterial->AddTexture("Albedo", suzanneTexture);
+		auto suzanneMaterial = resourceManager.AddResource<Material>(RESNAME("material_Unlit"), _suzanneMaterial);
 
 		/* Load All Resources */
 		resourceManager.LoadAllResources();
-
-		{
-			unlitMaterial->SetShader(Shader::Create("editor_assets/shaders/AlbedoUnlit.glsl"));
-			unlitMaterial->AddTexture("Albedo", suzanneTexture.Get());
-		}
-
 
 		/* Entity initialization */
 		/*auto cubeEntity = m_Scene->CreateEntity(HASH("cube"));
@@ -89,7 +93,7 @@ namespace Apex {
 		planeEntity.GetComponent<TransformComponent>().scale *= glm::vec3(5.f, 1.f, 5.f);*/
 
 		auto suzanneEntity = m_Scene->CreateEntity(HASH("suzanne"));
-		suzanneEntity.AddComponent<MeshRendererComponent>(suzanneMesh, unlitMaterial);
+		suzanneEntity.AddComponent<MeshRendererComponent>(suzanneMesh, suzanneMaterial);
 
 		// pusheenTexture->Bind(0);
 		
@@ -144,11 +148,12 @@ namespace Apex {
 		
 		if (!m_PlayScene) {
 			Renderer::BeginScene(m_EditorCamera, m_EditorCameraController->GetTransform());
-			Renderer2D::BeginScene(m_EditorCamera, m_EditorCameraController->GetTransform());
 			RenderCommands::SetDepthTest(true);
-			m_Scene->OnEditorUpdate(ts);
-			Renderer2D::EndScene();
+			m_Scene->Render3D();
 			Renderer::EndScene();
+			Renderer2D::BeginScene(m_EditorCamera, m_EditorCameraController->GetTransform());
+			m_Scene->Render2D();
+			Renderer2D::EndScene();
 
 
 			// Render the Grid
@@ -509,10 +514,10 @@ namespace Apex {
 			ImGui::EndMenu();
 		}
 		if (ImGui::MenuItem("Save", "Ctrl+S")) {
-			
+			SceneSave();
 		}
 		if (ImGui::MenuItem("Save As..", "Ctrl+Shift+S")) {
-			
+			SceneSaveAs();
 		}
 		if (ImGui::MenuItem("Exit")) {
 			Application::Get().Close();
@@ -659,6 +664,7 @@ namespace Apex {
 		if (!m_RecentFiles.Empty()) {
 			auto serializer = SceneSerializerFactory().SetFormat(SceneSerializerFactory::Format::XML).Build(m_Scene);
 			serializer->Serialize(m_RecentFiles.Top());
+			APEX_LOG_INFO("Saved scene to file '{}'", m_RecentFiles.Top());
 		}
 	}
 

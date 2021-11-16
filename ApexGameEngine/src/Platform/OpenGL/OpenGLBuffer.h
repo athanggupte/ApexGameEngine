@@ -34,7 +34,9 @@ namespace Apex {
 		void Unbind() const override;
 
 		[[nodiscard]] const BufferLayout& GetLayout() const override { return m_Layout; }
-		void SetLayout(const BufferLayout& layout) override { m_Layout = layout; }
+		void SetLayout(const BufferLayout& layout) override { m_Layout = layout; m_Count = (uint32_t)((float)m_Size / (float)m_Layout.GetStride()); }
+
+		[[nodiscard]] uint32_t GetCount() const override { return m_Count; }
 
 		// Explicitly specify which base class functions to use
 		// To suppress warning: C4250 inherits by dominance
@@ -46,6 +48,7 @@ namespace Apex {
 		
 	private:
 		BufferLayout m_Layout;
+		uint32_t m_Count = 0;
 	};
 
 	/*-------------------------Index Buffer----------------------------*/

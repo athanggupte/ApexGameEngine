@@ -19,9 +19,8 @@ namespace Apex {
 	Model::Model(const std::string & path)
 	{
 		std::string filepath;
-		auto file = FileSystem::GetFileIfExists(path);
-		if (file)
-			filepath += file->GetPhysicalPath();
+		if (const auto file = FileSystem::GetFileIfExists(path))
+			filepath = file->GetPhysicalPath().string();
 		
 		Assimp::Importer importer;
 		const aiScene* scene = importer.ReadFile(filepath, aiProcess_Triangulate | aiProcess_GenUVCoords | aiProcess_FlipUVs | aiProcess_JoinIdenticalVertices |

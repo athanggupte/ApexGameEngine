@@ -1,5 +1,8 @@
 #pragma once
 
+#include <filesystem>
+namespace fs = std::filesystem;
+
 namespace Apex {
 	
 	namespace VFS {
@@ -7,7 +10,7 @@ namespace Apex {
 		class IFile
 		{
 		public:
-			IFile(const std::string& filePath)
+			IFile(const fs::path& filePath)
 				: m_PhysicalPath(filePath)
 			{}
 			
@@ -19,24 +22,24 @@ namespace Apex {
 			virtual uint32_t Read(void* data, uint32_t size) = 0;
 			virtual uint32_t Write(const void* data, uint32_t size) = 0;
 			
-			virtual bool Flush() = 0;
+			virtual void Flush() = 0;
 			virtual void Close() = 0;
 			virtual bool IsOpen() const = 0;
 			virtual uint32_t Size() = 0;
 			virtual bool SeekPtr(const int64_t position, bool fromEnd = false) = 0;
 			virtual uint32_t TellPtr() = 0;
 			
-			const std::string& GetPhysicalPath() const { return m_PhysicalPath; }
+			const fs::path& GetPhysicalPath() const { return m_PhysicalPath; }
 			
 		protected:
 			// TODO: Do I really need this here??
-			std::string m_PhysicalPath;
+			fs::path m_PhysicalPath;
 		};
 		
 		class PhysicalFile : public IFile
 		{
 		public:
-			PhysicalFile(const std::string& filePath, bool binary = true);
+			PhysicalFile(const fs::path& filePath, bool binary = true);
 			~PhysicalFile();
 			
 			virtual bool OpenRead() override;
@@ -45,7 +48,7 @@ namespace Apex {
 			virtual uint32_t Read(void* data, uint32_t size) override;
 			virtual uint32_t Write(const void* data, uint32_t size) override;
 			
-			virtual bool Flush() override;
+			virtual void Flush() override;
 			virtual void Close() override;
 			virtual bool IsOpen() const override;
 			virtual uint32_t Size() override;

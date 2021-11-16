@@ -35,7 +35,8 @@ namespace Apex {
 
 				// imageData.pixels = stbi_load_from_memory(data, size, &imageData.width, &imageData.height, &imageData.channels, targetChannels);
 				imageData.pixelData = CreateRef<PixelData>();
-				imageData.pixelData->pixels = stbi_load(file->GetPhysicalPath().c_str(), &imageData.width, &imageData.height, &imageData.channels, targetChannels);
+				imageData.pixelData->pixels = stbi_load_from_memory(data, size, &imageData.width, &imageData.height, &imageData.channels, targetChannels);
+					//stbi_load(file->GetPhysicalPath().c_str(), &imageData.width, &imageData.height, &imageData.channels, targetChannels);
 				if (!imageData.pixelData->pixels)
 					APEX_CORE_ERROR("Could not load image!");
 				

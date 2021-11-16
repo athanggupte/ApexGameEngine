@@ -112,7 +112,7 @@ namespace Apex {
 			out vec3 v_Position;
 			out vec4 v_Color;
 			out vec2 v_TexCoord;
-			out float v_TexIndex;
+			out flat float v_TexIndex;
 
 			void main()
 			{
@@ -136,11 +136,13 @@ namespace Apex {
 			in vec3 v_Position;
 			in vec4 v_Color;
 			in vec2 v_TexCoord;
-			in float v_TexIndex;
+			in flat float v_TexIndex;
 
 			void main()
 			{
 				o_Color = texture(u_Textures[int(v_TexIndex)], v_TexCoord /** u_TilingFactor*/).rgba * v_Color;
+				if (o_Color.a < 0.05)
+					discard;
 			}
 		)";
 		
@@ -184,8 +186,9 @@ namespace Apex {
 	{
 		uint32_t dataSize = (uint8_t*)s_RenderData.quadBufferPtr - (uint8_t*)s_RenderData.quadBufferBase;
 		s_RenderData.quadVertexBuffer->SetData(s_RenderData.quadBufferBase, dataSize);
-		
-		FlushBatch();
+
+		if (dataSize > 0)
+			FlushBatch();
 	}
 
 	void Renderer2D::FlushBatch()

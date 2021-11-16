@@ -5,20 +5,19 @@
 #include "Apex/Utils/Utils.h"
 #include "Apex/Core/FileSystem/FileSystem.h"
 
-#include "Apex/Graphics/RenderPrimitives/Shader.h"
-#include "Apex/Graphics/RenderPrimitives/Texture.h"
-
 // #include "ResourceLibrary.h"
 
-#include "Apex/Graphics/Mesh.h"
-#include "Apex/Graphics/Material.h"
 
 #include <typeindex>
 #include <variant>
 #include <optional>
 
 namespace Apex {
-	
+	class Shader;
+	class Texture;
+	class Mesh;
+	class Material;
+
 	using Handle = uint64_t;
 
 #define RESNAME(_str_) static_cast<Handle>(HASH(_str_))
@@ -100,9 +99,14 @@ namespace Apex {
 		[[nodiscard]] auto& Get() { return *m_Ptr; }
 		[[nodiscard]] const auto& Get() const { return *m_Ptr; }
 
+		[[nodiscard]] bool IsNull() const
+		{
+			return m_Id == 0;
+		}
+
 		[[nodiscard]] bool IsValid() const
 		{
-			return m_Id && m_Ptr;
+			return ! IsNull() && m_Ptr;
 		}
 
 		[[nodiscard]] bool IsLoaded() const
@@ -121,7 +125,7 @@ namespace Apex {
 
 	class ResourceManager
 	{
-		template<typename T> using Pool = BucketList<Ref<T>>;
+		template<typename T> using Pool = BucketList<std::pair<Handle, Ref<T>>>;
 
 	public:
 		struct ResourceData
@@ -157,8 +161,8 @@ namespace Apex {
 			size_t index = resourcePool.size();
 			auto& [it, success] = m_Registry.try_emplace(id, index, GetResourceType<Resource_t>(), "");
 			APEX_CORE_ASSERT(success, "Could not add resource!");
-			resourcePool.push_back(ptr);
-			return Resource<Resource_t>{ id, &resourcePool.back(), index };
+			resourcePool.push_back({ id, ptr });
+			return Resource<Resource_t>{ id, &resourcePool.back().second, index };
 			// resourcePool.push_back(Resource<Resource_t>{ id, ptr, index, this });
 			// return resourcePool.back();
 		}
@@ -171,8 +175,8 @@ namespace Apex {
 			size_t index = resourcePool.size();
 			auto& [it, success] = m_Registry.try_emplace(id, index, GetResourceType<Resource_t>(), filepath);
 			APEX_CORE_ASSERT(success, "Could not add resource!");
-			resourcePool.push_back(nullptr);
-			return Resource<Resource_t>{ id, &resourcePool.back(), index };
+			resourcePool.push_back({ id, nullptr });
+			return Resource<Resource_t>{ id, &resourcePool.back().second, index };
 			// resourcePool.push_back(Resource<Resource_t>{ id, nullptr, index, this });
 			// return resourcePool.back();
 		}
@@ -184,10 +188,17 @@ namespace Apex {
 			auto& resourcePool = GetPoolToUse<Resource_t>();
 			APEX_CORE_ASSERT(itr != m_Registry.end(), fmt::format("Resource '{}' not found!", Strings::Get(id)));
 			if (itr != m_Registry.end()) {
-				APEX_CORE_ASSERT(itr->second.resourceData.type == GetResourceType<Resource_t>(), fmt::format("Invalid resource types! Expected '{0}', got '{1}'!", GetResourceType<Resource_t>(), itr->second.resourceData.type));
-				return Resource<Resource_t>{ id, &resourcePool[itr->second.index], itr->second.index };
+				APEX_CORE_ASSERT(itr->second.resourceData.type == GetResourceType<Resource_t>(), fmt::format("Invalid resource types! Expected '{0}', got '{1}'!", ResourceTypeToString(GetResourceType<Resource_t>()), itr->second.resourceData.type));
+				return Resource<Resource_t>{ id, &resourcePool[itr->second.index].second, itr->second.index };
 			}
 			return Resource<Resource_t>{};
+		}
+
+		template<typename Resource_t>
+		auto Iterate()
+		{
+			auto& resourcePool = GetPoolToUse<Resource_t>();
+			return Iterable(resourcePool);
 		}
 
 		bool Exists(Handle id);

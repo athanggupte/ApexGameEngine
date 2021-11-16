@@ -58,9 +58,9 @@ namespace Apex {
 		delete s_Data;
 	}
 
-	bool FileSystem::MountRoot(const std::string& physicalPathStr)
+	bool FileSystem::MountRoot(const fs::path& _physicalPath)
 	{
-		fs::path physicalPath = fs::absolute(physicalPathStr);
+		fs::path physicalPath = fs::absolute(_physicalPath);
 		auto mntPointPtr = CreateMountPoint(physicalPath);
 		if (!mntPointPtr)
 			return false;
@@ -85,22 +85,23 @@ namespace Apex {
 				// Mount package as subdirectory
 			}
 		}
+
+		return true;
 	}
 
-	bool FileSystem::Mount(const std::string& virtualPathStr, const std::string& physicalPathStr)
+	bool FileSystem::Mount(const fs::path& virtualPath, const fs::path& _physicalPath)
 	{
 		// APEX_CORE_ASSERT(s_Data->RootMounted, "Cannot mount path. Root is not mounted.");
-		APEX_CORE_ASSERT(std::regex_match(virtualPathStr, dirRegex), "Incorrect mount path format -> \"" + virtualPathStr + "\"");
+		APEX_CORE_ASSERT(std::regex_match(virtualPath.string(), dirRegex), fmt::format("Incorrect mount path format -> \"{0}\"", virtualPath));
 
-		fs::path physicalPath = fs::absolute(physicalPathStr);
+		fs::path physicalPath = fs::absolute(_physicalPath);
 		auto mntPtPtr = CreateMountPoint(physicalPath);
 		if (!mntPtPtr)
 			return false;
-
-		fs::path virtualPath(virtualPathStr);
+		
 		VFS::IMountPoint* curMountPoint = s_Data->Root.get();
 		fs::path curPath("");
-		for (auto pathIt = virtualPath.begin(); pathIt != --virtualPath.end(); pathIt++) {
+		for (auto pathIt = virtualPath.begin(); pathIt != --virtualPath.end(); ++pathIt) {
 			curPath /= *pathIt;
 			if (curMountPoint->m_SubMountPoints.count(pathIt->string()) == 0) {
 				APEX_CORE_ERROR("Cannot mount `{0}`. Mount point at `{1}` not found", virtualPath, curPath);
@@ -112,17 +113,17 @@ namespace Apex {
 		}
 
 		if (curMountPoint->Contains(virtualPath.filename().string())) {
-			APEX_CORE_ERROR("Directory {0} already exists!", virtualPathStr);
+			APEX_CORE_ERROR("Directory {0} already exists!", virtualPath);
 			return false;
 		}
 		if (curMountPoint->m_SubMountPoints.count(virtualPath.filename().string()) > 0) {
-			APEX_CORE_ERROR("Mount point {0} already exists!", virtualPathStr);
+			APEX_CORE_ERROR("Mount point {0} already exists!", virtualPath);
 			return false;
 		}
 
 		mntPtPtr->OnMount();
 		curMountPoint->m_SubMountPoints.emplace(virtualPath.filename().string(), std::move(mntPtPtr));
-		APEX_CORE_INFO("Mounted \"{0}\" @ \"{1}\"", physicalPath.string(), virtualPathStr);
+		APEX_CORE_INFO("Mounted \"{0}\" @ \"{1}\"", physicalPath.string(), virtualPath);
 
 		// Recurse through the directory to cache subdirectories and mount packages
 		for (auto& dirEntry : fs::recursive_directory_iterator(physicalPath)) {
@@ -160,33 +161,32 @@ namespace Apex {
 		return { curMountPoint, curPath };
 	}
 
-	Ref<VFS::IFile> FileSystem::GetFileIfExists(const std::string& filePathStr)
+	Ref<VFS::IFile> FileSystem::GetFileIfExists(const fs::path& filePath)
 	{
-		fs::path filePath(filePathStr);
+		// fs::path filePath(filePathStr);
 		if (filePath.is_absolute() && fs::exists(filePath))
-			return Apex::CreateRef<VFS::PhysicalFile>(filePathStr);
+			return Apex::CreateRef<VFS::PhysicalFile>(filePath);
 
 		Ref<VFS::IFile> returnFile(nullptr);
 
-		auto& [mountPoint, mountPointPath] = GetInnerMostMountPoint(filePath);
+		auto [mountPoint, mountPointPath] = GetInnerMostMountPoint(filePath);
 		auto relativePath = filePath.lexically_relative(mountPointPath);
 		returnFile = mountPoint->GetFileIfExists(relativePath);
 
 		if (!returnFile)
-			APEX_CORE_ERROR("File `{}` does not exist!", filePathStr);
+			APEX_CORE_ERROR("File `{}` does not exist!", filePath);
 		
 		return returnFile;
 	}
 
-	Ref<File> FileSystem::MakeFile(const std::string& filePathStr, bool makeParents)
+	Ref<File> FileSystem::MakeFile(const fs::path& filePath, bool makeParents)
 	{
-		fs::path filePath(filePathStr);
 		if (filePath.is_absolute() && fs::exists(filePath.parent_path()))
-			return Apex::CreateRef<VFS::PhysicalFile>(filePathStr);
+			return Apex::CreateRef<VFS::PhysicalFile>(filePath);
 
 		Ref<VFS::IFile> returnFile(nullptr);
 
-		auto& [mountPoint, mountPointPath] = GetInnerMostMountPoint(filePath);
+		auto [mountPoint, mountPointPath] = GetInnerMostMountPoint(filePath);
 		if (makeParents)
 			mountPoint->MakeDirectories(filePath.parent_path().string());
 		auto relativePath = filePath.lexically_relative(mountPointPath);
@@ -197,7 +197,7 @@ namespace Apex {
 
 	void FileSystem::VisitDirectory(const fs::path& dirPath, FileSystem::VisitorFn func)
 	{
-		auto& [mountPoint, mountPointPath] = GetInnerMostMountPoint(dirPath);
+		auto [mountPoint, mountPointPath] = GetInnerMostMountPoint(dirPath);
 		auto relativePath = dirPath.lexically_relative(mountPointPath);
 		if (mountPoint->Contains(relativePath)) {
 			mountPoint->Visit(func, relativePath);
@@ -209,7 +209,7 @@ namespace Apex {
 
 	void FileSystem::VisitDirectoryRecursive(const fs::path& dirPath, FileSystem::VisitorFn func)
 	{
-		auto& [mountPoint, mountPointPath] = GetInnerMostMountPoint(dirPath);
+		auto [mountPoint, mountPointPath] = GetInnerMostMountPoint(dirPath);
 		auto relativePath = dirPath.lexically_relative(mountPointPath);
 		if (mountPoint->Contains(relativePath)) {
 			mountPoint->VisitRecursive(func, relativePath);

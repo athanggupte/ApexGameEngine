@@ -40,9 +40,9 @@ namespace Apex {
 			return m_Registry.view<Component...>(exclude);
 		}
 
-	protected:
 		void Render2D();
 		void Render3D();
+	protected:
 
 		template<typename Component_t>
 		void OnComponentAdded(Entity entity, Component_t& component);

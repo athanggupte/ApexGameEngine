@@ -5,6 +5,19 @@
 
 namespace Apex {
 
+	enum class ShaderUniformType;
+
+	namespace ShaderReflection
+	{
+		struct UniformData
+		{
+			std::string Name;
+			ShaderUniformType Type;
+			int32_t Location;
+			int32_t ArraySize;
+		};
+	}
+
 	class Shader
 	{
 	public:
@@ -16,7 +29,7 @@ namespace Apex {
 		virtual const std::string& GetName() const = 0;
 
 		virtual const std::unordered_map<std::string, uint32_t>& GetActiveUniformLocations() const = 0;
-		virtual const std::vector<std::tuple<std::string, uint32_t, size_t>> GetActiveUniformData() const = 0;
+		virtual const std::vector<ShaderReflection::UniformData> GetActiveUniformData() const = 0;
 
 		// Int types
 		virtual void SetUniInt1(const std::string& name, int value) const = 0;
@@ -46,25 +59,70 @@ namespace Apex {
 		virtual void SetUniMat4(const std::string& name, const glm::mat4& matrix) const = 0;
 		virtual void SetUniMat4v(const std::string& name, glm::mat4 matrices[], size_t count) const = 0;
 		
-		static Ref<Shader> Create(const std::string& filepath);
+		static Ref<Shader> Create(const std::filesystem::path& filepath);
 		static Ref<Shader> Create(const std::string& name, const std::string& vertexSrc, const std::string& fragmentSrc);
 	};
 
-	class ShaderLibrary
+	
+	enum class ShaderUniformType
 	{
-	public:
-		void Add(const std::string& name, const Ref<Shader>& shader);
-		void Add(const Ref<Shader>& shader);
-		Ref<Shader> Load(const std::string& filepath);
-		Ref<Shader> Load(const std::string& name, const std::string& filepath);
+		FLOAT,
+		FLOAT_VEC2,
+		FLOAT_VEC3,
+		FLOAT_VEC4,
 
-		size_t GetNumAvailableShaders();
-		std::vector<std::string> ListAllShaders();
-		Ref<Shader> GetShader(const std::string& name);
- 		bool Exists(const std::string & name);
+		DOUBLE,
+		DOUBLE_VEC2,
+		DOUBLE_VEC3,
+		DOUBLE_VEC4,
+		
+		INT,
+		INT_VEC2,
+		INT_VEC3,
+		INT_VEC4,
 
-	private:
-		std::unordered_map<std::string, Ref<Shader>> m_Shaders;
+		UNSIGNED_INT,
+		UNSIGNED_INT_VEC2,
+		UNSIGNED_INT_VEC3,
+		UNSIGNED_INT_VEC4,
+
+		BOOL,
+		BOOL_VEC2,
+		BOOL_VEC3,
+		BOOL_VEC4,
+
+		FLOAT_MAT2,
+		FLOAT_MAT3,
+		FLOAT_MAT4,
+		FLOAT_MAT2x3,
+		FLOAT_MAT2x4,
+		FLOAT_MAT3x2,
+		FLOAT_MAT3x4,
+		FLOAT_MAT4x2,
+		FLOAT_MAT4x3,
+
+		SAMPLER_1D,
+		SAMPLER_2D,
+		SAMPLER_3D,
+		SAMPLER_CUBE,
+		SAMPLER_1D_SHADOW,
+		SAMPLER_2D_SHADOW,
+		SAMPLER_1D_ARRAY,
+		SAMPLER_2D_ARRAY,
+		SAMPLER_1D_ARRAY_SHADOW,
+		SAMPLER_2D_ARRAY_SHADOW,
+		SAMPLER_2D_MULTISAMPLE,
+		SAMPLER_2D_MULTISAMPLE_ARRAY,
+		SAMPLER_CUBE_SHADOW,
+		SAMPLER_BUFFER,
+		SAMPLER_2D_RECT,
+		SAMPLER_2D_RECT_SHADOW,
+
+		_COUNT
 	};
+
+	bool ShaderUniformTypeIsSampler(ShaderUniformType type);
+
+	const char* ShaderUniformTypeToString(ShaderUniformType type);
 
 }

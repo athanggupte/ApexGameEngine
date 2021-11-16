@@ -75,7 +75,7 @@ namespace Apex {
 	class Texture2D : public Texture
 	{
 	public:
-		static Ref<Texture2D> Create(const std::string& path, bool useHDR = false);
+		static Ref<Texture2D> Create(const std::filesystem::path& path, bool useHDR = false);
 		static Ref<Texture2D> Create(uint32_t width, uint32_t height, const TextureSpec& spec, const std::string& name = "");
 
 		virtual void BindImage(uint32_t unit, bool read, bool write) const = 0;

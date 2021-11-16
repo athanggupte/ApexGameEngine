@@ -1,6 +1,11 @@
 #include "apex_pch.h"
 #include "ResourceManager.h"
 
+#include "Apex/Graphics/RenderPrimitives/Shader.h"
+#include "Apex/Graphics/RenderPrimitives/Texture.h"
+#include "Apex/Graphics/Mesh.h"
+#include "Apex/Graphics/Material.h"
+
 namespace Apex {
 
 	bool ResourceManager::Exists(Handle id)
@@ -19,16 +24,16 @@ namespace Apex {
 			switch (resourceData.type) {
 			case ResourceType::FILE: break;
 			case ResourceType::TEXTURE:
-				m_TexturePool[index] = Texture2D::Create(resourceData.sourceFile.string());
+				m_TexturePool[index].second = Texture2D::Create(resourceData.sourceFile.string());
 				break;
 			case ResourceType::SHADER:
-				m_ShaderPool[index] = Shader::Create(resourceData.sourceFile.string());
+				m_ShaderPool[index].second = Shader::Create(resourceData.sourceFile.string());
 				break;
 			case ResourceType::MESH:
-				m_MeshPool[index] = CreateRef<Mesh>(resourceData.sourceFile.string());
+				m_MeshPool[index].second = CreateRef<Mesh>(resourceData.sourceFile.string());
 				break;
 			case ResourceType::MATERIAL:
-				m_MaterialPool[index] = CreateRef<Material>(resourceData.sourceFile.string());
+				m_MaterialPool[index].second = CreateRef<Material>(resourceData.sourceFile.string());
 				break;
 			case ResourceType::NONE:
 			default: APEX_CORE_CRITICAL("Unknown resource type!");
@@ -45,16 +50,16 @@ namespace Apex {
 				switch (resourceData.type) {
 				case ResourceType::FILE: break;
 				case ResourceType::TEXTURE:
-					m_TexturePool[index] = Texture2D::Create(resourceData.sourceFile.string());
+					m_TexturePool[index].second = Texture2D::Create(resourceData.sourceFile.string());
 					break;
 				case ResourceType::SHADER:
-					m_ShaderPool[index] = Shader::Create(resourceData.sourceFile.string());
+					m_ShaderPool[index].second = Shader::Create(resourceData.sourceFile.string());
 					break;
 				case ResourceType::MESH:
-					m_MeshPool[index] = CreateRef<Mesh>(resourceData.sourceFile.string());
+					m_MeshPool[index].second = CreateRef<Mesh>(resourceData.sourceFile.string());
 					break;
 				case ResourceType::MATERIAL:
-					m_MaterialPool[index] = CreateRef<Material>(resourceData.sourceFile.string());
+					m_MaterialPool[index].second = CreateRef<Material>(resourceData.sourceFile.string());
 					break;
 				case ResourceType::NONE:
 				default: APEX_CORE_CRITICAL("Unknown resource type!");

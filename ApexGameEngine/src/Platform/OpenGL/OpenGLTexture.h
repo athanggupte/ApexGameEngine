@@ -4,12 +4,14 @@
 
 #include <glad/glad.h>
 
+namespace fs = std::filesystem;
+
 namespace Apex {
 
 	class OpenGLTexture2D : public Texture2D
 	{
 	public:
-		OpenGLTexture2D(const std::string& path, bool useHDR);
+		OpenGLTexture2D(const fs::path& path, bool useHDR);
 		OpenGLTexture2D(uint32_t width, uint32_t height, const TextureSpec& spec, const std::string& name);
 		~OpenGLTexture2D() override;
 

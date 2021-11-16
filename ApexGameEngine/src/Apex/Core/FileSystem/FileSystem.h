@@ -1,8 +1,5 @@
 #pragma once
 
-#include <filesystem>
-namespace fs = std::filesystem;
-
 #include "FileHandle.h"
 
 namespace Apex {
@@ -38,10 +35,10 @@ namespace Apex {
 	public:
 		static void Init();
 		static void Shutdown();
-		static bool MountRoot(const std::string& physicalPath);
-		static bool Mount(const std::string& virtualPath, const std::string& physicalPath);
-		static Ref<File> GetFileIfExists(const std::string& filePath);
-		static Ref<File> MakeFile(const std::string& filePath, bool makeParents = false);
+		static bool MountRoot(const fs::path& _physicalPath);
+		static bool Mount(const fs::path& virtualPath, const fs::path& _physicalPath);
+		static Ref<File> GetFileIfExists(const fs::path& filePath);
+		static Ref<File> MakeFile(const fs::path& filePath, bool makeParents = false);
 		static void VisitDirectory(const fs::path& dirPath, VisitorFn func);
 		static void VisitDirectoryRecursive(const fs::path& dirPath, VisitorFn func);
 #if 0

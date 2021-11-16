@@ -6,10 +6,14 @@
 #include "Apex/Application.h"
 
 #include "Apex/Core/ECS/Components.h"
-#include "Apex/Graphics/RenderPrimitives/Texture.h"
 #include "Apex/Core/Input/Input.h"
 #include "Apex/Core/Input/KeyCodes.h"
 #include "Apex/Utils/Utils.h"
+
+#include "Apex/Graphics/RenderPrimitives/Shader.h"
+#include "Apex/Graphics/RenderPrimitives/Texture.h"
+#include "Apex/Graphics/Mesh.h"
+#include "Apex/Graphics/Material.h"
 
 #include <imgui.h>
 #include <glm/gtc/matrix_transform.hpp>
@@ -52,12 +56,15 @@ namespace Apex {
 	}
 	
 	static char changedBuf[256]{ 0 };
-
-	template<typename Resource_t>
-	static void LoadResource(Handle handle, const char* filename)
+	static const struct TextureImageOptions
 	{
-		
-	}
+		ImVec2 size = ImVec2(50.0f, 50.0f);                  // Image Size
+		int frame_padding = -1;                                    // -1 == uses default padding (style.FramePadding)
+		ImVec2 uv0 = ImVec2(0.0f, 0.0f);                     // UV coordinates for lower-left
+		ImVec2 uv1 = ImVec2(1.0f, 1.0f);                     // UV coordinates for (32,32) in our texture
+		ImVec4 bg_col = ImVec4(0.0f, 0.0f, 0.0f, 1.0f);      // Black background
+		ImVec4 tint_col = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);    // No tint
+	} s_TextureImageOptions;
 
 	void InspectorPanel::DrawComponents()
 	{
@@ -175,18 +182,15 @@ namespace Apex {
 				// Display component members
 				ImGui::Checkbox("Use Texture", &sprite.useTexture);
 				if (sprite.useTexture) {
-					const ImVec2 size = ImVec2(100.0f, 100.0f);                // Image Size
-					const int frame_padding = -1;                              // -1 == uses default padding (style.FramePadding)
-					const ImVec2 uv0 = ImVec2(0.0f, 0.0f);                     // UV coordinates for lower-left
-					const ImVec2 uv1 = ImVec2(1.0f, 1.0f);                     // UV coordinates for (32,32) in our texture
-					const ImVec4 bg_col = ImVec4(0.0f, 0.0f, 0.0f, 1.0f);      // Black background
-					const ImVec4 tint_col = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);    // No tint
+					
 					if (sprite.texture.IsValid() && sprite.texture.IsLoaded()) {
 						ImGui::InputText("Texture", &TO_STRING(Strings::Get(sprite.texture.GetId())), ImGuiInputTextFlags_ReadOnly);
-						ImGui::Image((void*)(intptr_t)sprite.texture->GetID(), size, uv0, uv1, tint_col, bg_col);
+						ImGui::Image((void*)(intptr_t)sprite.texture->GetID(), s_TextureImageOptions.size,
+							s_TextureImageOptions.uv0, s_TextureImageOptions.uv1, s_TextureImageOptions.tint_col, s_TextureImageOptions.bg_col);
 					} else {
 						ImGui::InputText("Texture", "No texture", sizeof("No texture"), ImGuiInputTextFlags_ReadOnly);
-						ImGui::Image((void*)(intptr_t)s_PlaceholderTexture->GetID(), size, uv0, uv1, tint_col, bg_col);
+						ImGui::Image((void*)(intptr_t)s_PlaceholderTexture->GetID(), s_TextureImageOptions.size,
+							s_TextureImageOptions.uv0, s_TextureImageOptions.uv1, s_TextureImageOptions.tint_col, s_TextureImageOptions.bg_col);
 					}
 					if (ImGui::BeginDragDropTarget()) {
 						if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ASSET_BROWSER_ITEM")) {
@@ -224,7 +228,15 @@ namespace Apex {
 				if (meshComp.mesh.IsValid()) {
 					auto meshResName = TO_STRING(Strings::Get(meshComp.mesh.GetId()));
 
-					ImGui::InputText("Mesh", &meshResName, ImGuiInputTextFlags_ReadOnly);
+					// ImGui::InputText("Mesh", &meshResName, ImGuiInputTextFlags_ReadOnly);
+					if (ImGui::BeginCombo("Mesh", meshResName.c_str())) {
+						for (auto& [id, ptr] : Application::Get().GetResourceManager().Iterate<Mesh>()) {
+							if (ImGui::Selectable(TO_CSTRING(Strings::Get(id)), (id == meshComp.mesh.GetId()))) {
+								meshComp.mesh = Application::Get().GetResourceManager().Get<Mesh>(id);
+							}
+						}
+						ImGui::EndCombo();
+					}
 					if (ImGui::BeginDragDropTarget()) {
 						if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ASSET_BROWSER_ITEM")) {
 							if (const auto filename = static_cast<const char*>(payload->Data); filename != nullptr) {
@@ -245,28 +257,35 @@ namespace Apex {
 					if (ImGui::TreeNodeEx((void*)typeid(Material).hash_code(), ImGuiTreeNodeFlags_DefaultOpen, "Material")) {
 						ImGui::InputText("Name", &materialResName, ImGuiInputTextFlags_ReadOnly);
 						if (meshComp.material.IsLoaded()) {
+							auto shaderResName = TO_STRING(Strings::Get(meshComp.material->GetShader().GetId()));
+							// ImGui::InputText("Shader", &shaderResName, ImGuiInputTextFlags_ReadOnly);
+							if (ImGui::BeginCombo("Shader", shaderResName.c_str())) {
+								for (auto& [id, ptr] : Application::Get().GetResourceManager().Iterate<Shader>()) {
+									ImGui::Selectable(TO_CSTRING(Strings::Get(id)), (id == meshComp.material->GetShader().GetId()));
+								}
+								ImGui::EndCombo();
+							}
 							for (auto& [name, texture] : meshComp.material->GetTextures()) {
-								const ImVec2 size = ImVec2(100.0f, 100.0f);                // Image Size
-								const int frame_padding = -1;                                    // -1 == uses default padding (style.FramePadding)
-								const ImVec2 uv0 = ImVec2(0.0f, 0.0f);                     // UV coordinates for lower-left
-								const ImVec2 uv1 = ImVec2(1.0f, 1.0f);                     // UV coordinates for (32,32) in our texture
-								const ImVec4 bg_col = ImVec4(0.0f, 0.0f, 0.0f, 1.0f);      // Black background
-								const ImVec4 tint_col = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);    // No tint
-								ImGui::InputText("Texture", &Utils::GetFilename(texture->GetPath()), ImGuiInputTextFlags_ReadOnly);
-								ImGui::Image((void*)(intptr_t)texture->GetID(), size, uv0, uv1, tint_col, bg_col);
-
+								if (texture.IsValid()) {
+									auto textureResName = TO_STRING(Strings::Get(texture.GetId()));
+									ImGui::InputText(name.c_str(), &textureResName, ImGuiInputTextFlags_ReadOnly);
+									ImGui::Image((void*)(intptr_t)texture->GetID(), s_TextureImageOptions.size,
+										s_TextureImageOptions.uv0, s_TextureImageOptions.uv1, s_TextureImageOptions.tint_col, s_TextureImageOptions.bg_col);
+								} else {
+									ImGui::InputText(name.c_str(), "None", ImGuiInputTextFlags_ReadOnly);
+									ImGui::Image((void*)(intptr_t)s_PlaceholderTexture->GetID(), s_TextureImageOptions.size,
+										s_TextureImageOptions.uv0, s_TextureImageOptions.uv1, s_TextureImageOptions.tint_col, s_TextureImageOptions.bg_col);
+								}
 								if (ImGui::BeginDragDropTarget()) {
 									if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ASSET_BROWSER_ITEM")) {
 										if (const auto filename = static_cast<const char*>(payload->Data); filename != nullptr) {
-											// meshComp.material = RESNAME(Utils::GetFilename(filename));
-											// LoadResource<Material>(meshComp.material, filename);
-											auto handle = RESNAME(Utils::GetFilename(filename));
-											if (!Application::Get().GetResourceManager().Exists(handle)) {
-												Application::Get().GetResourceManager().AddResourceFromFile<Texture>(handle, filename);
+											const auto id = RESNAME(Utils::GetFilename(filename));
+											if (!Application::Get().GetResourceManager().Exists(id)) {
+												texture = Application::Get().GetResourceManager().AddResourceFromFile<Texture>(id, filename);
+											} else {
+												texture = Application::Get().GetResourceManager().Get<Texture>(id);
 											}
-											if (!Application::Get().GetResourceManager().Get<Texture>(handle).IsLoaded())
-												Application::Get().GetResourceManager().Load(handle);
-											texture = Application::Get().GetResourceManager().Get<Texture>(RESNAME(Utils::GetFilename(filename))).Get();
+											Application::Get().GetResourceManager().Load(id);
 										}
 									}
 									ImGui::EndDragDropTarget();
@@ -275,6 +294,8 @@ namespace Apex {
 						}
 						ImGui::TreePop();
 					}
+				} else {
+
 				}
 
 				if (ImGui::Button("Delete Component")) {
@@ -288,10 +309,8 @@ namespace Apex {
 		// Script Component
 		if (m_ContextEntity.HasComponent<ScriptComponent>()) {
 			auto& scriptComp = m_ContextEntity.GetComponent<ScriptComponent>();
-			
-			bool opened = ImGui::TreeNodeEx((void*)typeid(ScriptComponent).hash_code(), treeNodeFlags, "Script");
-			
-			if (opened) {
+
+			if (ImGui::TreeNodeEx((void*)typeid(ScriptComponent).hash_code(), treeNodeFlags, "Script")) {
 				ImGui::InputText("Script File", &scriptComp.filename);
 				ImGui::SameLine();
 				if (ImGui::Button("...##script_file_select")) {

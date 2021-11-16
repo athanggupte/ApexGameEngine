@@ -11,8 +11,8 @@ namespace Apex {
 		SceneSerializer(const Ref<Scene>& scene);
 		virtual ~SceneSerializer() = default;
 
-		void Serialize(const std::string& filepath);
-		bool Deserialize(const std::string& filepath);
+		void Serialize(const fs::path& filepath);
+		bool Deserialize(const fs::path& filepath);
 
 	protected:
 		virtual void SerializeSceneHeader(std::stringstream& out) = 0;

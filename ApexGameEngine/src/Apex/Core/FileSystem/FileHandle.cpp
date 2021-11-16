@@ -3,7 +3,7 @@
 
 namespace Apex::VFS {
 	
-	PhysicalFile::PhysicalFile(const std::string& filePath, bool binary)
+	PhysicalFile::PhysicalFile(const fs::path& filePath, bool binary)
 		: IFile(filePath), m_IsBinary(binary)
 	{
 		APEX_CORE_DEBUG("Physical file loaded: {}", m_PhysicalPath);
@@ -37,6 +37,8 @@ namespace Apex::VFS {
 	
 	uint32_t PhysicalFile::Read(void* data, uint32_t size)
 	{
+		APEX_CORE_ASSERT((IsOpen()), fmt::format("File {0} is not open!", m_PhysicalPath));
+		APEX_CORE_ASSERT((m_AccessMode | ReadMode), fmt::format("File {0} is not in Read mode!", m_PhysicalPath));
 		if (!(IsOpen() && m_AccessMode | ReadMode))
 			return 0;
 		auto start = m_FileHandle.tellg();
@@ -48,6 +50,8 @@ namespace Apex::VFS {
 	
 	uint32_t PhysicalFile::Write(const void* data, uint32_t size)
 	{
+		APEX_CORE_ASSERT((IsOpen()), fmt::format("File {0} is not open!", m_PhysicalPath));
+		APEX_CORE_ASSERT((m_AccessMode | WriteMode), fmt::format("File {0} is not in Write mode!", m_PhysicalPath));
 		if (!(IsOpen() && m_AccessMode | WriteMode))
 			return 0;
 		auto start = m_FileHandle.tellp();
@@ -56,13 +60,13 @@ namespace Apex::VFS {
 		m_FileHandle.seekg(end);
 		return (uint32_t)(end - start);
 	}
-	
-	bool PhysicalFile::Flush()
+
+	void PhysicalFile::Flush()
 	{
 		if (m_AccessMode | WriteMode)
-			return (bool)m_FileHandle.flush();
+			m_FileHandle.flush();
 		if (m_AccessMode | ReadMode)
-			return (bool)m_FileHandle.sync();
+			m_FileHandle.sync();
 	}
 	
 	void PhysicalFile::Close()
@@ -78,6 +82,7 @@ namespace Apex::VFS {
 	
 	uint32_t PhysicalFile::Size()
 	{
+		APEX_CORE_ASSERT((IsOpen()), fmt::format("File {0} is not open!", m_PhysicalPath));
 		if (!IsOpen())
 			return 0;
 		m_FileHandle.seekg(0, std::ios::end);
@@ -88,6 +93,7 @@ namespace Apex::VFS {
 	
 	bool PhysicalFile::SeekPtr(const int64_t position, bool fromEnd)
 	{
+		APEX_CORE_ASSERT((IsOpen()), fmt::format("File {0} is not open!", m_PhysicalPath));
 		if (!IsOpen())
 			return false;
 		
@@ -102,6 +108,7 @@ namespace Apex::VFS {
 	
 	uint32_t PhysicalFile::TellPtr()
 	{
+		APEX_CORE_ASSERT((IsOpen()), fmt::format("File {0} is not open!", m_PhysicalPath));
 		if (!IsOpen())
 			return (uint32_t)(-1);
 		

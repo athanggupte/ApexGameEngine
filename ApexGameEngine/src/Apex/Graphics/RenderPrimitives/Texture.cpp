@@ -8,7 +8,7 @@
 
 namespace Apex {
 
-	Ref<Texture2D> Texture2D::Create(const std::string & path, bool useHDR)
+	Ref<Texture2D> Texture2D::Create(const fs::path & path, bool useHDR)
 	{
 		switch (Renderer::GetAPI())
 		{

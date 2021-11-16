@@ -7,7 +7,7 @@
 
 namespace Apex {
 
-	Ref<Shader> Shader::Create(const std::string & filepath)
+	Ref<Shader> Shader::Create(const fs::path& filepath)
 	{
 		switch (Renderer::GetAPI())
 		{
@@ -28,59 +28,65 @@ namespace Apex {
 		default:				APEX_CORE_CRITICAL("Unknown Rendering API"); return nullptr;
 		}
 	}
-	
 
-	/////////////////////////////////////////////////////////////////////////
-	//                            ShaderLibrary                            //
-	/////////////////////////////////////////////////////////////////////////
 
-	void ShaderLibrary::Add(const std::string & name, const Ref<Shader>& shader)
+
+	bool ShaderUniformTypeIsSampler(ShaderUniformType type)
 	{
-		APEX_CORE_ASSERT(!Exists(name), "Shader already exists");
-		m_Shaders[name] = shader;
+		return (static_cast<int32_t>(type) >= static_cast<int32_t>(ShaderUniformType::SAMPLER_1D)) && 
+			(static_cast<int32_t>(type) < static_cast<int32_t>(ShaderUniformType::_COUNT));
 	}
 
-	void ShaderLibrary::Add(const Ref<Shader>& shader)
+	const char* ShaderUniformTypeToString(ShaderUniformType type)
 	{
-		auto& name = shader->GetName();
-		Add(name, shader);
+		switch (type) {
+		case ShaderUniformType::FLOAT: return "FLOAT";
+		case ShaderUniformType::FLOAT_VEC2: return "FLOAT_VEC2";
+		case ShaderUniformType::FLOAT_VEC3: return "FLOAT_VEC3";
+		case ShaderUniformType::FLOAT_VEC4: return "FLOAT_VEC4";
+		case ShaderUniformType::DOUBLE: return "DOUBLE";
+		case ShaderUniformType::DOUBLE_VEC2: return "DOUBLE_VEC2";
+		case ShaderUniformType::DOUBLE_VEC3: return "DOUBLE_VEC3";
+		case ShaderUniformType::DOUBLE_VEC4: return "DOUBLE_VEC4";
+		case ShaderUniformType::INT: return "INT";
+		case ShaderUniformType::INT_VEC2: return "INT_VEC2";
+		case ShaderUniformType::INT_VEC3: return "INT_VEC3";
+		case ShaderUniformType::INT_VEC4: return "INT_VEC4";
+		case ShaderUniformType::UNSIGNED_INT: return "UNSIGNED_INT";
+		case ShaderUniformType::UNSIGNED_INT_VEC2: return "UNSIGNED_INT_VEC2";
+		case ShaderUniformType::UNSIGNED_INT_VEC3: return "UNSIGNED_INT_VEC3";
+		case ShaderUniformType::UNSIGNED_INT_VEC4: return "UNSIGNED_INT_VEC4";
+		case ShaderUniformType::BOOL: return "BOOL";
+		case ShaderUniformType::BOOL_VEC2: return "BOOL_VEC2";
+		case ShaderUniformType::BOOL_VEC3: return "BOOL_VEC3";
+		case ShaderUniformType::BOOL_VEC4: return "BOOL_VEC4";
+		case ShaderUniformType::FLOAT_MAT2: return "FLOAT_MAT2";
+		case ShaderUniformType::FLOAT_MAT3: return "FLOAT_MAT3";
+		case ShaderUniformType::FLOAT_MAT4: return "FLOAT_MAT4";
+		case ShaderUniformType::FLOAT_MAT2x3: return "FLOAT_MAT2x3";
+		case ShaderUniformType::FLOAT_MAT2x4: return "FLOAT_MAT2x4";
+		case ShaderUniformType::FLOAT_MAT3x2: return "FLOAT_MAT3x2";
+		case ShaderUniformType::FLOAT_MAT3x4: return "FLOAT_MAT3x4";
+		case ShaderUniformType::FLOAT_MAT4x2: return "FLOAT_MAT4x2";
+		case ShaderUniformType::FLOAT_MAT4x3: return "FLOAT_MAT4x3";
+		case ShaderUniformType::SAMPLER_1D: return "SAMPLER_1D";
+		case ShaderUniformType::SAMPLER_2D: return "SAMPLER_2D";
+		case ShaderUniformType::SAMPLER_3D: return "SAMPLER_3D";
+		case ShaderUniformType::SAMPLER_CUBE: return "SAMPLER_CUBE";
+		case ShaderUniformType::SAMPLER_1D_SHADOW: return "SAMPLER_1D_SHADOW";
+		case ShaderUniformType::SAMPLER_2D_SHADOW: return "SAMPLER_2D_SHADOW";
+		case ShaderUniformType::SAMPLER_1D_ARRAY: return "SAMPLER_1D_ARRAY";
+		case ShaderUniformType::SAMPLER_2D_ARRAY: return "SAMPLER_2D_ARRAY";
+		case ShaderUniformType::SAMPLER_1D_ARRAY_SHADOW: return "SAMPLER_1D_ARRAY_SHADOW";
+		case ShaderUniformType::SAMPLER_2D_ARRAY_SHADOW: return "SAMPLER_2D_ARRAY_SHADOW";
+		case ShaderUniformType::SAMPLER_2D_MULTISAMPLE: return "SAMPLER_2D_MULTISAMPLE";
+		case ShaderUniformType::SAMPLER_2D_MULTISAMPLE_ARRAY: return "SAMPLER_2D_MULTISAMPLE_ARRAY";
+		case ShaderUniformType::SAMPLER_CUBE_SHADOW: return "SAMPLER_CUBE_SHADOW";
+		case ShaderUniformType::SAMPLER_BUFFER: return "SAMPLER_BUFFER";
+		case ShaderUniformType::SAMPLER_2D_RECT: return "SAMPLER_2D_RECT";
+		case ShaderUniformType::SAMPLER_2D_RECT_SHADOW: return "SAMPLER_2D_RECT_SHADOW";
+		default: APEX_CORE_CRITICAL("Unknown Shader uniform type!");
+		}
 	}
 
-	Ref<Shader> ShaderLibrary::Load(const std::string & filepath)
-	{
-		auto shader = Shader::Create(filepath);
-		Add(shader);
-		return shader;
-	}
-	
-	Ref<Shader> ShaderLibrary::Load(const std::string & name, const std::string & filepath)
-	{
-		auto shader = Shader::Create(filepath);
-		Add(name, shader);
-		return shader;
-	}
-	
-	size_t ShaderLibrary::GetNumAvailableShaders()
-	{
-		return m_Shaders.size();
-	}
-
-	std::vector<std::string> ShaderLibrary::ListAllShaders()
-	{
-		std::vector<std::string> shaderList(m_Shaders.size());
-		auto key_selector = [](auto pair) { return pair.first; };
-		std::transform(m_Shaders.begin(), m_Shaders.end(), shaderList.begin(), key_selector);
-		return shaderList;
-	}
-
-	Ref<Shader> ShaderLibrary::GetShader(const std::string & name)
-	{
-		APEX_CORE_ASSERT(Exists(name), "Shader not found: " + name);
-		return m_Shaders[name];
-	}
-
-	bool ShaderLibrary::Exists(const std::string& name)
-	{
-		return m_Shaders.find(name) != m_Shaders.end();
-	}
 }

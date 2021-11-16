@@ -119,6 +119,9 @@ public:
         friend class BucketList;
     };
 
+    using iterator = Iterator;
+    using const_iterator = Iterator;
+
     BucketList()
     {
         m_BucketList.emplace_back();
