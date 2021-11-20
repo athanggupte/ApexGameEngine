@@ -2,6 +2,7 @@
 #include "Utils.h"
 
 #define STBI_NO_JPEG
+#include <filesystem>
 #include <stb_image.h>
 
 namespace Apex {
@@ -23,27 +24,13 @@ namespace Apex {
 			return filepath.substr(lastSlash, count);
 		}
 
-		ImageData LoadImage(const Ref<File>& file, int32_t targetChannels)
+		ImageData LoadImage_internal(const std::filesystem::path& file, int32_t targetChannels)
 		{
 			ImageData imageData;
-
-			if (file && file->OpenRead()) {
-				auto size = file->Size();
-				uint8_t* data = new uint8_t[size];
-				file->Read(data, size);
-				file->Close();
-
-				// imageData.pixels = stbi_load_from_memory(data, size, &imageData.width, &imageData.height, &imageData.channels, targetChannels);
-				imageData.pixelData = CreateRef<PixelData>();
-				imageData.pixelData->pixels = stbi_load_from_memory(data, size, &imageData.width, &imageData.height, &imageData.channels, targetChannels);
-					//stbi_load(file->GetPhysicalPath().c_str(), &imageData.width, &imageData.height, &imageData.channels, targetChannels);
-				if (!imageData.pixelData->pixels)
-					APEX_CORE_ERROR("Could not load image!");
-				
-				APEX_CORE_ERROR("{}", stbi_failure_reason());
-				
-				delete[] data;
-			}
+			imageData.pixelData = CreateRef<PixelData>();
+			imageData.pixelData->pixels = stbi_load(file.string().c_str(), &imageData.width, &imageData.height, &imageData.channels, targetChannels);
+			if (!imageData.pixelData->pixels)
+				APEX_CORE_ERROR("Could not load image! [stbi]: {}", stbi_failure_reason());
 			
 			return imageData;
 		}
@@ -51,7 +38,7 @@ namespace Apex {
 
 	namespace std140 {
 
-		uint32_t GetNextPosition(uint32_t currentPosition, uint32_t currentSize, std140::DataAlignment alignment)
+		uint32_t GetNextPosition(uint32_t currentPosition, uint32_t currentSize, DataAlignment alignment)
 		{
 			uint32_t nextPosition = (currentPosition + currentSize + (alignment - 1)) & ~(alignment - 1);
 			return nextPosition;

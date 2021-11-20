@@ -1,25 +1,24 @@
 #pragma once
 
-#include "Apex/Core/FileSystem/FileSystem.h"
 #include "CustomDataStructures.h"
 
 namespace Apex {
 	
 	struct PixelData
 	{
-		uint8_t* pixels;
+		uint8_t* pixels = nullptr;
 		~PixelData();
 	};
 
 	struct ImageData
 	{
-		int32_t width, height, channels;
+		int32_t width = 0, height = 0, channels = 0;
 		Ref<PixelData> pixelData;
 	};
 	
 	namespace Utils {
 
-		ImageData LoadImage(const Ref<Apex::File>& file, int32_t targetChannels = 0);
+		ImageData LoadImage_internal(const std::filesystem::path& file, int32_t targetChannels = 0);
 	
 		std::string GetFilename(const std::string& filepath);
 		
@@ -78,7 +77,7 @@ namespace Apex {
 			Mat4  = 16
 		};
 		
-		uint32_t GetNextPosition(uint32_t currentPosition, uint32_t currentSize, std140::DataAlignment alignment);
+		uint32_t GetNextPosition(uint32_t currentPosition, uint32_t currentSize, DataAlignment alignment);
 		
 	}
 	

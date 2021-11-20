@@ -102,6 +102,8 @@ namespace Apex {
 		InspectorPanel m_InspectorPanel;
 		AssetExplorer m_AssetExplorer;
 
+		Ref<Texture> m_EditorIconTexture;
+
 		::SingleCopyStack<std::string, 16> m_RecentFiles;
 		
 		//irrklang::ISoundEngine* m_SoundEngine;

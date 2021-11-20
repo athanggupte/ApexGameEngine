@@ -168,17 +168,24 @@ namespace Apex {
 		}
 
 		template<typename Resource_t>
-		Resource<Resource_t> AddResourceFromFile(Handle id, const std::string& filepath)
+		Resource<Resource_t> AddResourceFromFile(Handle id, const fs::path& filepath)
 		{
 			APEX_CORE_ASSERT(!Exists(id), "Resource '" + TO_STRING(Strings::Get(id)) + "' already exists!");
 			auto& resourcePool = GetPoolToUse<Resource_t>();
 			size_t index = resourcePool.size();
-			auto& [it, success] = m_Registry.try_emplace(id, index, GetResourceType<Resource_t>(), filepath);
+			auto& [it, success] = m_Registry.try_emplace(id, index, GetResourceType<Resource_t>(), filepath.string());
 			APEX_CORE_ASSERT(success, "Could not add resource!");
 			resourcePool.push_back({ id, nullptr });
 			return Resource<Resource_t>{ id, &resourcePool.back().second, index };
 			// resourcePool.push_back(Resource<Resource_t>{ id, nullptr, index, this });
 			// return resourcePool.back();
+		}
+
+		template<typename Resource_t>
+		Resource<Resource_t> AddResourceFromFile(const fs::path& filepath)
+		{
+			Handle id = RESNAME(filepath.filename().string());
+			return AddResourceFromFile<Resource_t>(id, filepath);
 		}
 		
 		template<typename Resource_t>

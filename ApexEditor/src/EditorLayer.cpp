@@ -15,6 +15,7 @@
  //#include "EditorTools/ShaderGraph/ShaderGraph.h"
 
 
+#include "Apex/Graphics/FBXImporter.h"
 #include "Apex/Graphics/Material.h"
 
 #include <imgui.h>
@@ -40,7 +41,6 @@ namespace Apex {
 		Log::GetCoreLogger()->sinks().push_back(m_LogSink);
 		Log::GetClientLogger()->sinks().push_back(m_LogSink);
 		FileSystem::Mount("editor_assets", APEX_INSTALL_LOCATION "/assets");
-		Application::Get().GetWindow().SetWindowIcon(Apex::Utils::LoadImage(FileSystem::GetFileIfExists("editor_assets/Apex-Game-Engine-32.png")));
 	}
 
 	void EditorLayer::OnAttach()
@@ -64,6 +64,7 @@ namespace Apex {
 		resourceManager.Load(unlitMaterial.GetId());*/
 
 		/* Initialize Textures */
+		m_EditorIconTexture = Texture2D::Create(APEX_INSTALL_LOCATION "/assets/Apex-Game-Engine-32.png");
 		m_ImageTexture = Texture2D::Create(256U, 256U, HDRTextureSpec, "Image");
 		m_ComputeShader = ComputeShader::Create("Blur.compute");
 
@@ -78,8 +79,8 @@ namespace Apex {
 		/* Initialize Materials */
 		auto _suzanneMaterial = CreateRef<Material>();
 		_suzanneMaterial->SetShader(albedoUnlitShader);
-		_suzanneMaterial->AddTexture("Albedo", suzanneTexture);
-		auto suzanneMaterial = resourceManager.AddResource<Material>(RESNAME("material_Unlit"), _suzanneMaterial);
+		// _suzanneMaterial->AddTexture("Albedo", suzanneTexture);
+		auto suzanneMaterial = resourceManager.AddResource<Material>(RESNAME("suzanne_material_Unlit"), _suzanneMaterial);
 
 		/* Load All Resources */
 		resourceManager.LoadAllResources();
@@ -114,6 +115,9 @@ namespace Apex {
 		font_cfg.OversampleV = 5;
 		auto font = ImGui::GetIO().Fonts->AddFontFromFileTTF("C:\\Windows\\Fonts\\segoeui.ttf", 16.f, &font_cfg);
 #endif
+
+		FBXImporter::Import(m_Scene, "assets/meshes/crysis-nano-suit-2.fbx");
+
 	}
 	
 	void EditorLayer::OnDetach() 
@@ -472,8 +476,10 @@ namespace Apex {
 	
 	void EditorLayer::ShowMainMenuBar()
 	{
-		if (ImGui::BeginMenuBar())
+		if (ImGui::BeginMainMenuBar())
 		{
+			auto imgSize = ImGui::GetWindowSize().y - ImGui::GetStyle().FramePadding.y;
+			ImGui::Image((void*)(intptr_t)m_EditorIconTexture->GetID(), ImVec2{ imgSize, imgSize });
 			if (ImGui::BeginMenu("File"))
 			{
 				DrawFileMenu();
@@ -494,7 +500,7 @@ namespace Apex {
 				
 				ImGui::EndMenu();
 			}
-			ImGui::EndMenuBar();
+			ImGui::EndMainMenuBar();
 		}
 	}
 	
