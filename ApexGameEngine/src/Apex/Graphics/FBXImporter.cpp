@@ -27,9 +27,10 @@ namespace Apex {
 			glm::vec3 Position;
 			glm::vec2 UV;
 			glm::vec3 Normal;
-
-			static constexpr size_t SIZE = 3 + 2 + 3;
+			glm::vec3 Tangent;
+			glm::vec3 Bitangent;
 		};
+		static constexpr size_t VERTEX_SIZE = sizeof(Vertex) / sizeof(float);
 
 		void ProcessNode(FbxNode* node, Scene* scene);
 		void ProcessAttribute(FbxNode* node, FbxNodeAttribute* attribute);
@@ -37,8 +38,11 @@ namespace Apex {
 		void ProcessControlPoints(FbxMesh* mesh, std::vector<ControlPoint>& outControlPoints);
 		void ProcessMesh(FbxNode* node, FbxMesh* mesh, const std::vector<ControlPoint>& controlPoints,
 		                 std::vector<Vertex>& outVertices, std::vector<uint32_t>& outIndices);
-		void ProcessNormal(::FbxMesh* mesh, int controlPointIndex, int vertexCounter, glm::vec3& outNormal);
-		void ProcessUV(::FbxMesh* mesh, int controlPointIndex, int uvIndex, glm::vec2& outTexCoord);
+		void ProcessNormal(FbxMesh* mesh, int controlPointIndex, int vertexCounter, glm::vec3& outNormal);
+		void ProcessTangent(FbxMesh* mesh, int controlPointIndex, int vertexCounter, glm::vec3& outTangent);
+		void ProcessBitangent(FbxMesh* mesh, int controlPointIndex, int vertexCounter, glm::vec3& outBitangent);
+		void GenerateTangentsAndBitangents();
+		void ProcessUV(FbxMesh* mesh, int controlPointIndex, int uvIndex, glm::vec2& outTexCoord);
 
 
 		void Vec2FbxToGlm(const FbxDouble2& from, glm::vec2& to);
@@ -157,11 +161,11 @@ namespace Apex {
 				transform.scale = scale;
 
 				auto meshRes = Application::Get().GetResourceManager().Get<Mesh>(RESNAME(nodeName));
-				auto shaderRes = Application::Get().GetResourceManager().Get<Shader>(RESNAME("shader_AlbedoUnlit"));
+				auto shaderRes = Application::Get().GetResourceManager().Get<Shader>(RESNAME("shader_StandardPBR"));
 				auto material = CreateRef<Material>();
 				material->SetShader(shaderRes);
 				auto matRes = Application::Get().GetResourceManager().AddResource<Material>(RESNAME(fmt::format("material_{}", nodeName)), material);
-				// material->AddTexture("Albedo", )
+				material->AddTexture("Albedo", Application::Get().GetResourceManager().Get<Texture>(RESNAME("metal_plate_diff_2k")));
 				entity.AddComponent<MeshRendererComponent>(meshRes, matRes);
 			}
 
@@ -186,10 +190,12 @@ namespace Apex {
 
 		BufferLayout layout = {
 			{ ShaderDataType::Float3, VertexElementType::Position },
-			{ ShaderDataType::Float2, VertexElementType::TextureCoords },
+			{ ShaderDataType::Float2, VertexElementType::UV0 },
 			{ ShaderDataType::Float3, VertexElementType::Normal },
+			{ ShaderDataType::Float3, VertexElementType::Tangent },
+			{ ShaderDataType::Float3, VertexElementType::Bitangent },
 		};
-		return CreateRef<Mesh>(reinterpret_cast<float*>(vertices.data()), vertices.size() * sizeof(Vertex::SIZE), indices.data(), indices.size(), layout);
+		return CreateRef<Mesh>(reinterpret_cast<float*>(vertices.data()), vertices.size() * VERTEX_SIZE, indices.data(), indices.size(), layout);
 	}
 
 	void fbx::ProcessControlPoints(FbxMesh* mesh, std::vector<ControlPoint>& outControlPoints)
@@ -213,15 +219,22 @@ namespace Apex {
 		outIndices.reserve(triangleCount * 3);
 		outVertices.reserve(triangleCount * 3);
 
+		APEX_CORE_ASSERT(mesh->GetElementNormalCount() > 0, fmt::format("Mesh ({0}) :: Does not contain Normals!", mesh->GetName()));
+		//APEX_CORE_ASSERT(mesh->GetElementTangentCount() > 0, fmt::format("Mesh ({0}) :: Does not contain Tangents!", mesh->GetName()));
+		//APEX_CORE_ASSERT(mesh->GetElementBinormalCount() > 0, fmt::format("Mesh ({0}) :: Does not contain Bitangents!", mesh->GetName()));
+
 		for (int i = 0; i < triangleCount; i++) {
 			for (int j = 0; j < 3; j++) {
 				outVertices.push_back({});
+				auto& vertex = outVertices.back();
 
 				int controlPointIndex = mesh->GetPolygonVertex(i, j);
 
-				outVertices.back().Position = controlPoints[controlPointIndex].Position;
-				ProcessNormal(mesh, controlPointIndex, vertexCounter, outVertices.back().Normal);
-				ProcessUV(mesh, controlPointIndex, mesh->GetTextureUVIndex(i, j), outVertices.back().UV);
+				vertex.Position = controlPoints[controlPointIndex].Position;
+				ProcessNormal(mesh, controlPointIndex, vertexCounter, vertex.Normal);
+				ProcessUV(mesh, controlPointIndex, mesh->GetTextureUVIndex(i, j), vertex.UV);
+				vertex.Tangent = glm::vec3{ 0.f };
+				vertex.Bitangent = glm::vec3{ 0.f };
 
 				outIndices.push_back(vertexCounter++);
 			}
@@ -230,7 +243,6 @@ namespace Apex {
 
 	void fbx::ProcessNormal(FbxMesh* mesh, int controlPointIndex, int vertexCounter, glm::vec3& outNormal)
 	{
-		APEX_CORE_ASSERT(mesh->GetElementNormalCount() > 0, fmt::format("Mesh ({0}) :: Does not contain Normals!", mesh->GetName()));
 		FbxGeometryElementNormal* vertexNormal = mesh->GetElementNormal();
 
 		switch (vertexNormal->GetMappingMode()) {
@@ -274,6 +286,124 @@ namespace Apex {
 				outNormal.x = (float)vertexNormal->GetDirectArray().GetAt(index).mData[0];
 				outNormal.y = (float)vertexNormal->GetDirectArray().GetAt(index).mData[1];
 				outNormal.z = (float)vertexNormal->GetDirectArray().GetAt(index).mData[2];
+				break;
+			}
+			default:
+				APEX_CORE_CRITICAL("Mesh ({0}) :: Invalid reference mode for normal!", mesh->GetName());
+				break;
+			}
+			break;
+		}
+		default:
+			APEX_CORE_CRITICAL("Mesh ({0}) :: Invalid normal mode for normal!", mesh->GetName());
+			break;
+		}
+	}
+
+	void fbx::ProcessTangent(FbxMesh* mesh, int controlPointIndex, int vertexCounter, glm::vec3& outTangent)
+	{
+		FbxGeometryElementTangent* vertexTangent = mesh->GetElementTangent();
+
+		switch (vertexTangent->GetMappingMode()) {
+		case FbxLayerElement::eByControlPoint:  // One normal per control point (smooth edge)
+		{
+			switch (vertexTangent->GetReferenceMode()) {
+			case FbxLayerElement::eDirect:
+			{
+				outTangent.x = (float)vertexTangent->GetDirectArray().GetAt(controlPointIndex).mData[0];
+				outTangent.y = (float)vertexTangent->GetDirectArray().GetAt(controlPointIndex).mData[1];
+				outTangent.z = (float)vertexTangent->GetDirectArray().GetAt(controlPointIndex).mData[2];
+				break;
+			}
+			case FbxLayerElement::eIndexToDirect:
+			{
+				int index = vertexTangent->GetIndexArray().GetAt(controlPointIndex);
+				outTangent.x = (float)vertexTangent->GetDirectArray().GetAt(index).mData[0];
+				outTangent.y = (float)vertexTangent->GetDirectArray().GetAt(index).mData[1];
+				outTangent.z = (float)vertexTangent->GetDirectArray().GetAt(index).mData[2];
+				break;
+			}
+			default:
+				APEX_CORE_CRITICAL("Mesh ({0}) :: Invalid reference mode for normal!", mesh->GetName());
+				break;
+			}
+			break;
+		}
+		case FbxLayerElement::eByPolygonVertex:  // One normal per polygon face vertex (sharp edge)
+		{
+			switch (vertexTangent->GetReferenceMode()) {
+			case FbxLayerElement::eDirect:
+			{
+				outTangent.x = (float)vertexTangent->GetDirectArray().GetAt(vertexCounter).mData[0];
+				outTangent.y = (float)vertexTangent->GetDirectArray().GetAt(vertexCounter).mData[1];
+				outTangent.z = (float)vertexTangent->GetDirectArray().GetAt(vertexCounter).mData[2];
+				break;
+			}
+			case FbxLayerElement::eIndexToDirect:
+			{
+				int index = vertexTangent->GetIndexArray().GetAt(vertexCounter);
+				outTangent.x = (float)vertexTangent->GetDirectArray().GetAt(index).mData[0];
+				outTangent.y = (float)vertexTangent->GetDirectArray().GetAt(index).mData[1];
+				outTangent.z = (float)vertexTangent->GetDirectArray().GetAt(index).mData[2];
+				break;
+			}
+			default:
+				APEX_CORE_CRITICAL("Mesh ({0}) :: Invalid reference mode for normal!", mesh->GetName());
+				break;
+			}
+			break;
+		}
+		default:
+			APEX_CORE_CRITICAL("Mesh ({0}) :: Invalid normal mode for normal!", mesh->GetName());
+			break;
+		}
+	}
+
+	void fbx::ProcessBitangent(FbxMesh* mesh, int controlPointIndex, int vertexCounter, glm::vec3& outBitangent)
+	{
+		FbxGeometryElementBinormal* vertexBitangent = mesh->GetElementBinormal();
+
+		switch (vertexBitangent->GetMappingMode()) {
+		case FbxLayerElement::eByControlPoint:  // One normal per control point (smooth edge)
+		{
+			switch (vertexBitangent->GetReferenceMode()) {
+			case FbxLayerElement::eDirect:
+			{
+				outBitangent.x = (float)vertexBitangent->GetDirectArray().GetAt(controlPointIndex).mData[0];
+				outBitangent.y = (float)vertexBitangent->GetDirectArray().GetAt(controlPointIndex).mData[1];
+				outBitangent.z = (float)vertexBitangent->GetDirectArray().GetAt(controlPointIndex).mData[2];
+				break;
+			}
+			case FbxLayerElement::eIndexToDirect:
+			{
+				int index = vertexBitangent->GetIndexArray().GetAt(controlPointIndex);
+				outBitangent.x = (float)vertexBitangent->GetDirectArray().GetAt(index).mData[0];
+				outBitangent.y = (float)vertexBitangent->GetDirectArray().GetAt(index).mData[1];
+				outBitangent.z = (float)vertexBitangent->GetDirectArray().GetAt(index).mData[2];
+				break;
+			}
+			default:
+				APEX_CORE_CRITICAL("Mesh ({0}) :: Invalid reference mode for normal!", mesh->GetName());
+				break;
+			}
+			break;
+		}
+		case FbxLayerElement::eByPolygonVertex:  // One normal per polygon face vertex (sharp edge)
+		{
+			switch (vertexBitangent->GetReferenceMode()) {
+			case FbxLayerElement::eDirect:
+			{
+				outBitangent.x = (float)vertexBitangent->GetDirectArray().GetAt(vertexCounter).mData[0];
+				outBitangent.y = (float)vertexBitangent->GetDirectArray().GetAt(vertexCounter).mData[1];
+				outBitangent.z = (float)vertexBitangent->GetDirectArray().GetAt(vertexCounter).mData[2];
+				break;
+			}
+			case FbxLayerElement::eIndexToDirect:
+			{
+				int index = vertexBitangent->GetIndexArray().GetAt(vertexCounter);
+				outBitangent.x = (float)vertexBitangent->GetDirectArray().GetAt(index).mData[0];
+				outBitangent.y = (float)vertexBitangent->GetDirectArray().GetAt(index).mData[1];
+				outBitangent.z = (float)vertexBitangent->GetDirectArray().GetAt(index).mData[2];
 				break;
 			}
 			default:

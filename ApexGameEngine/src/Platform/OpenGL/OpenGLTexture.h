@@ -11,7 +11,7 @@ namespace Apex {
 	class OpenGLTexture2D : public Texture2D
 	{
 	public:
-		OpenGLTexture2D(const fs::path& path, bool useHDR);
+		OpenGLTexture2D(const fs::path& path, bool useSRGB, bool useHDR, const TextureFiltering& filtering);
 		OpenGLTexture2D(uint32_t width, uint32_t height, const TextureSpec& spec, const std::string& name);
 		~OpenGLTexture2D() override;
 
@@ -28,15 +28,67 @@ namespace Apex {
 		// virtual void Resize(uint32_t width, uint32_t height) override;
 		void Invalidate(uint32_t width, uint32_t height) override;
 		void SetData(void* data, uint32_t size) override;
-		[[nodiscard]] const TextureSpec& GetSpec() const override { return m_Specification; }
+		void GenerateMipmap() const override;
 	private:
 		std::string m_Path;
 		uint32_t m_Width, m_Height;
 		uint32_t m_RendererID;
 		GLenum m_InternalFormat, m_AccessFormat, m_DataType;
 		uint32_t m_PixelSize;
+	};
+
+	class OpenGLTexture2DMS : public Texture2DMS
+	{
+	public:
+		OpenGLTexture2DMS(uint32_t width, uint32_t height, const TextureSpec& spec, uint32_t samples, const std::string& name);
+		~OpenGLTexture2DMS() override;
+
+		[[nodiscard]] uint32_t GetWidth() const override { return m_Width; }
+		[[nodiscard]] uint32_t GetHeight() const override { return m_Height; }
+
+		[[nodiscard]] uint32_t GetID() const override { return m_RendererID; }
+
+		[[nodiscard]] const std::string& GetPath() const override { return m_Name; }
+
+		void Bind(uint32_t slot = 0) const override;
 		
-		TextureSpec m_Specification;
+		// virtual void Resize(uint32_t width, uint32_t height) override;
+		void Invalidate(uint32_t width, uint32_t height) override;
+		void SetData(void* data, uint32_t size) override;
+		void GenerateMipmap() const override;
+	private:
+		std::string m_Name;
+		uint32_t m_Width, m_Height;
+		uint32_t m_RendererID;
+		GLenum m_InternalFormat, m_AccessFormat, m_DataType;
+		uint32_t m_PixelSize;
+	};
+
+	class OpenGLTextureCubemap : public TextureCubemap
+	{
+	public:
+		OpenGLTextureCubemap(const std::array<fs::path, 6>& paths, bool useHDR);
+		OpenGLTextureCubemap(uint32_t size, const TextureSpec& spec, const std::string& name);
+		~OpenGLTextureCubemap() override;
+		[[nodiscard]] uint32_t GetWidth() const override { return m_Size; }
+		[[nodiscard]] uint32_t GetHeight() const override { return m_Size; }
+		[[nodiscard]] uint32_t GetID() const override { return m_RendererID; }
+
+		void Bind(uint32_t slot) const override;
+
+		void SetData(void* data, int faceIndex, uint32_t size) override;
+		void Invalidate(uint32_t width, uint32_t height) override;
+		[[nodiscard]] const std::string& GetPath() const override;
+		void GenerateMipmap() const override;
+
+	protected:
+		void SetData(void* data, uint32_t size) override {}
+
+	private:
+		uint32_t m_Size = 0;
+		uint32_t m_RendererID;
+		GLenum m_InternalFormat, m_DataType;
+		uint32_t m_PixelSize;
 	};
 
 #ifdef SEPARATE_HDR
@@ -79,6 +131,7 @@ namespace Apex {
 
 		void Bind(uint32_t slot = 0) const override;
 		void Invalidate(uint32_t width, uint32_t height) override;
+		void GenerateMipmap() const override;
 
 	protected:
 		void SetData(void* data, uint32_t size) override {}

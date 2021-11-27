@@ -19,7 +19,7 @@ namespace Apex {
 			vertices.push_back(mesh->mVertices[i].x);
 			vertices.push_back(mesh->mVertices[i].y);
 			vertices.push_back(mesh->mVertices[i].z);
-			if (layout.HasVertexElementType(VertexElementType::TextureCoords)) {
+			if (layout.HasVertexElementType(VertexElementType::UV0)) {
 				if (mesh->HasTextureCoords(0)) {
 					vertices.push_back(mesh->mTextureCoords[0][i].x);
 					vertices.push_back(mesh->mTextureCoords[0][i].y);
@@ -74,7 +74,7 @@ namespace Apex {
 
 		const BufferLayout layout = {
 				{ ShaderDataType::Float3, VertexElementType::Position },
-				{ ShaderDataType::Float2, VertexElementType::TextureCoords },
+				{ ShaderDataType::Float2, VertexElementType::UV0 },
 			};
 
 		uint32_t vertexCount = 0;

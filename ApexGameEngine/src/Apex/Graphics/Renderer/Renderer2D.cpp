@@ -72,7 +72,7 @@ namespace Apex {
 		s_RenderData.quadVertexBuffer->SetLayout({
 			{ ShaderDataType::Float3, VertexElementType::Position },
 			{ ShaderDataType::Float4, VertexElementType::Color },
-			{ ShaderDataType::Float2, VertexElementType::TextureCoords },
+			{ ShaderDataType::Float2, VertexElementType::UV0 },
 			{ ShaderDataType::Float,  VertexElementType::TextureIndex }
 		});
 		s_RenderData.quadVertexArray->AddVertexBuffer(s_RenderData.quadVertexBuffer);

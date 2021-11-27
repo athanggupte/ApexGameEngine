@@ -17,16 +17,52 @@
 namespace Apex {
 
 	static Ref<Texture2D> errorTexture;
-	
+	static Ref<Shader> errorShader;
+
 	Scene::Scene()
 	{
+		// (void)m_Registry.group<TransformComponent, SpriteRendererComponent>();
 		if (!errorTexture) {
 			constexpr auto errorTextureSpec = TextureSpec{ TextureAccessFormat::RGBA, TextureInternalFormat::RGBA8, TextureDataType::UBYTE };
 			errorTexture = Texture2D::Create(1U, 1U, errorTextureSpec, "error");
 			uint32_t errorTextureData = 0xfff933f2;
 			errorTexture->SetData(&errorTextureData, sizeof(errorTextureData));
 		}
-		// (void)m_Registry.group<TransformComponent, SpriteRendererComponent>();
+		if (!errorShader) {
+			constexpr auto vertexSource = R"(
+			#version 450 core
+
+			#include <internal_assets/shaders/ShaderDefines.h>
+
+			layout(location = ATTRIB_LOC_Position) in vec3 a_Position;
+
+			layout(location = 0) uniform Camera {
+				vec3 u_CameraPosition;
+				mat4 u_ViewProjection;
+			};
+			layout(location = 1) uniform mat4 u_Model;
+
+			layout(location = 0) out vec3 v_Position;
+
+			void main() {
+				gl_Position = u_ViewProjection * u_Model * vec4(a_Position, 1.0);
+			}
+			)";
+
+			constexpr auto fragmentSource = R"(
+			#version 450 core
+
+			layout(location = 0) out vec4 o_Color;
+
+			layout(location = 0) in vec3 v_Position;
+
+			void main() {
+				o_Color = vec4(0.976, 0.2, 0.949, 1.0);
+			}
+			)";
+
+			errorShader = Shader::Create("ErrorShader", vertexSource, fragmentSource);
+		}
 	}
 	
 	Entity Scene::CreateEntity(StringHandle name)
@@ -100,7 +136,11 @@ namespace Apex {
 						}
 					}
 					Renderer::Submit(shader.Get(), mesh_component.mesh->GetVAO(), transform.GetTransform());
+				} else {
+					Renderer::Submit(errorShader, mesh_component.mesh->GetVAO(), transform.GetTransform());
 				}
+			} else {
+				Renderer::Submit(errorShader, mesh_component.mesh->GetVAO(), transform.GetTransform());
 			}
 		});
 	}

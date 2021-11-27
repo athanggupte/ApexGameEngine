@@ -101,20 +101,21 @@ namespace Apex::Primitives {
 	namespace detail 
 	{
 		static float plane_vertices[] = {
-			-0.5f, 0.f,  0.5f,    1.f, 0.f, 0.f, 1.f,    0.f, 1.f,
-			 0.5f, 0.f,  0.5f,    0.f, 0.f, 1.f, 1.f,    1.f, 1.f,
-			 0.5f, 0.f, -0.5f,    0.f, 1.f, 0.f, 1.f,    1.f, 0.f,
-
-			 0.5f, 0.f, -0.5f,    0.f, 1.f, 1.f, 1.f,    1.f, 0.f,
-			-0.5f, 0.f, -0.5f,    1.f, 1.f, 0.f, 1.f,    0.f, 0.f,
-			-0.5f, 0.f,  0.5f,    1.f, 0.f, 1.f, 1.f,    0.f, 1.f,
+			-0.5f, 0.f,  0.5f,    0.f, 1.f,    0.f, 1.f, 0.f,    1.f, 0.f, 0.f,    0.f, 0.f, -1.f,
+			 0.5f, 0.f,  0.5f,    1.f, 1.f,    0.f, 1.f, 0.f,    1.f, 0.f, 0.f,    0.f, 0.f, -1.f,
+			 0.5f, 0.f, -0.5f,    1.f, 0.f,    0.f, 1.f, 0.f,    1.f, 0.f, 0.f,    0.f, 0.f, -1.f,
+			 0.5f, 0.f, -0.5f,    1.f, 0.f,    0.f, 1.f, 0.f,    1.f, 0.f, 0.f,    0.f, 0.f, -1.f,
+			-0.5f, 0.f, -0.5f,    0.f, 0.f,    0.f, 1.f, 0.f,    1.f, 0.f, 0.f,    0.f, 0.f, -1.f,
+			-0.5f, 0.f,  0.5f,    0.f, 1.f,    0.f, 1.f, 0.f,    1.f, 0.f, 0.f,    0.f, 0.f, -1.f,
 			
 		};
 
 		static BufferLayout plane_buffer_layout = {
 			{ ShaderDataType::Float3, VertexElementType::Position },
-			{ ShaderDataType::Float4, VertexElementType::Color },
-			{ ShaderDataType::Float2, VertexElementType::TextureCoords },
+			{ ShaderDataType::Float2, VertexElementType::UV0 },
+			{ ShaderDataType::Float3, VertexElementType::Normal },
+			{ ShaderDataType::Float3, VertexElementType::Tangent },
+			{ ShaderDataType::Float3, VertexElementType::Bitangent },
 		};
 
 		static Ref<Mesh> plane_mesh;

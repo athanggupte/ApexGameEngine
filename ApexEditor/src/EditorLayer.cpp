@@ -22,6 +22,11 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 namespace Apex {
+
+	//TODO: Remove this after testing!
+	static float roughness = 0.1f;
+	static glm::vec3 lightPos { 1.0f, 5.6f, 2.0f };
+
 	
 	EditorLayer::EditorLayer()
 		: Layer("ApexEditor"), m_BGColor{0.42f, 0.63f, 0.75f, 1.0f},
@@ -48,15 +53,24 @@ namespace Apex {
 		FileSystem::MountRoot(APEX_INSTALL_LOCATION "/assets");
 
 		m_Scene = CreateRef<Scene>();
-		m_GameFramebuffer = Framebuffer::Create({ 1280u, 720u });
+
+		// TODO: Framebuffer builder - specify all framebuffer attachments before actually creating the framebuffer (avoid invalidating over and over)
+		m_GameFramebuffer = Framebuffer::Create({ 1280u, 720u, 1, true});
+		m_GameFramebufferMS = Framebuffer::Create({ 1280u, 720u, 0, true, true, false, 8 });
+		m_GameFramebufferMS->AddColorAttachment({ TextureAccessFormat::RGBA, TextureInternalFormat::RGBA16, TextureDataType::FLOAT, TextureFiltering::BILINEAR });
+		m_PostProcessFramebuffer = Framebuffer::Create({ 1280u, 720u, 0, false });
+		m_PostProcessFramebuffer->AddColorAttachment({ TextureAccessFormat::RGBA, TextureInternalFormat::RGBA16, TextureDataType::FLOAT, TextureFiltering::BILINEAR });
 
 		auto& resourceManager = Application::Get().GetResourceManager();
 
 		/* Initialize Shaders */
+		auto cubemapShader = resourceManager.AddResourceFromFile<Shader>(RESNAME("shader_Skybox"), "editor_assets/shaders/Skybox.glsl");
 		auto gridShader = resourceManager.AddResourceFromFile<Shader>(RESNAME("shader_InfiniteGridXZ"), "editor_assets/shaders/InfiniteGridXZ.glsl");
+		auto tonemapShader = resourceManager.AddResourceFromFile<Shader>(RESNAME("shader_ACESTonemap"), "editor_assets/shaders/ACESTonemap.glsl");
 		auto debugVerticesShader = resourceManager.AddResourceFromFile<Shader>(RESNAME("shader_DebugVerticesUnlit"), "editor_assets/shaders/DebugVerticesUnlit.glsl");
 		auto debugTrianglesShader = resourceManager.AddResourceFromFile<Shader>(RESNAME("shader_DebugTrianglesUnlit"), "editor_assets/shaders/DebugTrianglesUnlit.glsl");
 		auto albedoUnlitShader = resourceManager.AddResourceFromFile<Shader>(RESNAME("shader_AlbedoUnlit"), "editor_assets/shaders/AlbedoUnlit.glsl");
+		auto standardPBRShader = resourceManager.AddResourceFromFile<Shader>(RESNAME("shader_StandardPBR"), "editor_assets/shaders/StandardPBR.glsl");
 
 		/*resourceManager.Load(gridShader.GetId());
 		resourceManager.Load(debugVerticesShader.GetId());
@@ -68,8 +82,26 @@ namespace Apex {
 		m_ImageTexture = Texture2D::Create(256U, 256U, HDRTextureSpec, "Image");
 		m_ComputeShader = ComputeShader::Create("Blur.compute");
 
+		/*auto cubemapTexture = TextureCubemap::Create({
+			"editor_assets/textures/skyboxes/driving_school/px.png",
+			"editor_assets/textures/skyboxes/driving_school/nx.png",
+			"editor_assets/textures/skyboxes/driving_school/py.png",
+			"editor_assets/textures/skyboxes/driving_school/ny.png",
+			"editor_assets/textures/skyboxes/driving_school/pz.png",
+			"editor_assets/textures/skyboxes/driving_school/nz.png",
+		});*/
+		auto cubemapTexture = TextureCubemap::Create({
+			"editor_assets/textures/Checkerboard.png",
+			"editor_assets/textures/Checkerboard.png",
+			"editor_assets/textures/Checkerboard.png",
+			"editor_assets/textures/Checkerboard.png",
+			"editor_assets/textures/Checkerboard.png",
+			"editor_assets/textures/Checkerboard.png",
+		});
+		resourceManager.AddResource<Texture>(RESNAME("texture_Skybox"), cubemapTexture);
 		auto pusheenTexture = resourceManager.AddResourceFromFile<Texture>(RESNAME("pusheen-texture"), "editor_assets/textures/pusheen-thug-life.png");
 		auto suzanneTexture = resourceManager.AddResourceFromFile<Texture>(RESNAME("suzanne_DefaultMaterial_BaseColor"), "editor_assets/meshes/suzanne/textures/suzanne_DefaultMaterial_BaseColor.png");
+		auto metalPlateDiffuseTexture = resourceManager.AddResource<Texture>(RESNAME("metal_plate_diff_2k"), Texture2D::Create("editor_assets/textures/metal_plate/metal_plate_diff_2k.jpg", false));
 
 		/* Initialize Meshes */
 		auto cubeMesh = resourceManager.AddResource<Mesh>(RESNAME("default-cube"),Primitives::Cube::GetMesh());
@@ -79,7 +111,7 @@ namespace Apex {
 		/* Initialize Materials */
 		auto _suzanneMaterial = CreateRef<Material>();
 		_suzanneMaterial->SetShader(albedoUnlitShader);
-		// _suzanneMaterial->AddTexture("Albedo", suzanneTexture);
+		//_suzanneMaterial->AddTexture("Albedo", suzanneTexture);
 		auto suzanneMaterial = resourceManager.AddResource<Material>(RESNAME("suzanne_material_Unlit"), _suzanneMaterial);
 
 		/* Load All Resources */
@@ -126,6 +158,9 @@ namespace Apex {
 		//m_SoundEngine->drop();
 	}
 
+	static bool useMSAA = true;
+	static bool showSkybox = true;
+
 	void EditorLayer::OnUpdate(Timestep ts) 
 	{
 		// Resize
@@ -133,7 +168,11 @@ namespace Apex {
 			m_GameViewportSize.x > 0.f && m_GameViewportSize.y > 0.f &&
 			(fbSpec.width != m_GameViewportSize.x || fbSpec.height != m_GameViewportSize.y))
 		{
-			//m_GameFramebuffer->Resize((uint32_t)m_GameViewportSize.x, (uint32_t)m_GameViewportSize.y);
+			if (fbSpec.width < m_GameViewportSize.x || fbSpec.height < m_GameViewportSize.y) {
+				m_GameFramebuffer->Resize((uint32_t)m_GameViewportSize.x, (uint32_t)m_GameViewportSize.y);
+				m_GameFramebufferMS->Resize((uint32_t)m_GameViewportSize.x, (uint32_t)m_GameViewportSize.y);
+				m_PostProcessFramebuffer->Resize((uint32_t)m_GameViewportSize.x, (uint32_t)m_GameViewportSize.y);
+			}
 			m_EditorCameraController->OnResize(static_cast<uint32_t>(m_GameViewportSize.x), static_cast<uint32_t>(m_GameViewportSize.y));
 			m_Scene->OnViewportResize(static_cast<uint32_t>(m_GameViewportSize.x), static_cast<uint32_t>(m_GameViewportSize.y));
 		}
@@ -144,13 +183,24 @@ namespace Apex {
 		
 		// Render
 		Renderer2D::ResetStats();
-		
-		m_GameFramebuffer->Bind();
+
+		if (useMSAA)
+			m_GameFramebufferMS->Bind();
+		else
+			m_GameFramebuffer->Bind();
 		RenderCommands::SetClearColor(m_BGColor);
 		RenderCommands::Clear();
 		
 		
 		if (!m_PlayScene) {
+			auto skyboxTexture = Application::Get().GetResourceManager().Get<Texture>(RESNAME("texture_Skybox"));
+			skyboxTexture->Bind(0);
+
+			auto pbrShader = Application::Get().GetResourceManager().Get<Shader>(RESNAME("shader_StandardPBR"));
+			pbrShader->SetUniFloat3("u_CameraPosition", m_EditorCameraController->GetTransform()[3]);
+			pbrShader->SetUniFloat1("u_Roughness", roughness);
+			pbrShader->SetUniFloat3("u_LightPos", lightPos);
+
 			Renderer::BeginScene(m_EditorCamera, m_EditorCameraController->GetTransform());
 			RenderCommands::SetDepthTest(true);
 			m_Scene->Render3D();
@@ -160,10 +210,25 @@ namespace Apex {
 			Renderer2D::EndScene();
 
 
-			// Render the Grid
 			auto cameraTransform = m_EditorCameraController->GetTransform();
+			auto cameraTranslation = cameraTransform[3];
+
+			if (showSkybox) {
+				auto skyboxShader = Application::Get().GetResourceManager().Get<Shader>(RESNAME("shader_Skybox"));
+				skyboxShader->Bind();
+				cameraTransform[3] = glm::vec4(0, 0, 0, 1);
+				skyboxShader->SetUniMat4("u_Projection", m_EditorCamera.GetProjection());
+				skyboxShader->SetUniMat4("u_View", glm::transpose(cameraTransform));
+				RenderCommands::SetDepthTestFunction(DepthStencilMode::LEQUAL);
+				RenderCommands::Draw(6);
+				RenderCommands::SetCulling(true);
+				RenderCommands::SetDepthTestFunction(DepthStencilMode::LESS);
+			}
+
+			// Render the Grid
+			cameraTransform[3] = cameraTranslation;
 			glm::mat4 gridTransform = glm::mat4(1.f);
-			gridTransform[3] = glm::vec4(cameraTransform[3].x, 0.f, cameraTransform[3].z, 1.f);
+			gridTransform[3] = glm::vec4(cameraTranslation.x, 0.f, cameraTranslation.z, 1.f);
 
 			auto gridShader = Application::Get().GetResourceManager().Get<Shader>(RESNAME("shader_InfiniteGridXZ"));
 			gridShader->Bind();
@@ -171,7 +236,21 @@ namespace Apex {
 			gridShader->SetUniMat4("u_ModelMatrix", gridTransform);
 			RenderCommands::SetCulling(false);
 			RenderCommands::Draw(6);
-			RenderCommands::SetCulling(true);
+
+			// Post process
+			if (useMSAA) {
+				m_GameFramebufferMS->Blit(m_PostProcessFramebuffer);
+			}
+
+			m_GameFramebuffer->Bind();
+			RenderCommands::Clear();
+			auto tonemapShader = Application::Get().GetResourceManager().Get<Shader>(RESNAME("shader_ACESTonemap"));
+			tonemapShader->Bind();
+			m_PostProcessFramebuffer->GetColorAttachment(0)->Bind(1);
+			RenderCommands::Draw(3);
+
+			// m_PostProcessFramebuffer->Blit(m_GameFramebuffer);
+
 		} else {
 			m_Scene->OnUpdate(ts);
 		}
@@ -206,6 +285,21 @@ namespace Apex {
 		}*/
 
 		if (ImGui::Begin("Rendering")) {
+			ImGui::Checkbox("MSAA", &useMSAA);
+			ImGui::Checkbox("Show Skybox", &showSkybox);
+			ImGui::Separator();
+
+			ImGui::BeginGroup();
+			ImGui::DragFloat("Roughness", &roughness, 0.01f, 0.f, 1.f);
+			ImGui::DragFloat3("Light Pos", &lightPos.x);
+			ImGui::EndGroup();
+
+			ImGui::Separator();
+
+			if (ImGui::Button("Recompile Shaders")) {
+				Application::Get().GetResourceManager().LoadAll<Shader>();
+			}
+
 			if (ImGui::Button("Import")) {
 				ImGui::OpenPopup("Import Asset");
 			}
@@ -288,6 +382,7 @@ namespace Apex {
 			m_InspectorPanel.SetContext(entity, m_Scene);
 		m_InspectorPanel.OnImGuiRender();
 		m_AssetExplorer.OnImGuiRender();
+		m_MaterialPanel.OnImGuiRender();
 
 		ImGui::PushFont(ImGui::GetIO().Fonts->Fonts[1]);
 		ShowLogger();
@@ -657,10 +752,10 @@ namespace Apex {
 		auto serializer = SceneSerializerFactory().SetFormat(SceneSerializerFactory::Format::XML).Build(scene);
 		if (serializer->Deserialize(path.string())) {
 			scene->OnSetup();
-			m_Scene = scene;
+			m_Scene = std::move(scene);
 			m_RecentFiles.Push(path.string());
 			m_SceneHierarchyPanel.SetContext(m_Scene);
-			m_InspectorPanel.SetContext({}, scene);
+			m_InspectorPanel.SetContext({}, m_Scene);
 		}
 
 	}

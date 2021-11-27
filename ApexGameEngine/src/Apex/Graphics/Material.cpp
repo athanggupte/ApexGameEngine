@@ -22,7 +22,11 @@ namespace Apex {
 
 	void Material::SetShader(const Resource<Shader>& shader)
 	{
+		if (shader.GetId() == m_Shader.GetId())
+			return;
+
 		m_Shader = shader;
+		m_Textures.clear();
 		Application::Get().GetResourceManager().Load(m_Shader.GetId());
 		APEX_CORE_INFO("Shader {0} uniforms:", Strings::Get(m_Shader.GetId()));
 		for (auto [name, type, location, size] : m_Shader->GetActiveUniformData()) {

@@ -1,9 +1,11 @@
 #type vertex
 #version 450 core
 
-layout(location = 0) in vec3 a_Position;
-layout(location = 1) in vec2 a_TexCoord;
-layout(location = 2) in vec3 a_Normal;
+#include <internal_assets/shaders/ShaderDefines.h>
+
+layout(location = ATTRIB_LOC_Position) in vec3 a_Position;
+layout(location = ATTRIB_LOC_UV0) in vec2 a_TexCoord;
+layout(location = ATTRIB_LOC_Normal) in vec3 a_Normal;
 
 layout(location = 0) uniform Camera {
 	mat4 u_ViewProjection;

@@ -18,6 +18,8 @@ namespace Apex {
 		void Unbind() const override;
 
 		[[nodiscard]] const std::string& GetName() const override { return m_Name; }
+		bool IsBound() const override;
+		bool IsValid() const override { return m_RendererID; };
 
 		/* Get locations of all active Uniforms */
 		void UpdateActiveUniformLocations();
@@ -54,11 +56,11 @@ namespace Apex {
 		void SetUniMat4v(const std::string& name, glm::mat4 matrices[], size_t count) const override;
 
 	private:
-		std::unordered_map<GLenum, std::string> ParseSource(const std::string& source);
+		static void SolveIncludes(std::string& source, const fs::path& filepath, bool hasFilepath = true);
+		static std::unordered_map<GLenum, std::string> ParseSource(const std::string& source);
 		void Compile(const std::unordered_map<GLenum, std::string>& shaderSources);
-		
 	private:
-		uint32_t m_RendererID;
+		uint32_t m_RendererID = 0;
 		std::string m_Name;
 		std::unordered_map<std::string, uint32_t> m_UniformLocations;
 		

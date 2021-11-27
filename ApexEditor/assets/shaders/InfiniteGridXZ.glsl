@@ -22,11 +22,11 @@ layout(location = 0) out vec2 v_UV;
 void main()
 {
 	int idx = indices[gl_VertexID];
-	vec3 position = vec4(u_ModelMatrix * vec4(pos[idx] * gridSize, 1.0)).xyz;
+	vec4 position = vec4(u_ModelMatrix * vec4(pos[idx] * gridSize, 1.0));
 
 	v_UV = position.xz;
 
-	gl_Position = u_ViewProjection * vec4(position, 1.0);
+	gl_Position = u_ViewProjection * vec4(position);
 }
 
 #type fragment
@@ -36,12 +36,12 @@ layout(location = 0) in vec2 v_UV;
 layout(location = 0) out vec4 o_Color;
 
 const float gridSize = 1000.0;
-const float gridCellSize = 0.25;
+const float gridCellSize = 1.0;
 
 const vec4 gridColorThin = vec4(0.5, 0.5, 0.5, 1.0);
 const vec4 gridColorThick = vec4(1.0, 1.0, 1.0, 1.0);
 
-const float gridMinPixelsBetweenCells = 2.0;
+const float gridMinPixelsBetweenCells = 4.0;
 
 float log10(float x)
 {
@@ -79,7 +79,7 @@ vec4 gridColor(vec2 uv)
 	float lod2 = lod1 * 10.0;
 
 	// each anti-aliased line covers up to 4 pixels
-	dudv *= 4.0;
+	dudv *= 2.0;
 
 	// calculate absolute distances to cell line centers for each lod and pick max X/Y to get coverage alpha value
 	float lod0a = max2( vec2(1.0) - abs(satv(mod(uv, lod0) / dudv) * 2.0 - vec2(1.0)) );
@@ -101,6 +101,9 @@ vec4 gridColor(vec2 uv)
 
 void main()
 {
+	vec4 grid = gridColor(v_UV);
+	if (grid.a < 0.1)
+		discard;
 	o_Color = gridColor(v_UV);
 	// o_Color = vec4(v_UV, 0.0, 1.0);
 }

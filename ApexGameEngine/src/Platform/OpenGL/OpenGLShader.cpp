@@ -8,6 +8,7 @@
 #include <glm/gtc/type_ptr.hpp>
 
 // #include <shaderc/shaderc.hpp>
+#include <regex>
 #include <utility>
 
 namespace Apex {
@@ -56,6 +57,8 @@ namespace Apex {
 		}
 
 		auto shaderSources = ParseSource(source);
+		for (auto& [type, src] : shaderSources)
+			SolveIncludes(src, filepath);
 		Compile(shaderSources);
 		
 		glObjectLabel(GL_PROGRAM, m_RendererID, -1, m_Name.c_str());
@@ -64,11 +67,13 @@ namespace Apex {
 	OpenGLShader::OpenGLShader(std::string name, const std::string & vertexSrc, const std::string & fragmentSrc)
 		: m_Name(std::move(name))
 	{
-		std::unordered_map<GLenum, std::string> sources;
-		sources[GL_VERTEX_SHADER] = vertexSrc;
-		sources[GL_FRAGMENT_SHADER] = fragmentSrc;
+		std::unordered_map<GLenum, std::string> shaderSources;
+		shaderSources[GL_VERTEX_SHADER] = vertexSrc;
+		shaderSources[GL_FRAGMENT_SHADER] = fragmentSrc;
 
-		Compile(sources);
+		for (auto& [type, source] : shaderSources)
+			SolveIncludes(source, {}, false);
+		Compile(shaderSources);
 
 		glObjectLabel(GL_PROGRAM, m_RendererID, -1, m_Name.c_str());
 		//OpenGLShader::GetActiveUniformLocations();
@@ -79,13 +84,13 @@ namespace Apex {
 	{
 		glDeleteProgram(m_RendererID);
 	}
-	
+
 	std::unordered_map<GLenum, std::string> OpenGLShader::ParseSource(const std::string & source)
 	{
 		std::unordered_map<GLenum, std::string> shaderSources;
 
-		const char* typeToken = "#type";
-		const size_t typeTokenLength = strlen(typeToken);
+		constexpr char typeToken[] = "#type";
+		constexpr size_t typeTokenLength = sizeof(typeToken) - 1;
 		size_t pos = source.find(typeToken, 0);
 		while (pos != std::string::npos) {
 			size_t eol = source.find_first_of("\r\n", pos);
@@ -104,6 +109,46 @@ namespace Apex {
 		return shaderSources;
 	}
 
+	void OpenGLShader::SolveIncludes(std::string& source, const fs::path& filepath, bool hasFilepath)
+	{
+		constexpr char regex_str[] = R"(^\s*#include\s*([<"])([^>"]+)([>"])[\r\n]+)";
+		constexpr size_t regex_len = sizeof(regex_str) - 1;
+
+		using IncludeEntry = std::tuple<size_t /* Begin */, size_t /* End */, fs::path /* Filepath */>;
+		std::vector<IncludeEntry> entries;
+
+		const std::regex regex(regex_str);
+		std::smatch matches;
+		auto source_cbegin = source.cbegin();
+		while (std::regex_search(source_cbegin, source.cend(), matches, regex)) {
+			APEX_CORE_ASSERT(matches.size() == 4, "Invalid matches!");
+			if (matches[1].str() == "\"" && hasFilepath) {
+				entries.emplace_back((size_t)matches.position(), (size_t)(matches.length()), filepath.parent_path().string() + "/" + matches[2].str());
+			} else if (matches[1].str() == "<") {
+				entries.emplace_back((size_t)matches.position(), (size_t)(matches.length()), matches[2].str());
+			} else {
+				APEX_CORE_CRITICAL("Shaders loaded from string cannot have local includes!");
+			}
+			source_cbegin = matches.suffix().first;
+		}
+
+		size_t prevEnd = 0;
+		for (auto& [begin, len, path] : entries) {
+			begin += prevEnd;
+			source.erase(begin, len);
+			std::string data;
+			if (const auto file = FileSystem::GetFileIfExists(path); file && file->OpenRead()) {
+				data.resize(file->Size());
+				file->Read(&data[0], data.size());
+				file->Close();
+			} else {
+				APEX_CORE_CRITICAL("Could not open shader include '{}'", path);
+			}
+			source.insert(begin, data);
+			prevEnd = begin + data.size();
+		}
+	}
+
 	void OpenGLShader::Compile(const std::unordered_map<GLenum, std::string>& shaderSources)
 	{
 		GLuint program = glCreateProgram();
@@ -111,10 +156,7 @@ namespace Apex {
 		//std::array<GLuint, 4> glShaderIDs;
 		std::vector<GLuint> glShaderIDs(shaderSources.size());
 		int shaderIndex = 0;
-		for (auto& kv : shaderSources) {
-			GLenum type = kv.first;
-			const std::string& src = kv.second;
-
+		for (auto& [type, src] : shaderSources) {
 			GLuint shader = glCreateShader(type);
 			const GLchar* source = (const GLchar*)src.c_str();
 			glShaderSource(shader, 1, &source, nullptr);
@@ -185,7 +227,14 @@ namespace Apex {
 		if (s_BoundShader == m_RendererID)
 			s_BoundShader = -1;
 	}
-	
+
+	bool OpenGLShader::IsBound() const
+	{
+		int32_t boundProgram = 0;
+		glGetIntegerv(GL_CURRENT_PROGRAM, &boundProgram);
+		return m_RendererID == boundProgram;
+	}
+
 	void OpenGLShader::UpdateActiveUniformLocations()
 	{
 		int numUniforms = -1;

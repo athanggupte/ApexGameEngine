@@ -27,7 +27,15 @@ namespace Apex {
 		INT, UINT,
 		FLOAT
 	};
-	
+
+	enum class TextureFiltering
+	{
+		NEAREST,
+		//LINEAR,
+		BILINEAR,
+		TRILINEAR
+	};
+
 	/*enum class Parameters
 	{
 		FILTER_MIN, FILTER_MAG,
@@ -41,13 +49,23 @@ namespace Apex {
 		TextureAccessFormat accessFormat;
 		TextureInternalFormat internalFormat;
 		TextureDataType dataType;
+		TextureFiltering filtering = TextureFiltering::BILINEAR;
 	};
 	
 	// Default TextureSpecs
 	inline static constexpr TextureSpec SimpleTextureSpec{ TextureAccessFormat::RGBA, TextureInternalFormat::RGBA8, TextureDataType::UBYTE };
+	inline static constexpr TextureSpec SRGBTextureSpec{ TextureAccessFormat::RGBA, TextureInternalFormat::SRGBA8, TextureDataType::UBYTE };
 	inline static constexpr TextureSpec HDRTextureSpec{ TextureAccessFormat::RGBA, TextureInternalFormat::RGBA16, TextureDataType::FLOAT };
-	
-	
+	inline static constexpr TextureSpec EnvironmentMapSpec{ TextureAccessFormat::RGB, TextureInternalFormat::RGB16, TextureDataType::FLOAT };
+
+	enum class TextureType
+	{
+		Texture2D,
+		TextureCubemap,
+		TextureDepth2D,
+		Texture2DMS
+	};
+
 	class Texture
 	{
 	public:
@@ -62,24 +80,51 @@ namespace Apex {
 		// virtual void Resize(uint32_t width, uint32_t height) = 0;
 		virtual void Invalidate(uint32_t width, uint32_t height) = 0;
 
+		virtual void GenerateMipmap() const = 0;
+
 		[[nodiscard]] virtual const std::string& GetPath() const = 0;
 		
 		virtual void SetRows(uint32_t rows) { this->m_NumberOfRows = rows; this->m_MaxIndex = rows * rows; }
 		virtual uint32_t GetRows() { return this->m_NumberOfRows; }
 		virtual uint32_t GetMaxIndex() { return this->m_MaxIndex; }
+		[[nodiscard]] const TextureSpec& GetSpec() const { return m_Specification; }
+		[[nodiscard]] virtual TextureType GetType() const = 0;
 	protected:
 		uint32_t m_NumberOfRows = 1;// , n_NumberOfCols = 1;
 		uint32_t m_MaxIndex = 1;
+		TextureSpec m_Specification;
 	};
 
 	class Texture2D : public Texture
 	{
 	public:
-		static Ref<Texture2D> Create(const std::filesystem::path& path, bool useHDR = false);
+		static Ref<Texture2D> Create(const std::filesystem::path& path, bool useSRGB = false, bool useHDR = false, const TextureFiltering& filtering = TextureFiltering::BILINEAR);
 		static Ref<Texture2D> Create(uint32_t width, uint32_t height, const TextureSpec& spec, const std::string& name = "");
 
 		virtual void BindImage(uint32_t unit, bool read, bool write) const = 0;
-		[[nodiscard]] virtual const TextureSpec& GetSpec() const = 0;
+
+		[[nodiscard]] TextureType GetType() const override { return TextureType::Texture2D; }
+	};
+
+	class Texture2DMS : public Texture2D
+	{
+	public:
+		static Ref<Texture2DMS> Create(uint32_t width, uint32_t height, const TextureSpec& spec, uint32_t samples, const std::string& name = "");
+
+		virtual void BindImage(uint32_t unit, bool read, bool write) const override {}
+
+		[[nodiscard]] TextureType GetType() const override { return TextureType::Texture2DMS; }
+	};
+
+	class TextureCubemap : public Texture
+	{
+	public:
+		static Ref<TextureCubemap> Create(const std::array<std::filesystem::path, 6>& paths, bool useHDR = true);
+		static Ref<TextureCubemap> Create(uint32_t size, const TextureSpec& spec, const std::string& name = "");
+
+		virtual void SetData(void* data, int faceIndex, uint32_t size) = 0;
+
+		[[nodiscard]] TextureType GetType() const override { return TextureType::TextureCubemap; }
 	};
 
 //#define SEPARATE_HDR
@@ -99,6 +144,8 @@ namespace Apex {
 	{
 	public:
 		static Ref<TextureDepth2D> Create(uint32_t width = 1024, uint32_t height = 1024);
+
+		[[nodiscard]] TextureType GetType() const override { return TextureType::TextureDepth2D; }
 	};
 
 //#define IMAGE_STORE_CLASS

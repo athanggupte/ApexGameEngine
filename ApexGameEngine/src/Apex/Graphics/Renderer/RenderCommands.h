@@ -17,7 +17,7 @@ namespace Apex {
 		inline static void Draw(const Ref<VertexArray>& vertexArray) { s_RendererAPI->Draw(vertexArray); }
 		inline static void DrawIndexed(const Ref<VertexArray>& vertexArray, uint32_t indexCount = 0) { s_RendererAPI->DrawIndexed(vertexArray, indexCount); }
 		inline static void DrawInstanced(const Ref<VertexArray>& vertexArray, size_t count) { s_RendererAPI->DrawInstanced(vertexArray, count); }
-		
+
 		inline static void SetDepthTest(bool value) { s_RendererAPI->SetDepthTest(value); }
 		inline static void SetDepthWriteMode(bool value) { s_RendererAPI->SetDepthWriteMode(value); }
 		inline static void SetDepthTestFunction(DepthStencilMode criterion) { s_RendererAPI->SetDepthTestFunction(criterion); }

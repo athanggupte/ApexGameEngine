@@ -10,16 +10,17 @@ namespace Apex {
 		GL_COLOR_ATTACHMENT4, GL_COLOR_ATTACHMENT5, GL_COLOR_ATTACHMENT6, GL_COLOR_ATTACHMENT7
 	};
 
+	static_assert(FramebufferSpec::MAX_COLOR_ATTACHMENTS <= sizeof(OpenGLColorAttachments), "Max color attachments exceeds OpenGL specifications!");
+
 	//////////////////////////////////////////////////////////////////////
 	/*--------------------------Frame Buffer----------------------------*/
 	//////////////////////////////////////////////////////////////////////
 
 	OpenGLFramebuffer::OpenGLFramebuffer(FramebufferSpec spec)
-		: m_Specification(spec), m_ColorAttachments(spec.maxColorAttachments, nullptr)
+		: m_Specification(spec), m_ColorAttachments(spec.MAX_COLOR_ATTACHMENTS, nullptr)
 	{
-		APEX_CORE_ASSERT(m_Specification.maxColorAttachments <= sizeof(OpenGLColorAttachments), "Max color attachments exceeds OpenGL specifications!");
-		
-		Invalidate();
+		if (m_Specification.numColorAttachments || m_Specification.useDepth)
+			Invalidate();
 	}
 
 	OpenGLFramebuffer::~OpenGLFramebuffer()
@@ -50,30 +51,31 @@ namespace Apex {
 		// Create Renderbuffer if depth attachment not set
 		if (!m_DepthAttachment && m_Specification.useDepth) {
 			glCreateRenderbuffers(1, &m_RenderBuffer);
-			glNamedRenderbufferStorage(m_RenderBuffer, GL_DEPTH24_STENCIL8, m_Specification.width, m_Specification.height);
+			if (m_Specification.multisample)
+				glNamedRenderbufferStorageMultisample(m_RenderBuffer, m_Specification.msSamples, GL_DEPTH24_STENCIL8, m_Specification.width, m_Specification.height);
+			else
+				glNamedRenderbufferStorage(m_RenderBuffer, GL_DEPTH24_STENCIL8, m_Specification.width, m_Specification.height);
 
 			glNamedFramebufferRenderbuffer(m_RendererID, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, m_RenderBuffer);
 		}
 
 		// Invalidating Color attachments
-		m_ActiveAttachments = std::max(m_ActiveAttachments, m_Specification.numColorAttachments);
-		
-		// Create color attachments owned by Framebuffer
 		for (auto i = 0; i < m_Specification.numColorAttachments; i++) {
-			m_ColorAttachments[i] = Texture2D::Create(m_Specification.width, m_Specification.height, SimpleTextureSpec);
+			// If the attachment has NOT been initialized then create a new default texture, SimpleTextureSpec (+ multisample if reqd)
+			if (m_ColorAttachments[i]) {
+				m_ColorAttachments[i]->Invalidate(m_Specification.width, m_Specification.height);
+			} else {
+				if (m_Specification.multisample)
+					m_ColorAttachments[i] = Texture2DMS::Create(m_Specification.width, m_Specification.height, SimpleTextureSpec, m_Specification.msSamples);
+				else
+					m_ColorAttachments[i] = Texture2D::Create(m_Specification.width, m_Specification.height, SimpleTextureSpec);
+			}
 			glNamedFramebufferTexture(m_RendererID, OpenGLColorAttachments[i], m_ColorAttachments[i]->GetID(), 0);
 		}
 		
-		// Reset color attachments added externally
-		for (auto i = m_Specification.numColorAttachments; i < m_ActiveAttachments; i++) {
-			if (m_Specification.width > m_ColorAttachments[i]->GetWidth() || m_Specification.height > m_ColorAttachments[i]->GetHeight()) {
-				m_ColorAttachments[i]->Invalidate(m_Specification.width, m_Specification.height);
-				glNamedFramebufferTexture(m_RendererID, OpenGLColorAttachments[i], m_ColorAttachments[i]->GetID(), 0);
-			}
-		}
-		
 		// Specify Active attachments
-		glNamedFramebufferDrawBuffers(m_ActiveAttachments, m_ActiveAttachments, OpenGLColorAttachments);
+		glNamedFramebufferDrawBuffers(m_RendererID, m_Specification.numColorAttachments, OpenGLColorAttachments);
+		glNamedFramebufferReadBuffer(m_RendererID, OpenGLColorAttachments[0]);
 	}
 	
 	void OpenGLFramebuffer::Resize(uint32_t width, uint32_t height)
@@ -86,9 +88,9 @@ namespace Apex {
 	
 	void OpenGLFramebuffer::Bind() const
 	{
+		APEX_CORE_ASSERT(IsComplete(), "Framebuffer not complete!");
 		glBindFramebuffer(GL_FRAMEBUFFER, m_RendererID);
 		glViewport(0, 0, m_Specification.width, m_Specification.height);
-		APEX_CORE_ASSERT(IsComplete(), "Framebuffer not complete!");
 	}
 	
 	void OpenGLFramebuffer::Unbind() const
@@ -96,31 +98,20 @@ namespace Apex {
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	}
 	
-	void OpenGLFramebuffer::AddColorAttachment(TextureSpec textureSpec) {}
-	/*{
-		if (m_ActiveAttachments >= m_Specification.maxColorAttachments) {
-			APEX_CORE_ERROR("Attempting to attach more than maximum attachments to Framebuffer!");
-			return;
-		}
-		auto texture = Texture2D::Create(m_Specification.width, m_Specification.height, textureSpec);
-		glBindFramebuffer(GL_FRAMEBUFFER, m_RendererID);
-		glFramebufferTexture2D(GL_FRAMEBUFFER, OpenGLColorAttachments[m_ActiveAttachments], GL_TEXTURE_2D, texture->GetID(), 0);
-		glBindFramebuffer(GL_FRAMEBUFFER, 0);
-		m_ColorAttachments[m_ActiveAttachments] = texture;
-		m_ColorAttachments++;
-	}*/
-	
-	void OpenGLFramebuffer::AttachColorTexture(const Ref<Texture2D>& texture)
+	void OpenGLFramebuffer::AddColorAttachment(TextureSpec textureSpec)
 	{
-		APEX_CORE_ASSERT(texture->GetWidth() >= m_Specification.width && texture->GetHeight() >= m_Specification.height, "Insufficient size of attachment!");
-		
-		if (m_ActiveAttachments >= m_Specification.maxColorAttachments) {
+		if (m_Specification.numColorAttachments >= m_Specification.MAX_COLOR_ATTACHMENTS) {
 			APEX_CORE_ERROR("Attempting to attach more than maximum attachments to Framebuffer!");
 			return;
 		}
-		glNamedFramebufferTexture(m_RendererID, OpenGLColorAttachments[m_ActiveAttachments], texture->GetID(), 0);
-		m_ColorAttachments[m_ActiveAttachments] = texture;
-		m_ActiveAttachments++;
+
+		if (m_Specification.multisample)
+			m_ColorAttachments[m_Specification.numColorAttachments] = Texture2DMS::Create(m_Specification.width, m_Specification.height, textureSpec, m_Specification.msSamples);
+		else
+			m_ColorAttachments[m_Specification.numColorAttachments] = Texture2D::Create(m_Specification.width, m_Specification.height, textureSpec);
+					
+		m_Specification.numColorAttachments++;
+		Invalidate();
 	}
 	
 	void OpenGLFramebuffer::AttachDepthTexture(const Ref<TextureDepth2D>& texture)
@@ -130,7 +121,22 @@ namespace Apex {
 		glNamedFramebufferTexture(m_RendererID, GL_DEPTH_STENCIL_ATTACHMENT, texture->GetID(), 0);
 		m_DepthAttachment = texture;
 	}
-	
+
+	void OpenGLFramebuffer::Blit(const Ref<Framebuffer>& targetFramebuffer)
+	{
+		auto target = std::static_pointer_cast<OpenGLFramebuffer>(targetFramebuffer);
+		glBlitNamedFramebuffer(m_RendererID, target->m_RendererID,
+			0, 0, m_Specification.width, m_Specification.height,
+			0, 0, target->m_Specification.width, target->m_Specification.height,
+			GL_COLOR_BUFFER_BIT, GL_LINEAR);
+	}
+
+	void OpenGLFramebuffer::SetSpecification(const FramebufferSpec& specification)
+	{
+		m_Specification = specification;
+		Invalidate();
+	}
+
 	bool OpenGLFramebuffer::IsComplete() const
 	{
 		return glCheckNamedFramebufferStatus(m_RendererID, GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE;

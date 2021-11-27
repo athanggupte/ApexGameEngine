@@ -67,6 +67,7 @@ project "ApexGameEngine"
 
 	includedirs {
 		"%{prj.name}/src",
+		"%{prj.name}/assets/shaders",
 		-- External Dependencies
 		"%{IncludeDirs.spdlog}",
 		"%{IncludeDirs.GLFW}",
@@ -222,6 +223,7 @@ project "ApexEditor"
 	includedirs {
 		"ApexEditor/src",
 		"ApexGameEngine/src",
+		"ApexGameEngine/assets/shaders",
 		-- External Dependencies
 		"%{IncludeDirs.spdlog}",
 		"%{IncludeDirs.ImGui}",
@@ -311,6 +313,7 @@ project "Sandbox"
 	includedirs {
 		"Sandbox/src",
 		"ApexGameEngine/src",
+		"ApexGameEngine/assets/shaders",
 		-- External Dependencies
 		"%{IncludeDirs.spdlog}",
 		"%{IncludeDirs.ImGui}",

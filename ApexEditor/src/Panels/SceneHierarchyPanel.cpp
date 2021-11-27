@@ -27,9 +27,20 @@ namespace Apex {
 			DrawEntityNode(entity);
 		});
 		
-		if (ImGui::IsMouseDown(0) && ImGui::IsWindowHovered())
+		if (ImGui::IsWindowHovered() && ImGui::IsMouseDown(ImGuiMouseButton_Left))
 			m_SelectedEntity = {};
-		
+
+		if (ImGui::BeginPopup("Create")) {
+			if (ImGui::MenuItem("Camera")) {}
+			if (ImGui::MenuItem("Cube")) {}
+			if (ImGui::MenuItem("Plane")) {}
+			ImGui::EndPopup();
+		}
+
+		if (ImGui::IsWindowHovered() && ImGui::IsMouseClicked(ImGuiMouseButton_Right)) {
+			ImGui::OpenPopup("Create");
+		}
+
 		ImGui::End();
 	}
 	
@@ -37,9 +48,10 @@ namespace Apex {
 	{
 		auto& tag = entity.GetComponent<TagComponent>().tag;
 		
-		ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_OpenOnArrow;
+		ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_SpanFullWidth | ImGuiTreeNodeFlags_OpenOnArrow;
 		flags |= (m_SelectedEntity == entity) ? ImGuiTreeNodeFlags_Selected : 0;
-		
+		// flags |= entity.HasChildren() ? ImGuiTreeNodeFlags_Leaf : 0;
+
 		// TODO: Eliminate the need for copying string_view to string
 		bool opened = ImGui::TreeNodeEx((void*)(uint32_t)entity, flags, std::string(tag.str()).c_str());
 		if (ImGui::IsItemClicked()) {

@@ -38,7 +38,7 @@ namespace Apex {
 		auto screenVB = VertexBuffer::Create(screenVertices, sizeof(screenVertices));
 		screenVB->SetLayout({
 			{ ShaderDataType::Float2, VertexElementType::Position },
-			{ ShaderDataType::Float2, VertexElementType::TextureCoords }
+			{ ShaderDataType::Float2, VertexElementType::UV0 }
 		});
 		s_Data->screenVertexArray->AddVertexBuffer(screenVB);
 		

@@ -213,6 +213,9 @@ namespace Apex {
 
 		void LoadAllResources();
 
+		template<typename Resource_t>
+		void LoadAll() { static_assert("Unknown type!"); }
+
 		// Dependency Graph
 		void AddDependency(Handle dependent, Handle dependency);
 		Iterable<std::vector<Handle>> SolveDependencies();
@@ -265,5 +268,11 @@ namespace Apex {
 		return m_MaterialPool;
 	}
 	
+
+	template<>
+	void ResourceManager::LoadAll<Shader>();
+
+	template<>
+	void ResourceManager::LoadAll<Texture>();
 
 }

@@ -56,14 +56,14 @@ namespace Apex {
 
 		const BufferLayout& layout = vertexBuffer->GetLayout();
 		for (const auto& element : layout) {
-			glEnableVertexArrayAttrib(m_RendererID, m_NumAttribs);
-			glVertexArrayAttribFormat(m_RendererID, m_NumAttribs,
+			const uint32_t attribLocation = (element.e_Type == VertexElementType::UserDefined) ? static_cast<uint32_t>(element.e_Type) + m_NumAttribs++ : static_cast<uint32_t>(element.e_Type);
+			glEnableVertexArrayAttrib(m_RendererID, attribLocation);
+			glVertexArrayAttribFormat(m_RendererID, attribLocation,
 				ShaderDataTypeComponentCount(element.e_DataType),
 				ShaderDataTypeToOpenGLBaseType(element.e_DataType),
 				element.e_Normalized ? GL_TRUE : GL_FALSE,
 				element.e_Offset);
-			glVertexArrayAttribBinding(m_RendererID, m_NumAttribs, m_VertexBuffers.size());
-			m_NumAttribs++;
+			glVertexArrayAttribBinding(m_RendererID, attribLocation, m_VertexBuffers.size());
 		}
 
 		m_VertexBuffers.push_back(vertexBuffer);

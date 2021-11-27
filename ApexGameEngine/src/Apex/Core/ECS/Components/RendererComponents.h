@@ -2,9 +2,7 @@
 #include "Apex/Graphics/Mesh.h"
 
 namespace Apex {
-
-	// TODO: Merge MeshRendererComponent and ModelRendererComponent into one!!!!
-
+	
 	struct MeshRendererComponent
 	{
 		Resource<Mesh> mesh;

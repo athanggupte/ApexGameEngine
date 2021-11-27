@@ -6,14 +6,16 @@
 
 #include "Platform/OpenGL/OpenGLTexture.h"
 
+#include <filesystem>
+
 namespace Apex {
 
-	Ref<Texture2D> Texture2D::Create(const fs::path & path, bool useHDR)
+	Ref<Texture2D> Texture2D::Create(const std::filesystem::path& path, bool useSRGB, bool useHDR, const TextureFiltering& filtering)
 	{
 		switch (Renderer::GetAPI())
 		{
 		case RendererAPI::API::None:	APEX_CORE_CRITICAL("No Rendering API selected"); return nullptr;
-		case RendererAPI::API::OpenGL:	return CreateRef<OpenGLTexture2D>(path, useHDR);
+		case RendererAPI::API::OpenGL:	return CreateRef<OpenGLTexture2D>(path, useSRGB, useHDR, filtering);
 
 		default:				APEX_CORE_CRITICAL("Unknown Rendering API"); return nullptr;
 		}
@@ -26,6 +28,42 @@ namespace Apex {
 		{
 		case RendererAPI::API::None:	APEX_CORE_CRITICAL("No Rendering API selected"); return nullptr;
 		case RendererAPI::API::OpenGL:	return CreateRef<OpenGLTexture2D>(width, height, spec, name);
+
+		default:				APEX_CORE_CRITICAL("Unknown Rendering API"); return nullptr;
+		}
+		return nullptr;
+	}
+
+	Ref<Texture2DMS> Texture2DMS::Create(uint32_t width, uint32_t height, const TextureSpec& spec, uint32_t samples, const std::string& name)
+	{
+		switch (Renderer::GetAPI())
+		{
+		case RendererAPI::API::None:	APEX_CORE_CRITICAL("No Rendering API selected"); return nullptr;
+		case RendererAPI::API::OpenGL:	return CreateRef<OpenGLTexture2DMS>(width, height, spec, samples, name);
+
+		default:				APEX_CORE_CRITICAL("Unknown Rendering API"); return nullptr;
+		}
+		return nullptr;
+	}
+
+	Ref<TextureCubemap> TextureCubemap::Create(const std::array<fs::path, 6>& paths, bool useHDR)
+	{
+		switch (Renderer::GetAPI())
+		{
+		case RendererAPI::API::None:	APEX_CORE_CRITICAL("No Rendering API selected"); return nullptr;
+		case RendererAPI::API::OpenGL:	return CreateRef<OpenGLTextureCubemap>(paths, useHDR);
+
+		default:				APEX_CORE_CRITICAL("Unknown Rendering API"); return nullptr;
+		}
+		return nullptr;
+	}
+
+	Ref<TextureCubemap> TextureCubemap::Create(uint32_t size, const TextureSpec& spec, const std::string& name)
+	{
+		switch (Renderer::GetAPI())
+		{
+		case RendererAPI::API::None:	APEX_CORE_CRITICAL("No Rendering API selected"); return nullptr;
+		case RendererAPI::API::OpenGL:	return CreateRef<OpenGLTextureCubemap>(size, spec, name);
 
 		default:				APEX_CORE_CRITICAL("Unknown Rendering API"); return nullptr;
 		}

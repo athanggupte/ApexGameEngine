@@ -27,6 +27,8 @@ namespace Apex {
 		virtual void Unbind() const = 0;
 
 		virtual const std::string& GetName() const = 0;
+		virtual bool IsBound() const = 0;
+		virtual bool IsValid() const = 0;
 
 		virtual const std::unordered_map<std::string, uint32_t>& GetActiveUniformLocations() const = 0;
 		virtual const std::vector<ShaderReflection::UniformData> GetActiveUniformData() const = 0;

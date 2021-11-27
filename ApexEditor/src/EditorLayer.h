@@ -7,6 +7,7 @@
 #include "Panels/InspectorPanel.h"
 #include "Panels/LogPanel.h"
 #include "Panels/AssetExplorer.h"
+#include "Panels/MaterialPanel.h"
 
 #include <glm/glm.hpp>
 
@@ -79,6 +80,8 @@ namespace Apex {
 
 		// Editor Resources
 		Ref<Framebuffer> m_GameFramebuffer;
+		Ref<Framebuffer> m_GameFramebufferMS;
+		Ref<Framebuffer> m_PostProcessFramebuffer;
 		glm::vec2 m_GameViewportSize;
 
 		Camera m_EditorCamera;
@@ -101,6 +104,7 @@ namespace Apex {
 		SceneHierarchyPanel m_SceneHierarchyPanel;
 		InspectorPanel m_InspectorPanel;
 		AssetExplorer m_AssetExplorer;
+		MaterialPanel m_MaterialPanel;
 
 		Ref<Texture> m_EditorIconTexture;
 

@@ -57,18 +57,20 @@ namespace Apex {
 		return 0;
 	}
 
-	enum class VertexElementType
-	{
-		Position = 0,
-		Color,
-		TextureCoords,
-		TextureIndex,
-		Normal,
-		Tangent,
-		Bitangent,
-		Binormal,
+#include "ShaderDefines.h"
 
-		UserDefined,
+	enum class VertexElementType : uint32_t
+	{
+		Position = ATTRIB_LOC_Position,
+		UV0 = ATTRIB_LOC_UV0,
+		Color = ATTRIB_LOC_Color,
+		TextureIndex = ATTRIB_LOC_TexIndex,
+		Normal = ATTRIB_LOC_Normal,
+		Tangent = ATTRIB_LOC_Tangent,
+		Bitangent = ATTRIB_LOC_Bitangent,
+		UV1 = ATTRIB_LOC_UV0,
+
+		UserDefined = ATTRIB_LOC_UserDefined,
 
 		// For counting purposes
 		SIZE

@@ -112,7 +112,7 @@ namespace Apex {
 		if (mesh->HasTangentsAndBitangents()) {
 			layout = {
 				{ ShaderDataType::Float3, VertexElementType::Position },
-				{ ShaderDataType::Float2, VertexElementType::TextureCoords },
+				{ ShaderDataType::Float2, VertexElementType::UV0 },
 				{ ShaderDataType::Float3, VertexElementType::Normal },
 				{ ShaderDataType::Float3, VertexElementType::Tangent },
 				{ ShaderDataType::Float3, VertexElementType::Bitangent },
@@ -120,7 +120,7 @@ namespace Apex {
 		} else {
 			layout = {
 				{ ShaderDataType::Float3, VertexElementType::Position },
-				{ ShaderDataType::Float2, VertexElementType::TextureCoords },
+				{ ShaderDataType::Float2, VertexElementType::UV0 },
 				{ ShaderDataType::Float3, VertexElementType::Normal },
 			};
 		}

@@ -24,17 +24,35 @@ namespace Apex {
 			switch (resourceData.type) {
 			case ResourceType::FILE: break;
 			case ResourceType::TEXTURE:
-				m_TexturePool[index].second = Texture2D::Create(resourceData.sourceFile.string());
+			{
+				Ref<Texture> newTexture = Texture2D::Create(resourceData.sourceFile.string());
+				m_TexturePool[index].second.swap(newTexture);
 				break;
+			}
 			case ResourceType::SHADER:
-				m_ShaderPool[index].second = Shader::Create(resourceData.sourceFile.string());
+			{
+				Ref<Shader> newShader = Shader::Create(resourceData.sourceFile.string());
+				if (!newShader->IsValid()) return;
+
+				m_ShaderPool[index].second.swap(newShader);
+				
+				if (newShader && newShader->IsBound())
+					m_ShaderPool[index].second->Bind();
+
 				break;
+			}
 			case ResourceType::MESH:
-				m_MeshPool[index].second = CreateRef<Mesh>(resourceData.sourceFile.string());
+			{
+				Ref<Mesh> newMesh = CreateRef<Mesh>(resourceData.sourceFile.string());
+				m_MeshPool[index].second.swap(newMesh);
 				break;
+			}
 			case ResourceType::MATERIAL:
-				m_MaterialPool[index].second = CreateRef<Material>(resourceData.sourceFile.string());
+			{
+				Ref<Material> newMaterial = CreateRef<Material>(resourceData.sourceFile.string());
+				m_MaterialPool[index].second.swap(newMaterial);
 				break;
+			}
 			case ResourceType::NONE:
 			default: APEX_CORE_CRITICAL("Unknown resource type!");
 			}
@@ -50,20 +68,66 @@ namespace Apex {
 				switch (resourceData.type) {
 				case ResourceType::FILE: break;
 				case ResourceType::TEXTURE:
-					m_TexturePool[index].second = Texture2D::Create(resourceData.sourceFile.string());
+				{
+					Ref<Texture> newTexture = Texture2D::Create(resourceData.sourceFile.string());
+					m_TexturePool[index].second.swap(newTexture);
 					break;
+				}
 				case ResourceType::SHADER:
-					m_ShaderPool[index].second = Shader::Create(resourceData.sourceFile.string());
+				{
+					Ref<Shader> newShader = Shader::Create(resourceData.sourceFile.string());
+					m_ShaderPool[index].second.swap(newShader);
 					break;
+				}
 				case ResourceType::MESH:
-					m_MeshPool[index].second = CreateRef<Mesh>(resourceData.sourceFile.string());
+				{
+					Ref<Mesh> newMesh = CreateRef<Mesh>(resourceData.sourceFile.string());
+					m_MeshPool[index].second.swap(newMesh);
 					break;
+				}
 				case ResourceType::MATERIAL:
-					m_MaterialPool[index].second = CreateRef<Material>(resourceData.sourceFile.string());
+				{
+					Ref<Material> newMaterial = CreateRef<Material>(resourceData.sourceFile.string());
+					m_MaterialPool[index].second.swap(newMaterial);
 					break;
+				}
 				case ResourceType::NONE:
 				default: APEX_CORE_CRITICAL("Unknown resource type!");
 				}
+			}
+		}
+	}
+
+	template <>
+	void ResourceManager::LoadAll<Shader>()
+	{
+		bool foundBoundShader = false;
+		for (auto& [id, shader] : m_ShaderPool) {
+			const auto itr = m_Registry.find(id);
+
+			if (!itr->second.resourceData.sourceFile.empty()) {
+				Ref<Shader> newShader = Shader::Create(itr->second.resourceData.sourceFile.string());
+				if (!newShader->IsValid()) return;
+
+				shader.swap(newShader);
+				
+				if (newShader && !foundBoundShader && newShader->IsBound()) {
+					shader->Bind();
+					foundBoundShader = true;
+				}
+			}
+		}
+	}
+
+	template <>
+	void ResourceManager::LoadAll<Texture>()
+	{
+		for (auto& [id, texture] : m_TexturePool) {
+			const auto itr = m_Registry.find(id);
+
+			if (!itr->second.resourceData.sourceFile.empty()) {
+				Ref<Texture> newTexture = Texture2D::Create(itr->second.resourceData.sourceFile.string());
+				texture.swap(newTexture);
 			}
 		}
 	}
@@ -114,18 +178,4 @@ namespace Apex {
 		m_Unsorted = false;
 	}
 
-	// TODO: DELETE SOON!
-	//////// TESTING ONLY //////
-
-	void test_main()
-	{
-		ResourceManager mgr;
-
-		auto texture = mgr.AddResource<Texture>(RESNAME("test-texture-1"), Texture2D::Create("assets/textures/pusheen-thug-life.png"));
-		texture->Bind();
-		{
-			auto texture1 = mgr.Get<Texture>(RESNAME("test-texture-1"));
-			APEX_CORE_TRACE("{}", texture1->GetID());
-		}
-	}
 }

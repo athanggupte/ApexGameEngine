@@ -15,16 +15,20 @@
 #include "Apex/Graphics/Mesh.h"
 #include "Apex/Graphics/Material.h"
 
-#include <imgui.h>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+#define IMGUI_DEFINE_MATH_OPERATORS
+#include <imgui.h>
+#include <imgui_internal.h>
+#include <misc/cpp/imgui_stdlib.h>
+
 // ImGui implementations for std::string
-#include <misc/cpp/imgui_stdlib.cpp>
+#include "CommonResources.h"
+
+
 
 namespace Apex {
-	
-	static Ref<Texture2D> s_PlaceholderTexture;
 
 	InspectorPanel::InspectorPanel(Entity entity, const Ref<Scene>& scene)
 	{
@@ -35,12 +39,6 @@ namespace Apex {
 	{
 		m_ContextEntity = entity;
 		m_ContextScene = scene;
-		
-		if (!s_PlaceholderTexture) {
-			s_PlaceholderTexture = Texture2D::Create(2, 2, SimpleTextureSpec, "PlaceholderTexture");
-			uint32_t texData[4] = { 0xaaaaaaaa, 0xdddddddd, 0xdddddddd, 0xaaaaaaaa };
-			s_PlaceholderTexture->SetData(texData, sizeof(texData));
-		}
 	}
 		
 	void InspectorPanel::OnImGuiRender()
@@ -56,15 +54,58 @@ namespace Apex {
 	}
 	
 	static char changedBuf[256]{ 0 };
-	static const struct TextureImageOptions
+
+
+	// TODO: Remove from here and add to custom ui file
+	static bool ButtonEx_custom(const char* label, const ImVec2& size_arg, ImGuiButtonFlags flags)
 	{
-		ImVec2 size = ImVec2(50.0f, 50.0f);                  // Image Size
-		int frame_padding = -1;                                    // -1 == uses default padding (style.FramePadding)
-		ImVec2 uv0 = ImVec2(0.0f, 0.0f);                     // UV coordinates for lower-left
-		ImVec2 uv1 = ImVec2(1.0f, 1.0f);                     // UV coordinates for (32,32) in our texture
-		ImVec4 bg_col = ImVec4(0.0f, 0.0f, 0.0f, 1.0f);      // Black background
-		ImVec4 tint_col = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);    // No tint
-	} s_TextureImageOptions;
+	    ImGuiWindow* window = ImGui::GetCurrentWindow();
+	    if (window->SkipItems)
+	        return false;
+
+	    ImGuiContext& g = *GImGui;
+	    const ImGuiStyle& style = g.Style;
+	    const ImGuiID id = window->GetID(label);
+	    const ImVec2 label_size = ImGui::CalcTextSize(label, NULL, true);
+
+	    ImVec2 pos = window->DC.CursorPos;
+	    if ((flags & ImGuiButtonFlags_AlignTextBaseLine) && style.FramePadding.y < window->DC.CurrLineTextBaseOffset) // Try to vertically align buttons that are smaller/have no padding so that text baseline matches (bit hacky, since it shouldn't be a flag)
+	        pos.y += window->DC.CurrLineTextBaseOffset - style.FramePadding.y;
+	    ImVec2 size = ImGui::CalcItemSize(size_arg, label_size.x + style.FramePadding.x * 2.0f, label_size.y + style.FramePadding.y * 2.0f);
+
+	    const ImRect bb(pos, pos + size);
+	    ImGui::ItemSize(size, style.FramePadding.y);
+	    if (!ImGui::ItemAdd(bb, id))
+	        return false;
+
+	    if (g.LastItemData.InFlags & ImGuiItemFlags_ButtonRepeat)
+	        flags |= ImGuiButtonFlags_Repeat;
+
+	    bool hovered, held;
+	    bool pressed = ImGui::ButtonBehavior(bb, id, &hovered, &held, flags);
+
+	    // Render
+	    const ImU32 col = ImGui::GetColorU32((held && hovered) ? ImGuiCol_ButtonActive : hovered ? ImGuiCol_ButtonHovered : ImGuiCol_Button);
+	    ImGui::RenderNavHighlight(bb, id);
+	    ImGui::RenderFrame(bb.Min, bb.Max, col, true, style.FrameRounding);
+
+		const ImU32 textCol = ImGui::GetColorU32((held && hovered) ? ImGuiCol_Button : hovered ? ImGuiCol_Text : ImGuiCol_Text);
+		ImGui::PushStyleColor(ImGuiCol_Text, textCol);
+
+	    if (g.LogEnabled)
+		    ImGui::LogSetNextTextDecoration("[", "]");
+	    ImGui::RenderTextClipped(bb.Min + style.FramePadding, bb.Max - style.FramePadding, label, NULL, &label_size, style.ButtonTextAlign, &bb);
+
+		ImGui::PopStyleColor();
+
+	    // Automatically close popups
+	    //if (pressed && !(flags & ImGuiButtonFlags_DontClosePopups) && (window->Flags & ImGuiWindowFlags_Popup))
+	    //    CloseCurrentPopup();
+
+	    IMGUI_TEST_ENGINE_ITEM_INFO(id, label, g.LastItemData.StatusFlags);
+	    return pressed;
+	}
+
 
 	void InspectorPanel::DrawComponents()
 	{
@@ -75,13 +116,16 @@ namespace Apex {
 		{
 			auto& tag = m_ContextEntity.GetComponent<TagComponent>().tag;
 				
-			static char buffer[256] = {};
+			static char buffer[129] = {};
+			static constexpr size_t BUFFER_SIZE = sizeof(buffer) - 1;
 			auto sz = tag.str().size();
-			memcpy_s(buffer, sizeof(buffer), tag.str().data(), tag.str().size());
+			memcpy_s(buffer, BUFFER_SIZE, tag.str().data(), tag.str().size());
+			const auto last = (sz < BUFFER_SIZE) ? sz : BUFFER_SIZE;
+			buffer[last] = 0;
 			
 			static bool isChanged = false;
 
-			if (ImGui::InputText("Tag", buffer, sizeof(buffer))) {
+			if (ImGui::InputText("Tag", buffer, BUFFER_SIZE)) {
 				isChanged = true;
 				strcpy_s(changedBuf, sizeof(changedBuf), buffer);
 			}
@@ -182,15 +226,15 @@ namespace Apex {
 				// Display component members
 				ImGui::Checkbox("Use Texture", &sprite.useTexture);
 				if (sprite.useTexture) {
-					
 					if (sprite.texture.IsValid() && sprite.texture.IsLoaded()) {
-						ImGui::InputText("Texture", &TO_STRING(Strings::Get(sprite.texture.GetId())), ImGuiInputTextFlags_ReadOnly);
-						ImGui::Image((void*)(intptr_t)sprite.texture->GetID(), s_TextureImageOptions.size,
-							s_TextureImageOptions.uv0, s_TextureImageOptions.uv1, s_TextureImageOptions.tint_col, s_TextureImageOptions.bg_col);
+						auto textureResName = TO_STRING(Strings::Get(sprite.texture.GetId()));
+						ImGui::InputText("Texture", textureResName.data(), textureResName.size(), ImGuiInputTextFlags_ReadOnly);
+						ImGui::Image((void*)(intptr_t)sprite.texture->GetID(), Common::GetDefaultImGuiTextureOptions().size,
+							Common::GetDefaultImGuiTextureOptions().uv0, Common::GetDefaultImGuiTextureOptions().uv1, Common::GetDefaultImGuiTextureOptions().tint_col, Common::GetDefaultImGuiTextureOptions().bg_col);
 					} else {
 						ImGui::InputText("Texture", "No texture", sizeof("No texture"), ImGuiInputTextFlags_ReadOnly);
-						ImGui::Image((void*)(intptr_t)s_PlaceholderTexture->GetID(), s_TextureImageOptions.size,
-							s_TextureImageOptions.uv0, s_TextureImageOptions.uv1, s_TextureImageOptions.tint_col, s_TextureImageOptions.bg_col);
+						ImGui::Image((void*)(intptr_t)Common::GetPlaceholderTexture()->GetID(), Common::GetDefaultImGuiTextureOptions().size,
+							Common::GetDefaultImGuiTextureOptions().uv0, Common::GetDefaultImGuiTextureOptions().uv1, Common::GetDefaultImGuiTextureOptions().tint_col, Common::GetDefaultImGuiTextureOptions().bg_col);
 					}
 					if (ImGui::BeginDragDropTarget()) {
 						if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ASSET_BROWSER_ITEM")) {
@@ -252,55 +296,27 @@ namespace Apex {
 						ImGui::EndDragDropTarget();
 					}
 				}
+				std::string materialResName;
 				if (meshComp.material.IsValid()) {
-					auto materialResName = TO_STRING(Strings::Get(meshComp.material.GetId()));
-					if (ImGui::TreeNodeEx((void*)typeid(Material).hash_code(), ImGuiTreeNodeFlags_DefaultOpen, "Material")) {
-						ImGui::InputText("Name", &materialResName, ImGuiInputTextFlags_ReadOnly);
-						if (meshComp.material.IsLoaded()) {
-							auto shaderResName = TO_STRING(Strings::Get(meshComp.material->GetShader().GetId()));
-							// ImGui::InputText("Shader", &shaderResName, ImGuiInputTextFlags_ReadOnly);
-							if (ImGui::BeginCombo("Shader", shaderResName.c_str())) {
-								for (auto& [id, ptr] : Application::Get().GetResourceManager().Iterate<Shader>()) {
-									ImGui::Selectable(TO_CSTRING(Strings::Get(id)), (id == meshComp.material->GetShader().GetId()));
-								}
-								ImGui::EndCombo();
-							}
-							for (auto& [name, texture] : meshComp.material->GetTextures()) {
-								if (texture.IsValid()) {
-									auto textureResName = TO_STRING(Strings::Get(texture.GetId()));
-									ImGui::InputText(name.c_str(), &textureResName, ImGuiInputTextFlags_ReadOnly);
-									ImGui::Image((void*)(intptr_t)texture->GetID(), s_TextureImageOptions.size,
-										s_TextureImageOptions.uv0, s_TextureImageOptions.uv1, s_TextureImageOptions.tint_col, s_TextureImageOptions.bg_col);
-								} else {
-									ImGui::InputText(name.c_str(), "None", ImGuiInputTextFlags_ReadOnly);
-									ImGui::Image((void*)(intptr_t)s_PlaceholderTexture->GetID(), s_TextureImageOptions.size,
-										s_TextureImageOptions.uv0, s_TextureImageOptions.uv1, s_TextureImageOptions.tint_col, s_TextureImageOptions.bg_col);
-								}
-								if (ImGui::BeginDragDropTarget()) {
-									if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ASSET_BROWSER_ITEM")) {
-										if (const auto filename = static_cast<const char*>(payload->Data); filename != nullptr) {
-											const auto id = RESNAME(Utils::GetFilename(filename));
-											if (!Application::Get().GetResourceManager().Exists(id)) {
-												texture = Application::Get().GetResourceManager().AddResourceFromFile<Texture>(id, filename);
-											} else {
-												texture = Application::Get().GetResourceManager().Get<Texture>(id);
-											}
-											Application::Get().GetResourceManager().Load(id);
-										}
-									}
-									ImGui::EndDragDropTarget();
-								}
-							}
-						}
-						ImGui::TreePop();
+					materialResName = TO_STRING(Strings::Get(meshComp.material.GetId()));
+				}
+				if (ImGui::BeginCombo("Material", materialResName.c_str())) {
+					for (auto& [id, ptr] : Application::Get().GetResourceManager().Iterate<Material>()) {
+						if (ImGui::Selectable(TO_CSTRING(Strings::Get(id)), (id == meshComp.material.GetId())))
+							meshComp.material = Application::Get().GetResourceManager().Get<Material>(id);
 					}
-				} else {
-
+					ImGui::EndCombo();
 				}
 
-				if (ImGui::Button("Delete Component")) {
+				auto textCol = ImGui::GetStyleColorVec4(ImGuiCol_Text);
+
+				ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.941f, 0.176f, 0.121f, 1.f });
+				ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 0.835f, 0.133f, 0.082f, 1.f });
+				ImGui::PushStyleColor(ImGuiCol_ButtonActive, textCol);
+				if (ButtonEx_custom("Delete Component", { ImGui::GetContentRegionAvailWidth(), 0.f }, ImGuiButtonFlags_None)) {
 					m_ContextEntity.RemoveComponent<MeshRendererComponent>();
 				}
+				ImGui::PopStyleColor(3);
 				ImGui::TreePop();
 			}
 			ImGui::Separator();
@@ -338,7 +354,7 @@ namespace Apex {
 				if (ImGui::MenuItem("Mesh Renderer")) {
 					auto& meshComp = m_ContextEntity.AddComponent<MeshRendererComponent>();
 					meshComp.mesh = Application::Get().GetResourceManager().Get<Mesh>(RESNAME("default-cube"));
-					meshComp.material = Application::Get().GetResourceManager().Get<Material>(RESNAME("material_Unlit"));
+					//meshComp.material = Application::Get().GetResourceManager().Get<Material>(RESNAME("material_Unlit"));
 				}
 
 			if (!m_ContextEntity.HasComponent<ScriptComponent>())

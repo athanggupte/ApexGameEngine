@@ -128,6 +128,7 @@ namespace Apex {
 	void PerspectiveCameraController::OnUpdate(Timestep ts)
 	{
 		glm::vec3 localDisplacement{ 0.f };
+		glm::vec3 localRotation{ 0.f };
 		bool changed = false;
 
 		if (Input::IsKeyPressed(APEX_KEY_W))
@@ -161,10 +162,39 @@ namespace Apex {
 			changed = true;
 		}
 
+		if (Input::IsKeyPressed(APEX_KEY_UP))
+		{
+			localRotation.x += m_RotationSpeed * ts;
+			changed = true;
+		}
+		if (Input::IsKeyPressed(APEX_KEY_DOWN))
+		{
+			localRotation.x -= m_RotationSpeed * ts;
+			changed = true;
+		}
+		if (Input::IsKeyPressed(APEX_KEY_LEFT))
+		{
+			localRotation.y += m_RotationSpeed * ts;
+			changed = true;
+		}
+		if (Input::IsKeyPressed(APEX_KEY_RIGHT))
+		{
+			localRotation.y -= m_RotationSpeed * ts;
+			changed = true;
+		}
+
+
 		// If there is no displacement then don't do costly calculation
 		if (!changed)
 			return;
 
+		glm::vec3 prevDir = m_CameraDirection;
+		glm::vec3 prevRight = m_CameraRight;
+		glm::vec3 prevUp = m_CameraUp;
+
+		m_CameraDirection = (glm::rotate(glm::mat4(1.f), localRotation.x, prevRight) 
+							* glm::rotate(glm::mat4(1.f), localRotation.y, prevUp)
+							* glm::vec4(prevDir, 0.f));
 		m_CameraRight = glm::normalize(glm::cross(worldUp, m_CameraDirection));
 		m_CameraUp = glm::cross(m_CameraDirection, m_CameraRight);
 
