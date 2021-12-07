@@ -41,7 +41,7 @@ layout(location = 0) out vec4 o_Color;
 
 layout(location = 0) in vec3 v_ViewDir;
 
-layout(binding = 0) uniform samplerCube u_Skybox;
+layout(binding = 1) uniform samplerCube u_Skybox;
 
 void main()
 {

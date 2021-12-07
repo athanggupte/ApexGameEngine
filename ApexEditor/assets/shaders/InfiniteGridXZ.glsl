@@ -38,7 +38,7 @@ layout(location = 0) out vec4 o_Color;
 const float gridSize = 1000.0;
 const float gridCellSize = 1.0;
 
-const vec4 gridColorThin = vec4(0.5, 0.5, 0.5, 1.0);
+const vec4 gridColorThin = vec4(0.35, 0.35, 0.35, 1.0);
 const vec4 gridColorThick = vec4(1.0, 1.0, 1.0, 1.0);
 
 const float gridMinPixelsBetweenCells = 4.0;

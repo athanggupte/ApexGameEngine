@@ -34,6 +34,8 @@ namespace Apex {
 		struct SceneData
 		{
 			glm::mat4 ViewProjectionMatrix;
+			glm::mat4 ViewMatrix;
+			glm::mat4 InverseViewMatrix;
 			bool ImageAccess = false;
 		};
 

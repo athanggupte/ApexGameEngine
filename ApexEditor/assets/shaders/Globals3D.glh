@@ -4,7 +4,7 @@ layout(location = ATTRIB_LOC_UV0) in vec2 a_TexCoord;
 layout(location = ATTRIB_LOC_Color) in vec3 a_Color;
 layout(location = ATTRIB_LOC_TexIndex) in vec3 a_TexIndex;
 layout(location = ATTRIB_LOC_Normal) in vec3 a_Normal;
-layout(location = ATTRIB_LOC_Tangent) in vec3 a_Tangent;
+layout(location = ATTRIB_LOC_Tangent) in vec4 a_Tangent;
 layout(location = ATTRIB_LOC_Bitangent) in vec3 a_Bitangent;
 layout(location = ATTRIB_LOC_UV1) in vec3 a_UV1;
 #endif

@@ -101,7 +101,7 @@ namespace Apex {
 		resourceManager.AddResource<Texture>(RESNAME("texture_Skybox"), cubemapTexture);
 		auto pusheenTexture = resourceManager.AddResourceFromFile<Texture>(RESNAME("pusheen-texture"), "editor_assets/textures/pusheen-thug-life.png");
 		auto suzanneTexture = resourceManager.AddResourceFromFile<Texture>(RESNAME("suzanne_DefaultMaterial_BaseColor"), "editor_assets/meshes/suzanne/textures/suzanne_DefaultMaterial_BaseColor.png");
-		auto metalPlateDiffuseTexture = resourceManager.AddResource<Texture>(RESNAME("metal_plate_diff_2k"), Texture2D::Create("editor_assets/textures/metal_plate/metal_plate_diff_2k.jpg", false));
+		auto metalPlateDiffuseTexture = resourceManager.AddResource<Texture>(RESNAME("metal_plate_diff_2k"), Texture2D::Create("editor_assets/textures/metal_plate/metal_plate_diff_2k.jpg", true));
 
 		/* Initialize Meshes */
 		auto cubeMesh = resourceManager.AddResource<Mesh>(RESNAME("default-cube"),Primitives::Cube::GetMesh());
@@ -148,7 +148,7 @@ namespace Apex {
 		auto font = ImGui::GetIO().Fonts->AddFontFromFileTTF("C:\\Windows\\Fonts\\segoeui.ttf", 16.f, &font_cfg);
 #endif
 
-		FBXImporter::Import(m_Scene, "assets/meshes/crysis-nano-suit-2.fbx");
+		FBXImporter::Import(m_Scene, "assets/meshes/sphere-tris.fbx");
 
 	}
 	
@@ -160,6 +160,7 @@ namespace Apex {
 
 	static bool useMSAA = true;
 	static bool showSkybox = true;
+	static bool usePostProcess = true;
 
 	void EditorLayer::OnUpdate(Timestep ts) 
 	{
@@ -190,16 +191,21 @@ namespace Apex {
 			m_GameFramebuffer->Bind();
 		RenderCommands::SetClearColor(m_BGColor);
 		RenderCommands::Clear();
+
 		
+		auto cameraTransform = m_EditorCameraController->GetTransform();
+		auto cameraTranslation = cameraTransform[3];
 		
 		if (!m_PlayScene) {
 			auto skyboxTexture = Application::Get().GetResourceManager().Get<Texture>(RESNAME("texture_Skybox"));
-			skyboxTexture->Bind(0);
+			skyboxTexture->Bind(1);
 
 			auto pbrShader = Application::Get().GetResourceManager().Get<Shader>(RESNAME("shader_StandardPBR"));
 			pbrShader->SetUniFloat3("u_CameraPosition", m_EditorCameraController->GetTransform()[3]);
 			pbrShader->SetUniFloat1("u_Roughness", roughness);
 			pbrShader->SetUniFloat3("u_LightPos", lightPos);
+
+			RenderCommands::SetCulling(true);
 
 			Renderer::BeginScene(m_EditorCamera, m_EditorCameraController->GetTransform());
 			RenderCommands::SetDepthTest(true);
@@ -208,10 +214,6 @@ namespace Apex {
 			Renderer2D::BeginScene(m_EditorCamera, m_EditorCameraController->GetTransform());
 			m_Scene->Render2D();
 			Renderer2D::EndScene();
-
-
-			auto cameraTransform = m_EditorCameraController->GetTransform();
-			auto cameraTranslation = cameraTransform[3];
 
 			if (showSkybox) {
 				auto skyboxShader = Application::Get().GetResourceManager().Get<Shader>(RESNAME("shader_Skybox"));
@@ -242,14 +244,16 @@ namespace Apex {
 				m_GameFramebufferMS->Blit(m_PostProcessFramebuffer);
 			}
 
-			m_GameFramebuffer->Bind();
-			RenderCommands::Clear();
-			auto tonemapShader = Application::Get().GetResourceManager().Get<Shader>(RESNAME("shader_ACESTonemap"));
-			tonemapShader->Bind();
-			m_PostProcessFramebuffer->GetColorAttachment(0)->Bind(1);
-			RenderCommands::Draw(3);
-
-			// m_PostProcessFramebuffer->Blit(m_GameFramebuffer);
+			if (usePostProcess) {
+				m_GameFramebuffer->Bind();
+				RenderCommands::Clear();
+				auto tonemapShader = Application::Get().GetResourceManager().Get<Shader>(RESNAME("shader_ACESTonemap"));
+				tonemapShader->Bind();
+				m_PostProcessFramebuffer->GetColorAttachment(0)->Bind(1);
+				RenderCommands::Draw(3);
+			} else {
+				m_PostProcessFramebuffer->Blit(m_GameFramebuffer);
+			}
 
 		} else {
 			m_Scene->OnUpdate(ts);
@@ -286,6 +290,7 @@ namespace Apex {
 
 		if (ImGui::Begin("Rendering")) {
 			ImGui::Checkbox("MSAA", &useMSAA);
+			ImGui::Checkbox("Post process", &usePostProcess);
 			ImGui::Checkbox("Show Skybox", &showSkybox);
 			ImGui::Separator();
 

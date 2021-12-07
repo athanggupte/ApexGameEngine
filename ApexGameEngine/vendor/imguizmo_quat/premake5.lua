@@ -2,7 +2,8 @@ project "ImGuizmoQuat"
 	kind "StaticLib"
 	language "C++"
 	cppdialect "C++17"
-	
+	staticruntime "off"
+
 	targetdir ("bin/" .. outputdir)
 	objdir ("bin-int/" .. outputdir)
 
@@ -26,7 +27,6 @@ project "ImGuizmoQuat"
 	
 	filter "system:windows"
 		systemversion "latest"
-		staticruntime(WinCRunTime_Type)
 	
 	filter "system:linux"
 		pic "On"

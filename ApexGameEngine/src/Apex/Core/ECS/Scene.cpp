@@ -126,7 +126,7 @@ namespace Apex {
 		view.each([](const TransformComponent& transform, MeshRendererComponent& mesh_component) {
 			if (mesh_component.mesh.IsValid() && mesh_component.material.IsValid()) {
 				if (const auto shader = mesh_component.material->GetShader(); shader.IsValid()) {
-					int slot = 0;
+					int slot = 1;
 					for (auto& [name, texture] : mesh_component.material->GetTextures()) {
 						if (texture.IsValid()) {
 							texture->Bind(++slot);

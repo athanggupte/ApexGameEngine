@@ -19,7 +19,9 @@ namespace Apex {
 
 	void Renderer::BeginScene(const Camera& camera, const glm::mat4& transform)
 	{
-		s_SceneData->ViewProjectionMatrix = camera.GetProjection() * glm::inverse(transform);
+		s_SceneData->InverseViewMatrix = transform;
+		s_SceneData->ViewMatrix = glm::inverse(transform);
+		s_SceneData->ViewProjectionMatrix = camera.GetProjection() * s_SceneData->ViewMatrix;
 	}
 
 	void Renderer::EndScene()
@@ -32,6 +34,7 @@ namespace Apex {
 	{
 		shader->Bind();
 		shader->SetUniMat4("u_ViewProjection", s_SceneData->ViewProjectionMatrix);
+		shader->SetUniMat4("u_NormalMat", glm::transpose(glm::inverse(s_SceneData->ViewMatrix * modelMatrix)));
 		shader->SetUniMat4("u_Model", modelMatrix);
 
 		vertexArray->Bind();

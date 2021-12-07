@@ -5,6 +5,10 @@
 #include "Apex.h"
 #include "Apex.h"
 #include "Apex.h"
+#include "Apex.h"
+#include "Apex.h"
+#include "Apex.h"
+#include "Apex.h"
 #include "Material.h"
 #include "Apex/Core/ECS/Scene.h"
 
@@ -27,8 +31,7 @@ namespace Apex {
 			glm::vec3 Position;
 			glm::vec2 UV;
 			glm::vec3 Normal;
-			glm::vec3 Tangent;
-			glm::vec3 Bitangent;
+			glm::vec4 Tangent;
 		};
 		static constexpr size_t VERTEX_SIZE = sizeof(Vertex) / sizeof(float);
 
@@ -39,7 +42,7 @@ namespace Apex {
 		void ProcessMesh(FbxNode* node, FbxMesh* mesh, const std::vector<ControlPoint>& controlPoints,
 		                 std::vector<Vertex>& outVertices, std::vector<uint32_t>& outIndices);
 		void ProcessNormal(FbxMesh* mesh, int controlPointIndex, int vertexCounter, glm::vec3& outNormal);
-		void ProcessTangent(FbxMesh* mesh, int controlPointIndex, int vertexCounter, glm::vec3& outTangent);
+		void ProcessTangent(::FbxMesh* mesh, int controlPointIndex, int vertexCounter, glm::vec4& outTangent);
 		void ProcessBitangent(FbxMesh* mesh, int controlPointIndex, int vertexCounter, glm::vec3& outBitangent);
 		void GenerateTangentsAndBitangents();
 		void ProcessUV(FbxMesh* mesh, int controlPointIndex, int uvIndex, glm::vec2& outTexCoord);
@@ -144,6 +147,8 @@ namespace Apex {
 		case FbxNodeAttribute::eSkeleton: break;
 		case FbxNodeAttribute::eMesh:
 		{
+			FbxGeometryConverter geometryConverter(s_Data.fbxManager);
+			attribute = geometryConverter.Triangulate(attribute, true);
 			auto _mesh = ProcessGeometry(node, attribute);
 
 			if (Application::Get().GetResourceManager().Exists(RESNAME(nodeName))) {
@@ -157,7 +162,7 @@ namespace Apex {
 				entity.GetComponent<TagComponent>().tag = HASH(nodeName);
 				auto& transform = entity.GetComponent<TransformComponent>();
 				transform.translation = translation;
-				transform.rotation = rotation;
+				transform.rotation = glm::radians(rotation);
 				transform.scale = scale;
 
 				auto meshRes = Application::Get().GetResourceManager().Get<Mesh>(RESNAME(nodeName));
@@ -165,7 +170,7 @@ namespace Apex {
 				auto material = CreateRef<Material>();
 				material->SetShader(shaderRes);
 				auto matRes = Application::Get().GetResourceManager().AddResource<Material>(RESNAME(fmt::format("material_{}", nodeName)), material);
-				material->AddTexture("Albedo", Application::Get().GetResourceManager().Get<Texture>(RESNAME("metal_plate_diff_2k")));
+				// material->AddTexture("Albedo", Application::Get().GetResourceManager().Get<Texture>(RESNAME("metal_plate_diff_2k")));
 				entity.AddComponent<MeshRendererComponent>(meshRes, matRes);
 			}
 
@@ -192,8 +197,7 @@ namespace Apex {
 			{ ShaderDataType::Float3, VertexElementType::Position },
 			{ ShaderDataType::Float2, VertexElementType::UV0 },
 			{ ShaderDataType::Float3, VertexElementType::Normal },
-			{ ShaderDataType::Float3, VertexElementType::Tangent },
-			{ ShaderDataType::Float3, VertexElementType::Bitangent },
+			{ ShaderDataType::Float4, VertexElementType::Tangent },
 		};
 		return CreateRef<Mesh>(reinterpret_cast<float*>(vertices.data()), vertices.size() * VERTEX_SIZE, indices.data(), indices.size(), layout);
 	}
@@ -223,6 +227,9 @@ namespace Apex {
 		//APEX_CORE_ASSERT(mesh->GetElementTangentCount() > 0, fmt::format("Mesh ({0}) :: Does not contain Tangents!", mesh->GetName()));
 		//APEX_CORE_ASSERT(mesh->GetElementBinormalCount() > 0, fmt::format("Mesh ({0}) :: Does not contain Bitangents!", mesh->GetName()));
 
+		bool hasTangents = mesh->GetElementTangentCount() > 0;
+		bool hasBitangents = mesh->GetElementBinormalCount() > 0;
+
 		for (int i = 0; i < triangleCount; i++) {
 			for (int j = 0; j < 3; j++) {
 				outVertices.push_back({});
@@ -232,12 +239,60 @@ namespace Apex {
 
 				vertex.Position = controlPoints[controlPointIndex].Position;
 				ProcessNormal(mesh, controlPointIndex, vertexCounter, vertex.Normal);
-				ProcessUV(mesh, controlPointIndex, mesh->GetTextureUVIndex(i, j), vertex.UV);
-				vertex.Tangent = glm::vec3{ 0.f };
-				vertex.Bitangent = glm::vec3{ 0.f };
+				ProcessUV(mesh, controlPointIndex, vertexCounter /*mesh->GetTextureUVIndex(i, j)*/, vertex.UV);
+
+				vertex.Tangent = glm::vec4{ 0.f };
+				if (hasTangents)
+					ProcessTangent(mesh, controlPointIndex, vertexCounter, vertex.Tangent);
+
+				if (hasBitangents) {
+					glm::vec3 bitangent;
+					ProcessBitangent(mesh, controlPointIndex, vertexCounter, bitangent);
+					vertex.Tangent.w = (glm::dot(glm::cross(glm::vec3(vertex.Tangent), bitangent), vertex.Normal) > 0.f) ? 1.f : -1.f;
+				}
 
 				outIndices.push_back(vertexCounter++);
 			}
+		}
+
+		if (!hasTangents) {
+			std::vector<glm::vec3> tangents(triangleCount * 3);
+			std::vector<glm::vec3> bitangents(triangleCount * 3);
+
+			for (int i = 0; i < triangleCount; i++) {
+				const auto vIndex = i * 3;
+				auto& v0 = outVertices[vIndex];
+				auto& v1 = outVertices[vIndex + 1];
+				auto& v2 = outVertices[vIndex + 2];
+				glm::vec3 e1 = v1.Position - v0.Position,
+				          e2 = v2.Position - v0.Position;
+				float x1 = v1.UV.x - v0.UV.x, x2 = v2.UV.x - v0.UV.x,
+				      y1 = v1.UV.y - v0.UV.y, y2 = v2.UV.y - v0.UV.y;
+
+				float det = 1.f / (x1 * y2 - x2 * y1);
+				glm::vec3 t = (e1 * y2 - e2 * y1) * det;
+				glm::vec3 b = (e2 * x1 - e1 * x2) * det;
+
+				tangents[vIndex] += t;
+				tangents[vIndex + 1] += t;
+				tangents[vIndex + 2] += t;
+
+				bitangents[vIndex] += b;
+				bitangents[vIndex + 1] += b;
+				bitangents[vIndex + 2] += b;
+			}
+
+			for (auto i = 0; i < outVertices.size(); i++) {
+				// Gram-Schmidt Orthonormalization
+				auto& vertex = outVertices[i];
+				const auto& t = tangents[i];
+				const auto& b = bitangents[i];
+				const auto& n = vertex.Normal;
+
+				vertex.Tangent = glm::vec4(glm::normalize(t - glm::dot(t, n) * n), 0.f);
+				vertex.Tangent.w = (glm::dot(glm::cross(t, b), n) > 0.f) ? 1.f : -1.f;
+			}
+
 		}
 	}
 
@@ -300,7 +355,7 @@ namespace Apex {
 		}
 	}
 
-	void fbx::ProcessTangent(FbxMesh* mesh, int controlPointIndex, int vertexCounter, glm::vec3& outTangent)
+	void fbx::ProcessTangent(FbxMesh* mesh, int controlPointIndex, int vertexCounter, glm::vec4& outTangent)
 	{
 		FbxGeometryElementTangent* vertexTangent = mesh->GetElementTangent();
 
@@ -418,6 +473,11 @@ namespace Apex {
 		}
 	}
 
+	void fbx::GenerateTangentsAndBitangents()
+	{
+
+	}
+
 	void fbx::ProcessUV(FbxMesh* mesh, int controlPointIndex, int uvIndex, glm::vec2& outUV)
 	{
 		APEX_CORE_ASSERT(mesh->GetElementUVCount() > 0, fmt::format("Mesh ({0}) :: Does not contain UVs!", mesh->GetName()));
@@ -446,7 +506,7 @@ namespace Apex {
 			}
 			break;
 		}
-		case FbxLayerElement::eByPolygonVertex:  // One normal per polygon face vertex (sharp edge)
+		case FbxLayerElement::eByPolygonVertex:
 		{
 			switch (vertexUV->GetReferenceMode()) {
 			case FbxLayerElement::eDirect:
