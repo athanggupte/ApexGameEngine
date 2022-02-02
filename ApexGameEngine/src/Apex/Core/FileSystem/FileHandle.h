@@ -19,15 +19,15 @@ namespace Apex {
 			virtual bool OpenRead() = 0;
 			virtual bool OpenWrite(bool append, bool allowRead) = 0;
 			
-			virtual uint32_t Read(void* data, uint32_t size) = 0;
-			virtual uint32_t Write(const void* data, uint32_t size) = 0;
+			virtual size_t Read(void* data, size_t size) = 0;
+			virtual size_t Write(const void* data, size_t size) = 0;
 			
 			virtual void Flush() = 0;
 			virtual void Close() = 0;
 			virtual bool IsOpen() const = 0;
-			virtual uint32_t Size() = 0;
+			virtual size_t Size() = 0;
 			virtual bool SeekPtr(const int64_t position, bool fromEnd = false) = 0;
-			virtual uint32_t TellPtr() = 0;
+			virtual int64_t TellPtr() = 0;
 			
 			const fs::path& GetPhysicalPath() const { return m_PhysicalPath; }
 			
@@ -45,15 +45,15 @@ namespace Apex {
 			virtual bool OpenRead() override;
 			virtual bool OpenWrite(bool append, bool allowRead) override;
 			
-			virtual uint32_t Read(void* data, uint32_t size) override;
-			virtual uint32_t Write(const void* data, uint32_t size) override;
+			virtual size_t Read(void* data, size_t size) override;
+			virtual size_t Write(const void* data, size_t size) override;
 			
 			virtual void Flush() override;
 			virtual void Close() override;
 			virtual bool IsOpen() const override;
-			virtual uint32_t Size() override;
+			virtual size_t Size() override;
 			virtual bool SeekPtr(const int64_t position, bool fromEnd = false) override;
-			virtual uint32_t TellPtr() override;
+			virtual int64_t TellPtr() override;
 		
 		private:
 			bool m_IsBinary;

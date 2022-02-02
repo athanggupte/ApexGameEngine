@@ -38,9 +38,11 @@ namespace Apex {
 		case GL_GEOMETRY_SHADER: return "GEOMETRY";
 		case GL_TESS_CONTROL_SHADER: return "TESSELLATION_CONTROL";
 		case GL_TESS_EVALUATION_SHADER: return "TESSELLATION_EVALUATION";
+		default: APEX_CORE_CRITICAL("Invalid shader stage!");
 		}
 
 		APEX_CORE_CRITICAL("Unknown shader stage enum ({0})!", stage);
+		return {};
 	}
 
 	static ShaderUniformType GetOpenGLShaderUniformType(GLenum dataType);
@@ -297,7 +299,11 @@ namespace Apex {
 		
 		return uniformData;
 	}
-	
+
+#ifdef _MSC_VER
+	#pragma warning(disable: 4267)
+#endif
+
 #ifndef SHADER_UNIFORMS_NO_CACHE
 #define SHADER_UNIFORMS_NO_CACHE
 #endif
@@ -530,7 +536,6 @@ namespace Apex {
 		case GL_SAMPLER_2D_RECT_SHADOW: return ShaderUniformType::SAMPLER_2D_RECT_SHADOW;
 		default: APEX_CORE_CRITICAL("Unknown Shader uniform type!");
 		}
+		return {};
 	}
-
-
 }

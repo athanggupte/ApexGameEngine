@@ -10,7 +10,7 @@ namespace Apex {
 	class Scene;
 	class Entity; // Forward declaration
 	
-	class Scene
+	class APEX_API Scene
 	{
 	public:
 		Scene();
@@ -20,10 +20,15 @@ namespace Apex {
 		Entity CreateEntity();
 
 		void OnSetup();
+		void OnPlay();
+		void OnStop();
 		void OnUpdate(Timestep ts);
 		void OnEditorUpdate(Timestep ts);
 		void OnEvent(Event&);
 		void OnViewportResize(uint32_t width, uint32_t height);
+
+		void Render2D();
+		void Render3D();
 		
 		struct SceneOptions
 		{
@@ -40,13 +45,22 @@ namespace Apex {
 			return m_Registry.view<Component...>(exclude);
 		}
 
-		void Render2D();
-		void Render3D();
-	protected:
+		template<typename Component, typename Func>
+		void ComponentAddedCallback() // Attach free function
+		{
+			m_Registry.on_construct<Component>().template connect<&Func>();
+		}
 
-		template<typename Component_t>
-		void OnComponentAdded(Entity entity, Component_t& component);
-		
+		template<typename Component, auto Func, typename Type>
+		void ComponentAddedCallback(Type&& instance) // Attach member function
+		{
+			m_Registry.on_construct<Component>().template connect<&Func>(instance);
+		}
+
+	protected:
+		/*template<typename Component_t>
+		void OnComponentAdded(Entity entity, Component_t& component);*/
+
 	private:
 		entt::registry m_Registry;
 		

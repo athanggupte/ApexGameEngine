@@ -313,25 +313,10 @@ namespace Apex {
 				ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.941f, 0.176f, 0.121f, 1.f });
 				ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 0.835f, 0.133f, 0.082f, 1.f });
 				ImGui::PushStyleColor(ImGuiCol_ButtonActive, textCol);
-				if (ButtonEx_custom("Delete Component", { ImGui::GetContentRegionAvailWidth(), 0.f }, ImGuiButtonFlags_None)) {
+				if (ButtonEx_custom("Delete Component", { ImGui::GetContentRegionAvail().x, 0.f }, ImGuiButtonFlags_None)) {
 					m_ContextEntity.RemoveComponent<MeshRendererComponent>();
 				}
 				ImGui::PopStyleColor(3);
-				ImGui::TreePop();
-			}
-			ImGui::Separator();
-		}
-
-		// Script Component
-		if (m_ContextEntity.HasComponent<ScriptComponent>()) {
-			auto& scriptComp = m_ContextEntity.GetComponent<ScriptComponent>();
-
-			if (ImGui::TreeNodeEx((void*)typeid(ScriptComponent).hash_code(), treeNodeFlags, "Script")) {
-				ImGui::InputText("Script File", &scriptComp.filename);
-				ImGui::SameLine();
-				if (ImGui::Button("...##script_file_select")) {
-					scriptComp.filename = Utils::OpenFileDialog();
-				}
 				ImGui::TreePop();
 			}
 			ImGui::Separator();
@@ -356,11 +341,7 @@ namespace Apex {
 					meshComp.mesh = Application::Get().GetResourceManager().Get<Mesh>(RESNAME("default-cube"));
 					//meshComp.material = Application::Get().GetResourceManager().Get<Material>(RESNAME("material_Unlit"));
 				}
-
-			if (!m_ContextEntity.HasComponent<ScriptComponent>())
-				if (ImGui::MenuItem("Script"))
-					m_ContextEntity.AddComponent<ScriptComponent>();
-			
+						
 			if (ImGui::BeginMenu("Physics")) {
 				
 				// if (!m_ContextEntity.HasComponent<Collider3DComponent>())

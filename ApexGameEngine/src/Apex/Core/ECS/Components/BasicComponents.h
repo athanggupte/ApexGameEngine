@@ -13,7 +13,7 @@
 #include "Apex/Graphics/RenderPrimitives/Texture.h"
 #include "Apex/Core/ResourceManager/ResourceManager.h"
 
-#include "Apex/Core/ECS/ScriptableEntity.h"
+#include "Apex/Core/ECS/EntityScript.h"
 
 namespace Apex {
 
@@ -97,23 +97,26 @@ namespace Apex {
 	
 	struct NativeScriptComponent
 	{
-		ScriptableEntity* Instance;
-		
-		std::function<void(Entity, Scene*)> InstantiateFn;
-		std::function<void()> DestroyFn;
-		
-		template<typename Instance_t>
+		EntityScript* instance = nullptr;
+		Resource<AScriptFactory> factory;
+
+		COMPONENT_DEFAULT_CTR(NativeScriptComponent);
+
+		explicit NativeScriptComponent(const Resource<AScriptFactory>& script_factory)
+			: factory(script_factory) {}
+
+		/*using InstantiateFn_t = EntityScript*(*)();
+		using DestroyFn_t = void (*)(NativeScriptComponent*);
+
+		InstantiateFn_t InstantiateScript;
+		DestroyFn_t DestroyScript;
+
 		void Bind()
 		{
-			
-		}
+			 InstantiateScript = []() { return static_cast<EntityScript*>(new Script_t()); };
+			 DestroyScript = [](NativeScriptComponent* nsc) { delete nsc->instance; nsc->instance = nullptr; };
+		}*/
 		
-	};
-	
-	struct ScriptComponent
-	{
-		// Temporary : Not functional. only meant for UI in inspector panel
-		std::string filename;
 	};
 	
 }

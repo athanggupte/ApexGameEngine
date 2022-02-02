@@ -15,7 +15,7 @@ namespace Apex {
 		void Draw(uint32_t vertexCount) override;
 		void Draw(const Ref<VertexArray>& vertexArray) override;
 		void DrawIndexed(const Ref<VertexArray>& vertexArray, uint32_t indexCount) override;
-		void DrawInstanced(const Ref<VertexArray>& vertexArray, size_t count) override;
+		void DrawInstanced(const Ref<VertexArray>& vertexArray, uint32_t count) override;
 
 		void SetDepthTest(bool value) override;
 		void SetDepthWriteMode(bool value) override;

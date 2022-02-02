@@ -15,6 +15,7 @@
  //#include "EditorTools/ShaderGraph/ShaderGraph.h"
 
 
+#include "Apex/Core/DllManager.h"
 #include "Apex/Graphics/FBXImporter.h"
 #include "Apex/Graphics/Material.h"
 
@@ -51,6 +52,9 @@ namespace Apex {
 	void EditorLayer::OnAttach()
 	{
 		FileSystem::MountRoot(APEX_INSTALL_LOCATION "/assets");
+
+		// TODO: Remove
+		const auto dll = LoadDll(APEX_INSTALL_LOCATION "/../ScriptTest/ScriptTest.dll");
 
 		m_Scene = CreateRef<Scene>();
 
@@ -101,7 +105,7 @@ namespace Apex {
 		resourceManager.AddResource<Texture>(RESNAME("texture_Skybox"), cubemapTexture);
 		auto pusheenTexture = resourceManager.AddResourceFromFile<Texture>(RESNAME("pusheen-texture"), "editor_assets/textures/pusheen-thug-life.png");
 		auto suzanneTexture = resourceManager.AddResourceFromFile<Texture>(RESNAME("suzanne_DefaultMaterial_BaseColor"), "editor_assets/meshes/suzanne/textures/suzanne_DefaultMaterial_BaseColor.png");
-		auto metalPlateDiffuseTexture = resourceManager.AddResource<Texture>(RESNAME("metal_plate_diff_2k"), Texture2D::Create("editor_assets/textures/metal_plate/metal_plate_diff_2k.jpg", true));
+		//auto metalPlateDiffuseTexture = resourceManager.AddResource<Texture>(RESNAME("metal_plate_diff_2k"), Texture2D::Create("editor_assets/textures/metal_plate/metal_plate_diff_2k.jpg", true));
 
 		/* Initialize Meshes */
 		auto cubeMesh = resourceManager.AddResource<Mesh>(RESNAME("default-cube"),Primitives::Cube::GetMesh());
@@ -111,7 +115,7 @@ namespace Apex {
 		/* Initialize Materials */
 		auto _suzanneMaterial = CreateRef<Material>();
 		_suzanneMaterial->SetShader(albedoUnlitShader);
-		//_suzanneMaterial->AddTexture("Albedo", suzanneTexture);
+		//_suzanneMaterial->SetTexture("Albedo", suzanneTexture);
 		auto suzanneMaterial = resourceManager.AddResource<Material>(RESNAME("suzanne_material_Unlit"), _suzanneMaterial);
 
 		/* Load All Resources */
@@ -127,6 +131,9 @@ namespace Apex {
 
 		auto suzanneEntity = m_Scene->CreateEntity(HASH("suzanne"));
 		suzanneEntity.AddComponent<MeshRendererComponent>(suzanneMesh, suzanneMaterial);
+
+		auto planeEntity = m_Scene->CreateEntity(HASH("plane"));
+		planeEntity.AddComponent<NativeScriptComponent>(resourceManager.Get<AScriptFactory>(RESNAME("LogScript")));
 
 		// pusheenTexture->Bind(0);
 		
@@ -150,10 +157,17 @@ namespace Apex {
 
 		FBXImporter::Import(m_Scene, "assets/meshes/sphere-tris.fbx");
 
+		// TODO: Move to Play()
+		m_Scene->OnPlay();
+		resourceManager.LoadAll<Texture>();
+		resourceManager.LoadAll<Mesh>();
+		resourceManager.LoadAll<Shader>();
 	}
 	
 	void EditorLayer::OnDetach() 
 	{
+		// TODO: Move to Stop()
+		m_Scene->OnStop();
 		//m_Sound->drop();
 		//m_SoundEngine->drop();
 	}
@@ -180,8 +194,12 @@ namespace Apex {
 		
 		if (m_ViewportFocused)
 			m_EditorCameraController->OnUpdate(ts);
-		
-		
+
+
+		// Update
+		// TODO: Integrate with Render loop
+		m_Scene->OnUpdate(ts);
+
 		// Render
 		Renderer2D::ResetStats();
 

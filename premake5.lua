@@ -37,6 +37,7 @@ group ""
 	include "ApexGameEngine"
 	include "ApexEditor"
 	include "Sandbox"
+	include "ScriptTest"
 	-- include "GameLib"
 
 

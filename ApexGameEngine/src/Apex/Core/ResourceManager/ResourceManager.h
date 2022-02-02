@@ -1,18 +1,13 @@
 #pragma once
 
-#include "Apex/Core/GUID.h"
 #include "Apex/Core/Strings.h"
 #include "Apex/Utils/Utils.h"
 #include "Apex/Core/FileSystem/FileSystem.h"
 
 // #include "ResourceLibrary.h"
 
-
-#include <typeindex>
-#include <variant>
-#include <optional>
-
 namespace Apex {
+	class AScriptFactory;
 	class Shader;
 	class Texture;
 	class Mesh;
@@ -20,7 +15,7 @@ namespace Apex {
 
 	using Handle = uint64_t;
 
-#define RESNAME(_str_) static_cast<Handle>(HASH(_str_))
+#define RESNAME(_str_) static_cast<Apex::Handle>(HASH(_str_))
 
 	enum class ResourceType : uint32_t
 	{
@@ -28,6 +23,7 @@ namespace Apex {
 		FILE,
 		TEXTURE,
 		SHADER,
+		SCRIPT,
 		//SCENE,
 		//SPRITE,
 		//MODEL,
@@ -45,6 +41,7 @@ namespace Apex {
 		case ResourceType::FILE:		return "FILE";
 		case ResourceType::TEXTURE:		return "TEXTURE";
 		case ResourceType::SHADER:		return "SHADER";
+		case ResourceType::SCRIPT:		return "SCRIPT";
 		//case ResourceType::SCENE:		return "SCENE";
 		//case ResourceType::SPRITE:	return "SPRITE";
 		//case ResourceType::MODEL:		return "MODEL";
@@ -52,17 +49,21 @@ namespace Apex {
 		case ResourceType::MATERIAL:	return "MATERIAL";
 		//case ResourceType::ANIMATION:	return "ANIMATION";
 		//case ResourceType::AUDIO:		return "AUDIO";
+		case ResourceType::NONE: break;
+		case ResourceType::SIZE: break;
 		}
+		return "UNKNOWN";
 	};
 
 	template<typename Resource_t>
 	constexpr ResourceType GetResourceType()
 	{
-		if constexpr (std::is_same_v<Resource_t, File>) return ResourceType::FILE;
-		if constexpr (std::is_same_v<Resource_t, Texture>) return ResourceType::TEXTURE;
-		if constexpr (std::is_same_v<Resource_t, Shader>) return ResourceType::SHADER;
-		if constexpr (std::is_same_v<Resource_t, Mesh>) return ResourceType::MESH;
-		if constexpr (std::is_same_v<Resource_t, Material>) return ResourceType::MATERIAL;
+		if constexpr (std::is_same_v<Resource_t, File>)				return ResourceType::FILE;
+		if constexpr (std::is_same_v<Resource_t, Texture>)			return ResourceType::TEXTURE;
+		if constexpr (std::is_same_v<Resource_t, Shader>)			return ResourceType::SHADER;
+		if constexpr (std::is_same_v<Resource_t, AScriptFactory>)	return ResourceType::SCRIPT;
+		if constexpr (std::is_same_v<Resource_t, Mesh>)				return ResourceType::MESH;
+		if constexpr (std::is_same_v<Resource_t, Material>)			return ResourceType::MATERIAL;
 		else return ResourceType::NONE;
 	}
 
@@ -123,7 +124,7 @@ namespace Apex {
 		friend class ResourceManager;
 	};
 
-	class ResourceManager
+	class APEX_API ResourceManager
 	{
 		template<typename T> using Pool = BucketList<std::pair<Handle, Ref<T>>>;
 
@@ -234,6 +235,7 @@ namespace Apex {
 		// Resource Pools
 		Pool<Texture> m_TexturePool;
 		Pool<Shader> m_ShaderPool;
+		Pool<AScriptFactory> m_ScriptFactoryPool;
 		Pool<Mesh> m_MeshPool;
 		Pool<Material> m_MaterialPool;
 
@@ -254,6 +256,12 @@ namespace Apex {
 	inline ResourceManager::Pool<Shader>& ResourceManager::GetPoolToUse<Shader>()
 	{
 		return m_ShaderPool;
+	}
+
+	template<>
+	inline ResourceManager::Pool<AScriptFactory>& ResourceManager::GetPoolToUse<AScriptFactory>()
+	{
+		return m_ScriptFactoryPool;
 	}
 
 	template<>

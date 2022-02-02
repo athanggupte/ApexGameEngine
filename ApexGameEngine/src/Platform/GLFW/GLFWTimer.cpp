@@ -24,7 +24,7 @@ namespace Apex {
 	void Timer::UpdateTime()
 	{
 		s_TimerData.timerFrequency = glfwGetTimerFrequency();
-		uint64_t curTime = glfwGetTimerValue();
+		const uint64_t curTime = glfwGetTimerValue();
 		s_TimerData.frameTimestep = curTime - s_TimerData.timerSteps;
 		s_TimerData.timerSteps = curTime;
 	}
@@ -33,13 +33,18 @@ namespace Apex {
 	{
 		return { static_cast<float>(s_TimerData.frameTimestep) / static_cast<float>(s_TimerData.timerFrequency) };
 	}
-	
-	uint64_t GetTimerSteps()
+
+	Timestep Timer::GetElapsedTime()
+	{
+		return { static_cast<float>(s_TimerData.timerSteps) / static_cast<float>(s_TimerData.timerFrequency) };
+	}
+
+	uint64_t Timer::GetTimerSteps()
 	{
 		return s_TimerData.timerSteps;
 	}
 	
-	uint64_t GetTimerFrequency()
+	uint64_t Timer::GetTimerFrequency()
 	{
 		return s_TimerData.timerFrequency;
 	}

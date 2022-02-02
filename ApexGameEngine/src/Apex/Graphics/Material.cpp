@@ -37,7 +37,7 @@ namespace Apex {
 		}
 	}
 
-	void Material::AddTexture(const std::string & name, const Resource<Texture>& texture)
+	void Material::SetTexture(const std::string & name, const Resource<Texture>& texture)
 	{
 		APEX_CORE_TRACE("uniform name : {0}", name);
 		const auto itr = m_Textures.find(name);

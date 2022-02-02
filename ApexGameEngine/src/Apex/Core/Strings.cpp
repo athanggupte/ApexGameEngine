@@ -7,6 +7,7 @@ namespace Apex {
 
 	static StringStorage s_Storage;
 
+	// Strings methods
 	StringHandle Strings::Add(uint64_t hash, std::string&& str)
 	{
 		return { s_Storage.Add(hash, std::move(str)) };
@@ -21,6 +22,11 @@ namespace Apex {
 	{
 		return s_Storage.Has(hash);
 	}
+
+	// String Handle methods
+	StringHandle::operator uint64_t() const { return hash; }
+
+	std::string_view StringHandle::str() const { return Strings::Get(hash); }
 
 	StringHandle Strings::InternString(uint64_t hash, std::string&& str)
 	{

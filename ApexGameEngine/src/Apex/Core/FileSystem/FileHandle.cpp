@@ -11,7 +11,7 @@ namespace Apex::VFS {
 	
 	PhysicalFile::~PhysicalFile()
 	{
-		this->Close();
+		PhysicalFile::Close();
 	}
 	
 	bool PhysicalFile::OpenRead()
@@ -34,31 +34,31 @@ namespace Apex::VFS {
 		}
 		return false;
 	}
-	
-	uint32_t PhysicalFile::Read(void* data, uint32_t size)
+
+	size_t PhysicalFile::Read(void* data, size_t size)
 	{
 		APEX_CORE_ASSERT((IsOpen()), fmt::format("File {0} is not open!", m_PhysicalPath));
 		APEX_CORE_ASSERT((m_AccessMode | ReadMode), fmt::format("File {0} is not in Read mode!", m_PhysicalPath));
 		if (!(IsOpen() && m_AccessMode | ReadMode))
 			return 0;
 		auto start = m_FileHandle.tellg();
-		m_FileHandle.read((char*)data, size);
+		m_FileHandle.read(static_cast<char*>(data), static_cast<int64_t>(size));
 		auto end = m_FileHandle.tellg();
 		m_FileHandle.seekp(end);
-		return (uint32_t)(end - start);
+		return (end - start);
 	}
-	
-	uint32_t PhysicalFile::Write(const void* data, uint32_t size)
+
+	size_t PhysicalFile::Write(const void* data, size_t size)
 	{
 		APEX_CORE_ASSERT((IsOpen()), fmt::format("File {0} is not open!", m_PhysicalPath));
 		APEX_CORE_ASSERT((m_AccessMode | WriteMode), fmt::format("File {0} is not in Write mode!", m_PhysicalPath));
 		if (!(IsOpen() && m_AccessMode | WriteMode))
 			return 0;
 		auto start = m_FileHandle.tellp();
-		m_FileHandle.write((char*)data, size);
+		m_FileHandle.write(static_cast<const char*>(data), static_cast<int64_t>(size));
 		auto end = m_FileHandle.tellp();
 		m_FileHandle.seekg(end);
-		return (uint32_t)(end - start);
+		return (end - start);
 	}
 
 	void PhysicalFile::Flush()
@@ -79,8 +79,8 @@ namespace Apex::VFS {
 	{
 		return m_FileHandle.is_open();
 	}
-	
-	uint32_t PhysicalFile::Size()
+
+	size_t PhysicalFile::Size()
 	{
 		APEX_CORE_ASSERT((IsOpen()), fmt::format("File {0} is not open!", m_PhysicalPath));
 		if (!IsOpen())
@@ -105,12 +105,12 @@ namespace Apex::VFS {
 		}
 		return true;
 	}
-	
-	uint32_t PhysicalFile::TellPtr()
+
+	int64_t PhysicalFile::TellPtr()
 	{
 		APEX_CORE_ASSERT((IsOpen()), fmt::format("File {0} is not open!", m_PhysicalPath));
 		if (!IsOpen())
-			return (uint32_t)(-1);
+			return -1;
 		
 		if (m_AccessMode | ReadMode) {
 			return m_FileHandle.tellg();
@@ -118,6 +118,9 @@ namespace Apex::VFS {
 		if (m_AccessMode | WriteMode) {
 			return m_FileHandle.tellp();
 		}
+
+		APEX_CORE_CRITICAL("File {0} is in Invalid mode: {1}", m_PhysicalPath, m_AccessMode);
+		return -1;
 	}
 	
 }

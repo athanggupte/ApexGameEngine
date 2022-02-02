@@ -98,8 +98,8 @@ namespace Apex {
 	class Texture2D : public Texture
 	{
 	public:
-		static Ref<Texture2D> Create(const std::filesystem::path& path, bool useSRGB = false, bool useHDR = false, const TextureFiltering& filtering = TextureFiltering::BILINEAR);
-		static Ref<Texture2D> Create(uint32_t width, uint32_t height, const TextureSpec& spec, const std::string& name = "");
+		static Ref<Texture2D> APEX_API Create(const std::filesystem::path& path, bool useSRGB = false, bool useHDR = false, const TextureFiltering& filtering = TextureFiltering::BILINEAR);
+		static Ref<Texture2D> APEX_API Create(uint32_t width, uint32_t height, const TextureSpec& spec, const std::string& name = "");
 
 		virtual void BindImage(uint32_t unit, bool read, bool write) const = 0;
 
@@ -109,7 +109,7 @@ namespace Apex {
 	class Texture2DMS : public Texture2D
 	{
 	public:
-		static Ref<Texture2DMS> Create(uint32_t width, uint32_t height, const TextureSpec& spec, uint32_t samples, const std::string& name = "");
+		static Ref<Texture2DMS> APEX_API Create(uint32_t width, uint32_t height, const TextureSpec& spec, uint32_t samples, const std::string& name = "");
 
 		virtual void BindImage(uint32_t unit, bool read, bool write) const override {}
 
@@ -119,8 +119,8 @@ namespace Apex {
 	class TextureCubemap : public Texture
 	{
 	public:
-		static Ref<TextureCubemap> Create(const std::array<std::filesystem::path, 6>& paths, bool useHDR = true);
-		static Ref<TextureCubemap> Create(uint32_t size, const TextureSpec& spec, const std::string& name = "");
+		static Ref<TextureCubemap> APEX_API Create(const std::array<std::filesystem::path, 6>& paths, bool useHDR = true);
+		static Ref<TextureCubemap> APEX_API Create(uint32_t size, const TextureSpec& spec, const std::string& name = "");
 
 		virtual void SetData(void* data, int faceIndex, uint32_t size) = 0;
 
@@ -143,7 +143,7 @@ namespace Apex {
 	class TextureDepth2D : public Texture
 	{
 	public:
-		static Ref<TextureDepth2D> Create(uint32_t width = 1024, uint32_t height = 1024);
+		static Ref<TextureDepth2D> APEX_API Create(uint32_t width = 1024, uint32_t height = 1024);
 
 		[[nodiscard]] TextureType GetType() const override { return TextureType::TextureDepth2D; }
 	};

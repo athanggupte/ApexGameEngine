@@ -13,6 +13,7 @@ project "ApexGameEngine"
 	files {
 		"src/**.h",
 		"src/**.cpp",
+		"src/**.hpp",
 		-- STB Image --
 		"%{wks.location}/ApexGameEngine/vendor/stb_image/**.h",
 		"%{wks.location}/ApexGameEngine/vendor/stb_image/**.cpp",
@@ -76,7 +77,7 @@ project "ApexGameEngine"
 
 		defines {
 			"APEX_PLATFORM_WINDOWS",
-			"APEX_BUILD_DLL",
+			"APEX_ENGINE_EXPORTS",
 			"GLFW_INCLUDE_NONE"
 		}
 		
@@ -96,13 +97,17 @@ project "ApexGameEngine"
 			"%{WinLibs.FBX_xml}",
 			"%{WinLibs.FBX_zlib}",
 		}
+
+		postbuildcommands {
+			"%{wks.location}/vendor/bin/defmaker/defmaker.exe %{cfg.linktarget.directory}/%{prj.name}.def %{cfg.linktarget.abspath}",
+		}
         
 	filter "system:linux"
 		systemversion "latest"
 
 		defines {
 			"APEX_PLATFORM_LINUX",
--- 			"APEX_BUILD_DLL",
+ 			-- "APEX_BUILD_DLL",
 			"GLFW_INCLUDE_NONE"
 		}
 		

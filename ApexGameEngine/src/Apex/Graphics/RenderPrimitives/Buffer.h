@@ -136,12 +136,12 @@ namespace Apex {
 		virtual ~Buffer() = default;
 
 		[[nodiscard]] virtual uint32_t GetHandle() const = 0;
-		[[nodiscard]] virtual uint32_t GetSize() const = 0;
+		[[nodiscard]] virtual size_t GetSize() const = 0;
 
 		virtual void Bind() const = 0;
 		virtual void Unbind() const = 0;
 
-		virtual void SetData(const void* data, uint32_t size, uint32_t offset = 0u) const = 0;
+		virtual void SetData(const void* data, size_t size, size_t offset = 0u) const = 0;
 		[[nodiscard]] virtual void* MapBuffer(bool read, bool write = true) const = 0;
 		virtual void UnmapBuffer() const = 0;
 	};
@@ -153,11 +153,11 @@ namespace Apex {
 	public:
 		[[nodiscard]] virtual const BufferLayout& GetLayout() const = 0;
 		virtual void SetLayout(const BufferLayout& layout) = 0;
-		[[nodiscard]] virtual uint32_t GetCount() const = 0;
+		[[nodiscard]] virtual size_t GetCount() const = 0;
 
 		// Creation utility
-		static Ref<VertexBuffer> Create(uint32_t size);
-		static Ref<VertexBuffer> Create(float* vertices, uint32_t size);
+		static Ref<VertexBuffer> Create(size_t size);
+		static Ref<VertexBuffer> Create(float* vertices, size_t size);
 	};
 
 
@@ -168,7 +168,7 @@ namespace Apex {
 		[[nodiscard]] virtual uint32_t GetCount() const = 0;
 
 		// Creation utility
-		static Ref<IndexBuffer> Create(uint32_t* indices, uint32_t count);
+		static Ref<IndexBuffer> Create(uint32_t* indices, size_t count);
 	};
 
 
@@ -177,7 +177,7 @@ namespace Apex {
 	{
 	public:
 		// Creation utility
-		static Ref<UniformBuffer> Create(uint32_t size, uint32_t binding);
+		static Ref<UniformBuffer> Create(size_t size, uint32_t binding);
 	};
 
 
@@ -185,10 +185,10 @@ namespace Apex {
 	class ShaderStorageBuffer : virtual public Buffer
 	{
 	public:
-		virtual void ResetData(uint32_t size) = 0;
+		virtual void ResetData(size_t size) = 0;
 		
 		// Creation utility
-		static Ref<ShaderStorageBuffer> Create(uint32_t size, uint32_t binding);
+		static Ref<ShaderStorageBuffer> Create(size_t size, uint32_t binding);
 	};
 
 }

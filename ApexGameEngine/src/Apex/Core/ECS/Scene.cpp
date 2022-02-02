@@ -1,10 +1,11 @@
 #include <apex_pch.h>
 #include "Scene.h"
 
+#include "ScriptFactory.h"
 #include "Apex/Application.h"
 #include "Apex/Core/Camera.h"
 #include "Apex/Core/ECS/Entity.h"
-#include "Apex/Core/ECS/ScriptableEntity.h"
+#include "Apex/Core/ECS/EntityScript.h"
 #include "Apex/Core/ECS/Components.h"
 
 #include "Apex/Graphics/Renderer/Renderer.h"
@@ -98,6 +99,30 @@ namespace Apex {
 			});
 	}
 
+	void Scene::OnPlay()
+	{
+		auto& resourceManager = Application::Get().GetResourceManager();
+
+		m_Registry.view<NativeScriptComponent>()
+			.each([this](auto entity, NativeScriptComponent& nsc) {
+				nsc.instance = nsc.factory->InstantiateScript();
+				nsc.instance->m_Entity = Entity{ entity, this };
+				nsc.instance->OnCreate();
+			});
+	}
+
+	void Scene::OnStop()
+	{
+		auto& resourceManager = Application::Get().GetResourceManager();
+
+		m_Registry.view<NativeScriptComponent>()
+			.each([this](auto entity, NativeScriptComponent& nsc) {
+				nsc.instance->OnDestroy();
+				nsc.factory->DestroyScript(nsc.instance);
+				nsc.instance = nullptr;
+			});
+	}
+
 	void Scene::Render2D()
 	{
 		// IMP: When iterating components owned by a group outside the group donot add new
@@ -150,15 +175,20 @@ namespace Apex {
 		// Physics Update
 		// Update Pathfinding
 		// Update AI
+		// Update Scripts
+		m_Registry.view<NativeScriptComponent>()
+			.each([this, ts](NativeScriptComponent& nsc) {
+				nsc.instance->OnUpdate(ts);
+			});
 		// Triggers
 		// Sound
 		// Render
-		if (Options.PrimaryCamera != entt::null) {
+		/*if (Options.PrimaryCamera != entt::null) {
 			auto [camera, transform] = m_Registry.get<CameraComponent, TransformComponent>(Options.PrimaryCamera);
 			Renderer2D::BeginScene(camera.camera, transform.GetTransform());
 			Render2D();
 			Renderer2D::EndScene();
-		}
+		}*/
 		// PostProcess
 	}
 
@@ -184,41 +214,41 @@ namespace Apex {
 		Options.PrimaryCamera = entity.m_EntityId;
 	}
 
-	template<typename Component_t>
-	void Scene::OnComponentAdded(Entity entity, Component_t& component)
-	{
-	}
+	//template<typename Component_t>
+	//void Scene::OnComponentAdded(Entity entity, Component_t& component)
+	//{
+	//}
 	
-	template<>
-	void Scene::OnComponentAdded(Entity entity, TagComponent& component)
-	{
-	}
+	//template<>
+	//void Scene::OnComponentAdded(Entity entity, TagComponent& component)
+	//{
+	//}
 	
-	template<>
-	void Scene::OnComponentAdded(Entity entity, TransformComponent& component)
-	{
-	}
+	//template<>
+	//void Scene::OnComponentAdded(Entity entity, TransformComponent& component)
+	//{
+	//}
 	
-	template<>
-	void Scene::OnComponentAdded(Entity entity, CameraComponent& component)
-	{
-		if (Options.ViewportWidth > 0 && Options.ViewportHeight > 0)
-			component.camera.SetViewportSize(Options.ViewportWidth, Options.ViewportHeight);
-	}
+	//template<> __declspec(dllexport)
+	//void Scene::OnComponentAdded(Entity entity, CameraComponent& component)
+	//{
+	//	if (Options.ViewportWidth > 0 && Options.ViewportHeight > 0)
+	//		component.camera.SetViewportSize(Options.ViewportWidth, Options.ViewportHeight);
+	//}
 	
-	template<>
-	void Scene::OnComponentAdded(Entity entity, SpriteRendererComponent& component)
-	{
-	}
+	//template<>
+	//void Scene::OnComponentAdded(Entity entity, SpriteRendererComponent& component)
+	//{
+	//}
 	
-	template<>
-	void Scene::OnComponentAdded(Entity entity, ScriptComponent& component)
-	{
-	}
+	//template<>
+	//void Scene::OnComponentAdded(Entity entity, NativeScriptComponent& component)
+	//{
+	//}
 
-	template<>
-	void Scene::OnComponentAdded(Entity entity, MeshRendererComponent& component)
-	{
-	}
+	//template<>
+	//void Scene::OnComponentAdded(Entity entity, MeshRendererComponent& component)
+	//{
+	//}
 	
 }

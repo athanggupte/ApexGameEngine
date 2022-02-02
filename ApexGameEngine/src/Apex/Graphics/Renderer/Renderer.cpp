@@ -51,7 +51,7 @@ namespace Apex {
 		shader->SetUniMat4v("u_Model", modelMatrices, count);
 
 		vertexArray->Bind();
-		RenderCommands::DrawInstanced(vertexArray, count);
+		RenderCommands::DrawInstanced(vertexArray, static_cast<uint32_t>(count));
 	}
 
 // 	void Renderer::SubmitModel(const Ref<Shader>& shader, const Ref<Model>& model, const glm::mat4 & modelMatrix)

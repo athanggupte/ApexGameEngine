@@ -7,7 +7,7 @@
 
 namespace Apex {
 
-	class Material
+	class APEX_API Material
 	{
 	public:
 		Material() = default;
@@ -20,7 +20,7 @@ namespace Apex {
 		void SetShader(const Resource<Shader>& shader);
 		[[nodiscard]] Resource<Shader> GetShader() const { return m_Shader; }
 
-		void AddTexture(const std::string& name, const Resource<Texture>& texture);
+		void SetTexture(const std::string& name, const Resource<Texture>& texture);
 		[[nodiscard]] Resource<Texture> GetTexture(const std::string& name) const;
 		[[nodiscard]] bool TextureExists(const std::string& name) const;
 

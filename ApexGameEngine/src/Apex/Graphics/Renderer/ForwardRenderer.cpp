@@ -240,7 +240,7 @@ namespace Apex {
 			command.shader->Bind();
 			
 			uint32_t offsetSize = sizeof(glm::mat4) * 2;
-			uint32_t sizeReqd = offsetSize * command.transforms.size();
+			uint32_t sizeReqd = offsetSize * static_cast<uint32_t>(command.transforms.size());
 			
 			if (s_Data->RenderStorageBuffer->GetSize() < sizeReqd)
 				s_Data->RenderStorageBuffer->ResetData(sizeReqd);
@@ -273,7 +273,7 @@ namespace Apex {
 			}
 			s_Data->NumDrawCalls++;
 			s_Data->RenderStorageBuffer->UnmapBuffer();
-			RenderCommands::DrawInstanced(mesh->GetVAO(), command.transforms.size());
+			RenderCommands::DrawInstanced(mesh->GetVAO(), static_cast<uint32_t>(command.transforms.size()));
 			
 			command.transforms.clear();
 		}

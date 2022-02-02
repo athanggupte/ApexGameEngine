@@ -1,31 +1,19 @@
-project "ApexEditor"
-	kind "ConsoleApp"	--Executable
+project "ScriptTest"
+	kind "SharedLib"	--DLL
 	language "C++"
 	cppdialect "C++17"
 	staticruntime "off"
-
-	newoption {
-		trigger = "editor-tools",
-		description = "Build editor tools like Node Graph"
-	}
 		
 	targetdir ("%{wks.location}/bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("%{wks.location}/bin-int/" .. outputdir .. "/%{prj.name}")
 
-	pchheader "apexed_pch.h"
-	pchsource "src/apexed_pch.cpp"
-	
+	pchheader "pch.h"
+	pchsource "src/pch.cpp"
+
 	files {
 		"src/**.h",
 		"src/**.cpp"
 	}
-
-	if not _OPTIONS["editor-tools"] then
-		removefiles {
-			"src/EditorTools/**.h",
-			"src/EditorTools/**.cpp"
-		}
-	end
 
 	includedirs {
 		"src",
@@ -33,25 +21,29 @@ project "ApexEditor"
 		"%{wks.location}/ApexGameEngine/assets/shaders",
 		-- External Dependencies
 		"%{IncludeDirs.spdlog}",
-		"%{IncludeDirs.ImGui}",
-		"%{IncludeDirs.FreeType}",
+		-- "%{IncludeDirs.ImGui}",
+		-- "%{IncludeDirs.FreeType}",
 		"%{IncludeDirs.glm}",
-		"%{wks.location}/ApexGameEngine/vendor/Assimp/build/include",
-		"%{IncludeDirs.Assimp}",
-		"%{IncludeDirs.irrKlang}",
+		-- "%{wks.location}/ApexGameEngine/vendor/Assimp/build/include",
+		-- "%{IncludeDirs.Assimp}",
+		-- "%{IncludeDirs.irrKlang}",
 		"%{IncludeDirs.entt}",
-		"%{IncludeDirs.ImGuizmoQuat}",
+		-- "%{IncludeDirs.ImGuizmoQuat}",
 		-- Modules
 		"%{IncludeDirs.ApexIK}"
 	}
 
 	links {
-		"ApexGameEngine",
+		"%{wks.location}/bin/" .. outputdir .. "/ApexEditor/ApexEditor.lib",
 		-- "GLFW",
 		-- "Glad",
 		-- "ImGui",
 		-- "ImGuizmoQuat",
 		-- "ApexIK",
+	}
+
+	dependson {
+		"ApexEditor",
 	}
 
 	targetDir = path.getabsolute("%{wks.location}/bin/" .. outputdir .. "/%{prj.name}")
@@ -66,11 +58,7 @@ project "ApexEditor"
 
 		defines {
 			"APEX_PLATFORM_WINDOWS",
-			"APEX_ENGINE_EXPORTS"
-		}
-
-		linkoptions {
-			"/DEF:\"%{wks.location}/bin/" .. outputdir .. "/ApexGameEngine/ApexGameEngine.def\""
+			"SCRIPT_TEST_EXPORTS"
 		}
 
 		-- libdirs (WinLibDirs)
@@ -85,10 +73,6 @@ project "ApexEditor"
 		
 		-- libdirs (LinuxLibDirs)
 		-- links (LinuxLibs)
-
-		postbuildcommands {
-			"echo \"cd $(realpath %{cfg.buildtarget.directory}) && export LD_LIBRARY_PATH=/home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/Assimp/build/bin:/home/alamar213/Work/ApexGameEngine/ApexGameEngine/vendor/irrKlang/bin/linux-gcc-64/ && ./%{prj.name}\" > %{cfg.buildtarget.abspath}.sh"
-		}
 		
 	filter "configurations:Debug"
 		defines {

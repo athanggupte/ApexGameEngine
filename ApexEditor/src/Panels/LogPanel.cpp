@@ -30,7 +30,7 @@ namespace Apex {
 		auto it = oldSize + ((oldSize == 0) ? 0 : -1);
 		for (; it < newSize-1; it++)
 			if (m_Buffer[it] == '\n') {
-				m_LineOffsets.emplace_back(it+1);
+				m_LineOffsets.emplace_back(static_cast<uint32_t>(it + 1));
 				m_LineOptions.emplace_back(options);
 			}
 	}
@@ -69,11 +69,11 @@ namespace Apex {
 			}
 		} else {
 			ImGuiListClipper clipper;
-			clipper.Begin(m_LineOffsets.size());
+			clipper.Begin(static_cast<int32_t>(m_LineOffsets.size()));
 			while (clipper.Step()) {
 				for (auto line_no = clipper.DisplayStart; line_no < clipper.DisplayEnd; line_no++) {
 					const char* line_start = buf_beg + m_LineOffsets[line_no];
-					const char* line_end = (line_no + 1 < m_LineOffsets.size()) ? (buf_beg + m_LineOffsets[line_no + 1] - 1) : buf_end;
+					const char* line_end = (static_cast<size_t>(line_no) + 1 < m_LineOffsets.size()) ? (buf_beg + m_LineOffsets[line_no + 1] - 1) : buf_end;
 					ImGui::PushStyleColor(ImGuiCol_Text, GetLogLevelColor(m_LineOptions[line_no].LogLevel));
 					ImGui::TextUnformatted(line_start, line_end);
 					ImGui::PopStyleColor();

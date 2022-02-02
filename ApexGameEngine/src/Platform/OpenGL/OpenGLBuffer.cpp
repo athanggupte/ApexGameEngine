@@ -10,7 +10,7 @@ namespace Apex {
 	//////////////////////////////////////////////////////////////////////
 	/*----------------------------Buffer--------------------------------*/
 	//////////////////////////////////////////////////////////////////////
-	OpenGLBuffer::OpenGLBuffer(void* data, uint32_t size)
+	OpenGLBuffer::OpenGLBuffer(void* data, size_t size)
 		: m_Size(size)
 	{
 		glCreateBuffers(1, &m_RendererID);
@@ -22,10 +22,10 @@ namespace Apex {
 		glDeleteBuffers(1, &m_RendererID);
 	}
 		
-	void OpenGLBuffer::SetData(const void* data, uint32_t size, uint32_t offset) const
+	void OpenGLBuffer::SetData(const void* data, size_t size, size_t offset) const
 	{
 		APEX_CORE_ASSERT((offset + size <= m_Size), "Size of data exceeding buffer size");
-		glNamedBufferSubData(m_RendererID, offset, size, data);
+		glNamedBufferSubData(m_RendererID, static_cast<int64_t>(offset), static_cast<int64_t>(size), data);
 	}
 	
 	void* OpenGLBuffer::MapBuffer(bool read, bool write) const
@@ -41,12 +41,12 @@ namespace Apex {
 	//////////////////////////////////////////////////////////////////////
 	/*-------------------------Vertex Buffer----------------------------*/
 	//////////////////////////////////////////////////////////////////////
-	OpenGLVertexBuffer::OpenGLVertexBuffer(uint32_t size)
+	OpenGLVertexBuffer::OpenGLVertexBuffer(size_t size)
 		: OpenGLBuffer(nullptr, size)
 	{
 	}
 	
-	OpenGLVertexBuffer::OpenGLVertexBuffer(float* vertices, uint32_t size)
+	OpenGLVertexBuffer::OpenGLVertexBuffer(float* vertices, size_t size)
 		: OpenGLBuffer(vertices, size)
 	{
 	}
@@ -65,7 +65,7 @@ namespace Apex {
 	/*-------------------------Index Buffer-----------------------------*/
 	//////////////////////////////////////////////////////////////////////
 	OpenGLIndexBuffer::OpenGLIndexBuffer(uint32_t* indices, uint32_t count)
-		: OpenGLBuffer(indices, count * sizeof(uint32_t)), m_Count(count)
+		: OpenGLBuffer(indices, sizeof(uint32_t) * count), m_Count(count)
 	{
 	}
 
@@ -82,7 +82,7 @@ namespace Apex {
 	///////////////////////////////////////////////////////////////////////
 	/*-------------------------Uniform Buffer----------------------------*/
 	///////////////////////////////////////////////////////////////////////
-	OpenGLUniformBuffer::OpenGLUniformBuffer(uint32_t size, uint32_t binding)
+	OpenGLUniformBuffer::OpenGLUniformBuffer(size_t size, uint32_t binding)
 		: OpenGLBuffer(nullptr, size)
 	{
 		glBindBufferBase(GL_UNIFORM_BUFFER, binding, m_RendererID);
@@ -101,7 +101,7 @@ namespace Apex {
 	///////////////////////////////////////////////////////////////////////
 	/*---------------------Shader Storage Buffer-------------------------*/
 	///////////////////////////////////////////////////////////////////////
-	OpenGLShaderStorageBuffer::OpenGLShaderStorageBuffer(uint32_t size, uint32_t binding)
+	OpenGLShaderStorageBuffer::OpenGLShaderStorageBuffer(size_t size, uint32_t binding)
 		: OpenGLBuffer(nullptr, size)
 	{
 		glBindBufferBase(GL_SHADER_STORAGE_BUFFER, binding, m_RendererID);
@@ -117,9 +117,9 @@ namespace Apex {
 		glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
 	}
 
-	void OpenGLShaderStorageBuffer::ResetData(uint32_t size)
+	void OpenGLShaderStorageBuffer::ResetData(size_t size)
 	{
-		glNamedBufferData(m_RendererID, size, nullptr, APEX_GL_STORAGE_BITS);
+		glNamedBufferData(m_RendererID, static_cast<int64_t>(size), nullptr, APEX_GL_STORAGE_BITS);
 	}
 
 }

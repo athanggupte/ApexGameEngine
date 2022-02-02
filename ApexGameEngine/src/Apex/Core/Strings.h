@@ -8,7 +8,7 @@ namespace Apex {
 
 	struct StringHandle;
 
-	class Strings
+	class APEX_API Strings
 	{
 	public:
 		static StringHandle InternString(uint64_t hash, std::string&& str);
@@ -18,13 +18,12 @@ namespace Apex {
 	};
 
 
-	struct StringHandle
+	struct APEX_API StringHandle
 	{
 		uint64_t hash;
 
-		explicit operator uint64_t() const { return hash; }
-		std::string_view str() { return Strings::Get(hash); }
-		[[nodiscard]] const std::string_view str() const { return Strings::Get(hash); }
+		explicit operator uint64_t() const;
+		[[nodiscard]] std::string_view str() const;
 	};
 
 }

@@ -5,6 +5,7 @@
 
 namespace Apex {
 
+	struct TransformComponent;
 	// class Scene; // Forward Declaration
 	
 	class Entity
@@ -18,7 +19,7 @@ namespace Apex {
 		inline Component_t& AddComponent(Args&& ... args)
 		{
 			auto& component = m_Scene->m_Registry.emplace<Component_t>(m_EntityId, std::forward<Args>(args)...);
-			m_Scene->OnComponentAdded<Component_t>(*this, component);
+			//m_Scene->OnComponentAdded<Component_t>(*this, component);
 			return component;
 		}
 		
@@ -45,12 +46,6 @@ namespace Apex {
 		{
 			m_Scene->m_Registry.remove<Component_t>(m_EntityId);
 		}
-		
-		template<typename Func>
-		inline void Visit(Func func)
-		{
-			m_Scene->m_Registry.visit(m_EntityId, func);
-		}
 
 		inline operator bool() const { return m_EntityId != entt::null; }
 		inline operator entt::entity() const { return m_EntityId; }
@@ -65,7 +60,10 @@ namespace Apex {
 		{
 			return !(*this == other);
 		}
-		
+
+		// User API functions
+		APEX_API StringHandle Tag();
+		APEX_API TransformComponent& Transform();
 		
 	private:
 		entt::entity m_EntityId{ entt::null };
@@ -73,6 +71,7 @@ namespace Apex {
 		// entt::registry* m_Registry = nullptr;
 		
 		friend class Scene;
+		friend class EntityScript;
 	};
 	
 }

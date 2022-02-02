@@ -3,14 +3,12 @@
 #include <memory>
 
 #ifdef APEX_PLATFORM_WINDOWS
-	#ifdef APEX_DYNAMIC_LINK
-		#ifdef APEX_BUILD_DLL
-			#define _APEX_API __declspec(dllexport)
-		#else
-			#define _APEX_API __declspec(dllimport)
-		#endif
+	#ifdef APEX_ENGINE_EXPORTS
+		#define APEX_API __declspec(dllexport)
+		#define ENTT_API_EXPORT
 	#else
-		#define _APEX_API
+		#define APEX_API __declspec(dllimport)
+		#define ENTT_API_IMPORT
 	#endif
 	// Define DebugBreak
     #define __DEBUG_BREAK__ __debugbreak()
@@ -34,7 +32,15 @@
 	#define APEX_ASSERT(x, ...)
 #endif
 
-#define BIT(x) (1 << x)
+#define BIT(x) (1 << (x))
+
+#define XSTR(x) STR(x)
+#define STR(x) #x
+
+// Suppress warnings for Visual Studio
+#ifdef _MSC_VER
+	#pragma warning(disable: 4251)
+#endif
 
 //#define APEX_BIND_EVENT_FN(fn) std::bind(&fn, this, std::placeholders::_1)
 #define APEX_BIND_EVENT_FN(fn) [this] (auto&&... args) -> decltype(auto) { return this->fn(std::forward<decltype(args)>(args)...); }

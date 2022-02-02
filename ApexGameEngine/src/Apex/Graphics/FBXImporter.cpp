@@ -170,7 +170,7 @@ namespace Apex {
 				auto material = CreateRef<Material>();
 				material->SetShader(shaderRes);
 				auto matRes = Application::Get().GetResourceManager().AddResource<Material>(RESNAME(fmt::format("material_{}", nodeName)), material);
-				// material->AddTexture("Albedo", Application::Get().GetResourceManager().Get<Texture>(RESNAME("metal_plate_diff_2k")));
+				// material->SetTexture("Albedo", Application::Get().GetResourceManager().Get<Texture>(RESNAME("metal_plate_diff_2k")));
 				entity.AddComponent<MeshRendererComponent>(meshRes, matRes);
 			}
 

@@ -23,8 +23,8 @@ namespace Apex {
 		// virtual inline void SetTextures(std::unordered_map<std::string, Ref<Texture>> textures) { m_Textures = textures; }
 		// virtual inline const std::unordered_map<std::string, Ref<Texture>>& GetTextures() const { return m_Textures; }
 		
-		//virtual void AddTexture(std::pair<std::string, Ref<Texture>>& nameTexturePair);
-		//virtual void AddTexture(std::string name, Ref<Texture> texture);
+		//virtual void SetTexture(std::pair<std::string, Ref<Texture>>& nameTexturePair);
+		//virtual void SetTexture(std::string name, Ref<Texture> texture);
 
 		virtual inline bool HasNormals() const { return m_HasNormals; }
 		virtual inline bool HasTangents() const { return m_HasTangents; }

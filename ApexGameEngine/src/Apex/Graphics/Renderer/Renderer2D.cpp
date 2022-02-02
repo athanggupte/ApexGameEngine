@@ -184,7 +184,7 @@ namespace Apex {
 	
 	void Renderer2D::EndScene()
 	{
-		uint32_t dataSize = (uint8_t*)s_RenderData.quadBufferPtr - (uint8_t*)s_RenderData.quadBufferBase;
+		size_t dataSize = (uint8_t*)s_RenderData.quadBufferPtr - (uint8_t*)s_RenderData.quadBufferBase;
 		s_RenderData.quadVertexBuffer->SetData(s_RenderData.quadBufferBase, dataSize);
 
 		if (dataSize > 0)

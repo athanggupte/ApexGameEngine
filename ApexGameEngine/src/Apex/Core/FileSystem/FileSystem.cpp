@@ -31,8 +31,11 @@ namespace Apex {
 		
 		if (fs::is_directory(phyPath))
 			return CreateUnique<VFS::PhysicalMountPoint>(phyPath);
-		else if (phyPath.extension() == ".apkg")
-			return nullptr;
+
+		if (phyPath.extension() == ".apkg")
+			return nullptr; // TODO: Open package file and return mount point of package root
+
+		return nullptr;
 	}
 	
 	struct VFSData

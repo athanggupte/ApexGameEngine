@@ -41,7 +41,7 @@ namespace Apex{
 	}
 
 	/*-------------------------Vertex Buffer-----------------------------*/
-	Ref<VertexBuffer> VertexBuffer::Create(uint32_t size)
+	Ref<VertexBuffer> VertexBuffer::Create(size_t size)
 	{
 		switch (Renderer::GetAPI())
 		{
@@ -51,7 +51,7 @@ namespace Apex{
 		APEX_CORE_CRITICAL("Unknown Rendering API"); return nullptr;
 	}
 
-	Ref<VertexBuffer> VertexBuffer::Create(float * vertices, uint32_t size)
+	Ref<VertexBuffer> VertexBuffer::Create(float * vertices, size_t size)
 	{
 		switch (Renderer::GetAPI())
 		{
@@ -62,7 +62,7 @@ namespace Apex{
 	}
 
 	/*-------------------------Index Buffer-----------------------------*/
-	Ref<IndexBuffer> IndexBuffer::Create(uint32_t * indices, uint32_t count)
+	Ref<IndexBuffer> IndexBuffer::Create(uint32_t* indices, size_t count)
 	{
 		switch (Renderer::GetAPI())
 		{
@@ -73,7 +73,7 @@ namespace Apex{
 	}
 
 	/*-------------------------Uniform Buffer-----------------------------*/
-	Ref<UniformBuffer> UniformBuffer::Create(uint32_t size, uint32_t binding)
+	Ref<UniformBuffer> UniformBuffer::Create(size_t size, uint32_t binding)
 	{
 		switch (Renderer::GetAPI())
 		{
@@ -84,7 +84,7 @@ namespace Apex{
 	}
 
 	/*-------------------------Shader Storage Buffer-----------------------------*/
-	Ref<ShaderStorageBuffer> ShaderStorageBuffer::Create(uint32_t size, uint32_t binding)
+	Ref<ShaderStorageBuffer> ShaderStorageBuffer::Create(size_t size, uint32_t binding)
 	{
 		switch (Renderer::GetAPI())
 		{

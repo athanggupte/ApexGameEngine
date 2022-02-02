@@ -12,7 +12,7 @@ namespace Apex {
 
 	class ResourceManager;
 
-	class Application
+	class APEX_API Application
 	{
 	public:
 		Application(const WindowProps& windowProps = WindowProps());

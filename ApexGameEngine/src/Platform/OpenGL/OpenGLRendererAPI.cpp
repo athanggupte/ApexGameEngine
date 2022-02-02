@@ -42,10 +42,10 @@ namespace Apex {
 		glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, nullptr);
 	}
 	
-	void OpenGLRendererAPI::DrawInstanced(const Ref<VertexArray>& vertexArray, size_t count)
+	void OpenGLRendererAPI::DrawInstanced(const Ref<VertexArray>& vertexArray, uint32_t count)
 	{
 		vertexArray->Bind();
-		glDrawElementsInstanced(GL_TRIANGLES, vertexArray->GetIndexBuffers().at(0)->GetCount(), GL_UNSIGNED_INT, nullptr, count);
+		glDrawElementsInstanced(GL_TRIANGLES, static_cast<int32_t>(vertexArray->GetIndexBuffers().at(0)->GetCount()), GL_UNSIGNED_INT, nullptr, count);
 	}
 
 	void OpenGLRendererAPI::SetDepthTest(bool value)
