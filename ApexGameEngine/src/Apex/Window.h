@@ -35,6 +35,12 @@ namespace Apex {
 		virtual void SetVSync(bool enabled) = 0;
 		virtual bool IsVSync() const = 0;
 
+		virtual bool IsMaximized() = 0;
+		virtual bool IsMinimized() = 0;
+
+		virtual void WindowMaximize() = 0;
+		virtual void WindowRestore() = 0;
+		virtual void WindowMinimize() = 0;
 		virtual void SetWindowIcon(const ImageData& imageData) const = 0;
 		
 		virtual void* GetNativeWindow() const = 0;

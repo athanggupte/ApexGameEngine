@@ -73,14 +73,13 @@ namespace Apex {
 	class Resource
 	{
 	private:
-		Resource(Handle id, Ref<Resource_t>* ptr, size_t index)
-			: m_Id(id), m_Ptr(ptr), m_Index(index)
+		Resource(Handle id, Ref<Resource_t>* ptr/*, size_t index*/)
+			: m_Id(id), m_Ptr(ptr)/*, m_Index(index)*/
 		{
 		}
 
 	public:
 		Resource()
-			: m_Id(0)
 		{
 		}
 
@@ -102,12 +101,12 @@ namespace Apex {
 
 		[[nodiscard]] bool IsNull() const
 		{
-			return m_Id == 0;
+			return m_Id == 0 || m_Ptr == nullptr;
 		}
 
 		[[nodiscard]] bool IsValid() const
 		{
-			return ! IsNull() && m_Ptr;
+			return ! IsNull();
 		}
 
 		[[nodiscard]] bool IsLoaded() const
@@ -117,16 +116,29 @@ namespace Apex {
 		}
 
 	private:
-		Handle m_Id;
+		Handle m_Id = 0;
 		Ref<Resource_t>* m_Ptr = nullptr;
-		size_t m_Index = -1;
+		//size_t m_Index = -1;
 
 		friend class ResourceManager;
 	};
 
 	class APEX_API ResourceManager
 	{
-		template<typename T> using Pool = BucketList<std::pair<Handle, Ref<T>>>;
+		template<typename T>
+		struct PoolItem
+		{
+			Handle first;
+			Ref<T> second;
+
+			[[nodiscard]] Resource<T> ToResource()
+			{
+				return Resource<T>(first, &second);
+			}
+		};
+
+		//template<typename T> using Pool = BucketList<std::pair<Handle, Ref<T>>>;
+		template<typename T> using Pool = BucketList<PoolItem<T>>;
 
 	public:
 		struct ResourceData
@@ -149,6 +161,9 @@ namespace Apex {
 
 		};
 
+	private:
+		ResourceManager(const ResourceManager& other);
+
 		// using IndexData = std::pair<size_t, ResourceData>;
 	public:
 		ResourceManager() = default;
@@ -163,7 +178,7 @@ namespace Apex {
 			auto& [it, success] = m_Registry.try_emplace(id, index, GetResourceType<Resource_t>(), "");
 			APEX_CORE_ASSERT(success, "Could not add resource!");
 			resourcePool.push_back({ id, ptr });
-			return Resource<Resource_t>{ id, &resourcePool.back().second, index };
+			return Resource<Resource_t>{ id, &resourcePool.back().second/*, index*/ };
 			// resourcePool.push_back(Resource<Resource_t>{ id, ptr, index, this });
 			// return resourcePool.back();
 		}
@@ -177,7 +192,7 @@ namespace Apex {
 			auto& [it, success] = m_Registry.try_emplace(id, index, GetResourceType<Resource_t>(), filepath.string());
 			APEX_CORE_ASSERT(success, "Could not add resource!");
 			resourcePool.push_back({ id, nullptr });
-			return Resource<Resource_t>{ id, &resourcePool.back().second, index };
+			return Resource<Resource_t>{ id, &resourcePool.back().second/*, index*/ };
 			// resourcePool.push_back(Resource<Resource_t>{ id, nullptr, index, this });
 			// return resourcePool.back();
 		}
@@ -196,10 +211,18 @@ namespace Apex {
 			auto& resourcePool = GetPoolToUse<Resource_t>();
 			APEX_CORE_ASSERT(itr != m_Registry.end(), fmt::format("Resource '{}' not found!", Strings::Get(id)));
 			if (itr != m_Registry.end()) {
-				APEX_CORE_ASSERT(itr->second.resourceData.type == GetResourceType<Resource_t>(), fmt::format("Invalid resource types! Expected '{0}', got '{1}'!", ResourceTypeToString(GetResourceType<Resource_t>()), itr->second.resourceData.type));
-				return Resource<Resource_t>{ id, &resourcePool[itr->second.index].second, itr->second.index };
+				APEX_CORE_ASSERT(itr->second.resourceData.type == GetResourceType<Resource_t>(),
+				                 fmt::format("Invalid resource types! Expected '{0}', got '{1}'!",
+									 ResourceTypeToString(GetResourceType<Resource_t>()), itr->second.resourceData.type));
+				return Resource<Resource_t>{ id, &resourcePool[itr->second.index].second/*, itr->second.index*/ };
 			}
 			return Resource<Resource_t>{};
+		}
+
+		template<typename Resource_t>
+		[[nodiscard]] Resource<Resource_t> GetOrEmplace(Handle id, const Ref<Resource_t>& ptr)
+		{
+			return Exists(id) ? Get<Resource_t>(id) : AddResource<Resource_t>(id, ptr);
 		}
 
 		template<typename Resource_t>
@@ -211,11 +234,15 @@ namespace Apex {
 
 		bool Exists(Handle id);
 		void Load(Handle id);
-
 		void LoadAllResources();
-
 		template<typename Resource_t>
 		void LoadAll() { static_assert("Unknown type!"); }
+
+		void Clear();
+
+		void CreateSnapshot(ResourceManager& snapshotTarget) const;
+		void LoadSnapshot(const ResourceManager& snapshot);
+
 
 		// Dependency Graph
 		void AddDependency(Handle dependent, Handle dependency);

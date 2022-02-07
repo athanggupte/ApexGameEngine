@@ -55,7 +55,7 @@ namespace Apex {
 		}
 	}
 
-	Mesh::Mesh(const std::string& path)
+	Mesh::Mesh(const fs::path& path)
 	{
 		std::string filepath;
 		if (const auto file = FileSystem::GetFileIfExists(path))

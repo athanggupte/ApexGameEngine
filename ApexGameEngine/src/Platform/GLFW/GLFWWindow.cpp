@@ -51,6 +51,9 @@ namespace Apex {
 
 		// Set OpenGL debug context
 		glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, true);
+		glfwWindowHint(GLFW_SCALE_TO_MONITOR, true);
+		//glfwWindowHint(GLFW_MAXIMIZED, true);
+		glfwWindowHint(GLFW_DECORATED, false);
 		
 		m_Window = glfwCreateWindow((int)m_Data.w_Width, (int)m_Data.w_Height, m_Data.w_Title.c_str(), nullptr, nullptr);
 		
@@ -164,6 +167,31 @@ namespace Apex {
 	bool GLFWWindow::IsVSync() const
 	{
 		return m_Data.VSync;
+	}
+
+	bool GLFWWindow::IsMaximized()
+	{
+		return glfwGetWindowAttrib(m_Window, GLFW_MAXIMIZED);
+	}
+
+	bool GLFWWindow::IsMinimized()
+	{
+		return glfwGetWindowAttrib(m_Window, GLFW_ICONIFIED);
+	}
+
+	void GLFWWindow::WindowMaximize()
+	{
+		glfwMaximizeWindow(m_Window);
+	}
+
+	void GLFWWindow::WindowRestore()
+	{
+		glfwRestoreWindow(m_Window);
+	}
+
+	void GLFWWindow::WindowMinimize()
+	{
+		glfwIconifyWindow(m_Window);
 	}
 
 	void GLFWWindow::SetWindowIcon(const ImageData& imageData) const

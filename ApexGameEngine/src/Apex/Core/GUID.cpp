@@ -66,20 +66,22 @@ namespace Apex {
  		// memset(m_Guid, 0, 16);
 	}
 	
-	GUID::GUID(guid_t guid)
+	GUID::GUID(const guid_t& guid)
 		: m_Guid(guid)
 	{
 		// memcpy(m_Guid.data(), guid.data(), 16);
+		CalculateHash();
+		Strings::Add(m_Hash, GetString());
 	}
 	
-	GUID::GUID(const GUID& other)
-		: m_Guid(other.m_Guid)
-	{
-		// memcpy(m_Guid.data(), other.m_Guid.data(), 16);
-	}
+	//GUID::GUID(const GUID& other)
+	//	: m_Guid(other.m_Guid), m_Hash(other.m_Hash)
+	//{
+	//	// memcpy(m_Guid.data(), other.m_Guid.data(), 16);
+	//}
 	
 	GUID::GUID(GUID&& other)
-		: m_Guid(std::move(other.m_Guid))
+		: m_Guid(other.m_Guid), m_Hash(other.m_Hash)
 	{
 		// memcpy(m_Guid, other.m_Guid, 16);
 	}
@@ -88,7 +90,7 @@ namespace Apex {
 	{
 		// Implemented as in libuuid : uuid_unparse
 		
-		char str[36];
+		char str[37];
 		char* p = str;
 		
 		for (int i = 0; i < 16; i++) {
@@ -101,12 +103,32 @@ namespace Apex {
 		}
 		*p = '\0';
 		
-		return std::string(str);
+		return { str };
 	}
-	
+
+	void GUID::CalculateHash()
+	{
+		size_t seed = 0;
+		for(auto i=0; i < 16; ++i)
+		{
+			seed ^= static_cast<size_t>(m_Guid[i]) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
+		}
+
+		m_Hash = seed;
+	}
+
 	bool GUID::operator == (const GUID& other) const
 	{
-		return uuid_compare(m_Guid, other.m_Guid) == 0;
+		// return uuid_compare(m_Guid, other.m_Guid) == 0;
+		const uint64_t* p_lhs = reinterpret_cast<const uint64_t*>(m_Guid.data());
+		const uint64_t* p_rhs = reinterpret_cast<const uint64_t*>(other.m_Guid.data());
+
+		bool equal = *p_lhs == *p_rhs;
+
+		++p_lhs; ++p_rhs;
+		equal |= *p_lhs == *p_rhs;
+
+		return equal;
 	}
 	
 	GUID::operator bool() const

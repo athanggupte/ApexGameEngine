@@ -1,7 +1,6 @@
 #type vertex
 #version 450 core
 
-#include <internal_assets/shaders/ShaderDefines.h>
 #include "Globals3D.glh"
 
 layout(location = 0) uniform Camera {
@@ -49,14 +48,23 @@ layout(std140, location = 0) uniform Camera {
 	mat4 u_ViewProjection;
 };
 
-layout(binding = 1) uniform samplerCube Skybox;
-layout(binding = 2) uniform sampler2D Albedo;
-layout(binding = 3) uniform sampler2D Normal;
-layout(binding = 4) uniform sampler2D Metallic;
-layout(binding = 5) uniform sampler2D Roughness;
+layout(binding = TEX_SLOT_ENV_Skybox) uniform samplerCube _EnvSkybox;
+layout(binding = TEX_SLOT_MAT_Albedo) uniform sampler2D _MatAlbedo;
+layout(binding = TEX_SLOT_MAT_Metallic) uniform sampler2D _MatMetallic;
+layout(binding = TEX_SLOT_MAT_Roughness) uniform sampler2D _MatRoughness;
+layout(binding = TEX_SLOT_MAT_Normal) uniform sampler2D _MatNormal;
 
-layout(location = 3) uniform float u_Roughness;
-layout(location = 4) uniform vec3 u_LightPos;
+layout(location = 3) uniform vec3 u_LightPos;
+
+layout(location = 4) uniform bool _bUseAlbedo;
+layout(location = 5) uniform bool _bUseMetallic;
+layout(location = 6) uniform bool _bUseRoughness;
+layout(location = 7) uniform bool _bUseNormal;
+
+layout(location = 8) uniform vec3 _altMatAlbedo;
+layout(location = 9) uniform float _altMatMetallic;
+layout(location = 10) uniform float _altMatRoughness;
+const vec3 _altMatNormal = vec3(0.5, 0.5, 1.0);
 
 #define PI 3.1415926538
 #define TwoPI 6.2831853076
@@ -87,22 +95,22 @@ vec3 fresnel_Schlick(in vec3 L, in vec3 N, in vec3 F0)
 	return fresnel;
 }
 
-float ndf_Phong(in vec3 N, in vec3 M)
+float ndf_Phong(in vec3 N, in vec3 M, in float roughness)
 {
 	float NdotM = abs(dot(N, M));
-	float ndf = ((u_Roughness + 2) / TwoPI) * pow(NdotM, u_Roughness);
+	float ndf = ((roughness + 2) / TwoPI) * pow(NdotM, roughness);
 
 	return ndf;
 }
 
-float ndf_Beckmann(in vec3 N, in vec3 M)
+float ndf_Beckmann(in vec3 N, in vec3 M, in float roughness)
 {
 	float NdotM = dot(N, M);
 	float NdotM2 = NdotM * NdotM;
 	float NdotM4 = NdotM2 * NdotM2;
 	return NdotM4;
 
-	float alpha2 = u_Roughness * u_Roughness;
+	float alpha2 = roughness * roughness;
 	float exponent = -exp((1 - NdotM2) / (alpha2 * NdotM2));
 
 	float ndf = exponent / (PI * alpha2 * NdotM4);
@@ -165,10 +173,16 @@ float diffuse_OrenNayar(in float angleVN, in float angleLN, in float roughness)
 
 void main()
 {
-	vec3 albedo = texture(Albedo, v_TexCoord).rgb;
-	float metallic = texture(Metallic, v_TexCoord).r;
-	float roughness = texture(Roughness, v_TexCoord).r;
-	vec3 normal = texture(Normal, v_TexCoord).rgb;
+	vec3 albedo = _altMatAlbedo;
+	float metallic = _altMatMetallic;
+	float roughness = _altMatRoughness;
+	vec3 normal = _altMatNormal;
+
+	if (_bUseAlbedo) albedo = texture(_MatAlbedo, v_TexCoord).rgb;
+	if (_bUseMetallic) metallic = texture(_MatMetallic, v_TexCoord).r;
+	if (_bUseRoughness) roughness = texture(_MatRoughness, v_TexCoord).r;
+	if (_bUseNormal) normal = texture(_MatNormal, v_TexCoord).rgb;
+
 	normal =  normal * 2.0 - 1.0;
 
 	vec3 n = normalize(v_Normal);
@@ -215,7 +229,7 @@ void main()
 
 
 	// Skybox reflection
-	vec3 env = texture(Skybox, vec3(V)).rgb;
+	// vec3 env = texture(Skybox, vec3(V)).rgb;
 
-	o_Color = vec4(Lo + env, 1.0);
+	o_Color = vec4(Lo, 1.0);
 }

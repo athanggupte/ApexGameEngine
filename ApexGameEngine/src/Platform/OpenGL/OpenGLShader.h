@@ -59,6 +59,10 @@ namespace Apex {
 		static void SolveIncludes(std::string& source, const fs::path& filepath, bool hasFilepath = true);
 		static std::unordered_map<GLenum, std::string> ParseSource(const std::string& source);
 		void Compile(const std::unordered_map<GLenum, std::string>& shaderSources);
+
+		// TODO : remove soon
+		GLint my_glGetUniformLocation(GLuint program, const GLchar* name) const;
+
 	private:
 		uint32_t m_RendererID = 0;
 		std::string m_Name;

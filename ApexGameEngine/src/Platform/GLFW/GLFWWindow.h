@@ -22,14 +22,20 @@ namespace Apex {
 		void SetVSync(bool enabled) override;
 		bool IsVSync() const override;
 
+		bool IsMaximized() override;
+		bool IsMinimized() override;
+
+		void WindowMaximize() override;
+		void WindowRestore() override;
+		void WindowMinimize() override;
 		void SetWindowIcon(const ImageData& imageData) const override;
 		
 		inline virtual void* GetNativeWindow() const override { return m_Window; }
 
 	private:
-		virtual void Init(const WindowProps& props);
-		virtual void Shutdown();
-
+		void Init(const WindowProps& props);
+		void Shutdown();
+	private:
 		GLFWwindow* m_Window;
 		RenderingContext* m_Context;
 

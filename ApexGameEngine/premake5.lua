@@ -24,6 +24,8 @@ project "ApexGameEngine"
 		-- PugiXML --
 		"%{wks.location}/ApexGameEngine/vendor/pugixml/src/**.hpp",
 		-- "%{prj.name}/vendor/pugixml/src/**.cpp",
+		
+		-- "%{cfg.buildtarget.abspath}/ShaderDefines.obj",
 	}
 
 	includedirs {
@@ -72,6 +74,16 @@ project "ApexGameEngine"
 		-- "APEX_DYNAMIC_LINK" -- Comment if StaticLib
 	}
 	
+	filter "files:src/Apex/Graphics/ShaderDefines.h"
+		buildmessage "Embedding %{file.relpath} into obj"
+		buildcommands {
+			"%{UTF_BOM_REMOVE} %{file.relpath}",
+			"%{OBJCOPY} --input-target binary --output-target pe-x86-64 --binary-architecture i386 %{file.relpath} %{cfg.objdir}/%{file.basename}.obj"
+		}
+		buildoutputs {
+			"%{cfg.objdir}/%{file.basename}.obj"
+		}
+
 	filter "system:windows"
 		systemversion "latest"
 

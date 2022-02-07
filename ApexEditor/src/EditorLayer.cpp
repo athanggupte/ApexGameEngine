@@ -15,9 +15,12 @@
  //#include "EditorTools/ShaderGraph/ShaderGraph.h"
 
 
+#include "EditorFonts.h"
+#include "IconsMaterialDesign.h"
 #include "Apex/Core/DllManager.h"
 #include "Apex/Graphics/FBXImporter.h"
 #include "Apex/Graphics/Material.h"
+#include "Apex/Utils/ScopeGuard.hpp"
 
 #include <imgui.h>
 #include <glm/gtc/matrix_transform.hpp>
@@ -25,12 +28,12 @@
 namespace Apex {
 
 	//TODO: Remove this after testing!
-	static float roughness = 0.1f;
 	static glm::vec3 lightPos { 1.0f, 5.6f, 2.0f };
 
 	
 	EditorLayer::EditorLayer()
-		: Layer("ApexEditor"), m_BGColor{0.42f, 0.63f, 0.75f, 1.0f},
+		: Layer("ApexEditor"),
+		m_BGColor{0.42f, 0.63f, 0.75f, 1.0f},
 		m_EditorCamera(Camera::ProjectionType::Perspective, Application::Get().GetWindow().GetWidth(), Application::Get().GetWindow().GetHeight()),
 		m_OrthographicCameraController(m_EditorCamera, 1.f, glm::vec3{ 0.f, 0.f, 5.f }),
 		m_PerspectiveCameraController(m_EditorCamera, { -5.f, 5.f, 5.f }),
@@ -56,7 +59,8 @@ namespace Apex {
 		// TODO: Remove
 		const auto dll = LoadDll(APEX_INSTALL_LOCATION "/../ScriptTest/ScriptTest.dll");
 
-		m_Scene = CreateRef<Scene>();
+		m_EditorScene = CreateRef<Scene>();
+		m_ActiveScene = m_EditorScene;
 
 		// TODO: Framebuffer builder - specify all framebuffer attachments before actually creating the framebuffer (avoid invalidating over and over)
 		m_GameFramebuffer = Framebuffer::Create({ 1280u, 720u, 1, true});
@@ -64,12 +68,12 @@ namespace Apex {
 		m_GameFramebufferMS->AddColorAttachment({ TextureAccessFormat::RGBA, TextureInternalFormat::RGBA16, TextureDataType::FLOAT, TextureFiltering::BILINEAR });
 		m_PostProcessFramebuffer = Framebuffer::Create({ 1280u, 720u, 0, false });
 		m_PostProcessFramebuffer->AddColorAttachment({ TextureAccessFormat::RGBA, TextureInternalFormat::RGBA16, TextureDataType::FLOAT, TextureFiltering::BILINEAR });
+		m_ShaderGrid = Shader::Create("editor_assets/shaders/InfiniteGridXZ.glsl");
+
 
 		auto& resourceManager = Application::Get().GetResourceManager();
-
 		/* Initialize Shaders */
 		auto cubemapShader = resourceManager.AddResourceFromFile<Shader>(RESNAME("shader_Skybox"), "editor_assets/shaders/Skybox.glsl");
-		auto gridShader = resourceManager.AddResourceFromFile<Shader>(RESNAME("shader_InfiniteGridXZ"), "editor_assets/shaders/InfiniteGridXZ.glsl");
 		auto tonemapShader = resourceManager.AddResourceFromFile<Shader>(RESNAME("shader_ACESTonemap"), "editor_assets/shaders/ACESTonemap.glsl");
 		auto debugVerticesShader = resourceManager.AddResourceFromFile<Shader>(RESNAME("shader_DebugVerticesUnlit"), "editor_assets/shaders/DebugVerticesUnlit.glsl");
 		auto debugTrianglesShader = resourceManager.AddResourceFromFile<Shader>(RESNAME("shader_DebugTrianglesUnlit"), "editor_assets/shaders/DebugTrianglesUnlit.glsl");
@@ -82,9 +86,13 @@ namespace Apex {
 		resourceManager.Load(unlitMaterial.GetId());*/
 
 		/* Initialize Textures */
-		m_EditorIconTexture = Texture2D::Create(APEX_INSTALL_LOCATION "/assets/Apex-Game-Engine-32.png");
+		m_IconEditor = Texture2D::Create(APEX_INSTALL_LOCATION "/assets/Apex-Game-Engine-32.png");
 		m_ImageTexture = Texture2D::Create(256U, 256U, HDRTextureSpec, "Image");
 		m_ComputeShader = ComputeShader::Create("Blur.compute");
+
+		auto normalTexture = resourceManager.AddResource<Texture>(RESNAME("texture_DefaultNormalMap"), Texture2D::Create(1, 1, SimpleTextureSpec, "texture_DefaultNormalMap"));
+		uint32_t normalTextureData = 0xffff8080;
+		normalTexture->SetData(&normalTextureData, sizeof(normalTextureData));
 
 		/*auto cubemapTexture = TextureCubemap::Create({
 			"editor_assets/textures/skyboxes/driving_school/px.png",
@@ -122,43 +130,36 @@ namespace Apex {
 		resourceManager.LoadAllResources();
 
 		/* Entity initialization */
-		/*auto cubeEntity = m_Scene->CreateEntity(HASH("cube"));
+		/*auto cubeEntity = m_ActiveScene->CreateEntity(HASH("cube"));
 		cubeEntity.AddComponent<MeshRendererComponent>(cubeMesh.GetId(), debugTrianglesShader.GetId());
 
-		auto planeEntity = m_Scene->CreateEntity(HASH("plane"));
+		auto planeEntity = m_ActiveScene->CreateEntity(HASH("plane"));
 		planeEntity.AddComponent<MeshRendererComponent>(planeMesh.GetId(), debugTrianglesShader.GetId());
 		planeEntity.GetComponent<TransformComponent>().scale *= glm::vec3(5.f, 1.f, 5.f);*/
 
-		auto suzanneEntity = m_Scene->CreateEntity(HASH("suzanne"));
+		auto suzanneEntity = m_ActiveScene->CreateEntity(HASH("suzanne"));
 		suzanneEntity.AddComponent<MeshRendererComponent>(suzanneMesh, suzanneMaterial);
 
-		auto planeEntity = m_Scene->CreateEntity(HASH("plane"));
+		auto planeEntity = m_ActiveScene->CreateEntity(HASH("plane"));
 		planeEntity.AddComponent<NativeScriptComponent>(resourceManager.Get<AScriptFactory>(RESNAME("LogScript")));
 
 		// pusheenTexture->Bind(0);
 		
-		m_Scene->OnSetup();
+		m_ActiveScene->OnSetup();
 
 		// Panels
-		m_SceneHierarchyPanel.SetContext(m_Scene);
+		m_SceneHierarchyPanel.SetContext(m_ActiveScene);
 		m_AssetExplorer.OnAttach();
 		m_AssetExplorer.SetContext("");
 
 		// ImGui options
 		ImGui::GetIO().ConfigWindowsMoveFromTitleBarOnly = true;
-		ImGui::GetIO().Fonts->AddFontFromMemoryCompressedBase85TTF(font_cousine_compressed_data_base85, 12);
-		ImGui::GetIO().Fonts->AddFontFromFileTTF("assets/fonts/consola.ttf", 12);
-#ifdef APEX_PLATFORM_WINDOWS
-		auto font_cfg = ImFontConfig();
-		font_cfg.OversampleH = 7;
-		font_cfg.OversampleV = 5;
-		auto font = ImGui::GetIO().Fonts->AddFontFromFileTTF("C:\\Windows\\Fonts\\segoeui.ttf", 16.f, &font_cfg);
-#endif
+		SetupEditorFonts();
 
-		FBXImporter::Import(m_Scene, "assets/meshes/sphere-tris.fbx");
+		FBXImporter::Import("assets/meshes/sphere-tris.fbx", m_ActiveScene);
 
 		// TODO: Move to Play()
-		m_Scene->OnPlay();
+		// m_ActiveScene->OnPlay();
 		resourceManager.LoadAll<Texture>();
 		resourceManager.LoadAll<Mesh>();
 		resourceManager.LoadAll<Shader>();
@@ -166,8 +167,6 @@ namespace Apex {
 	
 	void EditorLayer::OnDetach() 
 	{
-		// TODO: Move to Stop()
-		m_Scene->OnStop();
 		//m_Sound->drop();
 		//m_SoundEngine->drop();
 	}
@@ -178,6 +177,12 @@ namespace Apex {
 
 	void EditorLayer::OnUpdate(Timestep ts) 
 	{
+		// Update Editor state
+		if (m_SceneState == SceneState::Transition_StartPlay)
+			OnScenePlay();
+		else if (m_SceneState == SceneState::Transition_StopPlay)
+			OnSceneStop();
+
 		// Resize
 		if (auto& fbSpec = m_GameFramebuffer->GetSpecification();
 			m_GameViewportSize.x > 0.f && m_GameViewportSize.y > 0.f &&
@@ -189,16 +194,16 @@ namespace Apex {
 				m_PostProcessFramebuffer->Resize((uint32_t)m_GameViewportSize.x, (uint32_t)m_GameViewportSize.y);
 			}
 			m_EditorCameraController->OnResize(static_cast<uint32_t>(m_GameViewportSize.x), static_cast<uint32_t>(m_GameViewportSize.y));
-			m_Scene->OnViewportResize(static_cast<uint32_t>(m_GameViewportSize.x), static_cast<uint32_t>(m_GameViewportSize.y));
+			m_ActiveScene->OnViewportResize(static_cast<uint32_t>(m_GameViewportSize.x), static_cast<uint32_t>(m_GameViewportSize.y));
 		}
 		
 		if (m_ViewportFocused)
 			m_EditorCameraController->OnUpdate(ts);
 
-
 		// Update
-		// TODO: Integrate with Render loop
-		m_Scene->OnUpdate(ts);
+		if (m_SceneState == SceneState::Play) {
+			m_ActiveScene->OnUpdate(ts);
+		}
 
 		// Render
 		Renderer2D::ResetStats();
@@ -213,82 +218,105 @@ namespace Apex {
 		
 		auto cameraTransform = m_EditorCameraController->GetTransform();
 		auto cameraTranslation = cameraTransform[3];
-		
-		if (!m_PlayScene) {
-			auto skyboxTexture = Application::Get().GetResourceManager().Get<Texture>(RESNAME("texture_Skybox"));
-			skyboxTexture->Bind(1);
 
-			auto pbrShader = Application::Get().GetResourceManager().Get<Shader>(RESNAME("shader_StandardPBR"));
-			pbrShader->SetUniFloat3("u_CameraPosition", m_EditorCameraController->GetTransform()[3]);
-			pbrShader->SetUniFloat1("u_Roughness", roughness);
-			pbrShader->SetUniFloat3("u_LightPos", lightPos);
+		auto skyboxTexture = Application::Get().GetResourceManager().Get<Texture>(RESNAME("texture_Skybox"));
+		skyboxTexture->Bind(1);
 
-			RenderCommands::SetCulling(true);
+		// TODO:
+		// 1. Transfer Camera and environment related variables to Uniform Buffer
+		//    and set them once every frame in Renderer::BeginScene
+		// 2. Transfer Light characteristics to dedicated Light class and Uniform Buffer
+		//    and use those objects to set shader variables inside Renderer::BeginScene
+		auto pbrShader = Application::Get().GetResourceManager().Get<Shader>(RESNAME("shader_StandardPBR"));
+		pbrShader->SetUniFloat3("u_CameraPosition", m_EditorCameraController->GetTransform()[3]);
+		pbrShader->SetUniFloat3("u_LightPos", lightPos);
 
-			Renderer::BeginScene(m_EditorCamera, m_EditorCameraController->GetTransform());
-			RenderCommands::SetDepthTest(true);
-			m_Scene->Render3D();
-			Renderer::EndScene();
-			Renderer2D::BeginScene(m_EditorCamera, m_EditorCameraController->GetTransform());
-			m_Scene->Render2D();
-			Renderer2D::EndScene();
+		RenderCommands::SetCulling(true);
 
-			if (showSkybox) {
-				auto skyboxShader = Application::Get().GetResourceManager().Get<Shader>(RESNAME("shader_Skybox"));
-				skyboxShader->Bind();
-				cameraTransform[3] = glm::vec4(0, 0, 0, 1);
-				skyboxShader->SetUniMat4("u_Projection", m_EditorCamera.GetProjection());
-				skyboxShader->SetUniMat4("u_View", glm::transpose(cameraTransform));
-				RenderCommands::SetDepthTestFunction(DepthStencilMode::LEQUAL);
-				RenderCommands::Draw(6);
-				RenderCommands::SetCulling(true);
-				RenderCommands::SetDepthTestFunction(DepthStencilMode::LESS);
-			}
+		Renderer::BeginScene(m_EditorCamera, m_EditorCameraController->GetTransform());
+		RenderCommands::SetDepthTest(true);
+		m_ActiveScene->Render3D();
+		Renderer::EndScene();
+		Renderer2D::BeginScene(m_EditorCamera, m_EditorCameraController->GetTransform());
+		m_ActiveScene->Render2D();
+		Renderer2D::EndScene();
 
-			// Render the Grid
-			cameraTransform[3] = cameraTranslation;
-			glm::mat4 gridTransform = glm::mat4(1.f);
-			gridTransform[3] = glm::vec4(cameraTranslation.x, 0.f, cameraTranslation.z, 1.f);
-
-			auto gridShader = Application::Get().GetResourceManager().Get<Shader>(RESNAME("shader_InfiniteGridXZ"));
-			gridShader->Bind();
-			gridShader->SetUniMat4("u_ViewProjection", m_EditorCamera.GetProjection() * glm::inverse(cameraTransform));
-			gridShader->SetUniMat4("u_ModelMatrix", gridTransform);
-			RenderCommands::SetCulling(false);
+		if (showSkybox) {
+			auto skyboxShader = Application::Get().GetResourceManager().Get<Shader>(RESNAME("shader_Skybox"));
+			skyboxShader->Bind();
+			cameraTransform[3] = glm::vec4(0, 0, 0, 1);
+			skyboxShader->SetUniMat4("u_Projection", m_EditorCamera.GetProjection());
+			skyboxShader->SetUniMat4("u_View", glm::transpose(cameraTransform));
+			RenderCommands::SetDepthTestFunction(DepthStencilMode::LEQUAL);
 			RenderCommands::Draw(6);
+			RenderCommands::SetCulling(true);
+			RenderCommands::SetDepthTestFunction(DepthStencilMode::LESS);
+		}
 
-			// Post process
-			if (useMSAA) {
-				m_GameFramebufferMS->Blit(m_PostProcessFramebuffer);
-			}
+		// Render the Grid
+		cameraTransform[3] = cameraTranslation;
+		glm::mat4 gridTransform = glm::mat4(1.f);
+		gridTransform[3] = glm::vec4(cameraTranslation.x, 0.f, cameraTranslation.z, 1.f);
 
-			if (usePostProcess) {
-				m_GameFramebuffer->Bind();
-				RenderCommands::Clear();
-				auto tonemapShader = Application::Get().GetResourceManager().Get<Shader>(RESNAME("shader_ACESTonemap"));
-				tonemapShader->Bind();
-				m_PostProcessFramebuffer->GetColorAttachment(0)->Bind(1);
-				RenderCommands::Draw(3);
-			} else {
-				m_PostProcessFramebuffer->Blit(m_GameFramebuffer);
-			}
+		// m_ShaderGrid = Application::Get().GetResourceManager().Get<Shader>(RESNAME("shader_InfiniteGridXZ"));
+		m_ShaderGrid->Bind();
+		m_ShaderGrid->SetUniMat4("u_ViewProjection", m_EditorCamera.GetProjection() * glm::inverse(cameraTransform));
+		m_ShaderGrid->SetUniMat4("u_ModelMatrix", gridTransform);
+		RenderCommands::SetCulling(false);
+		RenderCommands::Draw(6);
 
+		// Post process
+		if (useMSAA) {
+			m_GameFramebufferMS->Blit(m_PostProcessFramebuffer);
+		}
+
+		if (usePostProcess) {
+			m_GameFramebuffer->Bind();
+			RenderCommands::Clear();
+			auto tonemapShader = Application::Get().GetResourceManager().Get<Shader>(RESNAME("shader_ACESTonemap"));
+			tonemapShader->Bind();
+			m_PostProcessFramebuffer->GetColorAttachment(0)->Bind(1);
+			RenderCommands::Draw(3);
 		} else {
-			m_Scene->OnUpdate(ts);
+			m_PostProcessFramebuffer->Blit(m_GameFramebuffer);
 		}
 		
 		m_GameFramebuffer->Unbind();
 	}
-	
+
+	void EditorLayer::OnScenePlay()
+	{
+		m_SceneState = SceneState::Play;
+
+		m_ResourceManagerSnapshot = CreateRef<ResourceManager>();
+		Application::Get().GetResourceManager().CreateSnapshot(*m_ResourceManagerSnapshot);
+
+		m_ActiveScene = m_EditorScene->Copy();
+		m_ActiveScene->OnPlay();
+
+		m_SceneHierarchyPanel.SetContext(m_ActiveScene);
+	}
+
+	void EditorLayer::OnSceneStop()
+	{
+		m_SceneState = SceneState::Edit;
+
+		m_ActiveScene->OnStop();
+		m_ActiveScene = m_EditorScene;
+
+		Application::Get().GetResourceManager().LoadSnapshot(*m_ResourceManagerSnapshot);
+		m_ResourceManagerSnapshot = nullptr;
+
+		m_SceneHierarchyPanel.SetContext(m_ActiveScene);
+	}
+
 	static bool show_imgui_demo_window = false;
 	
 	void EditorLayer::OnImGuiRender()
 	{
-		auto font2 = ImGui::GetIO().Fonts->Fonts[2];
-		ImGui::PushFont(font2);
-		BeginDockspace();
 		ShowMainMenuBar();
-		
+		BeginDockspace();
+
 		if (show_imgui_demo_window) ImGui::ShowDemoWindow(&show_imgui_demo_window);
 		//ImGui::ShowMetricsWindow();
 
@@ -313,7 +341,6 @@ namespace Apex {
 			ImGui::Separator();
 
 			ImGui::BeginGroup();
-			ImGui::DragFloat("Roughness", &roughness, 0.01f, 0.f, 1.f);
 			ImGui::DragFloat3("Light Pos", &lightPos.x);
 			ImGui::EndGroup();
 
@@ -398,18 +425,18 @@ namespace Apex {
 		}
 		ImGui::End();
 
-		// m_SceneHierarchyPanel.SetContext(m_Scene);
+
+		// m_SceneHierarchyPanel.SetContext(m_ActiveScene);
 		m_SceneHierarchyPanel.OnImGuiRender();
 		auto entity = m_SceneHierarchyPanel.GetSelectedEntity();
 		if (entity)
-			m_InspectorPanel.SetContext(entity, m_Scene);
+			m_InspectorPanel.SetContext(entity, m_ActiveScene);
 		m_InspectorPanel.OnImGuiRender();
 		m_AssetExplorer.OnImGuiRender();
 		m_MaterialPanel.OnImGuiRender();
 
-		ImGui::PushFont(ImGui::GetIO().Fonts->Fonts[1]);
 		ShowLogger();
-		ImGui::PopFont();
+		ShowSceneToolbar();
 
 // 		if (ImGui::Button("Parse Graph")) {
 // 			APEX_LOG_INFO("Node Graph Output:");
@@ -420,26 +447,25 @@ namespace Apex {
 		ShowGameViewport();
 
 		EndDockspace();
-		
-		ImGui::PopFont();
 	}
 
 	void EditorLayer::BeginDockspace()
 	{
 		ImGuiDockNodeFlags dockNodeFlags = ImGuiDockNodeFlags_None;
-		ImGuiWindowFlags windowFlags = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking;
-		ImGuiViewport* viewport = ImGui::GetMainViewport();
-		ImGui::SetNextWindowPos(viewport->Pos);
-		ImGui::SetNextWindowSize(viewport->Size);
-		ImGui::SetNextWindowViewport(viewport->ID);
-		ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
-		ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
-		windowFlags |= ImGuiWindowFlags_NoTitleBar
+		ImGuiWindowFlags windowFlags = ImGuiWindowFlags_NoDocking
+		//	| ImGuiWindowFlags_MenuBar
+			| ImGuiWindowFlags_NoTitleBar
 			| ImGuiWindowFlags_NoCollapse
 			| ImGuiWindowFlags_NoResize
 			| ImGuiWindowFlags_NoMove
 			| ImGuiWindowFlags_NoBringToFrontOnFocus
 			| ImGuiWindowFlags_NoNavFocus;
+		ImGuiViewport* viewport = ImGui::GetMainViewport();
+		ImGui::SetNextWindowPos(viewport->WorkPos);
+		ImGui::SetNextWindowSize(viewport->WorkSize);
+		ImGui::SetNextWindowViewport(viewport->ID);
+		ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
+		ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 1.0f);
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, { 0.0f, 0.0f });
 		
 		ImGui::Begin("Dockspace", &m_Open, windowFlags);
@@ -534,7 +560,9 @@ namespace Apex {
 		static bool showThreadId = false;
 		static bool showProcessId = false;
 		m_LogPatternChanged = false;
-		
+
+		ImGui::PushFont(ImGui::GetIO().Fonts->Fonts[static_cast<uint32_t>(EditorFontIndex::UI)]);
+		APEX_SCOPE_GUARD { ImGui::PopFont(); };
 		ImGui::Begin("Log");
 		if (ImGui::BeginPopup("Options")) {
 			if (ImGui::Checkbox("Log Level", &showLogLevel)) {
@@ -594,10 +622,18 @@ namespace Apex {
 	
 	void EditorLayer::ShowMainMenuBar()
 	{
+		const auto origFramePadding = ImGui::GetStyle().FramePadding;
+		ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, { origFramePadding.x + 4.f, origFramePadding.y + 3.f });
+		const auto origWindowPadding = ImGui::GetStyle().WindowPadding;
+		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, { 0.f, origWindowPadding.y });
+
 		if (ImGui::BeginMainMenuBar())
 		{
-			auto imgSize = ImGui::GetWindowSize().y - ImGui::GetStyle().FramePadding.y;
-			ImGui::Image((void*)(intptr_t)m_EditorIconTexture->GetID(), ImVec2{ imgSize, imgSize });
+			ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, origFramePadding);
+			ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, origWindowPadding);
+
+			auto imgSize = ImGui::GetWindowSize().y;// - ImGui::GetStyle().WindowPadding.y;
+			ImGui::Image((void*)(intptr_t)m_IconEditor->GetID(), ImVec2{ imgSize, imgSize });
 			if (ImGui::BeginMenu("File"))
 			{
 				DrawFileMenu();
@@ -618,10 +654,78 @@ namespace Apex {
 				
 				ImGui::EndMenu();
 			}
+
+			ImGui::PopStyleVar(2);
+
+			{
+				const auto _origFramePadding = ImGui::GetStyle().FramePadding;
+				ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, { _origFramePadding.x + 14.f, _origFramePadding.y + 2.f });
+				ImGui::PushStyleColor(ImGuiCol_Button, ImGui::GetColorU32(ImGuiCol_MenuBarBg));
+				ImGui::PushFont(ImGui::GetIO().Fonts->Fonts[(uint32_t)EditorFontIndex::Window]);
+				APEX_SCOPE_GUARD {
+					ImGui::PopFont();
+					ImGui::PopStyleColor(1);
+					ImGui::PopStyleVar();
+				};
+
+				auto& style = ImGui::GetStyle();
+
+				const float close_btn_size = ImGui::CalcTextSize(ICON_MD_CLOSE).x + style.FramePadding.x * 2.f;
+				float cursorPosX = ImGui::GetContentRegionMax().x - close_btn_size;
+
+				ImGui::PushStyleColor(ImGuiCol_ButtonHovered, 0xff0000ff);
+				ImGui::PushStyleColor(ImGuiCol_ButtonActive, 0xff0000ee);
+				ImGui::SetCursorPosX(cursorPosX);
+				if (ImGui::Button(ICON_SEG_CLOSE)) {
+					Application::Get().Close();
+				}
+				ImGui::PopStyleColor(2);
+
+				cursorPosX -= close_btn_size;
+				ImGui::SetCursorPosX(cursorPosX);
+				if (Application::Get().GetWindow().IsMaximized()) {
+					if (ImGui::Button(ICON_SEG_RESTORE)) {
+						Application::Get().GetWindow().WindowRestore();
+					}
+				} else {
+					if (ImGui::Button(ICON_SEG_MAXIMIZE)) {
+						Application::Get().GetWindow().WindowMaximize();
+					}
+				}
+
+				cursorPosX -= close_btn_size;
+				ImGui::SetCursorPosX(cursorPosX);
+				if (ImGui::Button(ICON_SEG_MINIMIZE)) {
+					Application::Get().GetWindow().WindowMinimize();
+				}
+			}
+
 			ImGui::EndMainMenuBar();
 		}
+		ImGui::PopStyleVar(2);
 	}
-	
+
+	void EditorLayer::ShowSceneToolbar()
+	{
+		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 2));
+		ImGui::PushStyleVar(ImGuiStyleVar_ItemInnerSpacing, ImVec2(0, 0));
+
+		ImGui::Begin("##scene-toolbar", nullptr, ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse);
+
+		float size = ImGui::GetWindowHeight() - 4.0f;
+		ImGui::SetCursorPosX((ImGui::GetWindowContentRegionMax().x * 0.5f) - (size * 0.5f));
+		if (ImGui::Button(m_SceneState == SceneState::Edit ? ICON_MD_PLAY_ARROW : ICON_MD_STOP))
+		{
+			if (m_SceneState == SceneState::Edit)
+				m_SceneState = SceneState::Transition_StartPlay;
+			else if (m_SceneState == SceneState::Play)
+				m_SceneState = SceneState::Transition_StopPlay;
+		}
+		ImGui::End();
+
+		ImGui::PopStyleVar(2);
+	}
+
 	void EditorLayer::DrawFileMenu()
 	{
 		if (ImGui::MenuItem("New")) {
@@ -643,7 +747,7 @@ namespace Apex {
 		if (ImGui::MenuItem("Save As..", "Ctrl+Shift+S")) {
 			SceneSaveAs();
 		}
-		if (ImGui::MenuItem("Exit")) {
+		if (ImGui::MenuItem("Exit", "Alt+F4")) {
 			Application::Get().Close();
 		}
 	}
@@ -660,7 +764,7 @@ namespace Apex {
 			
 		}
 		if (ImGui::MenuItem("Create New")) {
-			m_Scene->CreateEntity();
+			m_ActiveScene->CreateEntity();
 		}
 		if (ImGui::MenuItem("Preferences", "Ctrl+P")) {
 			
@@ -757,8 +861,8 @@ namespace Apex {
 
 	void EditorLayer::SceneNew()
 	{
-		m_Scene = CreateRef<Scene>();
-		m_SceneHierarchyPanel.SetContext(m_Scene);
+		m_ActiveScene = CreateRef<Scene>();
+		m_SceneHierarchyPanel.SetContext(m_ActiveScene);
 	}
 
 	void EditorLayer::SceneOpen()
@@ -775,30 +879,33 @@ namespace Apex {
 		auto serializer = SceneSerializerFactory().SetFormat(SceneSerializerFactory::Format::XML).Build(scene);
 		if (serializer->Deserialize(path.string())) {
 			scene->OnSetup();
-			m_Scene = std::move(scene);
+			m_ActiveScene = std::move(scene);
 			m_RecentFiles.Push(path.string());
-			m_SceneHierarchyPanel.SetContext(m_Scene);
-			m_InspectorPanel.SetContext({}, m_Scene);
+			m_SceneHierarchyPanel.SetContext(m_ActiveScene);
+			m_InspectorPanel.SetContext({}, m_ActiveScene);
 		}
 
 	}
 
 	void EditorLayer::SceneSave()
 	{
-		if (!m_RecentFiles.Empty()) {
-			auto serializer = SceneSerializerFactory().SetFormat(SceneSerializerFactory::Format::XML).Build(m_Scene);
-			serializer->Serialize(m_RecentFiles.Top());
-			APEX_LOG_INFO("Saved scene to file '{}'", m_RecentFiles.Top());
-		}
+		SceneSaveAs(m_RecentFiles.Top());
 	}
 
 	void EditorLayer::SceneSaveAs()
 	{
+		auto filename = m_RecentFiles.Empty() ? Utils::SaveFileDialog() : Utils::SaveFileDialog(m_RecentFiles.Top());
+		if (!filename.empty()) {
+			SceneSaveAs(filename);
+		}
 	}
 
-	void EditorLayer::SceneSaveAs(const fs::path& path)
+	void EditorLayer::SceneSaveAs(const fs::path& path) const
 	{
+		auto serializer = SceneSerializerFactory().SetFormat(SceneSerializerFactory::Format::XML).Build(m_ActiveScene);
+		serializer->Serialize(path);
+		APEX_LOG_INFO("Saved scene to file '{}'", path);
 	}
-	
+
 }
  

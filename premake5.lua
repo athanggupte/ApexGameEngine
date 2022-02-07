@@ -43,9 +43,12 @@ group ""
 
 if os.istarget "windows" then
 	CMAKE = "%CMAKE_PATH%\\cmake"
+	OBJCOPY = "%{wks.location}/vendor/bin/binutils-x64/objcopy.exe"
 else
 	CMAKE = "cmake"
+	OBJCOPY = "objcopy"
 end
+UTF_BOM_REMOVE = "%{wks.location}/vendor/bin/utf-bom-utils/Debug/bom_remove.exe"
 
 group "Dependencies"
 project "Assimp"
@@ -78,4 +81,16 @@ project "FreeType"
 		"{CHDIR} build",
 		"%{CMAKE} ..",
 		"%{CMAKE} --build . "
+	}
+
+group "Utils"
+project "utf-bom-utils"
+	location "vendor/utf-bom-utils"
+	kind "Makefile"
+
+	buildcommands {
+		"{MKDIR} ../bin/%{prj.name}",
+		"{CHDIR} ../bin/%{prj.name}",
+		"%{CMAKE} ../../%{prj.name}",
+		"%{CMAKE} --build ."
 	}

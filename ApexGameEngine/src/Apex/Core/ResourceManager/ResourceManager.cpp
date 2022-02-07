@@ -1,12 +1,20 @@
 #include "apex_pch.h"
 #include "ResourceManager.h"
 
+#include "Apex/Graphics/FBXImporter.h"
 #include "Apex/Graphics/RenderPrimitives/Shader.h"
 #include "Apex/Graphics/RenderPrimitives/Texture.h"
 #include "Apex/Graphics/Mesh.h"
 #include "Apex/Graphics/Material.h"
 
 namespace Apex {
+
+	ResourceManager::ResourceManager(const ResourceManager& other)
+		: m_Registry(other.m_Registry), m_DependencyGraph(other.m_DependencyGraph), m_TexturePool(other.m_TexturePool),
+		  m_ShaderPool(other.m_ShaderPool), m_ScriptFactoryPool(other.m_ScriptFactoryPool),
+		  m_MeshPool(other.m_MeshPool), m_MaterialPool(other.m_MaterialPool)
+	{
+	}
 
 	bool ResourceManager::Exists(Handle id)
 	{
@@ -25,13 +33,13 @@ namespace Apex {
 			case ResourceType::FILE: break;
 			case ResourceType::TEXTURE:
 			{
-				Ref<Texture> newTexture = Texture2D::Create(resourceData.sourceFile.string());
+				Ref<Texture> newTexture = Texture2D::Create(resourceData.sourceFile);
 				m_TexturePool[index].second.swap(newTexture);
 				break;
 			}
 			case ResourceType::SHADER:
 			{
-				Ref<Shader> newShader = Shader::Create(resourceData.sourceFile.string());
+				Ref<Shader> newShader = Shader::Create(resourceData.sourceFile);
 				if (!newShader->IsValid()) return;
 
 				m_ShaderPool[index].second.swap(newShader);
@@ -41,15 +49,20 @@ namespace Apex {
 
 				break;
 			}
+			case ResourceType::SCRIPT:
+			{
+				break;
+			}
 			case ResourceType::MESH:
 			{
-				Ref<Mesh> newMesh = CreateRef<Mesh>(resourceData.sourceFile.string());
+				//FBXImporter::LoadMesh(resourceData.sourceFile, TO_STRING(Strings::Get(id)));
+				Ref<Mesh> newMesh = CreateRef<Mesh>(resourceData.sourceFile);
 				m_MeshPool[index].second.swap(newMesh);
 				break;
 			}
 			case ResourceType::MATERIAL:
 			{
-				Ref<Material> newMaterial = CreateRef<Material>(resourceData.sourceFile.string());
+				Ref<Material> newMaterial = CreateRef<Material>(resourceData.sourceFile);
 				m_MaterialPool[index].second.swap(newMaterial);
 				break;
 			}
@@ -96,6 +109,33 @@ namespace Apex {
 				}
 			}
 		}
+	}
+
+	void ResourceManager::Clear()
+	{
+		m_Registry.clear();
+		m_DependencyGraph.clear();
+		m_TexturePool.clear();
+		m_ShaderPool.clear();
+		m_ScriptFactoryPool.clear();
+		m_MeshPool.clear();
+		m_MaterialPool.clear();
+	}
+
+	void ResourceManager::CreateSnapshot(ResourceManager& snapshotTarget) const
+	{
+		snapshotTarget.LoadSnapshot(*this);
+	}
+
+	void ResourceManager::LoadSnapshot(const ResourceManager& snapshot)
+	{
+		m_Registry = snapshot.m_Registry;
+		m_DependencyGraph = snapshot.m_DependencyGraph;
+		m_TexturePool = snapshot.m_TexturePool;
+		m_ShaderPool = snapshot.m_ShaderPool;
+		m_ScriptFactoryPool = snapshot.m_ScriptFactoryPool;
+		m_MeshPool = snapshot.m_MeshPool;
+		m_MaterialPool = snapshot.m_MaterialPool;
 	}
 
 	template <>

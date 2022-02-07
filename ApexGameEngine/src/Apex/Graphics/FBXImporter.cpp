@@ -35,14 +35,16 @@ namespace Apex {
 		};
 		static constexpr size_t VERTEX_SIZE = sizeof(Vertex) / sizeof(float);
 
-		void ProcessNode(FbxNode* node, Scene* scene);
+		FbxScene* ParseScene(const std::filesystem::path& filepath);
+		void ProcessNode(FbxNode* node, Scene* scene, bool recursive = true);
 		void ProcessAttribute(FbxNode* node, FbxNodeAttribute* attribute);
-		[[nodiscard]] Ref<Mesh> ProcessGeometry(FbxNode* node, FbxNodeAttribute* attribute);
+		[[nodiscard]] Ref<Mesh> ProcessMesh(FbxNode* node, FbxNodeAttribute* attribute);
 		void ProcessControlPoints(FbxMesh* mesh, std::vector<ControlPoint>& outControlPoints);
-		void ProcessMesh(FbxNode* node, FbxMesh* mesh, const std::vector<ControlPoint>& controlPoints,
+		void ProcessGeometry(FbxNode* node, FbxMesh* mesh, const std::vector<ControlPoint>& controlPoints,
 		                 std::vector<Vertex>& outVertices, std::vector<uint32_t>& outIndices);
+		[[nodiscard]] Ref<Material> ProcessMaterial(FbxNode* node, FbxSurfaceMaterial* material);
 		void ProcessNormal(FbxMesh* mesh, int controlPointIndex, int vertexCounter, glm::vec3& outNormal);
-		void ProcessTangent(::FbxMesh* mesh, int controlPointIndex, int vertexCounter, glm::vec4& outTangent);
+		void ProcessTangent(FbxMesh* mesh, int controlPointIndex, int vertexCounter, glm::vec4& outTangent);
 		void ProcessBitangent(FbxMesh* mesh, int controlPointIndex, int vertexCounter, glm::vec3& outBitangent);
 		void GenerateTangentsAndBitangents();
 		void ProcessUV(FbxMesh* mesh, int controlPointIndex, int uvIndex, glm::vec2& outTexCoord);
@@ -74,7 +76,27 @@ namespace Apex {
 		s_Data.fbxManager->Destroy();
 	}
 
-	void FBXImporter::Import(const Ref<Scene>& scene, const std::filesystem::path& filepath)
+	void FBXImporter::Import(const std::filesystem::path& filepath, const Ref<Scene>& scene)
+	{
+		FbxScene* fbxScene = fbx::ParseScene(filepath);
+
+		APEX_CORE_INFO("Importing FBX scene: {0}", fbxScene->GetName());
+		if (FbxNode* rootNode = fbxScene->GetRootNode()) {
+			APEX_CORE_INFO("FBXImport ({0}) : child count = {2}", fbxScene->GetName(), rootNode->GetName(), rootNode->GetChildCount());
+			for (int i = 0; i < rootNode->GetChildCount(); i++)
+				fbx::ProcessNode(rootNode->GetChild(i), scene.get());
+		}
+	}
+
+	void FBXImporter::LoadMesh(const std::filesystem::path& filepath, const std::string& nodeName, const Ref<Scene>& scene)
+	{
+		FbxScene* fbxScene = fbx::ParseScene(filepath);
+
+		FbxNode* node = fbxScene->GetRootNode()->FindChild(nodeName.c_str());
+		fbx::ProcessNode(node, scene.get(), false);
+	}
+
+	FbxScene* fbx::ParseScene(const std::filesystem::path& filepath)
 	{
 		FbxImporter* fbxImporter = FbxImporter::Create(s_Data.fbxManager, filepath.filename().string().c_str());
 		APEX_CORE_ASSERT(fbxImporter->Initialize(filepath.string().c_str(), -1, s_Data.fbxManager->GetIOSettings()),
@@ -99,33 +121,10 @@ namespace Apex {
 			FbxSystemUnit::m.ConvertScene(fbxScene, fbxConversionOptions);
 		}
 
-		APEX_CORE_INFO("Importing FBX scene: {0}", fbxScene->GetName());
-		if (FbxNode* rootNode = fbxScene->GetRootNode()) {
-			APEX_CORE_INFO("FBXImport ({0}) : child count = {2}", fbxScene->GetName(), rootNode->GetName(), rootNode->GetChildCount());
-			for (int i = 0; i < rootNode->GetChildCount(); i++)
-				fbx::ProcessNode(rootNode->GetChild(i), scene.get());
-		}
+		return fbxScene;
 	}
 
-	void FBXImporter::Load(const std::filesystem::path& filepath)
-	{
-		FbxImporter* fbxImporter = FbxImporter::Create(s_Data.fbxManager, filepath.filename().string().c_str());
-		APEX_CORE_ASSERT(fbxImporter->Initialize(filepath.string().c_str(), -1, s_Data.fbxManager->GetIOSettings()),
-			fmt::format("FbxImporter Initialize failed for '{0}'! Error: {1}", filepath, fbxImporter->GetStatus().GetErrorString()));
-
-		FbxScene* fbxScene = FbxScene::Create(s_Data.fbxManager, filepath.filename().string().c_str());
-		fbxImporter->Import(fbxScene);
-		fbxImporter->Destroy();
-
-		APEX_CORE_INFO("Importing FBX scene: {0}", fbxScene->GetName());
-		if (FbxNode* rootNode = fbxScene->GetRootNode()) {
-			APEX_CORE_INFO("FBXImport ({0}) : child count = {2}", fbxScene->GetName(), rootNode->GetName(), rootNode->GetChildCount());
-			for (int i = 0; i < rootNode->GetChildCount(); i++)
-				fbx::ProcessNode(rootNode->GetChild(i), nullptr);
-		}
-	}
-
-	void fbx::ProcessNode(FbxNode* node, Scene* scene)
+	void fbx::ProcessNode(FbxNode* node, Scene* scene, bool recursive)
 	{
 		const char* nodeName = node->GetName();
 		glm::vec3 translation, rotation, scale;
@@ -149,12 +148,17 @@ namespace Apex {
 		{
 			FbxGeometryConverter geometryConverter(s_Data.fbxManager);
 			attribute = geometryConverter.Triangulate(attribute, true);
-			auto _mesh = ProcessGeometry(node, attribute);
+			auto _mesh = ProcessMesh(node, attribute);
 
-			if (Application::Get().GetResourceManager().Exists(RESNAME(nodeName))) {
-				Application::Get().GetResourceManager().Get<Mesh>(RESNAME(nodeName)).Get() = _mesh;
+			if (Application::Get().GetResourceManager().Exists(RESNAME(attrName))) {
+				Application::Get().GetResourceManager().Get<Mesh>(RESNAME(attrName)).Get() = _mesh;
 			} else {
-				Application::Get().GetResourceManager().AddResource<Mesh>(RESNAME(nodeName), _mesh);
+				Application::Get().GetResourceManager().AddResource<Mesh>(RESNAME(attrName), _mesh);
+			}
+
+			std::vector<Ref<Material>> materials;
+			for (int i = 0; i < node->GetMaterialCount(); i++) {
+				materials.push_back(ProcessMaterial(node , node->GetMaterial(i)));
 			}
 
 			if (scene) {
@@ -165,11 +169,12 @@ namespace Apex {
 				transform.rotation = glm::radians(rotation);
 				transform.scale = scale;
 
-				auto meshRes = Application::Get().GetResourceManager().Get<Mesh>(RESNAME(nodeName));
+				auto meshRes = Application::Get().GetResourceManager().Get<Mesh>(RESNAME(attrName));
 				auto shaderRes = Application::Get().GetResourceManager().Get<Shader>(RESNAME("shader_StandardPBR"));
 				auto material = CreateRef<Material>();
 				material->SetShader(shaderRes);
-				auto matRes = Application::Get().GetResourceManager().AddResource<Material>(RESNAME(fmt::format("material_{}", nodeName)), material);
+				material->SetTexture("Normal", Application::Get().GetResourceManager().Get<Texture>(RESNAME("texture_DefaultNormalMap")));
+				auto matRes = Application::Get().GetResourceManager().AddResource<Material>(RESNAME(fmt::format("material_{}", attrName)), material);
 				// material->SetTexture("Albedo", Application::Get().GetResourceManager().Get<Texture>(RESNAME("metal_plate_diff_2k")));
 				entity.AddComponent<MeshRendererComponent>(meshRes, matRes);
 			}
@@ -185,13 +190,13 @@ namespace Apex {
 			ProcessNode(node->GetChild(i), scene);
 	}
 
-	Ref<Mesh> fbx::ProcessGeometry(FbxNode* node, FbxNodeAttribute* attribute)
+	Ref<Mesh> fbx::ProcessMesh(FbxNode* node, FbxNodeAttribute* attribute)
 	{
 		std::vector<ControlPoint> controlPoints;
 		std::vector<Vertex> vertices;
 		std::vector<uint32_t> indices;
 		ProcessControlPoints((FbxMesh*)attribute, controlPoints);
-		ProcessMesh(node, (FbxMesh*)attribute, controlPoints, vertices, indices);
+		ProcessGeometry(node, (FbxMesh*)attribute, controlPoints, vertices, indices);
 
 		BufferLayout layout = {
 			{ ShaderDataType::Float3, VertexElementType::Position },
@@ -216,7 +221,7 @@ namespace Apex {
 		}
 	}
 
-	void fbx::ProcessMesh(FbxNode* node, FbxMesh* mesh, const std::vector<ControlPoint>& controlPoints, std::vector<Vertex>& outVertices, std::vector<uint32_t>& outIndices)
+	void fbx::ProcessGeometry(FbxNode* node, FbxMesh* mesh, const std::vector<ControlPoint>& controlPoints, std::vector<Vertex>& outVertices, std::vector<uint32_t>& outIndices)
 	{
 		const size_t triangleCount = mesh->GetPolygonCount();
 		uint32_t vertexCounter = 0;
@@ -294,6 +299,12 @@ namespace Apex {
 			}
 
 		}
+	}
+
+	Ref<Material> fbx::ProcessMaterial(FbxNode* node, FbxSurfaceMaterial* material)
+	{
+		APEX_CORE_INFO("FBXImport ({0}) : material ( {1} )", node->GetName(), material->GetName());
+		return Ref<Material>();
 	}
 
 	void fbx::ProcessNormal(FbxMesh* mesh, int controlPointIndex, int vertexCounter, glm::vec3& outNormal)

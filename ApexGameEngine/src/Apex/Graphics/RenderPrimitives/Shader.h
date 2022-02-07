@@ -124,7 +124,6 @@ namespace Apex {
 	};
 
 	bool ShaderUniformTypeIsSampler(ShaderUniformType type);
-
 	const char* ShaderUniformTypeToString(ShaderUniformType type);
 
 }

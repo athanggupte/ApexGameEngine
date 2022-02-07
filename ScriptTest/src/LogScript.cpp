@@ -30,14 +30,14 @@ protected:
 		if (!self().HasComponent<MeshRendererComponent>()) {
 			auto& comp = self().AddComponent<MeshRendererComponent>();
 			comp.mesh = GetResourceManager().Get<Mesh>(RESNAME("default-plane"));
-			comp.material = GetResourceManager().AddResource(RESNAME("material_from_script"), CreateRef<Material>());
+			comp.material = GetResourceManager().GetOrEmplace(RESNAME("material_from_script"), CreateRef<Material>());
 		}
 		auto& meshComp = self().GetComponent<MeshRendererComponent>();
-		meshComp.material.Get()->SetShader(GetResourceManager().Get<Shader>(RESNAME("shader_StandardPBR")));
-		meshComp.material.Get()->SetTexture("Albedo", GetResourceManager().AddResource<Texture>(RESNAME("metal_plate_diff_2k"), Texture2D::Create("editor_assets/textures/metal_plate/metal_plate_diff_2k.jpg", true)));
-		meshComp.material.Get()->SetTexture("Metallic", GetResourceManager().AddResourceFromFile<Texture>(RESNAME("metal_plate_metal_2k"), "editor_assets/textures/metal_plate/metal_plate_metal_2k.jpg"));
-		meshComp.material.Get()->SetTexture("Roughness", GetResourceManager().AddResourceFromFile<Texture>(RESNAME("metal_plate_rough_2k"), "editor_assets/textures/metal_plate/metal_plate_rough_2k.jpg"));
-		meshComp.material.Get()->SetTexture("Normal", GetResourceManager().AddResourceFromFile<Texture>(RESNAME("metal_plate_nor_gl_2k"), "editor_assets/textures/metal_plate/metal_plate_nor_gl_2k.jpg"));
+		meshComp.material->SetShader(GetResourceManager().Get<Shader>(RESNAME("shader_StandardPBR")));
+		meshComp.material->SetTexture("Albedo", GetResourceManager().AddResource<Texture>(RESNAME("metal_plate_diff_2k"), Texture2D::Create("editor_assets/textures/metal_plate/metal_plate_diff_2k.jpg", true)));
+		meshComp.material->SetTexture("Metallic", GetResourceManager().AddResourceFromFile<Texture>(RESNAME("metal_plate_metal_2k"), "editor_assets/textures/metal_plate/metal_plate_metal_2k.jpg"));
+		meshComp.material->SetTexture("Roughness", GetResourceManager().AddResourceFromFile<Texture>(RESNAME("metal_plate_rough_2k"), "editor_assets/textures/metal_plate/metal_plate_rough_2k.jpg"));
+		meshComp.material->SetTexture("Normal", GetResourceManager().AddResourceFromFile<Texture>(RESNAME("metal_plate_nor_gl_2k"), "editor_assets/textures/metal_plate/metal_plate_nor_gl_2k.jpg"));
 
 		if (!self().HasComponent<MyComponent>())
 			self().AddComponent<MyComponent>();
@@ -53,7 +53,7 @@ protected:
 							* glm::sin(Timer::GetElapsedTime().GetSeconds());
 		transform.rotation += glm::vec3{ 0.f, 1.f, 0.f } * deltaRotation;
 
-		APEX_LOG_TRACE("<{0}>:: deltaRotation : {1}", self().Tag().str(), deltaRotation);
+		// APEX_LOG_TRACE("<{0}>:: deltaRotation : {1}", self().Tag().str(), deltaRotation);
 
 		/*auto& myComp = self().GetComponent<MyComponent>();
 		myComp.detail += Random::Int();

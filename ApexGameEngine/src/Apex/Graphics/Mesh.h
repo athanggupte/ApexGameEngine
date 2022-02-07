@@ -4,12 +4,14 @@
 #include "Apex/Graphics/RenderPrimitives/VertexArray.h"
 #include "Apex/Graphics/RenderPrimitives/Texture.h"
 
+namespace fs = std::filesystem;
+
 namespace Apex {
 
 	class Mesh
 	{
 	public:
-		Mesh(const std::string& filepath);
+		Mesh(const fs::path& filepath);
 		Mesh(float* vertices, size_t vCount, uint32_t* indices, size_t iCount, const BufferLayout& layout);
 		Mesh(float* vertices, size_t vCount, const BufferLayout& layout);
 		virtual ~Mesh() = default;

@@ -11,6 +11,10 @@
 #include <regex>
 #include <utility>
 
+extern "C" char _binary_src_Apex_Graphics_ShaderDefines_h_start[];
+extern "C" char _binary_src_Apex_Graphics_ShaderDefines_h_end[];
+size_t binary_src_Apex_Graphics_ShaderDefines_h_size = (_binary_src_Apex_Graphics_ShaderDefines_h_end - _binary_src_Apex_Graphics_ShaderDefines_h_start);
+
 namespace Apex {
 
 	static GLenum ShaderStageFromString(const std::string& type)
@@ -50,6 +54,7 @@ namespace Apex {
 	OpenGLShader::OpenGLShader(const fs::path& filepath)
 		: m_Name(filepath.string())
 	{
+		APEX_CORE_DEBUG("Loading shader : {}", m_Name);
 		std::string source;
 
 		if (const auto file = FileSystem::GetFileIfExists(filepath); file && file->OpenRead()) {
@@ -69,6 +74,7 @@ namespace Apex {
 	OpenGLShader::OpenGLShader(std::string name, const std::string & vertexSrc, const std::string & fragmentSrc)
 		: m_Name(std::move(name))
 	{
+		APEX_CORE_DEBUG("Loading shader : {}", m_Name);
 		std::unordered_map<GLenum, std::string> shaderSources;
 		shaderSources[GL_VERTEX_SHADER] = vertexSrc;
 		shaderSources[GL_FRAGMENT_SHADER] = fragmentSrc;
@@ -113,6 +119,11 @@ namespace Apex {
 
 	void OpenGLShader::SolveIncludes(std::string& source, const fs::path& filepath, bool hasFilepath)
 	{
+		auto itr = source.find_first_of("#version");
+		itr = source.find_first_of('\n', itr);
+		source.insert(itr+1, _binary_src_Apex_Graphics_ShaderDefines_h_start, binary_src_Apex_Graphics_ShaderDefines_h_size);
+		// source.insert(itr + binary_src_Apex_Graphics_ShaderDefines_h_size + 1, "\n");
+
 		constexpr char regex_str[] = R"(^\s*#include\s*([<"])([^>"]+)([>"])[\r\n]+)";
 		constexpr size_t regex_len = sizeof(regex_str) - 1;
 

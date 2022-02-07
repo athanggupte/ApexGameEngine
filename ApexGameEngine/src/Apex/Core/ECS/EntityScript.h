@@ -2,6 +2,9 @@
 #include "Entity.h"
 #include "Apex/Application.h"
 
+// TODO: Decide whether to remove this
+#include "ScriptFactory.h"
+
 namespace Apex {
 	
 	class APEX_API EntityScript

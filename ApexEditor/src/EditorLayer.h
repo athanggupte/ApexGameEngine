@@ -15,8 +15,6 @@
 #error Install location not specified
 #endif
 
-extern const char font_cousine_compressed_data_base85[];
-
 namespace Apex {
 
 	class EditorLayer : public Layer
@@ -42,10 +40,12 @@ namespace Apex {
 		void ShowGameViewport();
 		void ShowLogger();
 		void ShowMainMenuBar();
+		void ShowSceneToolbar();
 		void DrawFileMenu();
 		void DrawEditMenu();
 		void ShowComputeShaderOutput();
 
+	protected:
 		// Event Functions
 		bool OnKeyPressed(KeyPressedEvent& e);
 		bool OnMouseButtonPressed(MouseButtonPressedEvent& e);
@@ -56,8 +56,11 @@ namespace Apex {
 		void SceneOpen(const fs::path& path);
 		void SceneSave();
 		void SceneSaveAs();
-		void SceneSaveAs(const fs::path& path);
+		void SceneSaveAs(const fs::path& path) const;
 
+		// Scene State functions
+		void OnScenePlay();
+		void OnSceneStop();
 		
 	private:
 		enum class CameraMode
@@ -66,6 +69,18 @@ namespace Apex {
 			ISOMETRIC,
 			PERSPECTIVE,
 		};
+
+		
+		enum class SceneState
+		{
+			Edit,
+			Play,
+			Simulate,
+
+			Transition_StartPlay,
+			Transition_StopPlay,
+
+		} m_SceneState = SceneState::Edit;
 
 		// State
 		bool m_ViewportFocused = false;
@@ -89,7 +104,8 @@ namespace Apex {
 		PerspectiveCameraController m_PerspectiveCameraController;
 		CameraController* m_EditorCameraController;
 
-		Ref<Scene> m_Scene;
+		Ref<Scene> m_ActiveScene, m_EditorScene;
+		Ref<ResourceManager> m_ResourceManagerSnapshot;
 
 		Ref<Texture2D> m_Texture;
 		Ref<Texture2D> m_ImageTexture;		
@@ -106,9 +122,12 @@ namespace Apex {
 		AssetExplorer m_AssetExplorer;
 		MaterialPanel m_MaterialPanel;
 
-		Ref<Texture> m_EditorIconTexture;
-
 		::SingleCopyStack<std::string, 16> m_RecentFiles;
+
+		// Editor assets
+		Ref<Texture> m_IconEditor;
+
+		Ref<Shader> m_ShaderGrid;
 		
 		//irrklang::ISoundEngine* m_SoundEngine;
 		//irrklang::ISound* m_Sound;

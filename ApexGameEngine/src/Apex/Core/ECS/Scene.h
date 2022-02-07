@@ -4,6 +4,7 @@
 
 #include "Apex/Core/Timer.h"
 #include "Apex/Core/Events/Event.h"
+#include "Apex/Core/ResourceManager/ResourceManager.h"
 
 namespace Apex {
 	
@@ -16,8 +17,10 @@ namespace Apex {
 		Scene();
 		~Scene() = default;
 		
-		Entity CreateEntity(StringHandle name);
 		Entity CreateEntity();
+		Entity CreateEntity(StringHandle name);
+		Entity CreateEntityWithGUID(const GUID& guid);
+		Entity CreateEntityWithGUID(const GUID& guid, StringHandle name);
 
 		void OnSetup();
 		void OnPlay();
@@ -29,7 +32,9 @@ namespace Apex {
 
 		void Render2D();
 		void Render3D();
-		
+
+		Ref<Scene> Copy();
+
 		struct SceneOptions
 		{
 			entt::entity PrimaryCamera = entt::null;
@@ -73,7 +78,6 @@ namespace Apex {
 		
 		// Scene rendering
 		SceneOptions Options;
-		
 	};
 
 }

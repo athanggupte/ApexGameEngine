@@ -2,6 +2,8 @@
 
 #include "CustomDataStructures.h"
 
+#include <filesystem>
+
 namespace Apex {
 	
 	struct PixelData
@@ -59,7 +61,8 @@ namespace Apex {
 			
 		};
 		
-		std::string OpenFileDialog(const std::string& path = ".");
+		std::string OpenFileDialog(const std::filesystem::path& filepath = {});
+		std::string SaveFileDialog(const std::filesystem::path& filepath = {});
 		
 	}
 	

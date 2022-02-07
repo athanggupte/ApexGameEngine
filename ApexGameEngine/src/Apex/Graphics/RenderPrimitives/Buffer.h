@@ -57,7 +57,7 @@ namespace Apex {
 		return 0;
 	}
 
-#include "ShaderDefines.h"
+#include "Apex/Graphics/ShaderDefines.h"
 
 	enum class VertexElementType : uint32_t
 	{

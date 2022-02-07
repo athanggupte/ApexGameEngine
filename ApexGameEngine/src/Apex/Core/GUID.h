@@ -10,21 +10,26 @@ namespace Apex {
 	class GUID
 	{
 	public:
-		GUID();
-		GUID(const GUID&);
+		GUID(const GUID&) = default;
 		GUID(GUID&&);
 		~GUID() = default;
 		
-		std::string GetString() const;
 		bool operator == (const GUID&) const;
 		operator bool() const;
 
 		void operator = (const GUID&);
-		
+
+		[[nodiscard]] size_t Hash() const { return m_Hash; };
+
 	private:
 		guid_t m_Guid;
-		
-		GUID(guid_t guid);
+		size_t m_Hash = 0;
+
+		std::string GetString() const;
+		void CalculateHash();
+
+		GUID();
+		GUID(const guid_t& guid);
 		
 		friend GUID GenerateGUID();
 		friend struct std::hash<GUID>;
@@ -43,12 +48,6 @@ struct std::hash<Apex::GUID>
 	
 	result_type operator () (const argument_type& key) const
 	{
-		size_t seed = 0;
-		for(auto i=0; i <= 16; ++i)
-		{
-			seed ^= static_cast<size_t>(key.m_Guid[i]) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
-		}
-
-		return seed;
+		return key.Hash();
 	}
 };

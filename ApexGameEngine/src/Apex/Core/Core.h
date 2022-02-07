@@ -37,6 +37,11 @@
 #define XSTR(x) STR(x)
 #define STR(x) #x
 
+#define _CONCATENATE(x, y) x##y
+#define CONCATENATE(x, y) _CONCATENATE(x, y)
+
+#define ANONYMOUS_VAR(name) CONCATENATE(name, __LINE__)
+
 // Suppress warnings for Visual Studio
 #ifdef _MSC_VER
 	#pragma warning(disable: 4251)

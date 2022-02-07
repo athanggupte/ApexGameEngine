@@ -1,4 +1,6 @@
 #include <apex_pch.h>
+
+#include <utility>
 #include "Scene.h"
 
 #include "ScriptFactory.h"
@@ -17,23 +19,15 @@
 
 namespace Apex {
 
-	static Ref<Texture2D> errorTexture;
 	static Ref<Shader> errorShader;
 
 	Scene::Scene()
 	{
 		// (void)m_Registry.group<TransformComponent, SpriteRendererComponent>();
-		if (!errorTexture) {
-			constexpr auto errorTextureSpec = TextureSpec{ TextureAccessFormat::RGBA, TextureInternalFormat::RGBA8, TextureDataType::UBYTE };
-			errorTexture = Texture2D::Create(1U, 1U, errorTextureSpec, "error");
-			uint32_t errorTextureData = 0xfff933f2;
-			errorTexture->SetData(&errorTextureData, sizeof(errorTextureData));
-		}
+	
 		if (!errorShader) {
 			constexpr auto vertexSource = R"(
 			#version 450 core
-
-			#include <internal_assets/shaders/ShaderDefines.h>
 
 			layout(location = ATTRIB_LOC_Position) in vec3 a_Position;
 
@@ -66,18 +60,29 @@ namespace Apex {
 		}
 	}
 	
-	Entity Scene::CreateEntity(StringHandle name)
-	{
-		auto entity = Entity{ m_Registry.create(), this };
-		entity.AddComponent<TransformComponent>();
-		entity.AddComponent<TagComponent>(name);
-		return entity;
-	}
-
 	Entity Scene::CreateEntity()
 	{
 		// static uint32_t counter = 1;
 		return CreateEntity(HASH("Unnamed Entity"));
+	}
+
+	Entity Scene::CreateEntity(StringHandle name)
+	{
+		return CreateEntityWithGUID(GenerateGUID(), name);
+	}
+
+	Entity Scene::CreateEntityWithGUID(const GUID& guid)
+	{
+		return CreateEntityWithGUID(guid, HASH("Unnamed Entity"));
+	}
+
+	Entity Scene::CreateEntityWithGUID(const GUID& guid, StringHandle name)
+	{
+		auto entity = Entity{ m_Registry.create(), this };
+		entity.AddComponent<IDComponent>(guid);
+		entity.AddComponent<TransformComponent>();
+		entity.AddComponent<TagComponent>(name);
+		return entity;
 	}
 
 	void Scene::OnSetup()
@@ -86,15 +91,15 @@ namespace Apex {
 
 		m_Registry.view<SpriteRendererComponent>()
 			.each([&resourceManager](SpriteRendererComponent& sprite) {
-				if (sprite.texture.IsValid())
+				if (sprite.texture.IsValid() && !sprite.texture.IsLoaded())
 					resourceManager.Load(sprite.texture.GetId());
 			});
 
 		m_Registry.view<MeshRendererComponent>()
 			.each([&resourceManager](MeshRendererComponent& meshComp) {
-				if (meshComp.mesh.IsValid())
+				if (meshComp.mesh.IsValid() && !meshComp.mesh.IsLoaded())
 					resourceManager.Load(meshComp.mesh.GetId());
-				if (meshComp.material.IsValid())
+				if (meshComp.material.IsValid() && !meshComp.material.IsLoaded())
 					resourceManager.Load(meshComp.material.GetId());
 			});
 	}
@@ -109,6 +114,10 @@ namespace Apex {
 				nsc.instance->m_Entity = Entity{ entity, this };
 				nsc.instance->OnCreate();
 			});
+		
+		OnSetup();
+		resourceManager.LoadAll<Texture>();
+		resourceManager.LoadAll<Shader>();
 	}
 
 	void Scene::OnStop()
@@ -146,28 +155,96 @@ namespace Apex {
 
 	void Scene::Render3D()
 	{
-		errorTexture->Bind(0);
 		const auto view = m_Registry.view<TransformComponent, MeshRendererComponent>();
-		view.each([](const TransformComponent& transform, MeshRendererComponent& mesh_component) {
+		view.each([&](auto entity, const TransformComponent& transform, MeshRendererComponent& mesh_component) {
 			if (mesh_component.mesh.IsValid() && mesh_component.material.IsValid()) {
 				if (const auto shader = mesh_component.material->GetShader(); shader.IsValid()) {
-					int slot = 1;
-					for (auto& [name, texture] : mesh_component.material->GetTextures()) {
-						if (texture.IsValid()) {
-							texture->Bind(++slot);
-							shader->SetUniInt1(name, slot);
-						} else {
-							shader->SetUniInt1(name, 0);
-						}
-					}
+					mesh_component.material->Bind();
 					Renderer::Submit(shader.Get(), mesh_component.mesh->GetVAO(), transform.GetTransform());
 				} else {
 					Renderer::Submit(errorShader, mesh_component.mesh->GetVAO(), transform.GetTransform());
 				}
-			} else {
+			} else if (mesh_component.mesh.IsValid()) {
 				Renderer::Submit(errorShader, mesh_component.mesh->GetVAO(), transform.GetTransform());
+			} else {
+				GUID& id = m_Registry.get<IDComponent>(entity).id;
+				APEX_CORE_ERROR("[Entity : {}] Mesh not found!", Strings::Get(id.Hash()));
 			}
 		});
+	}
+
+	template<typename Component_t>
+	static constexpr char const* dbgComponentName()
+	{
+		if constexpr (std::is_same_v<Component_t, TransformComponent>)
+			return "TransformComponent";
+		if constexpr (std::is_same_v<Component_t, SpriteRendererComponent>)
+			return "SpriteRendererComponent";
+		if constexpr (std::is_same_v<Component_t, CameraComponent>)
+			return "CameraComponent";
+		if constexpr (std::is_same_v<Component_t, NativeScriptComponent>)
+			return "NativeScriptComponent";
+		if constexpr (std::is_same_v<Component_t, MeshRendererComponent>)
+			return "MeshRendererComponent";
+		return "Unknown Component Type";
+	}
+
+	template<typename... Component_t>
+	static void CopyComponent(entt::registry& src, entt::registry& dst, const std::unordered_map<GUID, entt::entity>& enttMap)
+	{
+		([&]() {
+			auto view = src.view<Component_t>();
+			for (auto srcEntt : view)
+			{
+				auto id = src.get<IDComponent>(srcEntt).id;
+				auto dstEntt = enttMap.at(id);
+
+				auto& component = src.get<Component_t>(srcEntt);
+				dst.emplace_or_replace<Component_t>(dstEntt, component);
+
+				APEX_CORE_INFO("Added {} to entity {}", dbgComponentName<Component_t>(), Strings::Get(id.Hash()));
+			}
+		}(), ...);
+	}
+
+	template<typename... Component_t>
+	struct ComponentGroup {};
+
+	template<typename... Component_t>
+	static void CopyComponent(ComponentGroup<Component_t...>, entt::registry& src, entt::registry& dst, const std::unordered_map<GUID, entt::entity>& enttMap)
+	{
+		CopyComponent<Component_t...>(src, dst, enttMap);
+	}
+
+	using AllBuiltInComponents = ComponentGroup<TransformComponent, SpriteRendererComponent, CameraComponent,
+	                                            NativeScriptComponent, MeshRendererComponent>;
+
+	Ref<Scene> Scene::Copy()
+	{
+		Ref<Scene> newScene = CreateRef<Scene>();
+
+		auto& dstRegistry = newScene->m_Registry;
+		auto& srcRegistry = m_Registry;
+
+		std::unordered_map<GUID, entt::entity> enttMap;
+
+		auto v = srcRegistry.view<IDComponent>();
+		for (entt::entity e : v) {
+			GUID id = m_Registry.get<IDComponent>(e).id;
+			auto tag = m_Registry.get<TagComponent>(e).tag;
+			auto entity = newScene->CreateEntityWithGUID(id, tag);
+			enttMap.emplace(id, static_cast<entt::entity>(entity));
+		}
+
+		CopyComponent(AllBuiltInComponents{}, srcRegistry, dstRegistry, enttMap);
+
+		//CopyComponent<TransformComponent>(srcRegistry, dstRegistry, enttMap);
+		//CopyComponent<SpriteRendererComponent>(srcRegistry, dstRegistry, enttMap);
+		//CopyComponent<CameraComponent>(srcRegistry, dstRegistry, enttMap);
+		//CopyComponent<NativeScriptComponent>(srcRegistry, dstRegistry, enttMap);
+		//CopyComponent<MeshRendererComponent>(srcRegistry, dstRegistry, enttMap);
+
+		return newScene;
 	}
 
 	void Scene::OnUpdate(Timestep ts)

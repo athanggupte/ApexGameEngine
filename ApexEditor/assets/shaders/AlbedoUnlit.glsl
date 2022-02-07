@@ -1,8 +1,6 @@
 #type vertex
 #version 450 core
 
-#include <internal_assets/shaders/ShaderDefines.h>
-
 layout(location = ATTRIB_LOC_Position) in vec3 a_Position;
 layout(location = ATTRIB_LOC_UV0) in vec2 a_TexCoord;
 layout(location = ATTRIB_LOC_Normal) in vec3 a_Normal;

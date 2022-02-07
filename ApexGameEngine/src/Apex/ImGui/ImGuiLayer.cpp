@@ -38,6 +38,9 @@ namespace Apex {
 		ImGui::StyleColorsDark();
 		//ImGui::StyleColorsClassic();
 
+		// Setup imgui ini file for editor
+		io.IniFilename = "editorconfig.ini";
+
 		//When viewports are enabled we tweak WindowRounding/WindowBg so platform windows can look identical to regular ones.
 		ImGuiStyle& style = ImGui::GetStyle();
 		if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable) {

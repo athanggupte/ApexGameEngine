@@ -17,6 +17,11 @@
 
 namespace Apex {
 
+	struct IDComponent
+	{
+		GUID id;
+	};
+
 	struct TagComponent
 	{
 		StringHandle tag;

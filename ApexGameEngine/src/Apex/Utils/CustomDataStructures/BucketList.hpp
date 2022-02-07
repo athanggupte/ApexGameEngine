@@ -20,6 +20,11 @@ class BucketList
             return backIndex;
         }
 
+        void clear()
+        {
+	        backIndex = 0;
+        }
+
         Type& operator [] (size_t index)
         {
             return data[index];
@@ -111,6 +116,11 @@ public:
             return (bucketIt < other.bucketIt) && (dataIndex < other.dataIndex);
         }
 
+        [[nodiscard]] uint64_t index() const
+        {
+	        return bucketIt * BucketSize + dataIndex;
+        }
+
     private:
         const BucketList& container;
         uint64_t dataIndex;
@@ -198,6 +208,12 @@ public:
     size_t size() const
     {
 	    return m_Size;
+    }
+
+    void clear()
+    {
+	    m_BucketList.clear();
+        m_Size = 0;
     }
 
 private:

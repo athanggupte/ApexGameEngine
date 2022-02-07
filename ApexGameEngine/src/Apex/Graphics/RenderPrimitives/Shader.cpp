@@ -86,6 +86,7 @@ namespace Apex {
 		case ShaderUniformType::SAMPLER_2D_RECT: return "SAMPLER_2D_RECT";
 		case ShaderUniformType::SAMPLER_2D_RECT_SHADOW: return "SAMPLER_2D_RECT_SHADOW";
 		default: APEX_CORE_CRITICAL("Unknown Shader uniform type!");
+			return "UNKNOWN";
 		}
 	}
 

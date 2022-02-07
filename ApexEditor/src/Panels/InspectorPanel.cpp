@@ -9,6 +9,7 @@
 #include "Apex/Core/Input/Input.h"
 #include "Apex/Core/Input/KeyCodes.h"
 #include "Apex/Utils/Utils.h"
+#include "Apex/Utils/ScopeGuard.hpp"
 
 #include "Apex/Graphics/RenderPrimitives/Shader.h"
 #include "Apex/Graphics/RenderPrimitives/Texture.h"
@@ -112,6 +113,16 @@ namespace Apex {
 		constexpr ImGuiTreeNodeFlags treeNodeFlags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_DefaultOpen | 
 			ImGuiTreeNodeFlags_SpanAvailWidth | ImGuiTreeNodeFlags_Framed | ImGuiTreeNodeFlags_FramePadding;
 
+		ImGui::PushStyleVar(ImGuiStyleVar_IndentSpacing,  0.f);
+		APEX_SCOPE_GUARD
+		{
+			ImGui::PopStyleVar(1);
+		};
+
+		// GUID
+		auto& id = m_ContextEntity.GetComponent<IDComponent>().id;
+		ImGui::TextColored({ 0.6f, 0.6f, 0.6f, 1.f }, TO_CSTRING(fmt::format("({})", Strings::Get(id.Hash()))));
+
 		// Tag Component
 		{
 			auto& tag = m_ContextEntity.GetComponent<TagComponent>().tag;
@@ -145,9 +156,7 @@ namespace Apex {
 		{
 			auto& transformComp = m_ContextEntity.GetComponent<TransformComponent>();
 
-			bool opened = ImGui::TreeNodeEx((void*)typeid(TransformComponent).hash_code(), treeNodeFlags, "Transform");
-			
-			if (opened) {
+			if (ImGui::TreeNodeEx((void*)typeid(TransformComponent).hash_code(), treeNodeFlags, "Transform")) {
 				auto dragSpeed = (Input::IsKeyPressed(APEX_KEY_LEFT_SHIFT)) ? 0.001f : 0.5f;
 					
 				ImGui::DragFloat3("Translation", glm::value_ptr(transformComp.translation), dragSpeed);
@@ -268,7 +277,7 @@ namespace Apex {
 		if (m_ContextEntity.HasComponent<MeshRendererComponent>()) {
 			auto& meshComp = m_ContextEntity.GetComponent<MeshRendererComponent>();
 
-			if (ImGui::TreeNodeEx((void*)typeid(SpriteRendererComponent).hash_code(), treeNodeFlags, "Mesh Renderer")) {
+			if (ImGui::TreeNodeEx((void*)typeid(MeshRendererComponent).hash_code(), treeNodeFlags, "Mesh Renderer")) {
 				if (meshComp.mesh.IsValid()) {
 					auto meshResName = TO_STRING(Strings::Get(meshComp.mesh.GetId()));
 
@@ -322,6 +331,23 @@ namespace Apex {
 			ImGui::Separator();
 		}
 
+		if (m_ContextEntity.HasComponent<NativeScriptComponent>()) {
+			auto& scriptComp = m_ContextEntity.GetComponent<NativeScriptComponent>();
+			const std::string scriptName = TO_STRING(Strings::Get(scriptComp.factory.GetId()));
+			if (ImGui::TreeNodeEx((void*)typeid(NativeScriptComponent).hash_code(), treeNodeFlags, scriptName.c_str())) {
+				if (ImGui::BeginTable("Parameters", 2, ImGuiTableFlags_BordersInner)) {
+					for (auto i = 0; i < 5; i++) {
+						ImGui::TableNextRow();
+						ImGui::TableNextColumn();
+						ImGui::Text("Param_%d", i+1);
+						ImGui::TableNextColumn();
+						ImGui::Text("some value");
+					}
+					ImGui::EndTable();
+				}
+				ImGui::TreePop();
+			}
+		}
 	}
 
 	void InspectorPanel::DrawAddComponentsMenu()
@@ -358,6 +384,19 @@ namespace Apex {
 				
 				ImGui::EndMenu();
 			}
+
+			if (!m_ContextEntity.HasComponent<NativeScriptComponent>()) {
+				if (ImGui::BeginMenu("NativeScriptComponent")) {
+					for (auto& scriptRes : Application::Get().GetResourceManager().Iterate<AScriptFactory>()) {
+						auto& [id, ptr] = scriptRes;
+						if (ImGui::MenuItem(TO_CSTRING(Strings::Get(id)))) {
+							auto& nsc = m_ContextEntity.AddComponent<NativeScriptComponent>(scriptRes.ToResource());
+						}
+					}
+					ImGui::EndMenu();
+				}
+			}
+
 			ImGui::EndPopup();
 		}
 		
