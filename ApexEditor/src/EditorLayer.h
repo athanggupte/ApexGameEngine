@@ -8,6 +8,7 @@
 #include "Panels/LogPanel.h"
 #include "Panels/AssetExplorer.h"
 #include "Panels/MaterialPanel.h"
+#include "Panels/ResourceViewer.h"
 
 #include <glm/glm.hpp>
 
@@ -89,8 +90,6 @@ namespace Apex {
 		bool m_Open;
 		bool m_ShowNodeGraph = true;
 
-		bool m_PlayScene = false;
-
 		glm::vec4 m_BGColor;
 
 		// Editor Resources
@@ -121,6 +120,7 @@ namespace Apex {
 		InspectorPanel m_InspectorPanel;
 		AssetExplorer m_AssetExplorer;
 		MaterialPanel m_MaterialPanel;
+		ResourceViewer m_ResourceViewer;
 
 		::SingleCopyStack<std::string, 16> m_RecentFiles;
 

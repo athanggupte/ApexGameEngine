@@ -11,7 +11,7 @@ namespace Apex {
 	class Mesh
 	{
 	public:
-		Mesh(const fs::path& filepath);
+		//Mesh(const fs::path& filepath);
 		Mesh(float* vertices, size_t vCount, uint32_t* indices, size_t iCount, const BufferLayout& layout);
 		Mesh(float* vertices, size_t vCount, const BufferLayout& layout);
 		virtual ~Mesh() = default;

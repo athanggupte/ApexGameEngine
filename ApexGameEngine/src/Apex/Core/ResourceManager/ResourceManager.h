@@ -170,7 +170,7 @@ namespace Apex {
 		~ResourceManager() = default;
 		
 		template<typename Resource_t>
-		Resource<Resource_t> AddResource(Handle id, const Ref<Resource_t>& ptr)
+		Resource<Resource_t> Insert(Handle id, const Ref<Resource_t>& ptr)
 		{
 			APEX_CORE_ASSERT(!Exists(id), "Resource '" + TO_STRING(Strings::Get(id)) + "' already exists!");
 			auto& resourcePool = GetPoolToUse<Resource_t>();
@@ -184,7 +184,7 @@ namespace Apex {
 		}
 
 		template<typename Resource_t>
-		Resource<Resource_t> AddResourceFromFile(Handle id, const fs::path& filepath)
+		Resource<Resource_t> Insert(Handle id, const fs::path& filepath)
 		{
 			APEX_CORE_ASSERT(!Exists(id), "Resource '" + TO_STRING(Strings::Get(id)) + "' already exists!");
 			auto& resourcePool = GetPoolToUse<Resource_t>();
@@ -198,18 +198,18 @@ namespace Apex {
 		}
 
 		template<typename Resource_t>
-		Resource<Resource_t> AddResourceFromFile(const fs::path& filepath)
+		Resource<Resource_t> Insert(const fs::path& filepath)
 		{
 			Handle id = RESNAME(filepath.filename().string());
-			return AddResourceFromFile<Resource_t>(id, filepath);
+			return Insert<Resource_t>(id, filepath);
 		}
-		
+
 		template<typename Resource_t>
 		[[nodiscard]] Resource<Resource_t> Get(Handle id)
 		{
 			const auto itr = m_Registry.find(id);
-			auto& resourcePool = GetPoolToUse<Resource_t>();
 			APEX_CORE_ASSERT(itr != m_Registry.end(), fmt::format("Resource '{}' not found!", Strings::Get(id)));
+			auto& resourcePool = GetPoolToUse<Resource_t>();
 			if (itr != m_Registry.end()) {
 				APEX_CORE_ASSERT(itr->second.resourceData.type == GetResourceType<Resource_t>(),
 				                 fmt::format("Invalid resource types! Expected '{0}', got '{1}'!",
@@ -222,7 +222,20 @@ namespace Apex {
 		template<typename Resource_t>
 		[[nodiscard]] Resource<Resource_t> GetOrEmplace(Handle id, const Ref<Resource_t>& ptr)
 		{
-			return Exists(id) ? Get<Resource_t>(id) : AddResource<Resource_t>(id, ptr);
+			return Exists(id) ? Get<Resource_t>(id) : Insert<Resource_t>(id, ptr);
+		}
+
+		template<typename Resource_t>
+		[[nodiscard]] Resource<Resource_t> GetOrEmplace(Handle id, const fs::path& filepath)
+		{
+			return Exists(id) ? Get<Resource_t>(id) : Insert<Resource_t>(id, filepath);
+		}
+
+		template<typename Resource_t>
+		[[nodiscard]] Resource<Resource_t> GetOrEmplace(const fs::path& filepath)
+		{
+			Handle id = RESNAME(filepath.filename().string());
+			return Exists(id) ? Get<Resource_t>(id) : Insert<Resource_t>(id, filepath);
 		}
 
 		template<typename Resource_t>

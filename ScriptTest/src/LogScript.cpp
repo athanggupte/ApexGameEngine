@@ -34,10 +34,10 @@ protected:
 		}
 		auto& meshComp = self().GetComponent<MeshRendererComponent>();
 		meshComp.material->SetShader(GetResourceManager().Get<Shader>(RESNAME("shader_StandardPBR")));
-		meshComp.material->SetTexture("Albedo", GetResourceManager().AddResource<Texture>(RESNAME("metal_plate_diff_2k"), Texture2D::Create("editor_assets/textures/metal_plate/metal_plate_diff_2k.jpg", true)));
-		meshComp.material->SetTexture("Metallic", GetResourceManager().AddResourceFromFile<Texture>(RESNAME("metal_plate_metal_2k"), "editor_assets/textures/metal_plate/metal_plate_metal_2k.jpg"));
-		meshComp.material->SetTexture("Roughness", GetResourceManager().AddResourceFromFile<Texture>(RESNAME("metal_plate_rough_2k"), "editor_assets/textures/metal_plate/metal_plate_rough_2k.jpg"));
-		meshComp.material->SetTexture("Normal", GetResourceManager().AddResourceFromFile<Texture>(RESNAME("metal_plate_nor_gl_2k"), "editor_assets/textures/metal_plate/metal_plate_nor_gl_2k.jpg"));
+		meshComp.material->SetTexture("Albedo", GetResourceManager().GetOrEmplace<Texture>(RESNAME("metal_plate_diff_2k"), Texture2D::Create("editor_assets/textures/metal_plate/metal_plate_diff_2k.jpg", true)));
+		meshComp.material->SetTexture("Metallic", GetResourceManager().GetOrEmplace<Texture>(RESNAME("metal_plate_metal_2k"), "editor_assets/textures/metal_plate/metal_plate_metal_2k.jpg"));
+		meshComp.material->SetTexture("Roughness", GetResourceManager().GetOrEmplace<Texture>(RESNAME("metal_plate_rough_2k"), "editor_assets/textures/metal_plate/metal_plate_rough_2k.jpg"));
+		meshComp.material->SetTexture("Normal", GetResourceManager().GetOrEmplace<Texture>(RESNAME("metal_plate_nor_gl_2k"), "editor_assets/textures/metal_plate/metal_plate_nor_gl_2k.jpg"));
 
 		if (!self().HasComponent<MyComponent>())
 			self().AddComponent<MyComponent>();

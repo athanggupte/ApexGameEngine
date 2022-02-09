@@ -1,16 +1,10 @@
 ﻿#include "apex_pch.h"
 #include "FBXImporter.h"
 
-#include "Apex.h"
-#include "Apex.h"
-#include "Apex.h"
-#include "Apex.h"
-#include "Apex.h"
-#include "Apex.h"
-#include "Apex.h"
-#include "Apex.h"
 #include "Material.h"
+#include "Apex/Application.h"
 #include "Apex/Core/ECS/Scene.h"
+#include "Apex/Core/ECS/Components.h"
 
 #include <fbxsdk.h>
 #include <filesystem>
@@ -88,12 +82,24 @@ namespace Apex {
 		}
 	}
 
-	void FBXImporter::LoadMesh(const std::filesystem::path& filepath, const std::string& nodeName, const Ref<Scene>& scene)
+	Ref<Mesh> FBXImporter::LoadMesh(const std::filesystem::path& filepath, const std::string& nodeName,
+	                                const Ref<Scene>& scene)
 	{
 		FbxScene* fbxScene = fbx::ParseScene(filepath);
 
-		FbxNode* node = fbxScene->GetRootNode()->FindChild(nodeName.c_str());
-		fbx::ProcessNode(node, scene.get(), false);
+		FbxNode* node = nullptr;
+		if (!nodeName.empty()) {
+			if (auto childNode = fbxScene->GetRootNode()->FindChild(nodeName.c_str()))
+				node = childNode;
+			else 
+				node =  fbxScene->GetRootNode()->GetChild(0);
+		}
+		 	
+		// fbx::ProcessNode(node, scene.get(), false);
+		auto meshAttr = node->GetMesh();
+		if (meshAttr)
+			return fbx::ProcessMesh(node, meshAttr);
+		return { nullptr };
 	}
 
 	FbxScene* fbx::ParseScene(const std::filesystem::path& filepath)
@@ -153,7 +159,7 @@ namespace Apex {
 			if (Application::Get().GetResourceManager().Exists(RESNAME(attrName))) {
 				Application::Get().GetResourceManager().Get<Mesh>(RESNAME(attrName)).Get() = _mesh;
 			} else {
-				Application::Get().GetResourceManager().AddResource<Mesh>(RESNAME(attrName), _mesh);
+				Application::Get().GetResourceManager().Insert<Mesh>(RESNAME(attrName), _mesh);
 			}
 
 			std::vector<Ref<Material>> materials;
@@ -173,8 +179,7 @@ namespace Apex {
 				auto shaderRes = Application::Get().GetResourceManager().Get<Shader>(RESNAME("shader_StandardPBR"));
 				auto material = CreateRef<Material>();
 				material->SetShader(shaderRes);
-				material->SetTexture("Normal", Application::Get().GetResourceManager().Get<Texture>(RESNAME("texture_DefaultNormalMap")));
-				auto matRes = Application::Get().GetResourceManager().AddResource<Material>(RESNAME(fmt::format("material_{}", attrName)), material);
+				auto matRes = Application::Get().GetResourceManager().Insert<Material>(RESNAME(fmt::format("material_{}", attrName)), material);
 				// material->SetTexture("Albedo", Application::Get().GetResourceManager().Get<Texture>(RESNAME("metal_plate_diff_2k")));
 				entity.AddComponent<MeshRendererComponent>(meshRes, matRes);
 			}

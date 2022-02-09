@@ -25,7 +25,7 @@ namespace Apex {
 		static decltype(auto) Create() \
 		{ \
 			auto ptr = Apex::Ref<script##Factory>(new script##Factory()); \
-			Apex::Application::Get().GetResourceManager().AddResource<AScriptFactory>(RESNAME(STR(script)), ptr); \
+			Apex::Application::Get().GetResourceManager().Insert<AScriptFactory>(RESNAME(STR(script)), ptr); \
 			return ptr; \
 		} \
 		Apex::EntityScript* InstantiateScript() override { return new script; } \
@@ -39,7 +39,7 @@ namespace Apex {
 //	static decltype(auto) Create()
 //	{
 //		auto ptr = Apex::Ref<LogScriptFactory>(new LogScriptFactory());
-//		Apex::Application::Get().GetResourceManager().AddResource<AScriptFactory>(
+//		Apex::Application::Get().GetResourceManager().Insert<AScriptFactory>(
 //			RESNAME(STR(LogScript)), ptr);
 //		return ptr;
 //	}

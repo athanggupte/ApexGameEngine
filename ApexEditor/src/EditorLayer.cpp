@@ -20,6 +20,7 @@
 #include "Apex/Core/DllManager.h"
 #include "Apex/Graphics/FBXImporter.h"
 #include "Apex/Graphics/Material.h"
+#include "Apex/Graphics/Font.h"
 #include "Apex/Utils/ScopeGuard.hpp"
 
 #include <imgui.h>
@@ -29,7 +30,7 @@ namespace Apex {
 
 	//TODO: Remove this after testing!
 	static glm::vec3 lightPos { 1.0f, 5.6f, 2.0f };
-
+	Ref<FontAtlas> s_FontAtlas;
 	
 	EditorLayer::EditorLayer()
 		: Layer("ApexEditor"),
@@ -73,12 +74,12 @@ namespace Apex {
 
 		auto& resourceManager = Application::Get().GetResourceManager();
 		/* Initialize Shaders */
-		auto cubemapShader = resourceManager.AddResourceFromFile<Shader>(RESNAME("shader_Skybox"), "editor_assets/shaders/Skybox.glsl");
-		auto tonemapShader = resourceManager.AddResourceFromFile<Shader>(RESNAME("shader_ACESTonemap"), "editor_assets/shaders/ACESTonemap.glsl");
-		auto debugVerticesShader = resourceManager.AddResourceFromFile<Shader>(RESNAME("shader_DebugVerticesUnlit"), "editor_assets/shaders/DebugVerticesUnlit.glsl");
-		auto debugTrianglesShader = resourceManager.AddResourceFromFile<Shader>(RESNAME("shader_DebugTrianglesUnlit"), "editor_assets/shaders/DebugTrianglesUnlit.glsl");
-		auto albedoUnlitShader = resourceManager.AddResourceFromFile<Shader>(RESNAME("shader_AlbedoUnlit"), "editor_assets/shaders/AlbedoUnlit.glsl");
-		auto standardPBRShader = resourceManager.AddResourceFromFile<Shader>(RESNAME("shader_StandardPBR"), "editor_assets/shaders/StandardPBR.glsl");
+		auto cubemapShader = resourceManager.Insert<Shader>(RESNAME("shader_Skybox"), "editor_assets/shaders/Skybox.glsl");
+		auto tonemapShader = resourceManager.Insert<Shader>(RESNAME("shader_ACESTonemap"), "editor_assets/shaders/ACESTonemap.glsl");
+		auto debugVerticesShader = resourceManager.Insert<Shader>(RESNAME("shader_DebugVerticesUnlit"), "editor_assets/shaders/DebugVerticesUnlit.glsl");
+		auto debugTrianglesShader = resourceManager.Insert<Shader>(RESNAME("shader_DebugTrianglesUnlit"), "editor_assets/shaders/DebugTrianglesUnlit.glsl");
+		auto albedoUnlitShader = resourceManager.Insert<Shader>(RESNAME("shader_AlbedoUnlit"), "editor_assets/shaders/AlbedoUnlit.glsl");
+		auto standardPBRShader = resourceManager.Insert<Shader>(RESNAME("shader_StandardPBR"), "editor_assets/shaders/StandardPBR.glsl");
 
 		/*resourceManager.Load(gridShader.GetId());
 		resourceManager.Load(debugVerticesShader.GetId());
@@ -89,10 +90,6 @@ namespace Apex {
 		m_IconEditor = Texture2D::Create(APEX_INSTALL_LOCATION "/assets/Apex-Game-Engine-32.png");
 		m_ImageTexture = Texture2D::Create(256U, 256U, HDRTextureSpec, "Image");
 		m_ComputeShader = ComputeShader::Create("Blur.compute");
-
-		auto normalTexture = resourceManager.AddResource<Texture>(RESNAME("texture_DefaultNormalMap"), Texture2D::Create(1, 1, SimpleTextureSpec, "texture_DefaultNormalMap"));
-		uint32_t normalTextureData = 0xffff8080;
-		normalTexture->SetData(&normalTextureData, sizeof(normalTextureData));
 
 		/*auto cubemapTexture = TextureCubemap::Create({
 			"editor_assets/textures/skyboxes/driving_school/px.png",
@@ -110,21 +107,21 @@ namespace Apex {
 			"editor_assets/textures/Checkerboard.png",
 			"editor_assets/textures/Checkerboard.png",
 		});
-		resourceManager.AddResource<Texture>(RESNAME("texture_Skybox"), cubemapTexture);
-		auto pusheenTexture = resourceManager.AddResourceFromFile<Texture>(RESNAME("pusheen-texture"), "editor_assets/textures/pusheen-thug-life.png");
-		auto suzanneTexture = resourceManager.AddResourceFromFile<Texture>(RESNAME("suzanne_DefaultMaterial_BaseColor"), "editor_assets/meshes/suzanne/textures/suzanne_DefaultMaterial_BaseColor.png");
-		//auto metalPlateDiffuseTexture = resourceManager.AddResource<Texture>(RESNAME("metal_plate_diff_2k"), Texture2D::Create("editor_assets/textures/metal_plate/metal_plate_diff_2k.jpg", true));
+		resourceManager.Insert<Texture>(RESNAME("texture_Skybox"), cubemapTexture);
+		auto pusheenTexture = resourceManager.Insert<Texture>(RESNAME("pusheen-texture"), "editor_assets/textures/pusheen-thug-life.png");
+		auto suzanneTexture = resourceManager.Insert<Texture>(RESNAME("suzanne_DefaultMaterial_BaseColor"), "editor_assets/meshes/suzanne/textures/suzanne_DefaultMaterial_BaseColor.png");
+		//auto metalPlateDiffuseTexture = resourceManager.Insert<Texture>(RESNAME("metal_plate_diff_2k"), Texture2D::Create("editor_assets/textures/metal_plate/metal_plate_diff_2k.jpg", true));
 
 		/* Initialize Meshes */
-		auto cubeMesh = resourceManager.AddResource<Mesh>(RESNAME("default-cube"),Primitives::Cube::GetMesh());
-		auto planeMesh = resourceManager.AddResource<Mesh>(RESNAME("default-plane"), Primitives::Plane::GetMesh());
-		auto suzanneMesh = resourceManager.AddResourceFromFile<Mesh>(RESNAME("suzanne-mesh"), "editor_assets/meshes/suzanne/source/suzanne.fbx");
+		auto cubeMesh = resourceManager.Insert<Mesh>(RESNAME("default-cube"),Primitives::Cube::GetMesh());
+		auto planeMesh = resourceManager.Insert<Mesh>(RESNAME("default-plane"), Primitives::Plane::GetMesh());
+		auto suzanneMesh = resourceManager.Insert<Mesh>(RESNAME("suzanne-mesh"), "editor_assets/meshes/suzanne/source/suzanne.fbx");
 
 		/* Initialize Materials */
 		auto _suzanneMaterial = CreateRef<Material>();
 		_suzanneMaterial->SetShader(albedoUnlitShader);
 		//_suzanneMaterial->SetTexture("Albedo", suzanneTexture);
-		auto suzanneMaterial = resourceManager.AddResource<Material>(RESNAME("suzanne_material_Unlit"), _suzanneMaterial);
+		auto suzanneMaterial = resourceManager.Insert<Material>(RESNAME("suzanne_material_Unlit"), _suzanneMaterial);
 
 		/* Load All Resources */
 		resourceManager.LoadAllResources();
@@ -151,12 +148,22 @@ namespace Apex {
 		m_SceneHierarchyPanel.SetContext(m_ActiveScene);
 		m_AssetExplorer.OnAttach();
 		m_AssetExplorer.SetContext("");
+		m_ResourceViewer.OnAttach();
 
 		// ImGui options
 		ImGui::GetIO().ConfigWindowsMoveFromTitleBarOnly = true;
 		SetupEditorFonts();
 
 		FBXImporter::Import("assets/meshes/sphere-tris.fbx", m_ActiveScene);
+
+		s_FontAtlas = CreateRef<FontAtlas>();
+		(void)s_FontAtlas->AddFontFromFileTTF("C:\\Windows\\Fonts\\segoeui.ttf", 200.f);
+		s_FontAtlas->BuildRGBA32();
+
+		auto textEntity = m_ActiveScene->CreateEntity(HASH("text"));
+		textEntity.AddComponent<TextRendererComponent>(u8"Hello", s_FontAtlas->GetFontAtIndex(0), glm::vec4{ 10.f, 4.f, 2.f, 1.f });
+		textEntity.Transform().scale.x = 4.f;
+		textEntity.Transform().scale.y = 4.f;
 
 		// TODO: Move to Play()
 		// m_ActiveScene->OnPlay();
@@ -237,9 +244,6 @@ namespace Apex {
 		RenderCommands::SetDepthTest(true);
 		m_ActiveScene->Render3D();
 		Renderer::EndScene();
-		Renderer2D::BeginScene(m_EditorCamera, m_EditorCameraController->GetTransform());
-		m_ActiveScene->Render2D();
-		Renderer2D::EndScene();
 
 		if (showSkybox) {
 			auto skyboxShader = Application::Get().GetResourceManager().Get<Shader>(RESNAME("shader_Skybox"));
@@ -252,6 +256,10 @@ namespace Apex {
 			RenderCommands::SetCulling(true);
 			RenderCommands::SetDepthTestFunction(DepthStencilMode::LESS);
 		}
+
+		Renderer2D::BeginScene(m_EditorCamera, m_EditorCameraController->GetTransform());
+		m_ActiveScene->Render2D();
+		Renderer2D::EndScene();
 
 		// Render the Grid
 		cameraTransform[3] = cameraTranslation;
@@ -268,6 +276,8 @@ namespace Apex {
 		// Post process
 		if (useMSAA) {
 			m_GameFramebufferMS->Blit(m_PostProcessFramebuffer);
+		} else {
+			m_GameFramebuffer->Blit(m_PostProcessFramebuffer);
 		}
 
 		if (usePostProcess) {
@@ -369,8 +379,6 @@ namespace Apex {
 			ImGui::DragFloat4("Background", &m_BGColor[0], 0.001f, 0.0f, 1.0f);
 			{
 				ImGui::Separator();
-				ImGui::Checkbox("Play", &m_PlayScene);
-				ImGui::Separator();
 				if (ImGui::TreeNode("Camera")) {
 					constexpr const char* projectionTypeStrings[] = { "Perspective", "Orthographic" };
 					constexpr const size_t projectionTypesLen = std::size(projectionTypeStrings);
@@ -425,17 +433,16 @@ namespace Apex {
 		}
 		ImGui::End();
 
-
-		// m_SceneHierarchyPanel.SetContext(m_ActiveScene);
+		ShowLogger();
+		m_AssetExplorer.OnImGuiRender();
+		m_MaterialPanel.OnImGuiRender();
+		m_ResourceViewer.OnImGuiRender();
 		m_SceneHierarchyPanel.OnImGuiRender();
 		auto entity = m_SceneHierarchyPanel.GetSelectedEntity();
 		if (entity)
 			m_InspectorPanel.SetContext(entity, m_ActiveScene);
 		m_InspectorPanel.OnImGuiRender();
-		m_AssetExplorer.OnImGuiRender();
-		m_MaterialPanel.OnImGuiRender();
 
-		ShowLogger();
 		ShowSceneToolbar();
 
 // 		if (ImGui::Button("Parse Graph")) {
@@ -516,8 +523,12 @@ namespace Apex {
 
 		if (ImGui::BeginDragDropTarget()) {
 			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ASSET_BROWSER_ITEM")) {
-				const char* path = static_cast<const char*>(payload->Data);
-				SceneOpen(path);
+				auto path = fs::path(static_cast<const char*>(payload->Data));
+				if (path.extension() == ".fbx") {
+					FBXImporter::Import(path, m_ActiveScene);
+				} else if (path.extension() == ".apx") {
+					SceneOpen(path);
+				}
 			}
 
 			ImGui::EndDragDropTarget();

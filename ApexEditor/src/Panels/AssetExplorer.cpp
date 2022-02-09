@@ -12,9 +12,7 @@ namespace Apex {
 	static struct Data {
 		Ref<Texture2D> directoryTexture;
 		Ref<Texture2D> fileTexture;
-	};
-
-	static Data *s_Data = nullptr;
+	} s_Data;
 
 	AssetExplorer::AssetExplorer()
 	{
@@ -22,11 +20,8 @@ namespace Apex {
 
 	void AssetExplorer::OnAttach()
 	{
-		if (!s_Data) {
-			s_Data = new Data();
-			s_Data->directoryTexture = Texture2D::Create("editor_assets/textures/ae_dir.png");
-			s_Data->fileTexture = Texture2D::Create("editor_assets/textures/ae_file.png");
-		}
+		s_Data.directoryTexture = Texture2D::Create("editor_assets/textures/ae_dir.png");
+		s_Data.fileTexture = Texture2D::Create("editor_assets/textures/ae_file.png");
 	}
 
 	void AssetExplorer::SetContext(const fs::path& path)
@@ -72,10 +67,10 @@ namespace Apex {
 		ImGui::Columns(columnCount, nullptr, false);
 
 		FileSystem::VisitDirectory(m_Context, [this](const FileSystem::Metadata& metadata) {
-			const std::string pathStr = metadata.path.string();
-			const std::string filenameStr = metadata.path.filename().string();
+			const std::string pathStr = metadata.relativePath.string();
+			const std::string filenameStr = metadata.relativePath.filename().string();
 
-			if (metadata.path.filename().extension() == ".apxmeta")
+			if (metadata.relativePath.filename().extension() == ".apxmeta")
 				return;
 
 			ImGui::PushID(pathStr.c_str());
@@ -85,13 +80,13 @@ namespace Apex {
 			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.f, 0.f, 0.f, 0.f });
 
 			if (metadata.IsDirectory()) {
-				if (ImGui::ImageButton((void*)(intptr_t)s_Data->directoryTexture->GetID(),
+				if (ImGui::ImageButton((void*)(intptr_t)s_Data.directoryTexture->GetID(),
 					{ thumbnailSize, thumbnailSize }, { 0.f, 0.f }, { 1.f, 1.f })) {
-					m_Context = metadata.path;
+					m_Context = metadata.relativePath;
 				}
 			}
 			else if (metadata.IsFile()) {
-				if (ImGui::ImageButton((void*)(intptr_t)s_Data->fileTexture->GetID(),
+				if (ImGui::ImageButton((void*)(intptr_t)s_Data.fileTexture->GetID(),
 					{ thumbnailSize, thumbnailSize }, { 0.f, 0.f }, { 1.f, 1.f })) {
 					// Display file details in InspectorPanel
 				}

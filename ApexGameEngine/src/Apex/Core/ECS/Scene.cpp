@@ -151,6 +151,11 @@ namespace Apex {
 					Renderer2D::DrawQuad(transform.GetTransform(), sprite.color);
 			}
 		});
+
+		m_Registry.view<TransformComponent, TextRendererComponent>()
+			.each([](const TransformComponent& transform, const TextRendererComponent& textRenderer) {
+				Renderer2D::DrawGlyphs(textRenderer.text, transform.GetTransform(), textRenderer.color, textRenderer.font);
+			});
 	}
 
 	void Scene::Render3D()
@@ -184,6 +189,8 @@ namespace Apex {
 			return "CameraComponent";
 		if constexpr (std::is_same_v<Component_t, NativeScriptComponent>)
 			return "NativeScriptComponent";
+		if constexpr (std::is_same_v<Component_t, TextRendererComponent>)
+			return "TextRendererComponent";
 		if constexpr (std::is_same_v<Component_t, MeshRendererComponent>)
 			return "MeshRendererComponent";
 		return "Unknown Component Type";
@@ -217,7 +224,7 @@ namespace Apex {
 	}
 
 	using AllBuiltInComponents = ComponentGroup<TransformComponent, SpriteRendererComponent, CameraComponent,
-	                                            NativeScriptComponent, MeshRendererComponent>;
+	                                            NativeScriptComponent, TextRendererComponent, MeshRendererComponent>;
 
 	Ref<Scene> Scene::Copy()
 	{

@@ -1,8 +1,13 @@
 #pragma once
 
+#include "Apex/Graphics/Font.h"
+
 #include <glm/glm.hpp>
 //#include <glm/gtc/quaternion.hpp>
 //#include <glm/gtx/quaternion.hpp>
+
+
+struct ImFontAtlas;
 
 namespace Apex {
 
@@ -39,7 +44,8 @@ namespace Apex {
 		
 		static void DrawQuad(const glm::mat4& transform, const glm::vec4& color); // Transform matrix, flat color
 		static void DrawQuad(const glm::mat4& transform, const Ref<Texture2D>& texture, float tilingFactor = 1.0f, const glm::vec4& tintColor = { 1.0f, 1.0f, 1.0f, 1.0f }); // Transform matrix, textured
-		
+
+		static void DrawGlyphs(const std::string& text, const glm::mat4& transform, const glm::vec4& color, const Font& font);
 		
 		struct Stats
 		{

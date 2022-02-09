@@ -73,6 +73,9 @@ project "ApexEditor"
 			"/DEF:\"%{wks.location}/bin/" .. outputdir .. "/ApexGameEngine/ApexGameEngine.def\""
 		}
 
+		libdirs {
+			"%{WinLibDirs.FBX}"
+		}
 		-- libdirs (WinLibDirs)
 		-- links (WinLibs)
 		

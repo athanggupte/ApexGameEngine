@@ -120,8 +120,10 @@ namespace Apex {
 		};
 
 		// GUID
-		auto& id = m_ContextEntity.GetComponent<IDComponent>().id;
-		ImGui::TextColored({ 0.6f, 0.6f, 0.6f, 1.f }, TO_CSTRING(fmt::format("({})", Strings::Get(id.Hash()))));
+		{
+			auto& id = m_ContextEntity.GetComponent<IDComponent>().id;
+			ImGui::TextColored({ 0.6f, 0.6f, 0.6f, 1.f }, TO_CSTRING(fmt::format("({})", Strings::Get(id.Hash()))));
+		}
 
 		// Tag Component
 		{
@@ -250,7 +252,7 @@ namespace Apex {
 							if (const auto filename = static_cast<const char*>(payload->Data); filename != nullptr) {
 								const auto id = RESNAME(Utils::GetFilename(filename));
 								if (!Application::Get().GetResourceManager().Exists(id)) {
-									sprite.texture = Application::Get().GetResourceManager().AddResourceFromFile<Texture>(id, filename);
+									sprite.texture = Application::Get().GetResourceManager().Insert<Texture>(id, filename);
 								} else {
 									sprite.texture = Application::Get().GetResourceManager().Get<Texture>(id);
 								}
@@ -293,13 +295,16 @@ namespace Apex {
 					if (ImGui::BeginDragDropTarget()) {
 						if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ASSET_BROWSER_ITEM")) {
 							if (const auto filename = static_cast<const char*>(payload->Data); filename != nullptr) {
-								const auto id = RESNAME(Utils::GetFilename(filename));
-								if (!Application::Get().GetResourceManager().Exists(id)) {
-									meshComp.mesh = Application::Get().GetResourceManager().AddResourceFromFile<Mesh>(id, filename);
-								} else {
-									meshComp.mesh = Application::Get().GetResourceManager().Get<Mesh>(id);
+								fs::path path { filename };
+								if (path.extension() == ".fbx") {
+									const auto id = RESNAME(path.stem().string());
+									if (!Application::Get().GetResourceManager().Exists(id)) {
+										meshComp.mesh = Application::Get().GetResourceManager().Insert<Mesh>(id, filename);
+									} else {
+										meshComp.mesh = Application::Get().GetResourceManager().Get<Mesh>(id);
+									}
+									Application::Get().GetResourceManager().Load(id);
 								}
-								Application::Get().GetResourceManager().Load(id);
 							}
 						}
 						ImGui::EndDragDropTarget();
@@ -329,6 +334,16 @@ namespace Apex {
 				ImGui::TreePop();
 			}
 			ImGui::Separator();
+		}
+
+		if (m_ContextEntity.HasComponent<TextRendererComponent>()) {
+			auto& textComp = m_ContextEntity.GetComponent<TextRendererComponent>();
+			if (ImGui::TreeNodeEx((void*)typeid(TextRendererComponent).hash_code(), treeNodeFlags, "Text Renderer")) {
+				ImGui::InputText("Text", &textComp.text);
+				ImGui::ColorEdit4("Color", glm::value_ptr(textComp.color), ImGuiColorEditFlags_HDR | ImGuiColorEditFlags_AlphaBar);
+
+				ImGui::TreePop();
+			}
 		}
 
 		if (m_ContextEntity.HasComponent<NativeScriptComponent>()) {

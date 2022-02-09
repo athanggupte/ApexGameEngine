@@ -24,7 +24,8 @@ namespace Apex {
 		{
 			uint64_t size;
 			Type type;
-			fs::path path;
+			fs::path relativePath;
+			fs::path rootPath;
 
 			bool IsDirectory() const { return (type == DIRECTORY) || (type == PACKAGE); }
 			bool IsFile() const { return type == FILE; }

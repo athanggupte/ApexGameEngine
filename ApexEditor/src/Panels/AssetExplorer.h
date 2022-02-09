@@ -1,8 +1,6 @@
 #pragma once
 
 #include "Apex/Core/FileSystem/FileSystem.h"
-#include "Apex/Core/ResourceManager/ResourceManager.h"
-
 
 namespace Apex {
 

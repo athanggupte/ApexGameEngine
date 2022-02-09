@@ -10,6 +10,8 @@
 
 namespace Apex {
 
+#ifdef APEX_USE_ASSIMP
+
 	static void ProcessMesh(aiMesh * mesh, const aiScene * scene, std::vector<float>& vertices, std::vector<uint32_t>& indices, const BufferLayout& layout, uint32_t& vertexCount)
 	{
 		const uint32_t prevVertexCount = vertexCount;
@@ -87,6 +89,9 @@ namespace Apex {
 		else
 			*this = Mesh(vertices.data(), vertices.size(), indices.data(), indices.size(), layout);
 	}
+
+#endif
+
 
 	Mesh::Mesh(float* vertices, size_t vCount, uint32_t* indices, size_t iCount, const BufferLayout& layout)
 	{

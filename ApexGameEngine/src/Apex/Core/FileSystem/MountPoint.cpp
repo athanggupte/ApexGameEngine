@@ -89,7 +89,8 @@ namespace Apex::VFS {
 				dirEntry.is_regular_file() ?
 				(dirEntry.path().extension() == ".apkg" ? FileSystem::Type::PACKAGE : FileSystem::Type::FILE) :
 				FileSystem::Type::OTHER;
-			metadata.path = fs::relative(dirEntry.path(), m_PhysicalPath);
+			metadata.relativePath = fs::relative(dirEntry.path(), m_PhysicalPath);
+			metadata.rootPath = m_PhysicalPath;
 
 			func(metadata);
 		}
@@ -107,7 +108,7 @@ namespace Apex::VFS {
 				dirEntry.is_regular_file() ?
 				(dirEntry.path().extension() == ".apkg" ? FileSystem::Type::PACKAGE : FileSystem::Type::FILE) :
 				FileSystem::Type::OTHER;
-			metadata.path = fs::relative(dirEntry.path(), m_PhysicalPath);
+			metadata.relativePath = fs::relative(dirEntry.path(), m_PhysicalPath);
 
 			func(metadata);
 		}

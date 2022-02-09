@@ -55,8 +55,8 @@ namespace Apex {
 			}
 			case ResourceType::MESH:
 			{
-				//FBXImporter::LoadMesh(resourceData.sourceFile, TO_STRING(Strings::Get(id)));
-				Ref<Mesh> newMesh = CreateRef<Mesh>(resourceData.sourceFile);
+				auto newMesh = FBXImporter::LoadMesh(FileSystem::GetFileIfExists(resourceData.sourceFile)->GetPhysicalPath(), TO_STRING(Strings::Get(id)));
+				//Ref<Mesh> newMesh = CreateRef<Mesh>(resourceData.sourceFile);
 				m_MeshPool[index].second.swap(newMesh);
 				break;
 			}
@@ -89,12 +89,19 @@ namespace Apex {
 				case ResourceType::SHADER:
 				{
 					Ref<Shader> newShader = Shader::Create(resourceData.sourceFile.string());
+					if (!newShader->IsValid())
+						break;
+
 					m_ShaderPool[index].second.swap(newShader);
+					
+					if (newShader && newShader->IsBound())
+						m_ShaderPool[index].second->Bind();
+
 					break;
 				}
 				case ResourceType::MESH:
 				{
-					Ref<Mesh> newMesh = CreateRef<Mesh>(resourceData.sourceFile.string());
+					auto newMesh = FBXImporter::LoadMesh(FileSystem::GetFileIfExists(resourceData.sourceFile)->GetPhysicalPath(), TO_STRING(Strings::Get(id)));
 					m_MeshPool[index].second.swap(newMesh);
 					break;
 				}
@@ -147,7 +154,8 @@ namespace Apex {
 
 			if (!itr->second.resourceData.sourceFile.empty()) {
 				Ref<Shader> newShader = Shader::Create(itr->second.resourceData.sourceFile.string());
-				if (!newShader->IsValid()) return;
+				if (!newShader->IsValid())
+					continue;;
 
 				shader.swap(newShader);
 				

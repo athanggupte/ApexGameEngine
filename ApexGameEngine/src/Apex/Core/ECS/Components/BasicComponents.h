@@ -14,6 +14,7 @@
 #include "Apex/Core/ResourceManager/ResourceManager.h"
 
 #include "Apex/Core/ECS/EntityScript.h"
+#include "Apex/Graphics/Font.h"
 
 namespace Apex {
 
@@ -123,5 +124,17 @@ namespace Apex {
 		}*/
 		
 	};
-	
+
+	struct TextRendererComponent
+	{
+		std::string text;
+		Font font;
+		glm::vec4 color { 1.f };
+
+		COMPONENT_DEFAULT_CTR(TextRendererComponent);
+
+		explicit TextRendererComponent(std::string text, const Font& font, const glm::vec4& color)
+			: text(std::move(text)), font(font), color(color) {}
+	};
+
 }

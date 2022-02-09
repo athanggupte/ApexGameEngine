@@ -120,7 +120,7 @@ namespace Apex {
 		SAMPLER_2D_RECT,
 		SAMPLER_2D_RECT_SHADOW,
 
-		_COUNT
+		_COUNT // Number of values in ShaderUniformType enum. May also be used for undefined values
 	};
 
 	bool ShaderUniformTypeIsSampler(ShaderUniformType type);

@@ -15,8 +15,8 @@ namespace Apex {
 			Resource<Texture> texture;
 			uint32_t slot = 0;
 			bool use = false;
-			glm::vec4 altColor = { 1.f, 1.f, 1.f, 1.f };
-			ShaderUniformType altType{ ShaderUniformType::FLOAT };
+			glm::vec4 altColor { 1.f, 1.f, 1.f, 1.f };
+			ShaderUniformType altType { ShaderUniformType::_COUNT };
 			bool restrictValues = true;
 		};
 
