@@ -7,7 +7,7 @@
 #include "Apex/Core/Input/KeyCodes.h"
 #include "Apex/Core/Input/MouseCodes.h"
 
-#include "Apex/Utils/MathPrimitiveParser.h"
+#include "Apex/Utils/Math.h"
 
 namespace Apex {
 
@@ -226,7 +226,7 @@ namespace Apex {
 	void PerspectiveCameraController::LookAt(const glm::vec3& target)
 	{
 		auto lookAtMat = glm::lookAt(m_CameraPosition, target, worldUp);
-		APEX_CORE_DEBUG("{}", MathParser::ParseMatrix(glm::inverse(lookAtMat)));
+		APEX_CORE_DEBUG("{}", Math::ParseMatrix(glm::inverse(lookAtMat)));
 
 		m_CameraDirection = glm::normalize(m_CameraPosition - target);
 		m_CameraRight = glm::normalize(glm::cross(worldUp, m_CameraDirection));

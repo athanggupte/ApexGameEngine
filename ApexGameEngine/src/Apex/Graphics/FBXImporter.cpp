@@ -70,9 +70,9 @@ namespace Apex {
 		s_Data.fbxManager->Destroy();
 	}
 
-	void FBXImporter::Import(const std::filesystem::path& filepath, const Ref<Scene>& scene)
+	void FBXImporter::Import(const Ref<File>& file, const Ref<Scene>& scene)
 	{
-		FbxScene* fbxScene = fbx::ParseScene(filepath);
+		FbxScene* fbxScene = fbx::ParseScene(file->GetPhysicalPath());
 
 		APEX_CORE_INFO("Importing FBX scene: {0}", fbxScene->GetName());
 		if (FbxNode* rootNode = fbxScene->GetRootNode()) {
@@ -82,10 +82,10 @@ namespace Apex {
 		}
 	}
 
-	Ref<Mesh> FBXImporter::LoadMesh(const std::filesystem::path& filepath, const std::string& nodeName,
+	Ref<Mesh> FBXImporter::LoadMesh(const Ref<File>& file, const std::string& nodeName,
 	                                const Ref<Scene>& scene)
 	{
-		FbxScene* fbxScene = fbx::ParseScene(filepath);
+		FbxScene* fbxScene = fbx::ParseScene(file->GetPhysicalPath());
 
 		FbxNode* node = nullptr;
 		if (!nodeName.empty()) {
@@ -153,7 +153,7 @@ namespace Apex {
 		case FbxNodeAttribute::eMesh:
 		{
 			FbxGeometryConverter geometryConverter(s_Data.fbxManager);
-			attribute = geometryConverter.Triangulate(attribute, true);
+			attribute = geometryConverter.Triangulate(attribute, false);
 			auto _mesh = ProcessMesh(node, attribute);
 
 			if (Application::Get().GetResourceManager().Exists(RESNAME(attrName))) {
@@ -266,6 +266,7 @@ namespace Apex {
 		}
 
 		if (!hasTangents) {
+			APEX_CORE_INFO("Tangent data not found! Calculating Tangents from Position and UV data.");
 			std::vector<glm::vec3> tangents(triangleCount * 3);
 			std::vector<glm::vec3> bitangents(triangleCount * 3);
 
@@ -309,7 +310,51 @@ namespace Apex {
 	Ref<Material> fbx::ProcessMaterial(FbxNode* node, FbxSurfaceMaterial* material)
 	{
 		APEX_CORE_INFO("FBXImport ({0}) : material ( {1} )", node->GetName(), material->GetName());
-		return Ref<Material>();
+		const auto materialClassId = material->GetClassId();
+		// If the material is a Phong or Lambert shading model then handle it as Phong
+		if (materialClassId.Is(FbxSurfacePhong::ClassId) || materialClassId.Is(FbxSurfaceLambert::ClassId)) {
+			auto phongMaterial = static_cast<FbxSurfacePhong*>(material);
+			//auto apxShader = Application::Get().GetResourceManager().Get<Shader>(RESNAME("shader_StandardPBR"));
+			//auto apxMaterial = CreateRef<Material>(apxShader);
+
+			//glm::vec3 diffuse;
+			//Vec3FbxToGlm(phongMaterial->Diffuse.Get(), diffuse);
+
+			
+
+
+
+			//apxMaterial->SetAltColor("Albedo", glm::vec4(diffuse, 1.f));
+			
+		} else {
+			
+		}
+
+		APEX_CORE_DEBUG("===== FBX Material Properties =====");
+		APEX_CORE_DEBUG("Material: {}", material->GetName());
+		for (int textureIndex = 0; textureIndex < FbxLayerElement::sTypeTextureCount; ++textureIndex) {
+			FbxProperty property =	material->FindProperty(FbxLayerElement::sTextureChannelNames[textureIndex]);
+			if (property.IsValid()) {
+				APEX_CORE_DEBUG("	Property: {}", property.GetName());
+				const int textureCount = property.GetSrcObjectCount<FbxTexture>();
+				for (int j = 0; j < textureCount; ++j) {
+					auto* layeredTexture = property.GetSrcObject<FbxLayeredTexture>();
+					if (layeredTexture) {
+						APEX_CORE_DEBUG("		Layered Texture:");
+					} else {
+						auto* texture = property.GetSrcObject<FbxTexture>(j);
+						if (texture) {
+							APEX_CORE_DEBUG("		Texture [{}]: {}", j, texture->GetName());
+							auto* fileTexture = FbxCast<FbxFileTexture>(texture);
+							if (fileTexture) {
+								APEX_CORE_DEBUG("			Filepath: {}", fileTexture->GetRelativeFileName());
+							}
+						}
+					}
+				}
+			}
+		}
+		return { nullptr };
 	}
 
 	void fbx::ProcessNormal(FbxMesh* mesh, int controlPointIndex, int vertexCounter, glm::vec3& outNormal)

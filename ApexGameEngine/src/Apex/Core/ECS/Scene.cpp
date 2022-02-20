@@ -85,6 +85,11 @@ namespace Apex {
 		return entity;
 	}
 
+	void Scene::RemoveEntity(Entity entity)
+	{
+		m_Registry.destroy(entity.m_EntityId);
+	}
+
 	void Scene::OnSetup()
 	{
 		auto& resourceManager = Application::Get().GetResourceManager();

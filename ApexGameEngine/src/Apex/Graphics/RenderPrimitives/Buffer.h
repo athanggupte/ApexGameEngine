@@ -95,7 +95,7 @@ namespace Apex {
 
 
 	/*-------------------------Buffer Layout----------------------------*/
-	class BufferLayout
+	class APEX_API BufferLayout
 	{
 	public:
 		BufferLayout() = default;

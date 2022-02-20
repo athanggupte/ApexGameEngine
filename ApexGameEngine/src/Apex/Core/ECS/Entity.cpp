@@ -5,6 +5,12 @@
 
 namespace Apex {
 
+	void Entity::Destroy()
+	{
+		m_Scene->m_Registry.destroy(m_EntityId);
+		m_EntityId = entt::null;
+	}
+
 	StringHandle Entity::Tag()
 	{
 	    return GetComponent<TagComponent>().tag;

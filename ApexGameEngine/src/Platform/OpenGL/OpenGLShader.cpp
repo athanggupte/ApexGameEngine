@@ -65,7 +65,20 @@ namespace Apex {
 
 		auto shaderSources = ParseSource(source);
 		for (auto& [type, src] : shaderSources)
-			SolveIncludes(src, filepath);
+			SolveIncludes(src, filepath, false);
+		Compile(shaderSources);
+		
+		glObjectLabel(GL_PROGRAM, m_RendererID, -1, m_Name.c_str());
+	}
+
+	OpenGLShader::OpenGLShader(std::string name, const std::string& source)
+		: m_Name(std::move(name))
+	{
+		APEX_CORE_DEBUG("Loading shader : {}", m_Name);
+
+		auto shaderSources = ParseSource(source);
+		for (auto& [type, src] : shaderSources)
+			SolveIncludes(src, {}, false);
 		Compile(shaderSources);
 		
 		glObjectLabel(GL_PROGRAM, m_RendererID, -1, m_Name.c_str());
@@ -117,15 +130,17 @@ namespace Apex {
 		return shaderSources;
 	}
 
-	void OpenGLShader::SolveIncludes(std::string& source, const fs::path& filepath, bool hasFilepath)
+	void OpenGLShader::SolveIncludes(std::string& source, const fs::path& filepath, bool is_recursive)
 	{
-		auto itr = source.find_first_of("#version");
-		itr = source.find_first_of('\n', itr);
-		source.insert(itr+1, _binary_src_Apex_Graphics_ShaderDefines_h_start, binary_src_Apex_Graphics_ShaderDefines_h_size);
-		// source.insert(itr + binary_src_Apex_Graphics_ShaderDefines_h_size + 1, "\n");
+		if (!is_recursive) {
+			auto itr = source.find_first_of("#version");
+			itr = source.find_first_of('\n', itr);
+			source.insert(itr+1, _binary_src_Apex_Graphics_ShaderDefines_h_start, binary_src_Apex_Graphics_ShaderDefines_h_size);
+			// source.insert(itr + binary_src_Apex_Graphics_ShaderDefines_h_size + 1, "\n");
+		}
 
-		constexpr char regex_str[] = R"(^\s*#include\s*([<"])([^>"]+)([>"])[\r\n]+)";
-		constexpr size_t regex_len = sizeof(regex_str) - 1;
+		static constexpr char regex_str[] = R"(^\s*#include\s*([<"])([^>"]+)([>"])[\r\n]+)";
+		static constexpr size_t regex_len = sizeof(regex_str) - 1;
 
 		using IncludeEntry = std::tuple<size_t /* Begin */, size_t /* End */, fs::path /* Filepath */>;
 		std::vector<IncludeEntry> entries;
@@ -135,7 +150,7 @@ namespace Apex {
 		auto source_cbegin = source.cbegin();
 		while (std::regex_search(source_cbegin, source.cend(), matches, regex)) {
 			APEX_CORE_ASSERT(matches.size() == 4, "Invalid matches!");
-			if (matches[1].str() == "\"" && hasFilepath) {
+			if (matches[1].str() == "\"" && !filepath.empty()) {
 				entries.emplace_back((size_t)matches.position(), (size_t)(matches.length()), filepath.parent_path().string() + "/" + matches[2].str());
 			} else if (matches[1].str() == "<") {
 				entries.emplace_back((size_t)matches.position(), (size_t)(matches.length()), matches[2].str());
@@ -157,15 +172,53 @@ namespace Apex {
 			} else {
 				APEX_CORE_CRITICAL("Could not open shader include '{}'", path);
 			}
+			SolveIncludes(data, path, true);
 			source.insert(begin, data);
 			prevEnd = begin + data.size();
 		}
+	}
+	
+	static void ReformatShaderInfoLog(std::string& infoLog, const std::string& shaderSource)
+	{
+		using ErrorEntry = std::tuple<size_t /* Itr */, int /* LineNo */>;
+		std::vector<ErrorEntry> entries;
+
+		const std::regex lineNoRegex(R"(^0\(([0-9]+)\)\s:.*[\r\n]+)");
+		std::smatch matches;
+
+		auto infoLogBegin = infoLog.cbegin();
+		const auto infoLogEnd = infoLog.cend();
+		while (std::regex_search(infoLogBegin, infoLogEnd, matches, lineNoRegex)) {
+			if (matches.ready() && !matches.empty()) {
+				entries.emplace_back((size_t)matches.position() + (size_t)(matches.length()), std::stoi(matches[1]));
+			}
+			infoLogBegin = matches.suffix().first;
+		}
+
+		std::istringstream iss(shaderSource);
+		std::string line;
+		size_t prevEnd = 0;
+		int curLineNo = 1;
+		auto entryIt = entries.begin();
+		while (std::getline(iss, line)) {
+			auto& [itr, lineNo] = *entryIt;
+			if (curLineNo == lineNo) {
+				itr += prevEnd;
+				line = ">>\t" + Utils::TrimStr(line) + "\n\n";
+				infoLog.insert(itr, line);
+				prevEnd = itr + line.size();
+				if (++entryIt == entries.end())
+					break;
+			}
+			curLineNo++;
+		}
+
 	}
 
 	void OpenGLShader::Compile(const std::unordered_map<GLenum, std::string>& shaderSources)
 	{
 		GLuint program = glCreateProgram();
-		APEX_CORE_ASSERT(shaderSources.size() < 4, "Max. 4 shaders supported");
+		APEX_CORE_ASSERT(shaderSources.size() < 5, "Max. 5 shader stages supported");
 		//std::array<GLuint, 4> glShaderIDs;
 		std::vector<GLuint> glShaderIDs(shaderSources.size());
 		int shaderIndex = 0;
@@ -181,11 +234,14 @@ namespace Apex {
 				GLint maxLength = 0;
 				glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &maxLength);
 
-				GLchar* infoLog = new GLchar[maxLength];
-				glGetShaderInfoLog(shader, maxLength, &maxLength, infoLog);
+				std::string infoLog;
+				infoLog.resize(maxLength);
+				glGetShaderInfoLog(shader, maxLength, &maxLength, infoLog.data());
 				glDeleteShader(shader);
 
-				APEX_CORE_ERROR("Shader \"{0}\" ({2}) : {1}", m_Name, infoLog, ShaderStageToString(type));
+				ReformatShaderInfoLog(infoLog, src);
+				APEX_CORE_ERROR("Shader \"{0}\" ({2}) :\n{1}", m_Name, infoLog, ShaderStageToString(type));
+
 				APEX_CORE_CRITICAL("Shader compilation failed!");
 
 				glDeleteProgram(program);

@@ -17,7 +17,18 @@ namespace Apex {
 		default:				APEX_CORE_CRITICAL("Unknown Rendering API"); return nullptr;
 		}
 	}
-	
+
+	Ref<Shader> Shader::Create(const std::string& name, const std::string& source)
+	{
+		switch (Renderer::GetAPI())
+		{
+		case RendererAPI::API::None:	APEX_CORE_CRITICAL("No Rendering API selected"); return nullptr;
+		case RendererAPI::API::OpenGL:	return CreateRef<OpenGLShader>(name, source);
+
+		default:				APEX_CORE_CRITICAL("Unknown Rendering API"); return nullptr;
+		}
+	}
+
 	Ref<Shader> Shader::Create(const std::string& name, const std::string & vertexSrc, const std::string & fragmentSrc)
 	{
 		switch (Renderer::GetAPI())

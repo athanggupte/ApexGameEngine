@@ -19,3 +19,6 @@
 [submodule "ApexGameEngine/vendor/entt"]
 	path = ApexGameEngine/vendor/entt
 	url = https://github.com/xdevapps/entt
+[submodule "ApexGameEngine/vendor/ImGuizmo"]
+	path = ApexGameEngine/vendor/ImGuizmo
+	url = https://github.com/xdevapps/ImGuizmo

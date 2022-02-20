@@ -17,6 +17,7 @@
 
 #include "EditorFonts.h"
 #include "IconsMaterialDesign.h"
+#include "ImGuizmo.h"
 #include "Apex/Core/DllManager.h"
 #include "Apex/Graphics/FBXImporter.h"
 #include "Apex/Graphics/Material.h"
@@ -24,26 +25,33 @@
 #include "Apex/Utils/ScopeGuard.hpp"
 
 #include <imgui.h>
+#include <glm/gtc/type_ptr.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
 namespace Apex {
 
 	//TODO: Remove this after testing!
 	static glm::vec3 lightPos { 1.0f, 5.6f, 2.0f };
+	static glm::vec3 directionalLightDirection{ 1.f, -1.f, 1.f };
+
 	Ref<FontAtlas> s_FontAtlas;
 	
 	EditorLayer::EditorLayer()
 		: Layer("ApexEditor"),
-		m_BGColor{0.42f, 0.63f, 0.75f, 1.0f},
-		m_EditorCamera(Camera::ProjectionType::Perspective, Application::Get().GetWindow().GetWidth(), Application::Get().GetWindow().GetHeight()),
-		m_OrthographicCameraController(m_EditorCamera, 1.f, glm::vec3{ 0.f, 0.f, 5.f }),
-		m_PerspectiveCameraController(m_EditorCamera, { -5.f, 5.f, 5.f }),
-		m_EditorCameraController(&m_PerspectiveCameraController)
+		  m_BGColor{0.42f, 0.63f, 0.75f, 1.0f},
+		  m_EditorCamera(Camera::ProjectionType::Perspective, Application::Get().GetWindow().GetWidth(),
+		                 Application::Get().GetWindow().GetHeight()),
+		  m_OrthographicCameraController(m_EditorCamera, 1.f, glm::vec3{0.f, 0.f, 5.f}),
+		  m_PerspectiveCameraController(m_EditorCamera, {-5.f, 5.f, 5.f}),
+		  m_EditorCameraController(&m_PerspectiveCameraController)
 	{
-		m_EditorCamera.SetOrthographicNear(0.f);
-		m_EditorCamera.SetOrthographicFar(10000.f);
+		m_EditorCamera.SetOrthographicNear(0.1f);
+		m_EditorCamera.SetOrthographicFar(1000.f);
 
-		m_PerspectiveCameraController.LookAt({ 0.f, 0.f, 0.f });
+		m_EditorCamera.SetPerspectiveNear(0.1f);
+		m_EditorCamera.SetPerspectiveFar(1000.f);
+
+		m_PerspectiveCameraController.LookAt({0.f, 0.f, 0.f});
 		m_PerspectiveCameraController.MovementSpeed() = 1.0f;
 
 		// Logger
@@ -65,12 +73,13 @@ namespace Apex {
 
 		// TODO: Framebuffer builder - specify all framebuffer attachments before actually creating the framebuffer (avoid invalidating over and over)
 		m_GameFramebuffer = Framebuffer::Create({ 1280u, 720u, 1, true});
-		m_GameFramebufferMS = Framebuffer::Create({ 1280u, 720u, 0, true, true, false, 8 });
+		m_GameFramebufferMS = Framebuffer::Create({ 1280u, 720u, 0, false, true, false, false, 8 });
 		m_GameFramebufferMS->AddColorAttachment({ TextureAccessFormat::RGBA, TextureInternalFormat::RGBA16, TextureDataType::FLOAT, TextureFiltering::BILINEAR });
 		m_PostProcessFramebuffer = Framebuffer::Create({ 1280u, 720u, 0, false });
 		m_PostProcessFramebuffer->AddColorAttachment({ TextureAccessFormat::RGBA, TextureInternalFormat::RGBA16, TextureDataType::FLOAT, TextureFiltering::BILINEAR });
 		m_ShaderGrid = Shader::Create("editor_assets/shaders/InfiniteGridXZ.glsl");
 
+		m_ShadowMap = CreateRef<ShadowMap>(2048u, 2048u);
 
 		auto& resourceManager = Application::Get().GetResourceManager();
 		/* Initialize Shaders */
@@ -81,10 +90,9 @@ namespace Apex {
 		auto albedoUnlitShader = resourceManager.Insert<Shader>(RESNAME("shader_AlbedoUnlit"), "editor_assets/shaders/AlbedoUnlit.glsl");
 		auto standardPBRShader = resourceManager.Insert<Shader>(RESNAME("shader_StandardPBR"), "editor_assets/shaders/StandardPBR.glsl");
 
-		/*resourceManager.Load(gridShader.GetId());
-		resourceManager.Load(debugVerticesShader.GetId());
-		resourceManager.Load(debugTrianglesShader.GetId());
-		resourceManager.Load(unlitMaterial.GetId());*/
+		resourceManager.Insert<Material>(RESNAME("material_DebugVertices"), CreateRef<Material>(debugVerticesShader));
+		resourceManager.Insert<Material>(RESNAME("material_DebugTriangles"), CreateRef<Material>(debugTrianglesShader));
+		resourceManager.Insert<Material>(RESNAME("material_AlbedoUnlit"), CreateRef<Material>(albedoUnlitShader));
 
 		/* Initialize Textures */
 		m_IconEditor = Texture2D::Create(APEX_INSTALL_LOCATION "/assets/Apex-Game-Engine-32.png");
@@ -108,20 +116,20 @@ namespace Apex {
 			"editor_assets/textures/Checkerboard.png",
 		});
 		resourceManager.Insert<Texture>(RESNAME("texture_Skybox"), cubemapTexture);
-		auto pusheenTexture = resourceManager.Insert<Texture>(RESNAME("pusheen-texture"), "editor_assets/textures/pusheen-thug-life.png");
-		auto suzanneTexture = resourceManager.Insert<Texture>(RESNAME("suzanne_DefaultMaterial_BaseColor"), "editor_assets/meshes/suzanne/textures/suzanne_DefaultMaterial_BaseColor.png");
+		//auto pusheenTexture = resourceManager.Insert<Texture>(RESNAME("pusheen-texture"), "editor_assets/textures/pusheen-thug-life.png");
+		//auto suzanneTexture = resourceManager.Insert<Texture>(RESNAME("suzanne_DefaultMaterial_BaseColor"), "editor_assets/meshes/suzanne/textures/suzanne_DefaultMaterial_BaseColor.png");
 		//auto metalPlateDiffuseTexture = resourceManager.Insert<Texture>(RESNAME("metal_plate_diff_2k"), Texture2D::Create("editor_assets/textures/metal_plate/metal_plate_diff_2k.jpg", true));
 
 		/* Initialize Meshes */
-		auto cubeMesh = resourceManager.Insert<Mesh>(RESNAME("default-cube"),Primitives::Cube::GetMesh());
-		auto planeMesh = resourceManager.Insert<Mesh>(RESNAME("default-plane"), Primitives::Plane::GetMesh());
-		auto suzanneMesh = resourceManager.Insert<Mesh>(RESNAME("suzanne-mesh"), "editor_assets/meshes/suzanne/source/suzanne.fbx");
+		resourceManager.Insert<Mesh>(RESNAME("default-cube"),Primitives::Cube::GetMesh());
+		resourceManager.Insert<Mesh>(RESNAME("default-plane"), Primitives::Plane::GetMesh());
+		//auto suzanneMesh = resourceManager.Insert<Mesh>(RESNAME("suzanne-mesh"), "editor_assets/meshes/suzanne/source/suzanne.fbx");
 
 		/* Initialize Materials */
-		auto _suzanneMaterial = CreateRef<Material>();
-		_suzanneMaterial->SetShader(albedoUnlitShader);
+		//auto _suzanneMaterial = CreateRef<Material>();
+		//_suzanneMaterial->SetShader(albedoUnlitShader);
 		//_suzanneMaterial->SetTexture("Albedo", suzanneTexture);
-		auto suzanneMaterial = resourceManager.Insert<Material>(RESNAME("suzanne_material_Unlit"), _suzanneMaterial);
+		//auto suzanneMaterial = resourceManager.Insert<Material>(RESNAME("suzanne_material_Unlit"), _suzanneMaterial);
 
 		/* Load All Resources */
 		resourceManager.LoadAllResources();
@@ -134,11 +142,17 @@ namespace Apex {
 		planeEntity.AddComponent<MeshRendererComponent>(planeMesh.GetId(), debugTrianglesShader.GetId());
 		planeEntity.GetComponent<TransformComponent>().scale *= glm::vec3(5.f, 1.f, 5.f);*/
 
-		auto suzanneEntity = m_ActiveScene->CreateEntity(HASH("suzanne"));
-		suzanneEntity.AddComponent<MeshRendererComponent>(suzanneMesh, suzanneMaterial);
+		//auto suzanneEntity = m_ActiveScene->CreateEntity(HASH("suzanne"));
+		//suzanneEntity.AddComponent<MeshRendererComponent>(suzanneMesh, suzanneMaterial);
 
-		auto planeEntity = m_ActiveScene->CreateEntity(HASH("plane"));
-		planeEntity.AddComponent<NativeScriptComponent>(resourceManager.Get<AScriptFactory>(RESNAME("LogScript")));
+		{
+			auto planeEntity = m_ActiveScene->CreateEntity(HASH("plane"));
+			planeEntity.Transform().scale *= glm::vec3{ 50.f, 1.f, 50.f };
+			auto& meshComp = planeEntity.AddComponent<MeshRendererComponent>();
+			meshComp.mesh = resourceManager.Get<Mesh>(RESNAME("default-plane"));
+			meshComp.material = resourceManager.Insert<Material>(RESNAME("default-material"), CreateRef<Material>(resourceManager.Get<Shader>(RESNAME("shader_StandardPBR"))));
+		}
+		//planeEntity.AddComponent<NativeScriptComponent>(resourceManager.Get<AScriptFactory>(RESNAME("MaterialScript")));
 
 		// pusheenTexture->Bind(0);
 		
@@ -154,16 +168,17 @@ namespace Apex {
 		ImGui::GetIO().ConfigWindowsMoveFromTitleBarOnly = true;
 		SetupEditorFonts();
 
-		FBXImporter::Import("assets/meshes/sphere-tris.fbx", m_ActiveScene);
+		FBXImporter::Import(FileSystem::GetFileIfExists("editor_assets/meshes/sphere-tris.fbx"), m_ActiveScene);
+		// FBXImporter::Import(FileSystem::GetFileIfExists("editor_assets/meshes/suzanne/source/suzanne.fbx"), m_ActiveScene);
 
-		s_FontAtlas = CreateRef<FontAtlas>();
-		(void)s_FontAtlas->AddFontFromFileTTF("C:\\Windows\\Fonts\\segoeui.ttf", 200.f);
-		s_FontAtlas->BuildRGBA32();
+		//s_FontAtlas = CreateRef<FontAtlas>();
+		//(void)s_FontAtlas->AddFontFromFileTTF("C:\\Windows\\Fonts\\segoeui.ttf", 50.f);
+		//s_FontAtlas->BuildRGBA32();
 
-		auto textEntity = m_ActiveScene->CreateEntity(HASH("text"));
-		textEntity.AddComponent<TextRendererComponent>(u8"Hello", s_FontAtlas->GetFontAtIndex(0), glm::vec4{ 10.f, 4.f, 2.f, 1.f });
-		textEntity.Transform().scale.x = 4.f;
-		textEntity.Transform().scale.y = 4.f;
+		//auto textEntity = m_ActiveScene->CreateEntity(HASH("text"));
+		//textEntity.AddComponent<TextRendererComponent>(u8"Hello", s_FontAtlas->GetFontAtIndex(0), glm::vec4{ 10.f, 4.f, 2.f, 1.f });
+		//textEntity.Transform().scale.x = 4.f;
+		//textEntity.Transform().scale.y = 4.f;
 
 		// TODO: Move to Play()
 		// m_ActiveScene->OnPlay();
@@ -213,6 +228,13 @@ namespace Apex {
 		}
 
 		// Render
+		// Depth Pre-Pass
+		RenderCommands::SetCulling(true);
+		RenderCommands::SetDepthTest(true);
+		RenderCommands::SetClearColor(glm::vec4{1.f, 1.f, 1.f, 1.f});
+		m_ShadowMap->SetupLightAndCamera(directionalLightDirection, m_EditorCamera, m_EditorCameraController->GetTransform());
+		m_ShadowMap->BuildForScene(m_ActiveScene);
+
 		Renderer2D::ResetStats();
 
 		if (useMSAA)
@@ -237,6 +259,9 @@ namespace Apex {
 		auto pbrShader = Application::Get().GetResourceManager().Get<Shader>(RESNAME("shader_StandardPBR"));
 		pbrShader->SetUniFloat3("u_CameraPosition", m_EditorCameraController->GetTransform()[3]);
 		pbrShader->SetUniFloat3("u_LightPos", lightPos);
+		pbrShader->SetUniFloat3("u_LightDir", directionalLightDirection);
+		pbrShader->SetUniMat4("u_LightSpaceTransform", m_ShadowMap->GetLightSpaceTransform());
+		m_ShadowMap->GetDepthTexture()->Bind(5);
 
 		RenderCommands::SetCulling(true);
 
@@ -257,6 +282,7 @@ namespace Apex {
 			RenderCommands::SetDepthTestFunction(DepthStencilMode::LESS);
 		}
 
+		RenderCommands::SetCulling(false);
 		Renderer2D::BeginScene(m_EditorCamera, m_EditorCameraController->GetTransform());
 		m_ActiveScene->Render2D();
 		Renderer2D::EndScene();
@@ -305,6 +331,10 @@ namespace Apex {
 		m_ActiveScene->OnPlay();
 
 		m_SceneHierarchyPanel.SetContext(m_ActiveScene);
+		m_InspectorPanel.SetContext({}, m_ActiveScene);
+		if (m_MaterialPanel.GetContext().IsValid()) {
+			m_MaterialPanel.SetContext(m_MaterialPanel.GetContext().GetId());
+		}
 	}
 
 	void EditorLayer::OnSceneStop()
@@ -318,13 +348,21 @@ namespace Apex {
 		m_ResourceManagerSnapshot = nullptr;
 
 		m_SceneHierarchyPanel.SetContext(m_ActiveScene);
+		m_InspectorPanel.SetContext({}, m_ActiveScene);
+		if (m_MaterialPanel.GetContext().IsValid()) {
+			auto id = m_MaterialPanel.GetContext().GetId();
+			if (Application::Get().GetResourceManager().Exists(id))
+				m_MaterialPanel.SetContext(id);
+			else
+				m_MaterialPanel.SetContext({});
+		}
 	}
 
 	static bool show_imgui_demo_window = false;
 	
 	void EditorLayer::OnImGuiRender()
 	{
-		ShowMainMenuBar();
+		MainMenuBar();
 		BeginDockspace();
 
 		if (show_imgui_demo_window) ImGui::ShowDemoWindow(&show_imgui_demo_window);
@@ -352,9 +390,29 @@ namespace Apex {
 
 			ImGui::BeginGroup();
 			ImGui::DragFloat3("Light Pos", &lightPos.x);
+			ImGui::DragFloat3("Light Dir", &directionalLightDirection.x);
 			ImGui::EndGroup();
 
 			ImGui::Separator();
+
+			static int gizmoType = 0;
+			if (ImGui::Combo("Gizmo Mode", &gizmoType, "None\0Translate\0Rotate\0Scale\0")) {
+				switch (gizmoType) {
+				case 0:
+					m_GizmoType = -1;
+					break;
+				case 1:
+					m_GizmoType = (int)ImGuizmo::OPERATION::TRANSLATE;
+					break;
+				case 2:
+					m_GizmoType = (int)ImGuizmo::OPERATION::ROTATE;
+					break;
+				case 3:
+					m_GizmoType = (int)ImGuizmo::OPERATION::SCALE;
+					break;
+				default: ;
+				}
+			}
 
 			if (ImGui::Button("Recompile Shaders")) {
 				Application::Get().GetResourceManager().LoadAll<Shader>();
@@ -398,7 +456,7 @@ namespace Apex {
 						ImGui::EndCombo();
 					}
 
-					ImGui::Text(fmt::format("Transform: {0}", MathParser::ParseMatrix(m_EditorCameraController->GetTransform())).c_str());
+					ImGui::Text(fmt::format("Transform: {0}", Math::ParseMatrix(m_EditorCameraController->GetTransform())).c_str());
 
 					if (m_EditorCamera.GetProjectionType() == Camera::ProjectionType::Perspective) {
 						float perspFov = glm::degrees(m_EditorCamera.GetPerspectiveVerticalFov());
@@ -433,7 +491,7 @@ namespace Apex {
 		}
 		ImGui::End();
 
-		ShowLogger();
+		Logger();
 		m_AssetExplorer.OnImGuiRender();
 		m_MaterialPanel.OnImGuiRender();
 		m_ResourceViewer.OnImGuiRender();
@@ -443,7 +501,7 @@ namespace Apex {
 			m_InspectorPanel.SetContext(entity, m_ActiveScene);
 		m_InspectorPanel.OnImGuiRender();
 
-		ShowSceneToolbar();
+		SceneToolbar();
 
 // 		if (ImGui::Button("Parse Graph")) {
 // 			APEX_LOG_INFO("Node Graph Output:");
@@ -451,7 +509,13 @@ namespace Apex {
 // 		}
 
 		ShowSettings();
-		ShowGameViewport();
+		GameViewport();
+
+		/*if (ImGui::Begin("Depth Texture", nullptr, ImGuiWindowFlags_NoScrollbar)) {
+			ImGui::Image(reinterpret_cast<void*>(static_cast<intptr_t>(m_ShadowMap.GetDepthTexture()->GetID())),
+				{ 200, 200 }, {0.f, 1.f}, {1.f, 0.f});
+		}
+		ImGui::End();*/
 
 		EndDockspace();
 	}
@@ -505,7 +569,7 @@ namespace Apex {
 		ImGui::End();
 	}
 	
-	void EditorLayer::ShowGameViewport()
+	void EditorLayer::GameViewport()
 	{
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{ 0.f, 0.f });
 		ImGui::Begin("Game View");
@@ -516,7 +580,10 @@ namespace Apex {
 		Application::Get().GetImGuiLayer().SetBlockKeyboardEvents(!m_ViewportFocused);
 		
 		ImVec2 viewportSize = ImGui::GetContentRegionAvail();
+		ImVec2 windowPos = ImGui::GetWindowPos();
+		ImVec2 windowMin = ImGui::GetWindowContentRegionMin();
 		m_GameViewportSize = *reinterpret_cast<glm::vec2*>(&viewportSize);
+		m_GameViewportPos = { windowPos.x + windowMin.x, windowPos.y + windowMin.y };
 
 		ImGui::Image(reinterpret_cast<void*>(static_cast<intptr_t>(m_GameFramebuffer->GetColorAttachmentID())),
 		             {m_GameViewportSize.x, m_GameViewportSize.y}, {0.f, 1.f}, {1.f, 0.f});
@@ -525,7 +592,7 @@ namespace Apex {
 			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ASSET_BROWSER_ITEM")) {
 				auto path = fs::path(static_cast<const char*>(payload->Data));
 				if (path.extension() == ".fbx") {
-					FBXImporter::Import(path, m_ActiveScene);
+					FBXImporter::Import(FileSystem::GetFileIfExists(path), m_ActiveScene);
 				} else if (path.extension() == ".apx") {
 					SceneOpen(path);
 				}
@@ -559,11 +626,45 @@ namespace Apex {
 		ImGui::PopStyleColor();
 		ImGui::EndChild();
 
+		DrawGizmos();
+
 		ImGui::End();
 		ImGui::PopStyleVar();
 	}
-	
-	void EditorLayer::ShowLogger()
+
+	void EditorLayer::DrawGizmos()
+	{
+		Entity entity = m_SceneHierarchyPanel.GetSelectedEntity();
+		if (entity && m_GizmoType != -1) {
+			//ImGuizmo::SetOrthographic(m_EditorCamera.GetProjectionType() == Camera::ProjectionType::Orthographic);
+			ImGuizmo::SetOrthographic(false);
+			ImGuizmo::SetDrawlist();
+			ImGuizmo::SetRect(m_GameViewportPos.x, m_GameViewportPos.y, m_GameViewportSize.x, m_GameViewportSize.y);
+
+			// Camera
+			auto& cameraProjection = m_EditorCamera.GetProjection();
+			auto cameraView = glm::inverse(m_EditorCameraController->GetTransform());
+
+			// Entity transform
+			auto& transComp = entity.Transform();
+			auto transform = transComp.GetTransform();
+
+			ImGuizmo::Manipulate(glm::value_ptr(cameraView), glm::value_ptr(cameraProjection),
+			                     static_cast<ImGuizmo::OPERATION>(m_GizmoType), ImGuizmo::MODE::WORLD, glm::value_ptr(transform));
+
+			if ( ImGuizmo::IsUsing()) {
+				glm::vec3 translation, rotation, scale;
+				Math::DecomposeTransform(transform, translation, rotation, scale);
+
+				glm::vec3 deltaRotation = rotation - transComp.rotation;
+				transComp.translation = translation;
+				transComp.rotation += deltaRotation;
+				transComp.scale = scale;
+			}
+		}
+	}
+
+	void EditorLayer::Logger()
 	{
 		static bool showLogLevel = false;
 		static bool showSourceLocation = false;
@@ -573,7 +674,7 @@ namespace Apex {
 		m_LogPatternChanged = false;
 
 		ImGui::PushFont(ImGui::GetIO().Fonts->Fonts[static_cast<uint32_t>(EditorFontIndex::UI)]);
-		APEX_SCOPE_GUARD { ImGui::PopFont(); };
+		ON_SCOPE_END { ImGui::PopFont(); };
 		ImGui::Begin("Log");
 		if (ImGui::BeginPopup("Options")) {
 			if (ImGui::Checkbox("Log Level", &showLogLevel)) {
@@ -631,7 +732,7 @@ namespace Apex {
 		m_LogPanel.OnImGuiRender();
 	}
 	
-	void EditorLayer::ShowMainMenuBar()
+	void EditorLayer::MainMenuBar()
 	{
 		const auto origFramePadding = ImGui::GetStyle().FramePadding;
 		ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, { origFramePadding.x + 4.f, origFramePadding.y + 3.f });
@@ -673,7 +774,7 @@ namespace Apex {
 				ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, { _origFramePadding.x + 14.f, _origFramePadding.y + 2.f });
 				ImGui::PushStyleColor(ImGuiCol_Button, ImGui::GetColorU32(ImGuiCol_MenuBarBg));
 				ImGui::PushFont(ImGui::GetIO().Fonts->Fonts[(uint32_t)EditorFontIndex::Window]);
-				APEX_SCOPE_GUARD {
+				ON_SCOPE_END {
 					ImGui::PopFont();
 					ImGui::PopStyleColor(1);
 					ImGui::PopStyleVar();
@@ -716,7 +817,7 @@ namespace Apex {
 		ImGui::PopStyleVar(2);
 	}
 
-	void EditorLayer::ShowSceneToolbar()
+	void EditorLayer::SceneToolbar()
 	{
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 2));
 		ImGui::PushStyleVar(ImGuiStyleVar_ItemInnerSpacing, ImVec2(0, 0));
@@ -782,7 +883,7 @@ namespace Apex {
 		}
 	}
 
-	void EditorLayer::ShowComputeShaderOutput()
+	void EditorLayer::ComputeShaderOutput()
 	{
 		if (ImGui::Button("Run-Basic-Texture")) {
 			m_ComputeShader->Bind();

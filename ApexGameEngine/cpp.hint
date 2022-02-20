@@ -1,0 +1,6 @@
+// Hint files help the Visual Studio IDE interpret Visual C++ identifiers
+// such as names of functions and macros.
+// For more information see https://go.microsoft.com/fwlink/?linkid=865984
+#define APEX_CORE_ASSERT(x, __VA_ARGS__) { if(!(x)) { APEX_CORE_ERROR("Assertion Failed : {0}", __VA_ARGS__); __DEBUG_BREAK__; } }
+#define APEX_CORE_ASSERT(x, __VA_ARGS__)
+#define ON_SCOPE_END const Apex::ScopeGuard ANONYMOUS_VAR(scope_guard_) = [&]()

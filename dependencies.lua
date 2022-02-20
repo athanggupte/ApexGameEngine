@@ -14,6 +14,7 @@ IncludeDirs["irrKlang"] =     "%{wks.location}/ApexGameEngine/vendor/irrKlang/in
 IncludeDirs["entt"] =         "%{wks.location}/ApexGameEngine/vendor/entt/single_include/"
 IncludeDirs["pugixml"] =      "%{wks.location}/ApexGameEngine/vendor/pugixml/src/"
 IncludeDirs["ImGuizmoQuat"] = "%{wks.location}/ApexGameEngine/vendor/imguizmo_quat/imGuIZMO.quat/"
+IncludeDirs["ImGuizmo"] =     "%{wks.location}/ApexGameEngine/vendor/ImGuizmo/"
 IncludeDirs["ApexIK"] =       "%{wks.location}/ApexGameEngine/modules/ApexIK/ApexIK/include/"
 IncludeDirs["FBX"] =          "%{FBX_SDK}/include"
 

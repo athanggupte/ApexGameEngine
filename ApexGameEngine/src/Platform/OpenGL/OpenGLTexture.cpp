@@ -4,12 +4,13 @@
 #include "Apex/Graphics/Renderer/Renderer.h"
 #include "Apex/Utils/Utils.h"
 #include "Apex/Core/FileSystem/FileSystem.h"
+#include "Apex/Utils/ScopeGuard.hpp"
 
 #include <glad/glad.h>
 #include <stb_image.h>
 
-namespace Apex {
-
+namespace Apex
+{
 	using AF = TextureAccessFormat;
 	using IF = TextureInternalFormat;
 	using DT = TextureDataType;
@@ -28,17 +29,29 @@ namespace Apex {
 			//case AF::I_BGR	:	
 			case AF::RGBA	:	return GL_RGBA;
 			case AF::BGRA	:	return GL_BGRA;
-			//case AF::I_RGBA	:	
+		//case AF::I_RGBA	:	
 			//case AF::I_BGRA	:	
+			case AF::DEPTH			:	return GL_DEPTH_COMPONENT;
+			case AF::STENCIL		:	return GL_STENCIL_INDEX;
 		}
+		return 0;
 	}
-	
+
 #define GET_GL_INTERNAL_FORMAT(internalFormat, dataTypeSuffix) GL_##internalFormat##dataTypeSuffix
 	
 	constexpr static GLenum GetOpenGLInternalFormat(TextureInternalFormat internalFormat, TextureDataType dataType)
 	{
 		if (internalFormat == IF::SRGB8) return GL_SRGB8;
 		if (internalFormat == IF::SRGBA8) return GL_SRGB8_ALPHA8;
+
+		if (internalFormat == IF::DEPTH16) return GL_DEPTH_COMPONENT16;
+		if (internalFormat == IF::DEPTH24) return GL_DEPTH_COMPONENT24;
+		if (internalFormat == IF::DEPTH32) return GL_DEPTH_COMPONENT32F;
+
+		if (internalFormat == IF::D24S8) return GL_DEPTH24_STENCIL8;
+		if (internalFormat == IF::D32S8) return GL_DEPTH32F_STENCIL8;
+
+		if (internalFormat == IF::STENCIL8) return GL_STENCIL_INDEX8;
 
 		switch (dataType)
 		{
@@ -58,6 +71,8 @@ namespace Apex {
 					case IF::RG16: return GL_RG16;
 					case IF::RGB16: return GL_RGB16;
 					case IF::RGBA16: return GL_RGBA16;
+
+					default: return GL_RGBA8;
 				}
 			}
 			case DT::INT: {
@@ -77,6 +92,8 @@ namespace Apex {
 					case IF::RG32: return GL_RG32I;
 					case IF::RGB32: return GL_RGB32I;
 					case IF::RGBA32: return GL_RGBA32I;
+
+					default: return GL_RGBA16I;
 				}
 			}
 			case DT::UINT: {
@@ -96,6 +113,8 @@ namespace Apex {
 					case IF::RG32: return GL_RG32UI;
 					case IF::RGB32: return GL_RGB32UI;
 					case IF::RGBA32: return GL_RGBA32UI;
+
+					default: return GL_RGBA16UI;
 				}
 			}
 			case DT::FLOAT: {
@@ -110,9 +129,12 @@ namespace Apex {
 					case IF::RG32: return GL_RG32F;
 					case IF::RGB32: return GL_RGB32F;
 					case IF::RGBA32: return GL_RGBA32F;
+
+					default: return GL_RGBA16F;
 				}
 			}
 		}
+		return 0;
 	}
 	
 	constexpr static GLenum GetOpenGLDataType(TextureDataType dataType)
@@ -127,42 +149,81 @@ namespace Apex {
 			case DT::UINT: return GL_UNSIGNED_INT;
 			case DT::FLOAT: return GL_FLOAT;
 		}
+		return 0;
 	}
-	
+
 	constexpr static uint32_t GetOpenGLPixelSize(TextureInternalFormat internalFormat)
 	{
 		if (internalFormat == IF::SRGB8) return 3;
 		if (internalFormat == IF::SRGBA8) return 4;
 		return (((uint32_t)internalFormat & 0xf0) >> 4) * (1 << ((uint32_t)internalFormat & 0x0f));
 	}
-	
+
+	template<TextureType type = TextureType::Texture2D>
+	constexpr static std::pair<GLint, GLint> GetMinMagFilterPair(TextureFiltering filtering)
+	{
+		std::pair<GLint, GLint> ret;
+		/*if constexpr (type == TextureType::Texture3D) {
+			
+		}*/
+		switch (filtering)
+		{
+		case TextureFiltering::NEAREST:
+			{
+				ret.first = GL_NEAREST;
+				ret.second = GL_NEAREST;
+				break;
+			}
+		case TextureFiltering::BILINEAR:
+			{
+				ret.first = GL_LINEAR;
+				ret.second = GL_LINEAR;
+				break;
+			}
+		case TextureFiltering::TRILINEAR:
+			{
+				ret.first = GL_LINEAR_MIPMAP_LINEAR;
+				ret.second = GL_LINEAR;
+				break;
+			}
+		}
+		return ret;
+	}
+
 	//////////////////////////////////////////////////////////////////////
 	/*---------------------------Texture 2D-----------------------------*/
 	//////////////////////////////////////////////////////////////////////
 
-	OpenGLTexture2D::OpenGLTexture2D(uint32_t width, uint32_t height, const TextureSpec& spec, const std::string& name)
-		: m_Width(width), m_Height(height), m_Path(name)
+	OpenGLTexture2D::OpenGLTexture2D(uint32_t width, uint32_t height, const TextureSpec& spec, std::string name)
+		: m_Name(std::move(name)), m_Width(width), m_Height(height),
+		  m_InternalFormat(GetOpenGLInternalFormat(spec.internalFormat, spec.dataType)),
+		  m_AccessFormat(GetOpenGLAccessFormat(spec.accessFormat)),
+		  m_DataType(GetOpenGLDataType(spec.dataType)), m_Filtering(spec.filtering),
+		  m_PixelSize(GetOpenGLPixelSize(spec.internalFormat))
 	{
-		m_Specification = spec;
+		//m_Specification = spec;
 
-		m_AccessFormat = GetOpenGLAccessFormat(spec.accessFormat);
-		m_InternalFormat = GetOpenGLInternalFormat(spec.internalFormat, spec.dataType);
-		m_DataType = GetOpenGLDataType(spec.dataType);
-		m_PixelSize = GetOpenGLPixelSize(spec.internalFormat);
-		
 		glCreateTextures(GL_TEXTURE_2D, 1, &m_RendererID);
 
-		glTextureParameteri(m_RendererID, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTextureParameteri(m_RendererID, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-		
+		auto [minFilter, magFilter] = GetMinMagFilterPair(m_Filtering);
+		glTextureParameteri(m_RendererID, GL_TEXTURE_MIN_FILTER, minFilter);
+		glTextureParameteri(m_RendererID, GL_TEXTURE_MAG_FILTER, magFilter);
+
+		if (spec.accessFormat == AF::DEPTH) {
+			glTextureParameteri(m_RendererID, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
+			glTextureParameteri(m_RendererID, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
+			constexpr float borderColor[] = { 1.0f, 1.0f, 1.0f, 1.0f };
+			glTextureParameterfv(m_RendererID, GL_TEXTURE_BORDER_COLOR, borderColor);
+		}
+
 		glTextureStorage2D(m_RendererID, 1, m_InternalFormat, m_Width, m_Height);
 
-		if(!m_Path.empty())
-			glObjectLabel(GL_TEXTURE, m_RendererID, -1, m_Path.c_str());
+		if(!m_Name.empty())
+			glObjectLabel(GL_TEXTURE, m_RendererID, -1, m_Name.c_str());
 	}
 	
-	OpenGLTexture2D::OpenGLTexture2D(const fs::path& path, bool useSRGB, bool useHDR, const TextureFiltering& filtering)
-		: m_Path(path.string())
+	OpenGLTexture2D::OpenGLTexture2D(const fs::path& path, bool useSRGB, bool useHDR, TextureFiltering filtering)
+		: m_Name(path.string())
 	{
 		int width, height, channels;
 		stbi_set_flip_vertically_on_load(0);
@@ -184,32 +245,37 @@ namespace Apex {
 			pixels = stbi_load_from_memory(data.data(), data.size(), &width, &height, &channels, 0);
 		}
 		APEX_CORE_ASSERT(pixels, fmt::format("Failed to load image : {0} | [stbi]: {1}", path, stbi_failure_reason()));
+		ON_SCOPE_END { stbi_image_free(pixels); };
 
 		m_Width = width;
 		m_Height = height;
 
 		GLenum internalFormat = 0, accessFormat = 0;
+		TextureInternalFormat apxInternalFormat = TextureInternalFormat::RGBA8;
 
 		if (channels == 1) {
 			accessFormat = GL_RED;
 			internalFormat = useHDR ? GL_R16F : GL_R8;
 
-			m_Specification.accessFormat = TextureAccessFormat::RED;
-			m_Specification.internalFormat = useHDR ? TextureInternalFormat::R16 : TextureInternalFormat::R8;
+			//m_Specification.accessFormat = TextureAccessFormat::RED;
+			//m_Specification.internalFormat = useHDR ? TextureInternalFormat::R16 : TextureInternalFormat::R8;
+			apxInternalFormat = useHDR ? TextureInternalFormat::R16 : TextureInternalFormat::R8;
 		}
 		else if (channels == 3) {
 			accessFormat = GL_RGB;
 			internalFormat = useSRGB ? GL_SRGB8 : useHDR ? GL_RGB16F : GL_RGB8;
 			
-			m_Specification.accessFormat = TextureAccessFormat::RGB;
-			m_Specification.internalFormat = useSRGB ? TextureInternalFormat::SRGB8 : useHDR ? TextureInternalFormat::RGB16 : TextureInternalFormat::RGB8;
+			//m_Specification.accessFormat = TextureAccessFormat::RGB;
+			//m_Specification.internalFormat = useSRGB ? TextureInternalFormat::SRGB8 : useHDR ? TextureInternalFormat::RGB16 : TextureInternalFormat::RGB8;
+			apxInternalFormat = useSRGB ? TextureInternalFormat::SRGB8 : useHDR ? TextureInternalFormat::RGB16 : TextureInternalFormat::RGB8;
 		}
 		else if (channels == 4) {
 			accessFormat = GL_RGBA;
 			internalFormat = useSRGB ? GL_SRGB8_ALPHA8 : useHDR ? GL_RGBA16F : GL_RGBA8;
 			
-			m_Specification.accessFormat = TextureAccessFormat::RGBA;
-			m_Specification.internalFormat = useSRGB ? TextureInternalFormat::SRGBA8 : useHDR ? TextureInternalFormat::RGBA16 : TextureInternalFormat::RGBA8;
+			//m_Specification.accessFormat = TextureAccessFormat::RGBA;
+			//m_Specification.internalFormat = useSRGB ? TextureInternalFormat::SRGBA8 : useHDR ? TextureInternalFormat::RGBA16 : TextureInternalFormat::RGBA8;
+			apxInternalFormat = useSRGB ? TextureInternalFormat::SRGBA8 : useHDR ? TextureInternalFormat::RGBA16 : TextureInternalFormat::RGBA8;
 		}
 		
 		APEX_CORE_ASSERT(internalFormat && accessFormat, fmt::format("Image format not supported : {0}\nChannels : {1}", path, channels));
@@ -217,18 +283,19 @@ namespace Apex {
 		m_AccessFormat = accessFormat;
 		m_InternalFormat = internalFormat;
 		m_DataType = useHDR ? GL_FLOAT : GL_UNSIGNED_BYTE;
-		m_PixelSize = GetOpenGLPixelSize(m_Specification.internalFormat);
-		m_Specification.dataType = useHDR ? TextureDataType::FLOAT : TextureDataType::UBYTE;
+		//m_PixelSize = GetOpenGLPixelSize(m_Specification.internalFormat);
+		m_PixelSize = GetOpenGLPixelSize(apxInternalFormat);
+		m_Filtering = filtering;
+		//m_Specification.dataType = useHDR ? TextureDataType::FLOAT : TextureDataType::UBYTE;
 
 		glCreateTextures(GL_TEXTURE_2D, 1, &m_RendererID);
 
-		glTextureParameteri(m_RendererID, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-		glTextureParameteri(m_RendererID, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		auto [minFilter, magFilter] = GetMinMagFilterPair(m_Filtering);
+		glTextureParameteri(m_RendererID, GL_TEXTURE_MIN_FILTER, minFilter);
+		glTextureParameteri(m_RendererID, GL_TEXTURE_MAG_FILTER, magFilter);
 
 		glTextureStorage2D(m_RendererID, 1, m_InternalFormat, m_Width, m_Height);
 		glTextureSubImage2D(m_RendererID, 0, 0, 0, m_Width, m_Height, m_AccessFormat, m_DataType, pixels);
-
-		stbi_image_free(pixels);
 
 		glObjectLabel(GL_TEXTURE, m_RendererID, -1, path.filename().string().c_str());
 	}
@@ -270,8 +337,9 @@ namespace Apex {
 
 		glCreateTextures(GL_TEXTURE_2D, 1, &m_RendererID);
 
-		glTextureParameteri(m_RendererID, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTextureParameteri(m_RendererID, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		auto [minFilter, magFilter] = GetMinMagFilterPair(m_Filtering);
+		glTextureParameteri(m_RendererID, GL_TEXTURE_MIN_FILTER, minFilter);
+		glTextureParameteri(m_RendererID, GL_TEXTURE_MAG_FILTER, magFilter);
 		
 		glTextureStorage2D(m_RendererID, 1, m_InternalFormat, m_Width, m_Height);
 	}
@@ -280,15 +348,14 @@ namespace Apex {
 	/*---------------------Texture 2D Multisample-----------------------*/
 	//////////////////////////////////////////////////////////////////////
 
-	OpenGLTexture2DMS::OpenGLTexture2DMS(uint32_t width, uint32_t height, const TextureSpec& spec, uint32_t samples, const std::string& name)
-		: m_Width(width), m_Height(height), m_Name(name)
+	OpenGLTexture2DMS::OpenGLTexture2DMS(uint32_t width, uint32_t height, const TextureSpec& spec, uint32_t samples, std::string name)
+		: m_Name(std::move(name)), m_Width(width), m_Height(height),
+		  m_InternalFormat(GetOpenGLInternalFormat(spec.internalFormat, spec.dataType)),
+		  m_AccessFormat(GetOpenGLAccessFormat(spec.accessFormat)),
+		  m_DataType(GetOpenGLDataType(spec.dataType)),
+		  m_PixelSize(GetOpenGLPixelSize(spec.internalFormat))
 	{
-		m_Specification = spec;
-
-		m_AccessFormat = GetOpenGLAccessFormat(spec.accessFormat);
-		m_InternalFormat = GetOpenGLInternalFormat(spec.internalFormat, spec.dataType);
-		m_DataType = GetOpenGLDataType(spec.dataType);
-		m_PixelSize = GetOpenGLPixelSize(spec.internalFormat);
+		//m_Specification = spec;
 
 		glCreateTextures(GL_TEXTURE_2D_MULTISAMPLE, 1, &m_RendererID);
 
@@ -338,19 +405,21 @@ namespace Apex {
 	/*-------------------------Texture Cubemap--------------------------*/
 	//////////////////////////////////////////////////////////////////////
 
-	OpenGLTextureCubemap::OpenGLTextureCubemap(const std::array<std::filesystem::path, 6>& paths, bool useHDR)
+	OpenGLTextureCubemap::OpenGLTextureCubemap(const std::array<std::filesystem::path, 6>& paths, bool useHDR, TextureFiltering filtering)
+		: m_InternalFormat(useHDR ? GL_RGB16F : GL_RGB8),
+		  m_DataType(useHDR ? GL_FLOAT : GL_UNSIGNED_BYTE),
+		  m_Filtering(filtering),
+		  m_PixelSize(useHDR ? 6 : 3)
 	{
 		glCreateTextures(GL_TEXTURE_CUBE_MAP, 1, &m_RendererID);
-
-		m_InternalFormat = useHDR ? GL_RGB16F : GL_RGB8;
-		m_DataType = useHDR ? GL_FLOAT : GL_UNSIGNED_BYTE;
-		m_PixelSize = useHDR ? 6 : 3;
 
 		glTextureParameteri(m_RendererID, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 		glTextureParameteri(m_RendererID, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 		glTextureParameteri(m_RendererID, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
-		glTextureParameteri(m_RendererID, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTextureParameteri(m_RendererID, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+		auto [minFilter, magFilter] = GetMinMagFilterPair(m_Filtering);
+		glTextureParameteri(m_RendererID, GL_TEXTURE_MIN_FILTER, minFilter);
+		glTextureParameteri(m_RendererID, GL_TEXTURE_MAG_FILTER, magFilter);
 
 		for (int faceIndex = 0; faceIndex < 6; faceIndex++) {
 			std::vector<uint8_t> tmp_data;
@@ -383,26 +452,27 @@ namespace Apex {
 	}
 
 	OpenGLTextureCubemap::OpenGLTextureCubemap(uint32_t size, const TextureSpec& spec, const std::string& name)
-		: m_Size(size)
+		: m_Name(name), m_Size(size), m_InternalFormat(GetOpenGLInternalFormat(spec.internalFormat, spec.dataType)),
+		  m_DataType(GetOpenGLDataType(spec.dataType)),
+		  m_Filtering(spec.filtering),
+		  m_PixelSize(GetOpenGLPixelSize(spec.internalFormat))
 	{
-		m_Specification = spec;
+		//m_Specification = spec;
 
-		m_InternalFormat = GetOpenGLInternalFormat(spec.internalFormat, spec.dataType);
-		m_DataType = GetOpenGLDataType(spec.dataType);
-		m_PixelSize = GetOpenGLPixelSize(spec.internalFormat);
-		
 		glCreateTextures(GL_TEXTURE_CUBE_MAP, 1, &m_RendererID);
 
 		glTextureParameteri(m_RendererID, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 		glTextureParameteri(m_RendererID, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 		glTextureParameteri(m_RendererID, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
-		glTextureParameteri(m_RendererID, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTextureParameteri(m_RendererID, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+		auto [minFilter, magFilter] = GetMinMagFilterPair(m_Filtering);
+		glTextureParameteri(m_RendererID, GL_TEXTURE_MIN_FILTER, minFilter);
+		glTextureParameteri(m_RendererID, GL_TEXTURE_MAG_FILTER, magFilter);
 
 		glTextureStorage2D(m_RendererID, 1, m_InternalFormat, m_Size, m_Size);
 
 		if(!name.empty())
-			glObjectLabel(GL_TEXTURE, m_RendererID, -1, name.c_str());
+			glObjectLabel(GL_TEXTURE, m_RendererID, -1, m_Name.c_str());
 	}
 
 	OpenGLTextureCubemap::~OpenGLTextureCubemap()
@@ -426,15 +496,72 @@ namespace Apex {
 		APEX_CORE_ERROR("Function (" __FUNCSIG__ ") NOT implemented!");
 	}
 
-	const std::string& OpenGLTextureCubemap::GetPath() const
-	{
-		return "";
-	}
-
 	void OpenGLTextureCubemap::GenerateMipmap() const
 	{
 		glGenerateTextureMipmap(m_RendererID);
 	}
+
+	//////////////////////////////////////////////////////////////////////
+	/*-----------------------Texture 2D Array---------------------------*/
+	//////////////////////////////////////////////////////////////////////
+
+	OpenGLTexture2DArray::OpenGLTexture2DArray(uint32_t width, uint32_t height, uint32_t count, const TextureSpec& spec, std::string name)
+		: m_Name(std::move(name)), m_Width(width), m_Height(height), m_Count(count),
+		  m_InternalFormat(GetOpenGLInternalFormat(spec.internalFormat, spec.dataType)),
+		  m_AccessFormat(GetOpenGLAccessFormat(spec.accessFormat)),
+		  m_DataType(GetOpenGLDataType(spec.dataType)),
+		  m_Filtering(spec.filtering), m_PixelSize(GetOpenGLPixelSize(spec.internalFormat))
+	{
+		glCreateTextures(GL_TEXTURE_2D_ARRAY, 1, &m_RendererID);
+
+		auto [minFilter, magFilter] = GetMinMagFilterPair(m_Filtering);
+		glTextureParameteri(m_RendererID, GL_TEXTURE_MIN_FILTER, minFilter);
+		glTextureParameteri(m_RendererID, GL_TEXTURE_MAG_FILTER, magFilter);
+
+		if (spec.accessFormat == AF::DEPTH) {
+			glTextureParameteri(m_RendererID, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
+			glTextureParameteri(m_RendererID, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
+			constexpr float borderColor[] = { 1.0f, 1.0f, 1.0f, 1.0f };
+			glTextureParameterfv(m_RendererID, GL_TEXTURE_BORDER_COLOR, borderColor);
+		}
+
+		glTextureStorage3D(m_RendererID, 1, m_InternalFormat, m_Width, m_Height, m_Count);
+
+		if(!m_Name.empty())
+			glObjectLabel(GL_TEXTURE, m_RendererID, -1, m_Name.c_str());
+	}
+
+	OpenGLTexture2DArray::~OpenGLTexture2DArray()
+	{
+		glDeleteTextures(1, &m_RendererID);
+	}
+
+	void OpenGLTexture2DArray::Bind(uint32_t slot) const
+	{
+		glBindTextureUnit(slot, m_RendererID);
+	}
+
+	void OpenGLTexture2DArray::BindImage(uint32_t unit, int index, bool read, bool write) const
+	{
+		APEX_CORE_ASSERT(read || write, "Image should be atleast readable or writable");
+		glBindImageTexture(unit, m_RendererID, 0, GL_TRUE, index, (read && write) ? GL_READ_WRITE : (read) ? GL_READ_ONLY : GL_WRITE_ONLY, m_InternalFormat);
+	}
+
+	void OpenGLTexture2DArray::Invalidate(uint32_t width, uint32_t height)
+	{
+		APEX_CORE_ERROR("Function (" __FUNCSIG__ ") NOT implemented!");
+	}
+
+	void OpenGLTexture2DArray::SetData(void* data, int index, uint32_t size)
+	{
+		glTextureSubImage3D(m_RendererID, 0, 0, 0, index, m_Width, m_Height, 1, m_AccessFormat, m_DataType, data);
+	}
+
+	void OpenGLTexture2DArray::GenerateMipmap() const
+	{
+		glGenerateTextureMipmap(m_RendererID);
+	}
+
 
 	//////////////////////////////////////////////////////////////////////
 	/*------------------------Texture 2D HDR----------------------------*/
@@ -518,13 +645,16 @@ namespace Apex {
 	/*-----------------------Texture Depth 2D---------------------------*/
 	//////////////////////////////////////////////////////////////////////
 
-	OpenGLTextureDepth2D::OpenGLTextureDepth2D(uint32_t width, uint32_t height)
-		: m_Width(width), m_Height(height)
+#ifdef SEPARATE_DEPTH_CLASS
+  	OpenGLTextureDepth2D::OpenGLTextureDepth2D(uint32_t width, uint32_t height)
+		: m_Width(width), m_Height(height), m_Filtering(TextureFiltering::NEAREST)
 	{
 		glCreateTextures(GL_TEXTURE_2D, 1, &m_RendererID);
-		
-		glTextureParameteri(m_RendererID, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-		glTextureParameteri(m_RendererID, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+		auto [minFilter, magFilter] = GetMinMagFilterPair(m_Filtering);
+		glTextureParameteri(m_RendererID, GL_TEXTURE_MIN_FILTER, minFilter);
+		glTextureParameteri(m_RendererID, GL_TEXTURE_MAG_FILTER, magFilter);
+
 		glTextureParameteri(m_RendererID, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
 		glTextureParameteri(m_RendererID, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
 		float borderColor[] = { 1.0f, 1.0f, 1.0f, 1.0f };
@@ -532,6 +662,7 @@ namespace Apex {
 
 		/*TODO: Make depth texture internal format customizable*/
 		glTextureStorage2D(m_RendererID, 1, GL_DEPTH24_STENCIL8, m_Width, m_Height);
+		//glTextureStorage2D(m_RendererID, 1, GL_DEPTH_COMPONENT24, m_Width, m_Height);
 	}
 
 	OpenGLTextureDepth2D::~OpenGLTextureDepth2D()
@@ -563,7 +694,9 @@ namespace Apex {
 	{
 		glGenerateTextureMipmap(m_RendererID);
 	}
-	
+#endif
+
+
 	//////////////////////////////////////////////////////////////////////
 	/*------------------------Image Store 2D----------------------------*/
 	//////////////////////////////////////////////////////////////////////

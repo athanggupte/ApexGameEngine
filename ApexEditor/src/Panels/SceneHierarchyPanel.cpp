@@ -27,10 +27,13 @@ namespace Apex {
 			DrawEntityNode(entity);
 		});
 		
-		if (ImGui::IsWindowHovered() && ImGui::IsMouseDown(ImGuiMouseButton_Left))
+		if (ImGui::IsWindowHovered() && ImGui::IsMouseClicked(ImGuiMouseButton_Left))
 			m_SelectedEntity = {};
 
 		if (ImGui::BeginPopup("Create")) {
+			if (ImGui::MenuItem("Empty Entity")) {
+				m_Context->CreateEntity();
+			}
 			if (ImGui::MenuItem("Camera")) {}
 			if (ImGui::MenuItem("Cube")) {}
 			if (ImGui::MenuItem("Plane")) {}
@@ -52,10 +55,21 @@ namespace Apex {
 		flags |= (m_SelectedEntity == entity) ? ImGuiTreeNodeFlags_Selected : 0;
 		// flags |= entity.HasChildren() ? ImGuiTreeNodeFlags_Leaf : 0;
 
+		if (ImGui::BeginPopup("entity-menu-popup")) {
+			if (ImGui::MenuItem("Delete")) {
+				m_SelectedEntity.Destroy();
+				m_SelectedEntity = {};
+			}
+			ImGui::EndPopup();
+		}
+
 		// TODO: Eliminate the need for copying string_view to string
 		bool opened = ImGui::TreeNodeEx((void*)(uint32_t)entity, flags, std::string(tag.str()).c_str());
-		if (ImGui::IsItemClicked()) {
+		if (ImGui::IsItemClicked(ImGuiMouseButton_Left)) {
 			m_SelectedEntity = entity;
+		} else if (ImGui::IsItemClicked(ImGuiMouseButton_Right)) {
+			m_SelectedEntity = entity;
+			ImGui::OpenPopup("entity-menu-popup");
 		}
 		
 		if (opened) {
@@ -67,6 +81,7 @@ namespace Apex {
 			
 			ImGui::TreePop();
 		}
+
 	}
 	
 }

@@ -7,6 +7,7 @@ namespace Apex {
 	{
 		Resource<Mesh> mesh;
 		Resource<Material> material;
+		bool castShadows = true;
 
 		COMPONENT_DEFAULT_CTR(MeshRendererComponent);
 

@@ -71,7 +71,7 @@ namespace Apex {
 	{
 		const auto materialResName = TO_STRING(Strings::Get(m_ContextMaterial.GetId()));
 		ImGui::PushStyleVar(ImGuiStyleVar_IndentSpacing, 8.f);
-		APEX_SCOPE_GUARD { ImGui::PopStyleVar(); };
+		ON_SCOPE_END { ImGui::PopStyleVar(); };
 
 		if (ImGui::TreeNodeEx((void*)typeid(Material).hash_code(), ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_Framed, materialResName.c_str())) {
 			if (m_ContextMaterial.IsLoaded()) {

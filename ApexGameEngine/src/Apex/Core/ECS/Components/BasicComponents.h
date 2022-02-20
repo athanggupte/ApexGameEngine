@@ -2,6 +2,8 @@
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+#define GLM_ENABLE_EXPERIMENTAL
+#include <glm/gtx/quaternion.hpp>
 
 #define COMPONENT_DEFAULT_CTR(name)	name() = default;\
 									name(const name&) = default
@@ -15,6 +17,7 @@
 
 #include "Apex/Core/ECS/EntityScript.h"
 #include "Apex/Graphics/Font.h"
+
 
 namespace Apex {
 
@@ -50,9 +53,11 @@ namespace Apex {
 
 		[[nodiscard]] glm::mat4 GetTransform() const
 		{
-			const glm::mat4 _rotation = glm::rotate(glm::mat4(1.f), rotation.x, { 1.f, 0.f, 0.f })
+			const glm::mat4 _rotation = glm::toMat4(glm::quat(rotation));
+
+			/*const glm::mat4 _rotation = glm::rotate(glm::mat4(1.f), rotation.x, { 1.f, 0.f, 0.f })
 							   * glm::rotate(glm::mat4(1.f), rotation.y, { 0.f, 1.f, 0.f })
-							   * glm::rotate(glm::mat4(1.f), rotation.z, { 0.f, 0.f, 1.f });
+							   * glm::rotate(glm::mat4(1.f), rotation.z, { 0.f, 0.f, 1.f });*/
 			
 			return glm::translate(glm::mat4(1.f), translation)
 				 * _rotation

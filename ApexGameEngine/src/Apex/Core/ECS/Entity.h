@@ -14,7 +14,9 @@ namespace Apex {
 		Entity() = default;
 		Entity(const Entity& other) = default;
 		Entity(entt::entity id, Scene* scene) : m_EntityId(id), m_Scene(scene) {}
-		
+
+		void Destroy();
+
 		template<typename Component_t, typename... Args>
 		inline Component_t& AddComponent(Args&& ... args)
 		{

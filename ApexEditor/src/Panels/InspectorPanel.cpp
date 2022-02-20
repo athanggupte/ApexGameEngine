@@ -114,7 +114,7 @@ namespace Apex {
 			ImGuiTreeNodeFlags_SpanAvailWidth | ImGuiTreeNodeFlags_Framed | ImGuiTreeNodeFlags_FramePadding;
 
 		ImGui::PushStyleVar(ImGuiStyleVar_IndentSpacing,  0.f);
-		APEX_SCOPE_GUARD
+		ON_SCOPE_END
 		{
 			ImGui::PopStyleVar(1);
 		};
@@ -382,7 +382,13 @@ namespace Apex {
 					meshComp.mesh = Application::Get().GetResourceManager().Get<Mesh>(RESNAME("default-cube"));
 					//meshComp.material = Application::Get().GetResourceManager().Get<Material>(RESNAME("material_Unlit"));
 				}
-						
+
+			/*if (!m_ContextEntity.HasComponent<TextRendererComponent>())
+				if (ImGui::MenuItem("Text Renderer")) {
+					auto& textComp = m_ContextEntity.AddComponent<TextRendererComponent>();
+					textComp.text = "Text";
+				}*/
+
 			if (ImGui::BeginMenu("Physics")) {
 				
 				// if (!m_ContextEntity.HasComponent<Collider3DComponent>())

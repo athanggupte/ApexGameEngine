@@ -41,4 +41,4 @@ namespace Apex {
 
 }
 
-#define APEX_SCOPE_GUARD const Apex::ScopeGuard ANONYMOUS_VAR(scope_guard_) = [&]()
+#define ON_SCOPE_END const Apex::ScopeGuard ANONYMOUS_VAR(scope_guard_) = [&]()

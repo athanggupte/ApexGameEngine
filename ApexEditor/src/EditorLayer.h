@@ -3,6 +3,7 @@
 
 //#include <irrKlang.h>
 
+#include "Apex/Graphics/ShadowMap.h"
 #include "Panels/SceneHierarchyPanel.h"
 #include "Panels/InspectorPanel.h"
 #include "Panels/LogPanel.h"
@@ -38,13 +39,14 @@ namespace Apex {
 		void BeginDockspace();
 		void EndDockspace();
 		void ShowSettings();
-		void ShowGameViewport();
-		void ShowLogger();
-		void ShowMainMenuBar();
-		void ShowSceneToolbar();
+		void GameViewport();
+		void DrawGizmos();
+		void Logger();
+		void MainMenuBar();
+		void SceneToolbar();
 		void DrawFileMenu();
 		void DrawEditMenu();
-		void ShowComputeShaderOutput();
+		void ComputeShaderOutput();
 
 	protected:
 		// Event Functions
@@ -97,6 +99,7 @@ namespace Apex {
 		Ref<Framebuffer> m_GameFramebufferMS;
 		Ref<Framebuffer> m_PostProcessFramebuffer;
 		glm::vec2 m_GameViewportSize;
+		glm::vec2 m_GameViewportPos;
 
 		Camera m_EditorCamera;
 		OrthographicCameraController2D m_OrthographicCameraController;
@@ -128,7 +131,13 @@ namespace Apex {
 		Ref<Texture> m_IconEditor;
 
 		Ref<Shader> m_ShaderGrid;
-		
+		int m_GizmoType = -1;
+
+
+		// Testing
+		// TODO: Refactor and rearrange these members
+		Ref<ShadowMap> m_ShadowMap;
+
 		//irrklang::ISoundEngine* m_SoundEngine;
 		//irrklang::ISound* m_Sound;
 	};

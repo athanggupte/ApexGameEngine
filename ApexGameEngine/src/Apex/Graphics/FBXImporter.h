@@ -9,8 +9,8 @@ namespace Apex {
 		static void Init();
 		static void Shutdown();
 
-		static void Import(const std::filesystem::path& filepath, const Ref<Scene>& scene = { nullptr });
-		static Ref<Mesh> LoadMesh(const std::filesystem::path& filepath, const std::string& nodeName = {},
+		static void Import(const Ref<File>& file, const Ref<Scene>& scene = { nullptr });
+		static Ref<Mesh> LoadMesh(const  Ref<File>& file, const std::string& nodeName = {},
 		                          const Ref<Scene>& scene = {nullptr});
 	};
 

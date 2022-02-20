@@ -9,8 +9,11 @@ namespace Apex{
 
 	void BufferLayout::AddElement(BufferElement element)
 	{
-		const auto& lastElement = m_Elements.back();
-		element.e_Offset = lastElement.e_Offset + lastElement.e_Size;
+		element.e_Offset = 0;
+		if (!m_Elements.empty()) {
+			const auto& lastElement = m_Elements.back();
+			element.e_Offset = lastElement.e_Offset + lastElement.e_Size;
+		}
 		m_Stride += element.e_Size;
 		m_Elements.push_back(element);
 		m_ElementTypes |= static_cast<uint16_t>(element.e_Type);

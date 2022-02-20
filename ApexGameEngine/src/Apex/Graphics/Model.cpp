@@ -4,7 +4,7 @@
 #include <assimp/Importer.hpp>
 #include <assimp/postprocess.h>
 #include "Apex/Core/FileSystem/FileSystem.h"
-#include "Apex/Utils/MathPrimitiveParser.h"
+#include "Apex/Utils/Math.h"
 
 
 namespace Apex {

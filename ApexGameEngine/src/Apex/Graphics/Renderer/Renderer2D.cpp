@@ -145,9 +145,16 @@ namespace Apex {
 			in vec2 v_TexCoord;
 			in flat float v_TexIndex;
 
+			const float width = 0.52;
+			const float edge = 0.02;
+
 			void main()
 			{
-				o_Color = texture(u_Textures[int(v_TexIndex)], v_TexCoord /** u_TilingFactor*/).rgba * v_Color;
+				float distance = 1.0 - texture(u_Textures[int(v_TexIndex)], v_TexCoord).a;
+				float alpha = 1.0 - smoothstep(width, width + edge, distance);
+				o_Color = vec4(v_Color.rgb, alpha);
+
+				// o_Color = texture(u_Textures[int(v_TexIndex)], v_TexCoord /** u_TilingFactor*/).rgba * v_Color;
 				if (o_Color.a < 0.05)
 					discard;
 			}

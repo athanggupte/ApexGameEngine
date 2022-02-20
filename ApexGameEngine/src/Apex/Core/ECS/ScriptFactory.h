@@ -26,6 +26,7 @@ namespace Apex {
 		{ \
 			auto ptr = Apex::Ref<script##Factory>(new script##Factory()); \
 			Apex::Application::Get().GetResourceManager().Insert<AScriptFactory>(RESNAME(STR(script)), ptr); \
+			APEX_CORE_DEBUG("Added script factory ({})", STR(script)); \
 			return ptr; \
 		} \
 		Apex::EntityScript* InstantiateScript() override { return new script; } \
@@ -40,11 +41,11 @@ namespace Apex {
 //	{
 //		auto ptr = Apex::Ref<LogScriptFactory>(new LogScriptFactory());
 //		Apex::Application::Get().GetResourceManager().Insert<AScriptFactory>(
-//			RESNAME(STR(LogScript)), ptr);
+//			RESNAME(STR(MaterialScript)), ptr);
 //		return ptr;
 //	}
 //
-//	Apex::EntityScript* InstantiateScript() override { return new LogScript; }
+//	Apex::EntityScript* InstantiateScript() override { return new MaterialScript; }
 //	void DestroyScript(Apex::EntityScript* _script) override { delete _script; }
 //
 //private:

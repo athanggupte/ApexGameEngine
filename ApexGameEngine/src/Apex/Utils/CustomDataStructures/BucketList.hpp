@@ -129,8 +129,88 @@ public:
         friend class BucketList;
     };
 
+
+    class ConstIterator
+    {
+    public:
+        ConstIterator(const BucketList& container, uint64_t dataIndex, const typename std::list<Bucket>::const_iterator& bucketIt)
+            : container(container), dataIndex(dataIndex), bucketIt(bucketIt)
+        {
+        }
+
+        ConstIterator(const BucketList& container, uint64_t index = 0)
+            : container(container), dataIndex(index % BucketSize), bucketIt(container.m_BucketList.begin())
+        {
+            auto bucketIndex = index / BucketSize;
+            for (int i = 0; i < bucketIndex; ++i, ++bucketIt);
+        }
+
+        const Type& operator * () const
+        {
+            return (*bucketIt)[dataIndex];
+        }
+
+        ConstIterator& operator ++ ()
+        {
+            ++dataIndex;
+            if (dataIndex == BucketSize) {
+                dataIndex = 0;
+                ++bucketIt;
+            }
+            return *this;
+        }
+
+        ConstIterator operator ++ (int)
+		{
+			ConstIterator temp = *this;
+			++(*this);
+			return temp;
+		}
+
+        ConstIterator& operator -- ()
+        {
+            if (dataIndex == 0) {
+                dataIndex = BucketSize - 1;
+                --bucketIt;
+            } else {
+                --dataIndex;
+            }
+            return *this;
+        }
+
+		ConstIterator operator -- (int)
+		{
+			ConstIterator temp = *this;
+			--(*this);
+			return temp;
+		}
+
+        bool operator != (const ConstIterator& other) const
+        {
+            return (&container != &other.container) || (dataIndex != other.dataIndex) || (bucketIt != other.bucketIt);
+        }
+
+        bool operator < (const ConstIterator& other) const
+        {
+            return (bucketIt < other.bucketIt) && (dataIndex < other.dataIndex);
+        }
+
+        [[nodiscard]] uint64_t index() const
+        {
+	        return bucketIt * BucketSize + dataIndex;
+        }
+
+    private:
+        const BucketList& container;
+        uint64_t dataIndex;
+        typename std::list<Bucket>::const_iterator bucketIt;
+
+        friend class BucketList;
+    };
+
+
     using iterator = Iterator;
-    using const_iterator = Iterator;
+    using const_iterator = ConstIterator;
 
     BucketList()
     {
@@ -203,6 +283,17 @@ public:
     {
         auto lastIndex = m_Size % BucketSize;
         return Iterator(*this, lastIndex, (lastIndex == 0 ? m_BucketList.end() : --m_BucketList.end()));
+    }
+
+    ConstIterator begin() const
+    {
+        return ConstIterator(*this, 0, m_BucketList.begin());
+    }
+
+    ConstIterator end() const
+    {
+        auto lastIndex = m_Size % BucketSize;
+        return ConstIterator(*this, lastIndex, (lastIndex == 0 ? m_BucketList.end() : --m_BucketList.end()));
     }
 
     size_t size() const

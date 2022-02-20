@@ -4,7 +4,7 @@
 #include "Apex/Utils/Random.h"
 #include "Apex/Graphics/Renderer/Renderer.h"
 
-#include "Apex/Utils/MathPrimitiveParser.h"
+#include "Apex/Utils/Math.h"
 
 #include <glm/gtc/constants.hpp>
 #define GLM_ENABLE_EXPERIMENTAL

@@ -9,6 +9,22 @@
 
 namespace Apex {
 
+	namespace detail
+	{
+		template<typename T>
+		void DeepCopy(ResourceManager::Pool<T>& dst, const ResourceManager::Pool<T>& src)
+		{
+			dst = src;
+			auto d_it = dst.begin();
+			auto s_it = src.begin();
+
+			while (d_it != dst.end() && s_it != src.end()) {
+				(*d_it).second = CreateRef<T>(*(*s_it).second);
+				++d_it; ++s_it;
+			}
+		}
+	}
+
 	ResourceManager::ResourceManager(const ResourceManager& other)
 		: m_Registry(other.m_Registry), m_DependencyGraph(other.m_DependencyGraph), m_TexturePool(other.m_TexturePool),
 		  m_ShaderPool(other.m_ShaderPool), m_ScriptFactoryPool(other.m_ScriptFactoryPool),
@@ -55,8 +71,7 @@ namespace Apex {
 			}
 			case ResourceType::MESH:
 			{
-				auto newMesh = FBXImporter::LoadMesh(FileSystem::GetFileIfExists(resourceData.sourceFile)->GetPhysicalPath(), TO_STRING(Strings::Get(id)));
-				//Ref<Mesh> newMesh = CreateRef<Mesh>(resourceData.sourceFile);
+				auto newMesh = FBXImporter::LoadMesh(FileSystem::GetFileIfExists(resourceData.sourceFile), TO_STRING(Strings::Get(id)));
 				m_MeshPool[index].second.swap(newMesh);
 				break;
 			}
@@ -101,7 +116,7 @@ namespace Apex {
 				}
 				case ResourceType::MESH:
 				{
-					auto newMesh = FBXImporter::LoadMesh(FileSystem::GetFileIfExists(resourceData.sourceFile)->GetPhysicalPath(), TO_STRING(Strings::Get(id)));
+					auto newMesh = FBXImporter::LoadMesh(FileSystem::GetFileIfExists(resourceData.sourceFile), TO_STRING(Strings::Get(id)));
 					m_MeshPool[index].second.swap(newMesh);
 					break;
 				}
@@ -129,20 +144,38 @@ namespace Apex {
 		m_MaterialPool.clear();
 	}
 
-	void ResourceManager::CreateSnapshot(ResourceManager& snapshotTarget) const
+	void ResourceManager::CreateSnapshot(ResourceManager& snapshot) const
 	{
-		snapshotTarget.LoadSnapshot(*this);
+		// Registry structures
+		snapshot.m_Registry = m_Registry;
+		snapshot.m_DependencyGraph = m_DependencyGraph;
+
+		// Pools with self-contained resources can directly be reference copied
+		snapshot.m_TexturePool = m_TexturePool;
+		snapshot.m_ShaderPool = m_ShaderPool;
+		snapshot.m_ScriptFactoryPool = m_ScriptFactoryPool;
+		snapshot.m_MeshPool = m_MeshPool;
+
+		// Pools with resources that reference other resources have to be deep-copied
+		//m_MaterialPool = snapshot.m_MaterialPool;
+		detail::DeepCopy(snapshot.m_MaterialPool, m_MaterialPool);
 	}
 
 	void ResourceManager::LoadSnapshot(const ResourceManager& snapshot)
 	{
+		// Registry structures
 		m_Registry = snapshot.m_Registry;
 		m_DependencyGraph = snapshot.m_DependencyGraph;
+
+		// Pools with self-contained resources can directly be reference copied
 		m_TexturePool = snapshot.m_TexturePool;
 		m_ShaderPool = snapshot.m_ShaderPool;
 		m_ScriptFactoryPool = snapshot.m_ScriptFactoryPool;
 		m_MeshPool = snapshot.m_MeshPool;
+
+		// Pools with resources that reference other resources have to be deep-copied
 		m_MaterialPool = snapshot.m_MaterialPool;
+		//detail::DeepCopy(m_MaterialPool, snapshot.m_MaterialPool);
 	}
 
 	template <>

@@ -19,6 +19,8 @@
 #include <unordered_map>
 #include <set>
 #include <unordered_set>
+#include <filesystem>
+namespace fs = std::filesystem;
 
 #include "Apex/Core/Core.h"
 #include "Apex/Core/Log.h"

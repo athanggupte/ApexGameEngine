@@ -17,8 +17,11 @@ namespace Apex {
 		int32_t width = 0, height = 0, channels = 0;
 		Ref<PixelData> pixelData;
 	};
-	
+
+
 	namespace Utils {
+
+		std::string TrimStr(const std::string& str, const std::string& whitespace = " \t");
 
 		ImageData LoadImage_internal(const std::filesystem::path& file, int32_t targetChannels = 0);
 	

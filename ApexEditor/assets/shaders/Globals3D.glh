@@ -8,3 +8,13 @@ layout(location = ATTRIB_LOC_Tangent) in vec4 a_Tangent;
 layout(location = ATTRIB_LOC_Bitangent) in vec3 a_Bitangent;
 layout(location = ATTRIB_LOC_UV1) in vec3 a_UV1;
 #endif
+
+#ifndef APEX_SKIP_UBOS
+#endif
+
+#define PI 3.1415926538
+#define TwoPI 6.2831853076
+#define HalfPI 1.5707963269
+#define PI2 9.8696044024
+
+#define epsilon 1e-5

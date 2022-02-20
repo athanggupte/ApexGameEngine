@@ -41,6 +41,13 @@ namespace Apex {
 		glBindVertexArray(m_RendererID);
 	}
 
+	void OpenGLVertexArray::BindIndexBuffer(uint32_t indexBufferIndex) const
+	{
+		APEX_CORE_ASSERT(m_IndexBuffers.size() > indexBufferIndex, "Invalid IndexBuffer index!");
+		glVertexArrayElementBuffer(m_RendererID, m_IndexBuffers[indexBufferIndex]->GetHandle());
+		glBindVertexArray(m_RendererID);
+	}
+
 	void OpenGLVertexArray::Unbind() const
 	{
 		glBindVertexArray(0);
@@ -71,11 +78,9 @@ namespace Apex {
 
 	void OpenGLVertexArray::AddIndexBuffer(const Ref<IndexBuffer> indexBuffer)
 	{
-		glBindVertexArray(m_RendererID);
-		indexBuffer->Bind();
+		glVertexArrayElementBuffer(m_RendererID, indexBuffer->GetHandle());
 
 		m_IndexBuffers.push_back(indexBuffer);
-		glBindVertexArray(0);
 	}
 
 }

@@ -4,10 +4,12 @@
 #include "imgui.h"
 #include "backends/imgui_impl_opengl3.h"
 #include "backends/imgui_impl_glfw.h"
+#include "ImGuizmo.h"
 
 #include "Apex/Application.h"
 
 //TEMPORARY
+
 #include <GLFW/glfw3.h>
 #include <glad/glad.h>
 
@@ -80,6 +82,7 @@ namespace Apex {
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
+		ImGuizmo::BeginFrame();
 	}
 
 	void ImGuiLayer::End()

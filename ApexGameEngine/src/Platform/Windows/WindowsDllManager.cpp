@@ -31,6 +31,7 @@ namespace Apex {
 	Dll* LoadDll(const fs::path& filepath)
 	{
 		if (HMODULE library = LoadLibrary(filepath.c_str())) {
+			APEX_CORE_INFO("Loaded DLL `{}`", filepath);
 			return new WindowsDll(library);
 		}
 		APEX_CORE_CRITICAL("'{0}' could not be loaded!", filepath);

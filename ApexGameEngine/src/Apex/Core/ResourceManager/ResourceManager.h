@@ -128,7 +128,7 @@ namespace Apex {
 		template<typename T>
 		struct PoolItem
 		{
-			Handle first;
+			Handle first{};
 			Ref<T> second;
 
 			[[nodiscard]] Resource<T> ToResource()

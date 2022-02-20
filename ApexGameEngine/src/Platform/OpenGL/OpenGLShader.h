@@ -11,6 +11,8 @@ namespace Apex {
 	{
 	public:
 		OpenGLShader(const fs::path& filepath);
+		OpenGLShader(std::string name, const std::string& source);
+		OpenGLShader(const fs::path& vert_file, const fs::path& frag_file);
 		OpenGLShader(std::string name, const std::string& vertexSrc, const std::string& fragmentSrc);
 		~OpenGLShader() override;
 
@@ -56,7 +58,7 @@ namespace Apex {
 		void SetUniMat4v(const std::string& name, glm::mat4 matrices[], size_t count) const override;
 
 	private:
-		static void SolveIncludes(std::string& source, const fs::path& filepath, bool hasFilepath = true);
+		static void SolveIncludes(std::string& source, const fs::path& filepath, bool is_recursive = false);
 		static std::unordered_map<GLenum, std::string> ParseSource(const std::string& source);
 		void Compile(const std::unordered_map<GLenum, std::string>& shaderSources);
 

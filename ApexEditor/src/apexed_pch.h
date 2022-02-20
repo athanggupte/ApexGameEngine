@@ -16,6 +16,8 @@
 #include <stack>
 #include <vector>
 #include <map>
+#include <filesystem>
+namespace fs = std::filesystem;
 
 #include "Apex/Core/Core.h"
 #include "Apex/Core/Log.h"

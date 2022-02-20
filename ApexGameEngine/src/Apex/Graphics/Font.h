@@ -57,9 +57,9 @@ namespace Apex {
 		FontAtlas();
 		~FontAtlas();
 
-		Font AddFontFromFileTTF(const char* filename, float size_pixels, const ImFontConfig* font_cfg = NULL, const uint16_t* glyph_ranges = NULL) const;
-		Font AddFontFromMemoryCompressedTTF(const void* compressed_font_data, int compressed_font_size, float size_pixels, const ImFontConfig* font_cfg = NULL, const uint16_t* glyph_ranges = NULL) const; // 'compressed_font_data' still owned by caller. Compress with binary_to_compressed_c.cpp.
-		Font AddFontFromMemoryCompressedBase85TTF(const char* compressed_font_data_base85, float size_pixels, const ImFontConfig* font_cfg = NULL, const uint16_t* glyph_ranges = NULL) const;              // 'compressed_font_data_base85' still owned by caller. Compress with binary_to_compressed
+		Font AddFontFromFileTTF(const char* filename, float size_pixels, ImFontConfig* font_cfg = &s_FontConfig, const uint16_t* glyph_ranges = NULL) const;
+		Font AddFontFromMemoryCompressedTTF(const void* compressed_font_data, int compressed_font_size, float size_pixels, ImFontConfig* font_cfg = &s_FontConfig, const uint16_t* glyph_ranges = NULL) const; // 'compressed_font_data' still owned by caller. Compress with binary_to_compressed_c.cpp.
+		Font AddFontFromMemoryCompressedBase85TTF(const char* compressed_font_data_base85, float size_pixels, ImFontConfig* font_cfg = &s_FontConfig, const uint16_t* glyph_ranges = NULL) const;              // 'compressed_font_data_base85' still owned by caller. Compress with binary_to_compressed
 
 		[[nodiscard]] Ref<Texture2D> GetFontAtlasTexture() const;
 
@@ -71,6 +71,8 @@ namespace Apex {
 	private:
 		ImFontAtlas* m_FontAtlas;
 		Ref<Texture2D> m_Texture;
+
+		static ImFontConfig s_FontConfig;
 	};
 
 }

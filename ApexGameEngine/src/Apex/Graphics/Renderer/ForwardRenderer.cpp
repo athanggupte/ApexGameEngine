@@ -13,7 +13,7 @@
 
 #include "Apex/Utils/Utils.h"
 #include "Apex/Utils/Profiler.h"
-#include "Apex/Utils/MathPrimitiveParser.h"
+#include "Apex/Utils/Math.h"
 
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
@@ -53,8 +53,8 @@ namespace Apex {
 		PointLights_Intensity,
 		PointLights_Attenuation,
 		
-		Mesh_Transform,
-		Mesh_NormalMat,
+		//Mesh_Transform,
+		//Mesh_NormalMat,
 		
 		NUM_UNIFORMS
 	};
@@ -164,8 +164,8 @@ namespace Apex {
 		s_Data->UniformAlignments[PointLights_Intensity]      = std140::Vec4;
 		s_Data->UniformAlignments[PointLights_Attenuation]    = std140::Vec4;
 		
-		s_Data->UniformAlignments[Mesh_Transform]    = std140::Mat4;
-		s_Data->UniformAlignments[Mesh_NormalMat]    = std140::Mat4;
+		//s_Data->UniformAlignments[Mesh_Transform]    = std140::Mat4;
+		//s_Data->UniformAlignments[Mesh_NormalMat]    = std140::Mat4;
 		
 		// -- Sizes --
 		s_Data->UniformSizes[Camera_Projection]    = sizeof(glm::mat4);
@@ -181,8 +181,8 @@ namespace Apex {
 		s_Data->UniformSizes[PointLights_Intensity]      = sizeof(glm::vec4) * s_Data->MAX_POINT_LIGHTS;
 		s_Data->UniformSizes[PointLights_Attenuation]    = sizeof(glm::vec4) * s_Data->MAX_POINT_LIGHTS;
 		
-		s_Data->UniformSizes[Mesh_Transform]    = sizeof(glm::mat4);
-		s_Data->UniformSizes[Mesh_NormalMat]    = sizeof(glm::mat4);
+		//s_Data->UniformSizes[Mesh_Transform]    = sizeof(glm::mat4);
+		//s_Data->UniformSizes[Mesh_NormalMat]    = sizeof(glm::mat4);
 		
 		// -- Offsets --
 		for (uint32_t i=0; i<NUM_UNIFORMS; i++) {

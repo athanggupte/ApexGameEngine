@@ -41,6 +41,7 @@ project "ApexEditor"
 		"%{IncludeDirs.irrKlang}",
 		"%{IncludeDirs.entt}",
 		"%{IncludeDirs.ImGuizmoQuat}",
+		"%{IncludeDirs.ImGuizmo}",
 		-- Modules
 		"%{IncludeDirs.ApexIK}"
 	}

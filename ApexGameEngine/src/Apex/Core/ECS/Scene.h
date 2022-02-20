@@ -22,6 +22,8 @@ namespace Apex {
 		Entity CreateEntityWithGUID(const GUID& guid);
 		Entity CreateEntityWithGUID(const GUID& guid, StringHandle name);
 
+		void RemoveEntity(Entity entity);
+
 		void OnSetup();
 		void OnPlay();
 		void OnStop();

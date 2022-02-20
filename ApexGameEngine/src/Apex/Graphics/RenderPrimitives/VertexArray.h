@@ -10,6 +10,7 @@ namespace Apex {
 		virtual ~VertexArray() = default;
 
 		virtual void Bind() const = 0;
+		virtual void BindIndexBuffer(uint32_t indexBufferIndex = 0) const = 0;
 		virtual void Unbind() const = 0;
 
 		virtual void AddVertexBuffer(const Ref<VertexBuffer> vertexBuffer) = 0;

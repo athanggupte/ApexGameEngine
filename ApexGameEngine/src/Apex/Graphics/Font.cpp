@@ -4,6 +4,8 @@
 #include "imgui.h"
 #include "RenderPrimitives/Texture.h"
 
+#include <misc/freetype/imgui_freetype.h>
+
 namespace Apex {
 
 	// Font Glyph //
@@ -90,6 +92,8 @@ namespace Apex {
 	}
 
 	// Font Atlas //
+	ImFontConfig FontAtlas::s_FontConfig = ImFontConfig{};
+
 	FontAtlas::FontAtlas()
 		: m_FontAtlas(new ImFontAtlas())
 	{
@@ -101,24 +105,26 @@ namespace Apex {
 		delete m_FontAtlas;
 	}
 
-	Font FontAtlas::AddFontFromFileTTF(const char* filename, float size_pixels, const ImFontConfig* font_cfg,
+	Font FontAtlas::AddFontFromFileTTF(const char* filename, float size_pixels, ImFontConfig* font_cfg,
 	                                   const uint16_t* glyph_ranges) const
 	{
+		font_cfg->FontBuilderFlags |= ImGuiFreeTypeBuilderFlags_SDF;
 		return { m_FontAtlas->AddFontFromFileTTF(filename, size_pixels, font_cfg, glyph_ranges), this };
 	}
 
 	Font FontAtlas::AddFontFromMemoryCompressedTTF(const void* compressed_font_data, int compressed_font_size,
-	                                               float size_pixels, const ImFontConfig* font_cfg,
+	                                               float size_pixels, ImFontConfig* font_cfg,
 	                                               const uint16_t* glyph_ranges) const
 	{
+		font_cfg->FontBuilderFlags |= ImGuiFreeTypeBuilderFlags_SDF;
 		return { m_FontAtlas->AddFontFromMemoryCompressedTTF(compressed_font_data, compressed_font_size, size_pixels, font_cfg, glyph_ranges), this };
 	}
 
 	Font FontAtlas::AddFontFromMemoryCompressedBase85TTF(const char* compressed_font_data_base85,
-	                                                     float size_pixels,
-	                                                     const ImFontConfig* font_cfg,
+	                                                     float size_pixels, ImFontConfig* font_cfg,
 	                                                     const uint16_t* glyph_ranges) const
 	{
+		font_cfg->FontBuilderFlags |= ImGuiFreeTypeBuilderFlags_SDF;
 		return { m_FontAtlas->AddFontFromMemoryCompressedBase85TTF(compressed_font_data_base85, size_pixels, font_cfg, glyph_ranges), this };
 	}
 

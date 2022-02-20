@@ -17,24 +17,24 @@ namespace Apex {
 		void Resize(uint32_t width, uint32_t height) override;
 
 		void AddColorAttachment(TextureSpec textureSpec) override;
-		void AttachDepthTexture(const Ref<TextureDepth2D>& texture) override;
+		void AttachDepthTexture(const Ref<Texture>& texture, bool stencil = false) override;
 
 		void Blit(const Ref<Framebuffer>& targetFramebuffer) override;
 
 		[[nodiscard]] uint32_t GetColorAttachmentID(uint32_t index) const override { return m_ColorAttachments[index]->GetID(); }
 		[[nodiscard]] const Ref<Texture2D>& GetColorAttachment(uint32_t index) const override { return m_ColorAttachments[index]; }
-		[[nodiscard]] const Ref<TextureDepth2D>& GetDepthAttachment() const override { return m_DepthAttachment; }
+		[[nodiscard]] const Ref<Texture>& GetDepthAttachment() const override { return m_DepthAttachment; }
 
 		[[nodiscard]] const FramebufferSpec& GetSpecification() const override { return m_Specification; }
 		void SetSpecification(const FramebufferSpec& specification) override;
 
-		[[nodiscard]] virtual bool IsComplete() const;
+		[[nodiscard]] bool IsComplete() const;
 
 	private:
 		FramebufferSpec m_Specification;
 		uint32_t m_RendererID = 0;
 		uint32_t m_RenderBuffer = 0;
-		Ref<TextureDepth2D> m_DepthAttachment = nullptr;
+		Ref<Texture> m_DepthAttachment = nullptr;
 		std::vector<Ref<Texture2D>> m_ColorAttachments;
 	};
 

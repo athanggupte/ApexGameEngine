@@ -25,7 +25,9 @@ project "ApexGameEngine"
 		"%{wks.location}/ApexGameEngine/vendor/pugixml/src/**.hpp",
 		-- "%{prj.name}/vendor/pugixml/src/**.cpp",
 		
-		-- "%{cfg.buildtarget.abspath}/ShaderDefines.obj",
+		-- ImGuizmo --
+		"%{wks.location}/ApexGameEngine/vendor/ImGuizmo/ImGuizmo.h",
+		"%{wks.location}/ApexGameEngine/vendor/ImGuizmo/ImGuizmo.cpp",
 	}
 
 	includedirs {
@@ -44,6 +46,7 @@ project "ApexGameEngine"
 		"%{IncludeDirs.irrKlang}",
 		"%{IncludeDirs.entt}",
 		"%{IncludeDirs.ImGuizmoQuat}",
+		"%{IncludeDirs.ImGuizmo}",
 		"%{IncludeDirs.pugixml}",
 		"%{IncludeDirs.FBX}",
 		-- Modules
@@ -83,6 +86,9 @@ project "ApexGameEngine"
 		buildoutputs {
 			"%{cfg.objdir}/%{file.basename}.obj"
 		}
+
+	filter "files:vendor/ImGuizmo/**.cpp"
+		flags { "NoPCH" }
 
 	filter "system:windows"
 		systemversion "latest"
