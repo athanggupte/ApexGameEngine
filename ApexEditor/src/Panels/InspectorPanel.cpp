@@ -53,9 +53,6 @@ namespace Apex {
 		
 		ImGui::End();
 	}
-	
-	static char changedBuf[256]{ 0 };
-
 
 	// TODO: Remove from here and add to custom ui file
 	static bool ButtonEx_custom(const char* label, const ImVec2& size_arg, ImGuiButtonFlags flags)
@@ -129,7 +126,7 @@ namespace Apex {
 		{
 			auto& tag = m_ContextEntity.GetComponent<TagComponent>().tag;
 				
-			static char buffer[129] = {};
+			static char buffer[256] = {};
 			static constexpr size_t BUFFER_SIZE = sizeof(buffer) - 1;
 			auto sz = tag.str().size();
 			memcpy_s(buffer, BUFFER_SIZE, tag.str().data(), tag.str().size());
@@ -138,17 +135,8 @@ namespace Apex {
 			
 			static bool isChanged = false;
 
-			if (ImGui::InputText("Tag", buffer, BUFFER_SIZE)) {
-				isChanged = true;
-				strcpy_s(changedBuf, sizeof(changedBuf), buffer);
-			}
-
-			if (isChanged) {
-				ImGui::SameLine();
-				if (ImGui::Button("OK")) {
-					tag = HASH(changedBuf);
-					isChanged = false;
-				}
+			if (ImGui::InputText("Tag", buffer, BUFFER_SIZE, ImGuiInputTextFlags_EnterReturnsTrue)) {
+				tag = HASH(buffer);
 			}
 
 			ImGui::Separator();
