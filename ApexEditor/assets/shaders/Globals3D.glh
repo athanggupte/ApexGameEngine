@@ -1,16 +1,45 @@
-#ifndef APEX_SKIP_ATTRIBUTES
-layout(location = ATTRIB_LOC_Position) in vec3 a_Position;
-layout(location = ATTRIB_LOC_UV0) in vec2 a_TexCoord;
-layout(location = ATTRIB_LOC_Color) in vec3 a_Color;
-layout(location = ATTRIB_LOC_TexIndex) in vec3 a_TexIndex;
-layout(location = ATTRIB_LOC_Normal) in vec3 a_Normal;
-layout(location = ATTRIB_LOC_Tangent) in vec4 a_Tangent;
-layout(location = ATTRIB_LOC_Bitangent) in vec3 a_Bitangent;
-layout(location = ATTRIB_LOC_UV1) in vec3 a_UV1;
-#endif
+#ifndef _APEX_INCLUDE_GLOBALS3D_GLH_
+#define _APEX_INCLUDE_GLOBALS3D_GLH_
 
-#ifndef APEX_SKIP_UBOS
-#endif
+layout(std140, binding = UBO_BIND_Camera) uniform CameraUniforms
+{
+	vec4 Position;
+	mat4 ViewMatrix;
+	mat4 ProjectionMatrix;
+	mat4 ViewProjectionMatrix;
+	mat4 InverseViewMatrix;
+}
+u_Camera;
+
+struct DirectionalLight
+{
+	vec4 Direction;
+	vec4 Color;
+};
+
+struct PointLight
+{
+	vec4 Position;
+	vec4 Color;
+	float Radius;
+	float AttConstant;
+	float AttLinear;
+	float AttQuadratic;
+};
+
+//struct SpotLight
+//{
+//};
+
+layout(std140, binding = UBO_BIND_Lights) uniform Lights
+{
+	DirectionalLight DirectionalLights[MAX_DIRECTIONAL_LIGHTS];
+	PointLight PointLights[MAX_POINT_LIGHTS];
+
+	float NumDirectionalLights;
+	float NumPointLights;
+}
+u_Lights;
 
 #define PI 3.1415926538
 #define TwoPI 6.2831853076
@@ -18,3 +47,5 @@ layout(location = ATTRIB_LOC_UV1) in vec3 a_UV1;
 #define PI2 9.8696044024
 
 #define epsilon 1e-5
+
+#endif // _APEX_INCLUDE_GLOBALS3D_GLH_

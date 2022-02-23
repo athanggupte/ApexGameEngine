@@ -1,7 +1,7 @@
 #include "apex_pch.h"
 #include "Shader.h"
 
-#include "Apex/Graphics/Renderer/Renderer.h"
+#include "Apex/Graphics/Renderer/RendererAPI.h"
 
 #include "Platform/OpenGL/OpenGLShader.h"
 
@@ -9,7 +9,7 @@ namespace Apex {
 
 	Ref<Shader> Shader::Create(const fs::path& filepath)
 	{
-		switch (Renderer::GetAPI())
+		switch (RendererAPI::GetAPI())
 		{
 		case RendererAPI::API::None:	APEX_CORE_CRITICAL("No Rendering API selected"); return nullptr;
 		case RendererAPI::API::OpenGL:	return CreateRef<OpenGLShader>(filepath);
@@ -20,7 +20,7 @@ namespace Apex {
 
 	Ref<Shader> Shader::Create(const std::string& name, const std::string& source)
 	{
-		switch (Renderer::GetAPI())
+		switch (RendererAPI::GetAPI())
 		{
 		case RendererAPI::API::None:	APEX_CORE_CRITICAL("No Rendering API selected"); return nullptr;
 		case RendererAPI::API::OpenGL:	return CreateRef<OpenGLShader>(name, source);
@@ -31,7 +31,7 @@ namespace Apex {
 
 	Ref<Shader> Shader::Create(const std::string& name, const std::string & vertexSrc, const std::string & fragmentSrc)
 	{
-		switch (Renderer::GetAPI())
+		switch (RendererAPI::GetAPI())
 		{
 		case RendererAPI::API::None:	APEX_CORE_CRITICAL("No Rendering API selected"); return nullptr;
 		case RendererAPI::API::OpenGL:	return CreateRef<OpenGLShader>(name, vertexSrc, fragmentSrc);

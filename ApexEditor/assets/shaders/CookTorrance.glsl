@@ -1,4 +1,3 @@
-#define APEX_SKIP_ATTRIBUTES
 #include "Globals3D.glh"
 
 float clamped_dot(in vec3 a, in vec3 b)

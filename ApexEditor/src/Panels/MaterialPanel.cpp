@@ -36,6 +36,7 @@ namespace Apex {
 		ImGui::Begin("Material", nullptr, ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoScrollbar);
 
 		DrawMaterialList();
+		ImGui::Separator();
 		if (m_ContextMaterial.IsValid()) {
 			ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, { 0.f, 0.f });
 			if (ImGui::BeginChild("Properties")) {
@@ -50,17 +51,53 @@ namespace Apex {
 
 	void MaterialPanel::DrawMaterialList()
 	{
-		if (ImGui::BeginTable("Materials", 1, ImGuiTableFlags_BordersH)) {
+		std::string materialName = "None";
+		if (m_ContextMaterial.IsValid())
+			materialName = TO_CSTRING(Strings::Get(m_ContextMaterial.GetId()));
+
+		bool openPopup = false;
+
+		if (ImGui::BeginCombo("Material", materialName.c_str())) {
+			if (ImGui::Button("Create new", ImVec2{ -1, 0 })) {
+				//Application::Get().GetResourceManager().Insert()
+				openPopup = true;
+			}
+			if (ImGui::Selectable("None"))
+				m_ContextMaterial = {};
 			for (auto& [id, ptr] : Application::Get().GetResourceManager().Iterate<Material>()) {
-				ImGui::TableNextColumn();
-				if (ImGui::Selectable(TO_CSTRING(Strings::Get(id)), (id == m_ContextMaterial.GetId()))) {
-					if (id == m_ContextMaterial.GetId())
-						m_ContextMaterial = Resource<Material>();
-					else
-						m_ContextMaterial = Application::Get().GetResourceManager().Get<Material>(id);
+				if (ImGui::Selectable(TO_CSTRING(Strings::Get(id)), (id == m_ContextMaterial.GetId())))
+					m_ContextMaterial = Application::Get().GetResourceManager().Get<Material>(id);
+			}
+			ImGui::EndCombo();
+		}
+
+		static bool matNameExists = false;
+		if (openPopup) {
+			matNameExists = false;
+			ImGui::OpenPopup("Create New Material");
+		}
+
+		if (ImGui::BeginPopupModal("Create New Material")) {
+			if (matNameExists) {
+				ImGui::TextColored({ 1.f, 0.2f, 0.2f, 1.f}, "Material name exists!");
+			}
+			std::string newMatName;
+			bool create = ImGui::InputText("Name", &newMatName, ImGuiInputTextFlags_EnterReturnsTrue);
+			create |= ImGui::Button("Create");
+			ImGui::SameLine();
+			if (ImGui::Button("Cancel"))
+				ImGui::CloseCurrentPopup();
+			if (create) {
+				auto id = RESNAME(newMatName.c_str());
+				if (!Application::Get().GetResourceManager().Exists(id)) {
+					auto material = CreateRef<Material>();
+					m_ContextMaterial = Application::Get().GetResourceManager().Insert<Material>(id, material);
+					ImGui::CloseCurrentPopup();
+				} else {
+					matNameExists = true;
 				}
 			}
-			ImGui::EndTable();
+			ImGui::EndPopup();
 		}
 	}
 
@@ -73,58 +110,57 @@ namespace Apex {
 		ImGui::PushStyleVar(ImGuiStyleVar_IndentSpacing, 8.f);
 		ON_SCOPE_END { ImGui::PopStyleVar(); };
 
-		if (ImGui::TreeNodeEx((void*)typeid(Material).hash_code(), ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_Framed, materialResName.c_str())) {
-			if (m_ContextMaterial.IsLoaded()) {
-				auto shaderResName = TO_STRING(Strings::Get(m_ContextMaterial->GetShader().GetId()));
-				// ImGui::InputText("Shader", &shaderResName, ImGuiInputTextFlags_ReadOnly);
-				if (ImGui::BeginCombo("Shader", shaderResName.c_str())) {
-					for (auto& [id, ptr] : Application::Get().GetResourceManager().Iterate<Shader>()) {
-						if (ImGui::Selectable(TO_CSTRING(Strings::Get(id)), (id == m_ContextMaterial->GetShader().GetId())))
-							m_ContextMaterial->SetShader(Application::Get().GetResourceManager().Get<Shader>(id));
-					}
-					ImGui::EndCombo();
+		if (m_ContextMaterial.IsLoaded()) {
+			std::string shaderResName;
+			if (m_ContextMaterial->GetShader().IsValid())
+				shaderResName = TO_STRING(Strings::Get(m_ContextMaterial->GetShader().GetId()));
+			// ImGui::InputText("Shader", &shaderResName, ImGuiInputTextFlags_ReadOnly);
+			if (ImGui::BeginCombo("Shader", shaderResName.c_str())) {
+				for (auto& [id, ptr] : Application::Get().GetResourceManager().Iterate<Shader>()) {
+					if (ImGui::Selectable(TO_CSTRING(Strings::Get(id)), (id == m_ContextMaterial->GetShader().GetId())))
+						m_ContextMaterial->SetShader(Application::Get().GetResourceManager().Get<Shader>(id));
 				}
-
-				for (auto& [name, map] : m_ContextMaterial->GetTextures()) {
-					ImGui::PushStyleVar(ImGuiStyleVar_IndentSpacing, 0.f);
-					ImGui::CollapsingHeader(name.c_str(), ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_SpanFullWidth | ImGuiTreeNodeFlags_Leaf);
-					ImGui::PopStyleVar();
-
-					if (ImGui::BeginTable("Parameters", 2)) {
-						ImGui::TableSetupColumn("TextureIcon", ImGuiTableColumnFlags_WidthFixed, Common::GetDefaultImGuiTextureOptions().size.x);
-						ImGui::TableSetupColumn("Options", ImGuiTableColumnFlags_WidthStretch);
-						const std::string nameId = "##" + name;
-						auto textureResName = (map.texture.IsValid()) ? TO_STRING(Strings::Get(map.texture.GetId())) : std::string("None");
-
-						// TABLE: Start new row
-						ImGui::TableNextRow();
-						{ // Set item widths for columns
-							ImGui::TableSetColumnIndex(0);
-							ImGui::PushItemWidth(Common::GetDefaultImGuiTextureOptions().size.x);
-							ImGui::TableSetColumnIndex(1);
-							ImGui::PushItemWidth(-FLT_MIN);
-						}
-
-						// TABLE: Column 0
-						ImGui::TableSetColumnIndex(0);
-
-						ImGui::PushID(name.c_str());
-						DrawTextureImageOptions(name, map);
-						ImGui::Checkbox("Use", &map.use);
-
-						//TABLE: Column 1
-						ImGui::TableSetColumnIndex(1);
-
-						ImGui::InputText(nameId.c_str(), &textureResName, ImGuiInputTextFlags_ReadOnly);
-						DrawAltColorOptions(map);
-
-						ImGui::PopID();
-					}
-					ImGui::EndTable();
-				}
+				ImGui::EndCombo();
 			}
-			ImGui::TreePop();
-		}
+
+			for (auto& [name, map] : m_ContextMaterial->GetTextures()) {
+				ImGui::PushStyleVar(ImGuiStyleVar_IndentSpacing, 0.f);
+				ImGui::CollapsingHeader(name.c_str(), ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_SpanFullWidth | ImGuiTreeNodeFlags_Leaf);
+				ImGui::PopStyleVar();
+
+				if (ImGui::BeginTable("Parameters", 2)) {
+					ImGui::TableSetupColumn("TextureIcon", ImGuiTableColumnFlags_WidthFixed, Common::GetDefaultImGuiTextureOptions().size.x);
+					ImGui::TableSetupColumn("Options", ImGuiTableColumnFlags_WidthStretch);
+					const std::string nameId = "##" + name;
+					auto textureResName = (map.texture.IsValid()) ? TO_STRING(Strings::Get(map.texture.GetId())) : std::string("None");
+
+					// TABLE: Start new row
+					ImGui::TableNextRow();
+					{ // Set item widths for columns
+						ImGui::TableSetColumnIndex(0);
+						ImGui::PushItemWidth(Common::GetDefaultImGuiTextureOptions().size.x);
+						ImGui::TableSetColumnIndex(1);
+						ImGui::PushItemWidth(-FLT_MIN);
+					}
+
+					// TABLE: Column 0
+					ImGui::TableSetColumnIndex(0);
+
+					ImGui::PushID(name.c_str());
+					DrawTextureImageOptions(name, map);
+					ImGui::Checkbox("Use", &map.use);
+
+					//TABLE: Column 1
+					ImGui::TableSetColumnIndex(1);
+
+					ImGui::InputText(nameId.c_str(), &textureResName, ImGuiInputTextFlags_ReadOnly);
+					DrawAltColorOptions(map);
+
+					ImGui::PopID();
+				}
+				ImGui::EndTable();
+			}
+			}
 	}
 
 	void DrawAltColorOptions(Material::TextureSlotMap& map)

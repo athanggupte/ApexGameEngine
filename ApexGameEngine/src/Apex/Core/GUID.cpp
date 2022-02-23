@@ -6,10 +6,10 @@
 
 namespace Apex {
 	
-	constexpr static char const HEX_DIGITS[17] = "0123456789abcdef"; // From libuuid/unparse.c
+	constexpr static char const HEX_DIGITS[] = "0123456789abcdef"; // From libuuid/unparse.c
 	
 	/* Taken from libuuid/uuidP.h */
-	struct uuid {
+	struct uuid_t {
 		uint32_t	time_low;
 		uint16_t	time_mid;
 		uint16_t	time_hi_and_version;
@@ -18,7 +18,7 @@ namespace Apex {
 	};
 	
 	/* Taken from libuuid/unpack.c */
-	static void uuid_unpack(const guid_t in, struct uuid *uu)
+	static void uuid_unpack(const guid_t in, struct uuid_t *uu)
 	{
 		const uint8_t	*ptr = in.data();
 		uint32_t		tmp;
@@ -49,7 +49,7 @@ namespace Apex {
 
 	static int uuid_compare(const guid_t uu1, const guid_t uu2)
 	{
-		struct uuid	uuid1, uuid2;
+		struct uuid_t	uuid1, uuid2;
 
 		uuid_unpack(uu1, &uuid1);
 		uuid_unpack(uu2, &uuid2);
@@ -85,13 +85,34 @@ namespace Apex {
 	{
 		// memcpy(m_Guid, other.m_Guid, 16);
 	}
-	
+
+	GUID GUID::FromString(const std::string& guid_str)
+	{
+		alignas(4) guid_t guid;
+		uuid_t* uuid = (uuid_t*)&guid;
+		sscanf_s(guid_str.c_str(),
+			"%8x-%4hx-%4hx-%4hx-%2hhx%2hhx%2hhx%2hhx%2hhx%2hhx",
+			&uuid->time_low, &uuid->time_mid,
+			&uuid->time_hi_and_version, &uuid->clock_seq,
+			&uuid->node[0], &uuid->node[1], &uuid->node[2],
+			&uuid->node[3], &uuid->node[4], &uuid->node[5]);
+		
+		return { guid };
+	}
+
 	std::string GUID::GetString() const
 	{
 		// Implemented as in libuuid : uuid_unparse
-		
+		uuid_t* uuid = (uuid_t*)&m_Guid;
 		char str[37];
-		char* p = str;
+		sprintf_s(str, 37,
+			"%08x-%04hx-%04hx-%04hx-%02hhx%02hhx%02hhx%02hhx%02hhx%02hhx",
+			uuid->time_low, uuid->time_mid,
+			uuid->time_hi_and_version, uuid->clock_seq,
+			uuid->node[0], uuid->node[1], uuid->node[2],
+			uuid->node[3], uuid->node[4], uuid->node[5]);
+
+		/*char* p = str;
 		
 		for (int i = 0; i < 16; i++) {
 			if (i == 4 || i == 6 || i == 8 || i == 10) {
@@ -101,7 +122,7 @@ namespace Apex {
 			*p++ = HEX_DIGITS[tmp >> 4];
 			*p++ = HEX_DIGITS[tmp & 15];
 		}
-		*p = '\0';
+		*p = '\0';*/
 		
 		return { str };
 	}
@@ -133,7 +154,7 @@ namespace Apex {
 	
 	GUID::operator bool() const
 	{
-		uint32_t *tmp = (uint32_t*)m_Guid.data();
+		const uint32_t *tmp = reinterpret_cast<const uint32_t*>(m_Guid.data());
 		
 		for (auto i=0; i<4; i++) {
 			if (*tmp++) {

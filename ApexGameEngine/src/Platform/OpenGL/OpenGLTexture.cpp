@@ -1,7 +1,6 @@
 #include "apex_pch.h"
 #include "OpenGLTexture.h"
 
-#include "Apex/Graphics/Renderer/Renderer.h"
 #include "Apex/Utils/Utils.h"
 #include "Apex/Core/FileSystem/FileSystem.h"
 #include "Apex/Utils/ScopeGuard.hpp"
@@ -314,7 +313,7 @@ namespace Apex
 	{
 		APEX_CORE_ASSERT(read || write, "Image should be atleast readable or writable");
 		glBindImageTexture(unit, m_RendererID, 0, GL_FALSE, 0, (read && write) ? GL_READ_WRITE : (read) ? GL_READ_ONLY : GL_WRITE_ONLY, m_InternalFormat);
-		Renderer::SetImageAccessBit();
+		//Renderer::SetImageAccessBit();
 	}
 
 	void OpenGLTexture2D::SetData(void* data, uint32_t size)

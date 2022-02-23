@@ -21,6 +21,8 @@ namespace Apex {
 
 		[[nodiscard]] size_t Hash() const { return m_Hash; };
 
+		static GUID FromString(const std::string& guid_str);
+
 	private:
 		guid_t m_Guid;
 		size_t m_Hash = 0;

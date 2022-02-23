@@ -1,7 +1,7 @@
 #include "apex_pch.h"
 #include "Framebuffer.h"
 
-#include "Apex/Graphics/Renderer/Renderer.h"
+#include "Apex/Graphics/Renderer/RendererAPI.h"
 
 #include "Platform/OpenGL/OpenGLFramebuffer.h"
 
@@ -9,7 +9,7 @@ namespace Apex {
 
 	Ref<Framebuffer> Framebuffer::Create(FramebufferSpec spec)
 	{
-		switch (Renderer::GetAPI())
+		switch (RendererAPI::GetAPI())
 		{
 		case RendererAPI::API::None:	APEX_CORE_CRITICAL("No Rendering API selected"); return nullptr;
 		case RendererAPI::API::OpenGL:	return CreateRef<OpenGLFramebuffer>(spec);
@@ -20,7 +20,7 @@ namespace Apex {
 #if USE_DEPTH_BUFFER
 	Ref<DepthBuffer> DepthBuffer::Create()
 	{
-		switch (Renderer::GetAPI())
+		switch (RendererAPI::GetAPI())
 		{
 		case RendererAPI::API::None:	APEX_CORE_CRITICAL("No Rendering API selected"); return nullptr;
 		case RendererAPI::API::OpenGL:	return CreateRef<OpenGLDepthBuffer>();

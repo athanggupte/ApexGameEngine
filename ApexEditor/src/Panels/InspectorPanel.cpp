@@ -346,6 +346,29 @@ namespace Apex {
 			}
 		}
 
+		if (m_ContextEntity.HasComponent<LightComponent>()) {
+			auto& lightComp = m_ContextEntity.GetComponent<LightComponent>();
+			if (ImGui::TreeNodeEx((void*)typeid(LightComponent).hash_code(), treeNodeFlags, "Light")) {
+				if (ImGui::BeginCombo("Type", LightTypeString(lightComp.type))) {
+					for (auto i = 0; i < static_cast<int>(LightType::_COUNT); i++) {
+						if (ImGui::Selectable(LightTypeString(static_cast<LightType>(i)), i == static_cast<int>(lightComp.type))) {
+							lightComp.type = static_cast<LightType>(i);
+						}
+					}
+					ImGui::EndCombo();
+				}
+				
+				ImGui::ColorEdit3("Color", glm::value_ptr(lightComp.color));
+				ImGui::DragFloat("Intensity", &lightComp.intensity, 1, 0, 10000);
+
+				if (lightComp.type == LightType::PointLight) {
+					ImGui::DragFloat("Radius", &lightComp.radius);
+				}
+
+				ImGui::TreePop();
+			}
+		}
+
 		if (m_ContextEntity.HasComponent<NativeScriptComponent>()) {
 			auto& scriptComp = m_ContextEntity.GetComponent<NativeScriptComponent>();
 			const std::string scriptName = TO_STRING(Strings::Get(scriptComp.factory.GetId()));
@@ -388,6 +411,10 @@ namespace Apex {
 					auto& textComp = m_ContextEntity.AddComponent<TextRendererComponent>();
 					textComp.text = "Text";
 				}*/
+
+			if (!m_ContextEntity.HasComponent<LightComponent>())
+				if (ImGui::MenuItem("Light"))
+					m_ContextEntity.AddComponent<LightComponent>();
 
 			if (ImGui::BeginMenu("Physics")) {
 				

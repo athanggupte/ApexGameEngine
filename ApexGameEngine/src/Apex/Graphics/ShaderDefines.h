@@ -12,7 +12,8 @@
 #define ATTRIB_LOC_UserDefined	8
 
 // Global Uniform Block bindings
-#define UNIFORM_BLK_BIND_Camera 0
+#define UBO_BIND_Camera			0
+#define UBO_BIND_Lights			1
 
 // Global Uniform Sampler bindings
 // #define TEX_SLOT_error			0
@@ -32,3 +33,18 @@
 #define TEX_SLOT_MAT_User5		13
 #define TEX_SLOT_MAT_User6		14
 #define TEX_SLOT_MAT_User7		15
+
+// Global shader constants
+// Forward Renderer
+#define RFWD_MAX_DIRECTIONAL_LIGHTS	4
+#define RFWD_MAX_POINT_LIGHTS		8
+#define RFWD_MAX_SPOT_LIGHTS		8
+
+// Forward+ Renderer
+#define RFP_MAX_DIRECTIONAL_LIGHTS	4
+#define RFP_MAX_POINT_LIGHTS		1024
+#define RFP_MAX_SPOT_LIGHTS			512
+
+#define MAX_DIRECTIONAL_LIGHTS	RFWD_MAX_DIRECTIONAL_LIGHTS
+#define MAX_POINT_LIGHTS		RFWD_MAX_POINT_LIGHTS
+#define MAX_SPOT_LIGHTS			RFWD_MAX_SPOT_LIGHTS

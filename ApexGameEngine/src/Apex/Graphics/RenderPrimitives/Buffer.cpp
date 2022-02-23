@@ -1,7 +1,7 @@
 #include "apex_pch.h"
 #include "Buffer.h"
 
-#include "Apex/Graphics/Renderer/Renderer.h"
+#include "Apex/Graphics/Renderer/RendererAPI.h"
 
 #include "Platform/OpenGL/OpenGLBuffer.h"
 
@@ -46,7 +46,7 @@ namespace Apex{
 	/*-------------------------Vertex Buffer-----------------------------*/
 	Ref<VertexBuffer> VertexBuffer::Create(size_t size)
 	{
-		switch (Renderer::GetAPI())
+		switch (RendererAPI::GetAPI())
 		{
 			case RendererAPI::API::None:	APEX_CORE_CRITICAL("No Rendering API selected"); return nullptr;
 			case RendererAPI::API::OpenGL:	return CreateRef<OpenGLVertexBuffer>(size);
@@ -56,7 +56,7 @@ namespace Apex{
 
 	Ref<VertexBuffer> VertexBuffer::Create(float * vertices, size_t size)
 	{
-		switch (Renderer::GetAPI())
+		switch (RendererAPI::GetAPI())
 		{
 			case RendererAPI::API::None:	APEX_CORE_CRITICAL("No Rendering API selected"); return nullptr;
 			case RendererAPI::API::OpenGL:	return CreateRef<OpenGLVertexBuffer>(vertices, size);
@@ -67,7 +67,7 @@ namespace Apex{
 	/*-------------------------Index Buffer-----------------------------*/
 	Ref<IndexBuffer> IndexBuffer::Create(uint32_t* indices, size_t count)
 	{
-		switch (Renderer::GetAPI())
+		switch (RendererAPI::GetAPI())
 		{
 			case RendererAPI::API::None:	APEX_CORE_CRITICAL("No Rendering API selected"); return nullptr;
 			case RendererAPI::API::OpenGL:	return CreateRef<OpenGLIndexBuffer>(indices, count);
@@ -78,7 +78,7 @@ namespace Apex{
 	/*-------------------------Uniform Buffer-----------------------------*/
 	Ref<UniformBuffer> UniformBuffer::Create(size_t size, uint32_t binding)
 	{
-		switch (Renderer::GetAPI())
+		switch (RendererAPI::GetAPI())
 		{
 			case RendererAPI::API::None:	APEX_CORE_CRITICAL("No Rendering API selected"); return nullptr;
 			case RendererAPI::API::OpenGL:	return CreateRef<OpenGLUniformBuffer>(size, binding);
@@ -89,7 +89,7 @@ namespace Apex{
 	/*-------------------------Shader Storage Buffer-----------------------------*/
 	Ref<ShaderStorageBuffer> ShaderStorageBuffer::Create(size_t size, uint32_t binding)
 	{
-		switch (Renderer::GetAPI())
+		switch (RendererAPI::GetAPI())
 		{
 			case RendererAPI::API::None:	APEX_CORE_CRITICAL("No Rendering API selected"); return nullptr;
 			case RendererAPI::API::OpenGL:	return CreateRef<OpenGLShaderStorageBuffer>(size, binding);

@@ -30,7 +30,7 @@ namespace Apex {
 			ImGui::TableSetupColumn("IsLoaded?", ImGuiTableColumnFlags_WidthFixed, ImGui::CalcTextSize("IsLoaded?").x);
 			ImGui::TableHeadersRow();
 			int i = 0;
-			for (auto& [id, ptr] : resourceManager.Iterate<Texture>()) {
+			for (auto& [id, ptr] : resourceManager.Iterate<T>()) {
 				ImGui::TableNextRow();
 				ImGui::TableSetColumnIndex(0);
 				ImGui::Text("%d", i);

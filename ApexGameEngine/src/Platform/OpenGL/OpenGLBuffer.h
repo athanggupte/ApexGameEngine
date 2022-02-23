@@ -92,6 +92,7 @@ namespace Apex {
 		void UnmapBuffer() const override { return OpenGLBuffer::UnmapBuffer(); }
 
 	private:
+		uint32_t m_BindingIndex;
 	};
 
 	/*-------------------------Shader Storage Buffer----------------------------*/
@@ -114,6 +115,7 @@ namespace Apex {
 		void UnmapBuffer() const override { return OpenGLBuffer::UnmapBuffer(); }
 
 	private:
+		uint32_t m_BindingIndex;
 	};
 
 }

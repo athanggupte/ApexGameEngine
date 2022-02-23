@@ -83,38 +83,38 @@ namespace Apex {
 	/*-------------------------Uniform Buffer----------------------------*/
 	///////////////////////////////////////////////////////////////////////
 	OpenGLUniformBuffer::OpenGLUniformBuffer(size_t size, uint32_t binding)
-		: OpenGLBuffer(nullptr, size)
+		: OpenGLBuffer(nullptr, size), m_BindingIndex(binding)
 	{
-		glBindBufferBase(GL_UNIFORM_BUFFER, binding, m_RendererID);
+		//glBindBufferBase(GL_UNIFORM_BUFFER, binding, m_RendererID);
 	}
 
 	void OpenGLUniformBuffer::Bind() const
 	{
-		glBindBuffer(GL_UNIFORM_BUFFER, m_RendererID);
+		glBindBufferBase(GL_UNIFORM_BUFFER, m_BindingIndex, m_RendererID);
 	}
 
 	void OpenGLUniformBuffer::Unbind() const
 	{
-		glBindBuffer(GL_UNIFORM_BUFFER, 0);
+		glBindBufferBase(GL_UNIFORM_BUFFER, m_BindingIndex, 0);
 	}
 	
 	///////////////////////////////////////////////////////////////////////
 	/*---------------------Shader Storage Buffer-------------------------*/
 	///////////////////////////////////////////////////////////////////////
 	OpenGLShaderStorageBuffer::OpenGLShaderStorageBuffer(size_t size, uint32_t binding)
-		: OpenGLBuffer(nullptr, size)
+		: OpenGLBuffer(nullptr, size), m_BindingIndex(binding)
 	{
-		glBindBufferBase(GL_SHADER_STORAGE_BUFFER, binding, m_RendererID);
+		//glBindBufferBase(GL_SHADER_STORAGE_BUFFER, binding, m_RendererID);
 	}
 
 	void OpenGLShaderStorageBuffer::Bind() const
 	{
-		glBindBuffer(GL_SHADER_STORAGE_BUFFER, m_RendererID);
+		glBindBufferBase(GL_SHADER_STORAGE_BUFFER, m_BindingIndex, m_RendererID);
 	}
 
 	void OpenGLShaderStorageBuffer::Unbind() const
 	{
-		glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
+		glBindBufferBase(GL_SHADER_STORAGE_BUFFER, m_BindingIndex, 0);
 	}
 
 	void OpenGLShaderStorageBuffer::ResetData(size_t size)

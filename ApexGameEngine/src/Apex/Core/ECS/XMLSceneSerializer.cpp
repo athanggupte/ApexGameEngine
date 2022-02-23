@@ -50,12 +50,16 @@ namespace Apex {
     void XMLSceneSerializer::SerializeEntity(Entity& entity, std::stringstream& out)
     {
         auto entityNode = m_Document.child("Scene").child("Entities").append_child("Entity");
-        entityNode.append_attribute("id").set_value(BASE64(1297814978).c_str());
+
+        if (entity.HasComponent<IDComponent>()) {
+	        const auto& id = entity.GetComponent<IDComponent>().id;
+			entityNode.append_attribute("id").set_value(TO_CSTRING(Strings::Get(id.Hash())));
+        }
 
         if (entity.HasComponent<TagComponent>()) {
             const auto& tag = entity.GetComponent<TagComponent>().tag;
             auto tagNode = entityNode.append_child("TagComponent");
-            tagNode.append_child(pugi::node_pcdata).set_value(std::string(tag.str()).c_str());
+            tagNode.append_child(pugi::node_pcdata).set_value(TO_CSTRING(tag.str()));
         }
 
         if (entity.HasComponent<TransformComponent>()) {
@@ -111,6 +115,24 @@ namespace Apex {
 
         }
 
+        if (entity.HasComponent<LightComponent>()) {
+	        const auto& lightComp = entity.GetComponent<LightComponent>();
+            auto lightCompNode = entityNode.append_child("LightComponent");
+            lightCompNode.append_child("Type").append_child(pugi::node_pcdata).set_value(LightTypeString(lightComp.type));
+            auto colorNode = lightCompNode.append_child("Color");
+            SerializeVec(colorNode, lightComp.color);
+            lightCompNode.append_child("Intensity").append_child(pugi::node_pcdata).set_value(TO_CSTRING(lightComp.intensity));
+
+            if (lightComp.type == LightType::PointLight) {
+        		lightCompNode.append_child("Radius").append_child(pugi::node_pcdata).set_value(TO_CSTRING(lightComp.radius));
+        		lightCompNode.append_child("AttenuationConstant").append_child(pugi::node_pcdata).set_value(TO_CSTRING(lightComp.attenuationConstant));
+        		lightCompNode.append_child("AttenuationLinear").append_child(pugi::node_pcdata).set_value(TO_CSTRING(lightComp.attenuationLinear));
+        		lightCompNode.append_child("AttenuationQuadratic").append_child(pugi::node_pcdata).set_value(TO_CSTRING(lightComp.attenuationQuadratic));
+            } else if (lightComp.type == LightType::DirectionalLight) {
+                lightCompNode.append_child("Shadows").append_attribute("enable").set_value(lightComp.enableShadows);
+            }
+        }
+
     }
 
     void XMLSceneSerializer::SerializeSceneFooter(std::stringstream& out)
@@ -136,7 +158,7 @@ namespace Apex {
         vec.w = std::stof(node.child_value("w"));
     }
 
-    bool DeserializeEntity(pugi::xml_node& node, Entity& entity)
+    bool DeserializeEntity(pugi::xml_node& node, Entity entity)
     {
 	    const auto tagNode = node.child("TagComponent");
         if (!tagNode)
@@ -178,6 +200,29 @@ namespace Apex {
             }
         }
 
+        if (const auto lightCompNode = node.child("LightComponent")) {
+	        auto& lightComp = entity.AddComponent<LightComponent>();
+            std::string lightType = lightCompNode.child("Type").child_value();
+            if (lightType == "Point") lightComp.type = LightType::PointLight;
+            if (lightType == "Directional") lightComp.type = LightType::DirectionalLight;
+            if (lightType == "Spot") lightComp.type = LightType::SpotLight;
+            if (lightType == "Area") lightComp.type = LightType::AreaLight;
+
+            const auto colorNode = lightCompNode.child("Color");
+            DeserializeVec(colorNode, lightComp.color);
+
+            lightComp.intensity = std::stof(lightCompNode.child("Intensity").child_value());
+
+            if (lightComp.type == LightType::PointLight) {
+	            lightComp.radius = std::stof(lightCompNode.child("Radius").child_value());
+        		lightComp.attenuationConstant = std::stof(lightCompNode.child("AttenuationConstant").child_value());
+        		lightComp.attenuationLinear = std::stof(lightCompNode.child("AttenuationLinear").child_value());
+        		lightComp.attenuationQuadratic = std::stof(lightCompNode.child("AttenuationQuadratic").child_value());
+            } else if (lightComp.type == LightType::DirectionalLight) {
+	            lightComp.enableShadows = lightCompNode.child("Shadows").attribute("enable").as_bool(false);
+            }
+        }
+
         // Other Components
 
         return true;
@@ -213,7 +258,12 @@ namespace Apex {
             if (strcmp(child.name(), "Entity") != 0)
                 continue;
 
-            if (!DeserializeEntity(child, m_Scene->CreateEntity()))
+            auto idAttr = child.attribute("id");
+            if (!idAttr)
+                return false;
+            auto id = GUID::FromString(idAttr.as_string());
+
+            if (!DeserializeEntity(child, m_Scene->CreateEntityWithGUID(id)))
                 return false;
         }
 

@@ -1,7 +1,7 @@
 #include "apex_pch.h"
 #include "Texture.h"
 
-#include "Apex/Graphics/Renderer/Renderer.h"
+#include "Apex/Graphics/Renderer/RendererAPI.h"
 #include "Apex/Application.h"
 
 #include "Platform/OpenGL/OpenGLTexture.h"
@@ -10,7 +10,7 @@ namespace Apex {
 
 	Ref<Texture2D> Texture2D::Create(const fs::path& path, bool useSRGB, bool useHDR, TextureFiltering filtering)
 	{
-		switch (Renderer::GetAPI())
+		switch (RendererAPI::GetAPI())
 		{
 		case RendererAPI::API::None:	APEX_CORE_CRITICAL("No Rendering API selected"); return nullptr;
 		case RendererAPI::API::OpenGL:	return CreateRef<OpenGLTexture2D>(path, useSRGB, useHDR, filtering);
@@ -22,7 +22,7 @@ namespace Apex {
 
 	Ref<Texture2D> Texture2D::Create(uint32_t width, uint32_t height, const TextureSpec& spec, const std::string& name)
 	{
-		switch (Renderer::GetAPI())
+		switch (RendererAPI::GetAPI())
 		{
 		case RendererAPI::API::None:	APEX_CORE_CRITICAL("No Rendering API selected"); return nullptr;
 		case RendererAPI::API::OpenGL:	return CreateRef<OpenGLTexture2D>(width, height, spec, name);
@@ -34,7 +34,7 @@ namespace Apex {
 
 	Ref<Texture2DMS> Texture2DMS::Create(uint32_t width, uint32_t height, const TextureSpec& spec, uint32_t samples, const std::string& name)
 	{
-		switch (Renderer::GetAPI())
+		switch (RendererAPI::GetAPI())
 		{
 		case RendererAPI::API::None:	APEX_CORE_CRITICAL("No Rendering API selected"); return nullptr;
 		case RendererAPI::API::OpenGL:	return CreateRef<OpenGLTexture2DMS>(width, height, spec, samples, name);
@@ -46,7 +46,7 @@ namespace Apex {
 
 	Ref<TextureCubemap> TextureCubemap::Create(const std::array<fs::path, 6>& paths, bool useHDR, TextureFiltering filtering)
 	{
-		switch (Renderer::GetAPI())
+		switch (RendererAPI::GetAPI())
 		{
 		case RendererAPI::API::None:	APEX_CORE_CRITICAL("No Rendering API selected"); return nullptr;
 		case RendererAPI::API::OpenGL:	return CreateRef<OpenGLTextureCubemap>(paths, useHDR, filtering);
@@ -58,7 +58,7 @@ namespace Apex {
 
 	Ref<TextureCubemap> TextureCubemap::Create(uint32_t size, const TextureSpec& spec, const std::string& name)
 	{
-		switch (Renderer::GetAPI())
+		switch (RendererAPI::GetAPI())
 		{
 		case RendererAPI::API::None:	APEX_CORE_CRITICAL("No Rendering API selected"); return nullptr;
 		case RendererAPI::API::OpenGL:	return CreateRef<OpenGLTextureCubemap>(size, spec, name);
@@ -70,7 +70,7 @@ namespace Apex {
 
 	Ref<Texture2DArray> Texture2DArray::Create(uint32_t width, uint32_t height, uint32_t count, const TextureSpec& spec, const std::string& name)
 	{
-		switch (Renderer::GetAPI())
+		switch (RendererAPI::GetAPI())
 		{
 		case RendererAPI::API::None:	APEX_CORE_CRITICAL("No Rendering API selected"); return nullptr;
 		case RendererAPI::API::OpenGL:	return CreateRef<OpenGLTexture2DArray>(width, height, count, spec, name);
@@ -83,7 +83,7 @@ namespace Apex {
 #ifdef SEPARATE_HDR
 	Ref<Texture2D_HDR> Texture2D_HDR::Create(const std::string & path)
 	{
-		switch (Renderer::GetAPI())
+		switch (RendererAPI::GetAPI())
 		{
 		case RendererAPI::API::None:	APEX_CORE_CRITICAL("No Rendering API selected"); return nullptr;
 		case RendererAPI::API::OpenGL:	return CreateRef<OpenGLTexture2D_HDR>(path);
@@ -95,7 +95,7 @@ namespace Apex {
 
 	Ref<Texture2D_HDR> Texture2D_HDR::Create(uint32_t width, uint32_t height, const std::string& name)
 	{
-		switch (Renderer::GetAPI())
+		switch (RendererAPI::GetAPI())
 		{
 		case RendererAPI::API::None:	APEX_CORE_CRITICAL("No Rendering API selected"); return nullptr;
 		case RendererAPI::API::OpenGL:	return CreateRef<OpenGLTexture2D_HDR>(width, height, name);
@@ -109,7 +109,7 @@ namespace Apex {
 #ifdef SEPARATE_DEPTH_CLASS
   	Ref<TextureDepth2D> TextureDepth2D::Create(uint32_t width, uint32_t height)
 	{
-		switch (Renderer::GetAPI())
+		switch (RendererAPI::GetAPI())
 		{
 		case RendererAPI::API::None:	APEX_CORE_CRITICAL("No Rendering API selected"); return nullptr;
 		case RendererAPI::API::OpenGL:	return CreateRef<OpenGLTextureDepth2D>(width, height);

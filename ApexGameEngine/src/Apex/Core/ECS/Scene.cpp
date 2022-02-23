@@ -167,13 +167,9 @@ namespace Apex {
 	{
 		const auto view = m_Registry.view<TransformComponent, MeshRendererComponent>();
 		view.each([&](auto entity, const TransformComponent& transform, MeshRendererComponent& mesh_component) {
-			if (mesh_component.mesh.IsValid() && mesh_component.material.IsValid()) {
-				if (const auto shader = mesh_component.material->GetShader(); shader.IsValid()) {
-					mesh_component.material->Bind();
-					Renderer::Submit(shader.Get(), mesh_component.mesh->GetVAO(), transform.GetTransform());
-				} else {
-					Renderer::Submit(errorShader, mesh_component.mesh->GetVAO(), transform.GetTransform());
-				}
+			if (mesh_component.mesh.IsValid() && mesh_component.material.IsValid() && mesh_component.material->GetShader()->IsValid()) {
+				mesh_component.material->Bind();
+				Renderer::Submit(mesh_component.material->GetShader().Get(), mesh_component.mesh->GetVAO(), transform.GetTransform());
 			} else if (mesh_component.mesh.IsValid()) {
 				Renderer::Submit(errorShader, mesh_component.mesh->GetVAO(), transform.GetTransform());
 			} else {

@@ -80,6 +80,8 @@ layout(location = 2) in vec3 v_Normal;
 layout(location = 3) in vec4 v_Tangent;
 layout(location = 4) in vec4 v_LightSpaceFragPos;
 
+#include "Globals3D.glh"
+
 layout(binding = TEX_SLOT_ENV_Skybox) uniform samplerCube _EnvSkybox;
 layout(binding = TEX_SLOT_MAT_Albedo) uniform sampler2D _MatAlbedo;
 layout(binding = TEX_SLOT_MAT_Metallic) uniform sampler2D _MatMetallic;
@@ -93,8 +95,8 @@ layout(binding = 5) uniform sampler2DArray _EnvShadowMap;
 layout(binding = 5) uniform sampler2D _EnvShadowMap;
 #endif
 
-layout(location = 3) uniform vec3 u_LightDir;
-layout(location = 4) uniform vec3 u_LightPos;
+//layout(location = 3) uniform vec3 u_LightDir;
+//layout(location = 4) uniform vec3 u_LightPos;
 
 layout(location = 5) uniform bool _bUseAlbedo;
 layout(location = 6) uniform bool _bUseMetallic;
@@ -106,13 +108,10 @@ layout(location = 10) uniform float _altMatMetallic;
 layout(location = 11) uniform float _altMatRoughness;
 const vec3 _altMatNormal = vec3(0.5, 0.5, 1.0);
 
-
-#include "Globals3D.glh"
-
 //const float metallic = 0.01;
 const vec3 emissive = vec3(0.0);//vec3(10.4, 8.5, 1.2);
-const vec3 lightColor = vec3(89.0, 12.0, 57.0);
-const vec3 dirLightColor = vec3(20.0, 17.0, 12.0);
+//const vec3 lightColor = vec3(89.0, 12.0, 57.0);
+//const vec3 dirLightColor = vec3(20.0, 17.0, 12.0);
 
 #include "CookTorrance.glsl"
 #include "ShadowCalculation.glsl"
@@ -178,26 +177,39 @@ void main()
 	vec3 Lo = vec3(0.0);
 
 	// for each Light :
-	// Light #1 (Point)
-	// Calculate Light vectors
-	vec3 L = normalize(u_LightPos - v_Position);
+	for (int i = 0; i < u_Lights.NumDirectionalLights; i++) 
+	{
+		// Light Type #1 (Directional)
+		vec3 L = -normalize(u_Lights.DirectionalLights[i].Direction.xyz);
+		vec3 Li = u_Lights.DirectionalLights[i].Color.rgb;
 
-	// Calculate base light color
-	float lightDistance = length(u_LightPos - v_Position);
-	float attenuation = 1.0 / (lightDistance * lightDistance);
-	vec3 Li = lightColor * attenuation * PI;
+		// Calculate shadows
+		// if (u_Lights.DirectionalLights[i].ShadowMapIndex > 0)
+		//float shadow = ShadowCalculationPCF(v_LightSpaceFragPos, dot(N, L));
+		float shadow = 0.0;
 
-	Lo += CalculateBRDF(N, V, L, F0, albedo, roughness, metallic, Li);
+		Lo += (1.0 - shadow) * CalculateBRDF(N, V, L, F0, albedo, roughness, metallic, Li);
+	}
 
-	// Light #2 (Direction)
-	L = -normalize(u_LightDir);
-	Li = dirLightColor;
+	for (int i = 0; i < u_Lights.NumPointLights; i++) 
+	{
+		// Light Type #2 (Point)
+		// Calculate Light vectors
+		vec3 PtoL = u_Lights.PointLights[i].Position.xyz - v_Position;
+		vec3 L = normalize(PtoL);
+		float lightDistance = length(PtoL);
 
-	// Calculate shadows
-	//float shadow = ShadowCalculationPCF(v_LightSpaceFragPos, dot(N, L));
-	float shadow = 0.0;
+		// If the fragment is not in range of the light then do not calculate lighting from this light
+		if (lightDistance < u_Lights.PointLights[i].Radius)
+		{
+			// Calculate base light color
+			float attenuation = 1.0 / (lightDistance * lightDistance);
+			vec3 Li = u_Lights.PointLights[i].Color.rgb * attenuation * PI;
 
-	Lo += (1.0 - shadow) * CalculateBRDF(N, V, L, F0, albedo, roughness, metallic, Li);
+			Lo += CalculateBRDF(N, V, L, F0, albedo, roughness, metallic, Li);
+		}
+	}
+
 
 	// Final output fragment color
 	o_Color = vec4(Lo, 1.0);

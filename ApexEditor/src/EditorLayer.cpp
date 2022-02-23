@@ -22,6 +22,7 @@
 #include "Apex/Graphics/FBXImporter.h"
 #include "Apex/Graphics/Material.h"
 #include "Apex/Graphics/Font.h"
+#include "Apex/Graphics/Renderer/Renderer.h"
 #include "Apex/Utils/ScopeGuard.hpp"
 
 #include <imgui.h>
@@ -88,7 +89,7 @@ namespace Apex {
 		auto debugVerticesShader = resourceManager.Insert<Shader>(RESNAME("shader_DebugVerticesUnlit"), "editor_assets/shaders/DebugVerticesUnlit.glsl");
 		auto debugTrianglesShader = resourceManager.Insert<Shader>(RESNAME("shader_DebugTrianglesUnlit"), "editor_assets/shaders/DebugTrianglesUnlit.glsl");
 		auto albedoUnlitShader = resourceManager.Insert<Shader>(RESNAME("shader_AlbedoUnlit"), "editor_assets/shaders/AlbedoUnlit.glsl");
-		auto standardPBRShader = resourceManager.Insert<Shader>(RESNAME("shader_StandardPBR"), "editor_assets/shaders/StandardPBR.glsl");
+		auto standardPBRShader = resourceManager.Insert<Shader>(RESNAME("shader_StandardPBR"), "editor_assets/shaders/StandardPBR_new.glsl");
 
 		resourceManager.Insert<Material>(RESNAME("material_DebugVertices"), CreateRef<Material>(debugVerticesShader));
 		resourceManager.Insert<Material>(RESNAME("material_DebugTriangles"), CreateRef<Material>(debugTrianglesShader));
@@ -228,10 +229,14 @@ namespace Apex {
 		}
 
 		// Render
+		// Set Camera Data
+
+
 		// Depth Pre-Pass
 		RenderCommands::SetCulling(true);
 		RenderCommands::SetDepthTest(true);
 		RenderCommands::SetClearColor(glm::vec4{1.f, 1.f, 1.f, 1.f});
+		Renderer::SetupLights(m_ActiveScene);
 		m_ShadowMap->SetupLightAndCamera(directionalLightDirection, m_EditorCamera, m_EditorCameraController->GetTransform());
 		m_ShadowMap->BuildForScene(m_ActiveScene);
 
@@ -257,7 +262,7 @@ namespace Apex {
 		// 2. Transfer Light characteristics to dedicated Light class and Uniform Buffer
 		//    and use those objects to set shader variables inside Renderer::BeginScene
 		auto pbrShader = Application::Get().GetResourceManager().Get<Shader>(RESNAME("shader_StandardPBR"));
-		pbrShader->SetUniFloat3("u_CameraPosition", m_EditorCameraController->GetTransform()[3]);
+		//pbrShader->SetUniFloat3("u_CameraPosition", m_EditorCameraController->GetTransform()[3]);
 		pbrShader->SetUniFloat3("u_LightPos", lightPos);
 		pbrShader->SetUniFloat3("u_LightDir", directionalLightDirection);
 		pbrShader->SetUniMat4("u_LightSpaceTransform", m_ShadowMap->GetLightSpaceTransform());
