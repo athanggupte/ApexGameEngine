@@ -1,4 +1,4 @@
-#include "Globals3D.glh"
+#include "Globals3D.glsl"
 
 float clamped_dot(in vec3 a, in vec3 b)
 {

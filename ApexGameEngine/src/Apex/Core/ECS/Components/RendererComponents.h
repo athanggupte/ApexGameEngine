@@ -41,15 +41,23 @@ namespace Apex {
 	{
 		LightType type = LightType::PointLight;
 
+		// Common data
 		glm::vec4 color { 1.f };
 		float intensity = 1.f;
 
+		// For Point lights
 		float attenuationConstant = 1.f;
 		float attenuationLinear;
 		float attenuationQuadratic;
 
+		// For Spot lights
+		float innerCutoffAngle = glm::radians(30.f);
+		float outerCutoffAngle = glm::radians(40.f);
+
+		// For Point and Spot lights
 		float radius = 10.f;
 
+		// For Directional and Spot lights
 		bool enableShadows = true;
 
 		COMPONENT_DEFAULT_CTR(LightComponent);

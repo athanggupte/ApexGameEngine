@@ -16,7 +16,7 @@ layout(location = 2) out vec3 v_Normal;
 layout(location = 3) out vec4 v_Tangent;
 layout(location = 4) out vec4 v_LightSpaceFragPos;
 
-#include "Globals3D.glh"
+#include "Globals3D.glsl"
 
 //layout(location = 0) uniform Camera {
 //	vec3 u_CameraPosition;
@@ -80,7 +80,7 @@ layout(location = 2) in vec3 v_Normal;
 layout(location = 3) in vec4 v_Tangent;
 layout(location = 4) in vec4 v_LightSpaceFragPos;
 
-#include "Globals3D.glh"
+#include "Globals3D.glsl"
 
 layout(binding = TEX_SLOT_ENV_Skybox) uniform samplerCube _EnvSkybox;
 layout(binding = TEX_SLOT_MAT_Albedo) uniform sampler2D _MatAlbedo;
@@ -110,8 +110,7 @@ const vec3 _altMatNormal = vec3(0.5, 0.5, 1.0);
 
 //const float metallic = 0.01;
 const vec3 emissive = vec3(0.0);//vec3(10.4, 8.5, 1.2);
-//const vec3 lightColor = vec3(89.0, 12.0, 57.0);
-//const vec3 dirLightColor = vec3(20.0, 17.0, 12.0);
+const vec3 ambient = vec3(0.02);
 
 #include "CookTorrance.glsl"
 #include "ShadowCalculation.glsl"
@@ -133,7 +132,7 @@ vec3 CalculateBRDF(in vec3 N, in vec3 V, in vec3 L, in vec3 F0, in vec3 albedo, 
 	float G = geom_GGX(L, V, H, N, roughness);
 
 	vec3 num_Spec = F * D * G;
-	float den_Spec = 4.0 * NdotL * NdotV + epsilon;
+	float den_Spec = 4.0 * NdotL * NdotV + EPSILON;
 
 	vec3 specular = num_Spec / den_Spec;
 
@@ -210,6 +209,34 @@ void main()
 		}
 	}
 
+	for (int i = 0; i < u_Lights.NumSpotLights; i++)
+	{
+		// Light Type #3 (Spot)
+		// Calculate Light Vectors
+		vec3 PtoL = u_Lights.SpotLights[i].Position.xyz - v_Position;
+		vec3 L = normalize(PtoL);
+		float lightDistance = length(PtoL);
+
+		// If the fragment is not in range of the light then do not calculate lighting from this light
+		if (lightDistance < u_Lights.SpotLights[i].Radius)
+		{
+			// If the fragment is not in the Angle range then do not calculate lighting from this light
+			float theta = dot(L, -u_Lights.SpotLights[i].Direction.xyz);
+			float epsilon = u_Lights.SpotLights[i].InnerCutoff - u_Lights.SpotLights[i].OuterCutoff;
+			float I = theta - u_Lights.SpotLights[i].OuterCutoff;
+			float intensity = clamp(I / epsilon, 0.0, 1.0);
+			if (intensity > 0)
+			{
+				// Calculate base light color
+				float attenuation = 1.0 / (lightDistance * lightDistance);
+				vec3 Li = u_Lights.SpotLights[i].Color.rgb * intensity * attenuation * PI;
+
+				Lo += CalculateBRDF(N, V, L, F0, albedo, roughness, metallic, Li);
+			}
+		}
+	}
+
+	Lo += ambient * albedo;
 
 	// Final output fragment color
 	o_Color = vec4(Lo, 1.0);

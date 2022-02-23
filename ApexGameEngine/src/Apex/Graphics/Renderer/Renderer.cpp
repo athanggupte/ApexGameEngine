@@ -40,15 +40,30 @@ namespace Apex {
 		float AttQuadratic;
 	};
 
+	struct __SpotLightUBOData
+	{
+		glm::vec4 Position;
+		glm::vec4 Direction;
+		glm::vec4 Color;
+		float Radius;
+		float InnerCutoff; // cos(innerCutoffAngle)
+		float OuterCutoff; // cos(outerCutoffAngle)
+
+	private:
+		float _padding = 0;
+	};
+
 	struct __LightsUBOData
 	{
 		__DirectionalLightUBOData DirectionalLights[MAX_DIRECTIONAL_LIGHTS];
 		__PointLightUBOData PointLights[MAX_POINT_LIGHTS];
+		__SpotLightUBOData SpotLights[MAX_SPOT_LIGHTS];
 
 		float NumDirectionalLights;
 		float NumPointLights;
+		float NumSpotLights;
 
-		//glm::vec2 _padding;
+		//float _padding;
 	};
 
 	constexpr size_t CAMERA_UBO_SIZE = sizeof(__CameraUBOData);
@@ -104,13 +119,14 @@ namespace Apex {
 
 		int directionalLightsCount = 0;
 		int pointLightsCount = 0;
+		int spotLightsCount = 0;
 
 		//int numDirectionalLights = std::min(directionalLightsCount, MAX_DIRECTIONAL_LIGHTS);
 		//int numPointLights = std::min(pointLightsCount, MAX_POINT_LIGHTS);
 
 		scene->View<TransformComponent, LightComponent>()
 		.each(
-			[bufferPtr, &directionalLightsCount, &pointLightsCount]
+			[bufferPtr, &directionalLightsCount, &pointLightsCount, &spotLightsCount]
 			(TransformComponent& transform_component, LightComponent& light_component)
 			{
 				switch (light_component.type)
@@ -143,6 +159,17 @@ namespace Apex {
 					}
 				case LightType::SpotLight:
 					{
+						if (spotLightsCount < MAX_SPOT_LIGHTS) {
+							auto& light = bufferPtr->SpotLights[pointLightsCount];
+							light.Color = light_component.color * light_component.intensity;
+							light.Position = glm::vec4{ transform_component.translation, 1.f };
+							light.Direction = glm::vec4{ glm::rotate(glm::quat(transform_component.rotation), glm::vec3{ 0.f, -1.f, 0.f }), 1.f };
+							light.Radius = light_component.radius;
+							light.InnerCutoff = glm::cos(light_component.innerCutoffAngle);
+							light.OuterCutoff = glm::cos(light_component.outerCutoffAngle);
+
+							++spotLightsCount;
+						}
 						break;
 					}
 				case LightType::AreaLight:
@@ -174,6 +201,7 @@ namespace Apex {
 
 		bufferPtr->NumDirectionalLights = static_cast<float>(directionalLightsCount);
 		bufferPtr->NumPointLights = static_cast<float>(pointLightsCount);
+		bufferPtr->NumSpotLights = static_cast<float>(spotLightsCount);
 
 		s_SceneData->lightUniformBuffer->UnmapBuffer();
 		s_SceneData->lightUniformBuffer->Bind();

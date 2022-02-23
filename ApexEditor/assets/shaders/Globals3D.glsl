@@ -27,17 +27,26 @@ struct PointLight
 	float AttQuadratic;
 };
 
-//struct SpotLight
-//{
-//};
+struct SpotLight
+{
+	vec4 Position;
+	vec4 Direction;
+	vec4 Color;
+	float Radius;
+	float InnerCutoff; // cos(innerCutoffAngle)
+	float OuterCutoff; // cos(outerCutoffAngle)
+	//float _padding;
+};
 
 layout(std140, binding = UBO_BIND_Lights) uniform Lights
 {
 	DirectionalLight DirectionalLights[MAX_DIRECTIONAL_LIGHTS];
 	PointLight PointLights[MAX_POINT_LIGHTS];
+	SpotLight SpotLights[MAX_SPOT_LIGHTS];
 
 	float NumDirectionalLights;
 	float NumPointLights;
+	float NumSpotLights;
 }
 u_Lights;
 
@@ -46,6 +55,6 @@ u_Lights;
 #define HalfPI 1.5707963269
 #define PI2 9.8696044024
 
-#define epsilon 1e-5
+#define EPSILON 1e-5
 
 #endif // _APEX_INCLUDE_GLOBALS3D_GLH_

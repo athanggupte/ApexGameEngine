@@ -162,7 +162,9 @@ namespace Apex {
 				auto dragSpeed = (Input::IsKeyPressed(APEX_KEY_LEFT_SHIFT)) ? 0.001f : 0.5f;
 					
 				ImGui::DragFloat3("Translation", glm::value_ptr(transformComp.translation), dragSpeed);
-				ImGui::DragFloat3("Rotation", glm::value_ptr(transformComp.rotation), dragSpeed);
+				glm::vec3 rotationDegrees = glm::degrees(transformComp.rotation);
+				ImGui::DragFloat3("Rotation", glm::value_ptr(rotationDegrees), dragSpeed);
+				transformComp.rotation = glm::radians(rotationDegrees);
 				ImGui::DragFloat3("Scale", glm::value_ptr(transformComp.scale), dragSpeed);
 				ImGui::TreePop();
 			}
@@ -336,6 +338,7 @@ namespace Apex {
 			ImGui::Separator();
 		}
 
+		// Text Renderer Component
 		if (m_ContextEntity.HasComponent<TextRendererComponent>()) {
 			auto& textComp = m_ContextEntity.GetComponent<TextRendererComponent>();
 			if (ImGui::TreeNodeEx((void*)typeid(TextRendererComponent).hash_code(), treeNodeFlags, "Text Renderer")) {
@@ -346,6 +349,7 @@ namespace Apex {
 			}
 		}
 
+		// Light Component
 		if (m_ContextEntity.HasComponent<LightComponent>()) {
 			auto& lightComp = m_ContextEntity.GetComponent<LightComponent>();
 			if (ImGui::TreeNodeEx((void*)typeid(LightComponent).hash_code(), treeNodeFlags, "Light")) {
@@ -363,12 +367,17 @@ namespace Apex {
 
 				if (lightComp.type == LightType::PointLight) {
 					ImGui::DragFloat("Radius", &lightComp.radius);
+				} else if (lightComp.type == LightType::SpotLight) {
+					ImGui::DragFloat("Radius", &lightComp.radius);
+					ImGui::SliderAngle("Inner Cutoff", &lightComp.innerCutoffAngle, 0.f, 90.f);
+					ImGui::SliderAngle("Outer Cutoff", &lightComp.outerCutoffAngle, 0.f, 90.f);
 				}
 
 				ImGui::TreePop();
 			}
 		}
 
+		// Native Script Component
 		if (m_ContextEntity.HasComponent<NativeScriptComponent>()) {
 			auto& scriptComp = m_ContextEntity.GetComponent<NativeScriptComponent>();
 			const std::string scriptName = TO_STRING(Strings::Get(scriptComp.factory.GetId()));

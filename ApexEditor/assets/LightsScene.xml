@@ -193,5 +193,39 @@
         </Material>
       </MeshRendererComponent>
     </Entity>
+    <Entity id="00E9A5C5-8D99-453C-8E7B-8396AB5D3BE2">
+      <TagComponent>entered_in_xml</TagComponent>
+      <TransformComponent>
+        <Translation>
+          <x>-1</x>
+          <y>3</y>
+          <z>0</z>
+        </Translation>
+        <Rotation>
+          <x>0</x>
+          <y>0</y>
+          <z>0</z>
+        </Rotation>
+        <Scale>
+          <x>1</x>
+          <y>1</y>
+          <z>1</z>
+        </Scale>
+      </TransformComponent>
+      <LightComponent>
+        <Type>Point</Type>
+        <Color>
+          <x>0.50739728</x>
+          <y>0.4880006</y>
+          <z>0.28016878</z>
+          <w>1</w>
+        </Color>
+        <Intensity>9.5</Intensity>
+        <Radius>15</Radius>
+        <AttenuationConstant>1</AttenuationConstant>
+        <AttenuationLinear>0</AttenuationLinear>
+        <AttenuationQuadratic>0</AttenuationQuadratic>
+      </LightComponent>
+    </Entity>
   </Entities>
 </Scene>

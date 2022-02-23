@@ -69,7 +69,7 @@ namespace Apex {
             auto translationNode = transformNode.append_child("Translation");
             SerializeVec(translationNode, transform.translation);
             auto rotationNode = transformNode.append_child("Rotation");
-            SerializeVec(rotationNode, transform.rotation);
+            SerializeVec(rotationNode, glm::degrees(transform.rotation));
             auto scaleNode = transformNode.append_child("Scale");
             SerializeVec(scaleNode, transform.scale);
         }
@@ -130,7 +130,11 @@ namespace Apex {
         		lightCompNode.append_child("AttenuationQuadratic").append_child(pugi::node_pcdata).set_value(TO_CSTRING(lightComp.attenuationQuadratic));
             } else if (lightComp.type == LightType::DirectionalLight) {
                 lightCompNode.append_child("Shadows").append_attribute("enable").set_value(lightComp.enableShadows);
-            }
+            } else if (lightComp.type == LightType::SpotLight) {
+        		lightCompNode.append_child("Radius").append_child(pugi::node_pcdata).set_value(TO_CSTRING(lightComp.radius));
+        		lightCompNode.append_child("InnerCutoff").append_child(pugi::node_pcdata).set_value(TO_CSTRING(glm::degrees(lightComp.innerCutoffAngle)));
+        		lightCompNode.append_child("OuterCutoff").append_child(pugi::node_pcdata).set_value(TO_CSTRING(glm::degrees(lightComp.outerCutoffAngle)));
+            } 
         }
 
     }
@@ -176,6 +180,7 @@ namespace Apex {
         DeserializeVec(translationNode, transform.translation);
 	    const auto rotationNode = transformNode.child("Rotation");
         DeserializeVec(rotationNode, transform.rotation);
+        transform.rotation = glm::radians(transform.rotation);
 	    const auto scaleNode = transformNode.child("Scale");
         DeserializeVec(scaleNode, transform.scale);
 
@@ -220,6 +225,10 @@ namespace Apex {
         		lightComp.attenuationQuadratic = std::stof(lightCompNode.child("AttenuationQuadratic").child_value());
             } else if (lightComp.type == LightType::DirectionalLight) {
 	            lightComp.enableShadows = lightCompNode.child("Shadows").attribute("enable").as_bool(false);
+            } else if (lightComp.type == LightType::SpotLight) {
+	            lightComp.radius = std::stof(lightCompNode.child("Radius").child_value());
+	            lightComp.innerCutoffAngle = glm::radians(std::stof(lightCompNode.child("InnerCutoff").child_value()));
+	            lightComp.outerCutoffAngle = glm::radians(std::stof(lightCompNode.child("OuterCutoff").child_value()));
             }
         }
 

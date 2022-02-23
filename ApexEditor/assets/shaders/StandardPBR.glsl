@@ -16,7 +16,7 @@ layout(location = 2) out vec3 v_Normal;
 layout(location = 3) out vec4 v_Tangent;
 layout(location = 4) out vec4 v_LightSpaceFragPos;
 
-#include "Globals3D.glh"
+#include "Globals3D.glsl"
 
 //layout(location = 0) uniform Camera {
 //	vec3 u_CameraPosition;
@@ -107,7 +107,7 @@ layout(location = 11) uniform float _altMatRoughness;
 const vec3 _altMatNormal = vec3(0.5, 0.5, 1.0);
 
 
-#include "Globals3D.glh"
+#include "Globals3D.glsl"
 
 //const float metallic = 0.01;
 const vec3 emissive = vec3(0.0);//vec3(10.4, 8.5, 1.2);
