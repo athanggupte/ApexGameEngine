@@ -104,11 +104,30 @@ namespace Apex {
 	    return pressed;
 	}
 
+	static bool TreeNodeCloseButton()
+	{
+		bool is_pressed = false;
+		// Taken from imgui_widgets.cpp::CollapsibleHeader
+		// Create a small overlapping close button
+		// FIXME: CloseButton can overlap into text, need find a way to clip the text somehow.
+		ImGuiContext& g = *GImGui;
+		ImGuiLastItemData last_item_backup = g.LastItemData;
+		float button_size = g.FontSize;
+		float button_x = ImMax(g.LastItemData.Rect.Min.x, g.LastItemData.Rect.Max.x - g.Style.FramePadding.x * 2.0f - button_size);
+		float button_y = g.LastItemData.Rect.Min.y;
+		ImGuiID close_button_id = ImGui::GetIDWithSeed("#CLOSE", NULL, g.LastItemData.ID);
+		is_pressed = ImGui::CloseButton(close_button_id, ImVec2(button_x, button_y));
+		g.LastItemData = last_item_backup;
+	    
+		return is_pressed;
+	}
+
 
 	void InspectorPanel::DrawComponents()
 	{
 		constexpr ImGuiTreeNodeFlags treeNodeFlags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_DefaultOpen | 
-			ImGuiTreeNodeFlags_SpanAvailWidth | ImGuiTreeNodeFlags_Framed | ImGuiTreeNodeFlags_FramePadding;
+			ImGuiTreeNodeFlags_SpanAvailWidth | ImGuiTreeNodeFlags_Framed | ImGuiTreeNodeFlags_FramePadding |
+			ImGuiTreeNodeFlags_AllowItemOverlap | ImGuiTreeNodeFlags_ClipLabelForTrailingButton;
 
 		ImGui::PushStyleVar(ImGuiStyleVar_IndentSpacing,  0.f);
 		ON_SCOPE_END
@@ -165,6 +184,9 @@ namespace Apex {
 			auto& camera = cameraComp.camera;
 
 			if (ImGui::TreeNodeEx((void*)typeid(CameraComponent).hash_code(), treeNodeFlags, "Camera")) {
+				if (TreeNodeCloseButton()) {
+					m_ContextEntity.RemoveComponent<CameraComponent>();
+				}
 				constexpr const char* projectionTypeStrings[] = { "Perspective", "Orthographic" };
 				constexpr const size_t projectionTypesLen = std::size(projectionTypeStrings);
 				const char* currentProjectionTypeStr = projectionTypeStrings[(int)cameraComp.camera.GetProjectionType()];
@@ -223,6 +245,9 @@ namespace Apex {
 			auto& sprite = m_ContextEntity.GetComponent<SpriteRendererComponent>();
 
 			if (ImGui::TreeNodeEx((void*)typeid(SpriteRendererComponent).hash_code(), treeNodeFlags, "Sprite Renderer")) {
+				if (TreeNodeCloseButton()) {
+					m_ContextEntity.RemoveComponent<SpriteRendererComponent>();
+				}
 				ImGui::Checkbox("Visible", &sprite.visible);
 				// Display component members
 				ImGui::Checkbox("Use Texture", &sprite.useTexture);
@@ -257,9 +282,9 @@ namespace Apex {
 					ImGui::ColorEdit4("Color", glm::value_ptr(sprite.color));
 				}
 
-				if (ImGui::Button("Delete Component")) {
+				/*if (ImGui::Button("Delete Component")) {
 					m_ContextEntity.RemoveComponent<SpriteRendererComponent>();
-				}
+				}*/
 				ImGui::TreePop();
 			}
 			ImGui::Separator();
@@ -270,6 +295,9 @@ namespace Apex {
 			auto& meshComp = m_ContextEntity.GetComponent<MeshRendererComponent>();
 
 			if (ImGui::TreeNodeEx((void*)typeid(MeshRendererComponent).hash_code(), treeNodeFlags, "Mesh Renderer")) {
+				if (TreeNodeCloseButton()) {
+					m_ContextEntity.RemoveComponent<MeshRendererComponent>();
+				}
 				if (meshComp.mesh.IsValid()) {
 					auto meshResName = TO_STRING(Strings::Get(meshComp.mesh.GetId()));
 
@@ -314,13 +342,13 @@ namespace Apex {
 
 				auto textCol = ImGui::GetStyleColorVec4(ImGuiCol_Text);
 
-				ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.941f, 0.176f, 0.121f, 1.f });
+				/*ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.941f, 0.176f, 0.121f, 1.f });
 				ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 0.835f, 0.133f, 0.082f, 1.f });
 				ImGui::PushStyleColor(ImGuiCol_ButtonActive, textCol);
 				if (ButtonEx_custom("Delete Component", { ImGui::GetContentRegionAvail().x, 0.f }, ImGuiButtonFlags_None)) {
 					m_ContextEntity.RemoveComponent<MeshRendererComponent>();
 				}
-				ImGui::PopStyleColor(3);
+				ImGui::PopStyleColor(3);*/
 				ImGui::TreePop();
 			}
 			ImGui::Separator();
@@ -329,7 +357,11 @@ namespace Apex {
 		// Text Renderer Component
 		if (m_ContextEntity.HasComponent<TextRendererComponent>()) {
 			auto& textComp = m_ContextEntity.GetComponent<TextRendererComponent>();
+
 			if (ImGui::TreeNodeEx((void*)typeid(TextRendererComponent).hash_code(), treeNodeFlags, "Text Renderer")) {
+				if (TreeNodeCloseButton()) {
+					m_ContextEntity.RemoveComponent<TextRendererComponent>();
+				}
 				ImGui::InputText("Text", &textComp.text);
 				ImGui::ColorEdit4("Color", glm::value_ptr(textComp.color), ImGuiColorEditFlags_HDR | ImGuiColorEditFlags_AlphaBar);
 
@@ -340,7 +372,11 @@ namespace Apex {
 		// Light Component
 		if (m_ContextEntity.HasComponent<LightComponent>()) {
 			auto& lightComp = m_ContextEntity.GetComponent<LightComponent>();
+
 			if (ImGui::TreeNodeEx((void*)typeid(LightComponent).hash_code(), treeNodeFlags, "Light")) {
+				if (TreeNodeCloseButton()) {
+					m_ContextEntity.RemoveComponent<LightComponent>();
+				}
 				if (ImGui::BeginCombo("Type", LightTypeString(lightComp.type))) {
 					for (auto i = 0; i < static_cast<int>(LightType::_COUNT); i++) {
 						if (ImGui::Selectable(LightTypeString(static_cast<LightType>(i)), i == static_cast<int>(lightComp.type))) {
@@ -368,8 +404,12 @@ namespace Apex {
 		// Native Script Component
 		if (m_ContextEntity.HasComponent<NativeScriptComponent>()) {
 			auto& scriptComp = m_ContextEntity.GetComponent<NativeScriptComponent>();
+
 			const std::string scriptName = TO_STRING(Strings::Get(scriptComp.factory.GetId()));
 			if (ImGui::TreeNodeEx((void*)typeid(NativeScriptComponent).hash_code(), treeNodeFlags, scriptName.c_str())) {
+				if (TreeNodeCloseButton()) {
+					m_ContextEntity.RemoveComponent<NativeScriptComponent>();
+				}
 				if (ImGui::BeginTable("Parameters", 2, ImGuiTableFlags_BordersInner)) {
 					for (auto i = 0; i < 5; i++) {
 						ImGui::TableNextRow();
