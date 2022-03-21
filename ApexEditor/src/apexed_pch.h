@@ -1,5 +1,7 @@
 #pragma once
 
+#define APEX_EDITOR
+
 #include <iostream>
 #include <fstream>
 #include <iomanip>

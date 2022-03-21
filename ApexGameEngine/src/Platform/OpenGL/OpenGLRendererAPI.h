@@ -12,10 +12,10 @@ namespace Apex {
 		void SetClearColor(const glm::vec4& color) override;
 		void Clear() override;
 
-		void Draw(uint32_t vertexCount) override;
-		void Draw(const Ref<VertexArray>& vertexArray) override;
-		void DrawIndexed(const Ref<VertexArray>& vertexArray, uint32_t indexCount) override;
-		void DrawInstanced(const Ref<VertexArray>& vertexArray, uint32_t count) override;
+		void Draw(uint32_t vertexCount, DrawMode mode) override;
+		void Draw(const Ref<VertexArray>& vertexArray, DrawMode mode) override;
+		void DrawIndexed(const Ref<VertexArray>& vertexArray, uint32_t indexCount, DrawMode mode) override;
+		void DrawInstanced(const Ref<VertexArray>& vertexArray, uint32_t count, DrawMode mode) override;
 
 		void SetDepthTest(bool value) override;
 		void SetDepthWriteMode(bool value) override;
@@ -28,6 +28,10 @@ namespace Apex {
 
 		void SetCulling(bool value) override;
 		void SetBlendMode(BlendingMode sourceMode, BlendingMode destMode) override;
+
+		void SetPointSize(float size) override;
+		void SetLineWidth(float width) override;
+
 		void SetViewport(uint32_t x, uint32_t y, size_t width, size_t height) override;
 		void ImageAccessBarrier() override;
 	};

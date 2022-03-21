@@ -40,7 +40,7 @@ namespace Apex {
 		[[nodiscard]] virtual const FramebufferSpec& GetSpecification() const = 0;
 		virtual void SetSpecification(const FramebufferSpec& specification) = 0;
 
-		static Ref<Framebuffer> Create(FramebufferSpec spec);
+		static Ref<Framebuffer> APEX_API Create(FramebufferSpec spec);
 	};
 
 

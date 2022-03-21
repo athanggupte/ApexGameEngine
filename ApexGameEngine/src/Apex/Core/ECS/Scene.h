@@ -29,6 +29,7 @@ namespace Apex {
 		void OnStop();
 		void OnUpdate(Timestep ts);
 		void OnEditorUpdate(Timestep ts);
+		void OnScriptRender(Timestep ts);
 		void OnEvent(Event&);
 		void OnViewportResize(uint32_t width, uint32_t height);
 
@@ -36,12 +37,6 @@ namespace Apex {
 		void Render3D();
 
 		Ref<Scene> Copy();
-
-		struct SceneOptions
-		{
-			entt::entity PrimaryCamera = entt::null;
-			uint32_t ViewportWidth = 0u, ViewportHeight = 0u;
-		};
 		
 		void SetPrimaryCamera(const Entity&);
 
@@ -64,6 +59,23 @@ namespace Apex {
 			m_Registry.on_construct<Component>().template connect<&Func>(instance);
 		}
 
+		struct SceneOptions
+		{
+			entt::entity primaryCamera = entt::null;
+			uint32_t viewportWidth = 0u, viewportHeight = 0u;
+		};
+
+		struct EnvironmentLighting
+		{
+			Resource<Texture> skyboxTexture;
+			Resource<Shader> skyboxShader;
+		};
+
+		EnvironmentLighting& GetEnvironment()
+		{
+			return m_Environment;
+		}
+
 	protected:
 		/*template<typename Component_t>
 		void OnComponentAdded(Entity entity, Component_t& component);*/
@@ -79,7 +91,8 @@ namespace Apex {
 
 		
 		// Scene rendering
-		SceneOptions Options;
+		SceneOptions m_Options;
+		EnvironmentLighting m_Environment;
 	};
 
 }

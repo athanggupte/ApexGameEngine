@@ -77,7 +77,7 @@ namespace Apex {
 	};
 
 	/*-------------------------Buffer Element---------------------------*/
-	struct BufferElement
+	struct APEX_API BufferElement
 	{
 		ShaderDataType e_DataType;
 		VertexElementType e_Type;
@@ -156,8 +156,8 @@ namespace Apex {
 		[[nodiscard]] virtual size_t GetCount() const = 0;
 
 		// Creation utility
-		static Ref<VertexBuffer> Create(size_t size);
-		static Ref<VertexBuffer> Create(float* vertices, size_t size);
+		static Ref<VertexBuffer> APEX_API Create(size_t size);
+		static Ref<VertexBuffer> APEX_API Create(float* vertices, size_t size);
 	};
 
 
@@ -168,7 +168,7 @@ namespace Apex {
 		[[nodiscard]] virtual uint32_t GetCount() const = 0;
 
 		// Creation utility
-		static Ref<IndexBuffer> Create(uint32_t* indices, size_t count);
+		static Ref<IndexBuffer> APEX_API Create(uint32_t* indices, size_t count);
 	};
 
 
@@ -177,7 +177,7 @@ namespace Apex {
 	{
 	public:
 		// Creation utility
-		static Ref<UniformBuffer> Create(size_t size, uint32_t binding);
+		static Ref<UniformBuffer> APEX_API Create(size_t size, uint32_t binding);
 	};
 
 
@@ -188,7 +188,7 @@ namespace Apex {
 		virtual void ResetData(size_t size) = 0;
 		
 		// Creation utility
-		static Ref<ShaderStorageBuffer> Create(size_t size, uint32_t binding);
+		static Ref<ShaderStorageBuffer> APEX_API Create(size_t size, uint32_t binding);
 	};
 
 }

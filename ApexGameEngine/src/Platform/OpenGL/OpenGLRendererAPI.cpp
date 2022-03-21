@@ -24,28 +24,28 @@ namespace Apex {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT/* | GL_STENCIL_BUFFER_BIT*/);
 	}
 
-	void OpenGLRendererAPI::Draw(uint32_t vertexCount)
+	void OpenGLRendererAPI::Draw(uint32_t vertexCount, DrawMode mode)
 	{
-		glDrawArraysInstancedBaseInstance(GL_TRIANGLES, 0, vertexCount, 1, 0);
+		glDrawArraysInstancedBaseInstance((GLenum)mode, 0, vertexCount, 1, 0);
 	}
 
-	void OpenGLRendererAPI::Draw(const Ref<VertexArray>& vertexArray)
+	void OpenGLRendererAPI::Draw(const Ref<VertexArray>& vertexArray, DrawMode mode)
 	{
 		vertexArray->Bind();
-		glDrawArrays(GL_TRIANGLES, 0, vertexArray->GetVertexBuffers().at(0)->GetCount());
+		glDrawArrays((GLenum)mode, 0, vertexArray->GetVertexBuffers().at(0)->GetCount());
 	}
 
-	void OpenGLRendererAPI::DrawIndexed(const Ref<VertexArray>& vertexArray, uint32_t indexCount)
+	void OpenGLRendererAPI::DrawIndexed(const Ref<VertexArray>& vertexArray, uint32_t indexCount, DrawMode mode)
 	{
 		auto count = indexCount ? indexCount : vertexArray->GetIndexBuffers().at(0)->GetCount();
 		vertexArray->Bind();
-		glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, nullptr);
+		glDrawElements((GLenum)mode, count, GL_UNSIGNED_INT, nullptr);
 	}
 	
-	void OpenGLRendererAPI::DrawInstanced(const Ref<VertexArray>& vertexArray, uint32_t count)
+	void OpenGLRendererAPI::DrawInstanced(const Ref<VertexArray>& vertexArray, uint32_t count, DrawMode mode)
 	{
 		vertexArray->Bind();
-		glDrawElementsInstanced(GL_TRIANGLES, static_cast<int32_t>(vertexArray->GetIndexBuffers().at(0)->GetCount()), GL_UNSIGNED_INT, nullptr, count);
+		glDrawElementsInstanced((GLenum)mode, static_cast<int32_t>(vertexArray->GetIndexBuffers().at(0)->GetCount()), GL_UNSIGNED_INT, nullptr, count);
 	}
 
 	void OpenGLRendererAPI::SetDepthTest(bool value)
@@ -103,6 +103,16 @@ namespace Apex {
 	void OpenGLRendererAPI::SetBlendMode(BlendingMode sourceMode, BlendingMode destMode)
 	{
 		glBlendFunc((GLenum)sourceMode, (GLenum)destMode);
+	}
+
+	void OpenGLRendererAPI::SetPointSize(float size)
+	{
+		glPointSize(size);
+	}
+
+	void OpenGLRendererAPI::SetLineWidth(float width)
+	{
+		glLineWidth(width);
 	}
 
 	void OpenGLRendererAPI::SetViewport(uint32_t x, uint32_t y, size_t width, size_t height)

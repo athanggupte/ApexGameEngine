@@ -160,7 +160,7 @@ namespace Apex {
 				case LightType::SpotLight:
 					{
 						if (spotLightsCount < MAX_SPOT_LIGHTS) {
-							auto& light = bufferPtr->SpotLights[pointLightsCount];
+							auto& light = bufferPtr->SpotLights[spotLightsCount];
 							light.Color = light_component.color * light_component.intensity;
 							light.Position = glm::vec4{ transform_component.translation, 1.f };
 							light.Direction = glm::vec4{ glm::rotate(glm::quat(transform_component.rotation), glm::vec3{ 0.f, -1.f, 0.f }), 1.f };
@@ -218,7 +218,7 @@ namespace Apex {
 		if (vertexArray->GetIndexBuffers().empty())
 			RenderCommands::Draw(vertexArray);
 		else
-			RenderCommands::DrawIndexed(vertexArray);
+			RenderCommands::DrawIndexed(vertexArray, 0);
 	}
 
 	void Renderer::SubmitArray(const Ref<Shader>& shader, const Ref<VertexArray>& vertexArray, glm::mat4 modelMatrices[], size_t count)

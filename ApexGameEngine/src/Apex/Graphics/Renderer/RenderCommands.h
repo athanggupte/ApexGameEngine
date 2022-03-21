@@ -4,7 +4,7 @@
 
 namespace Apex {
 
-	class RenderCommands
+	class APEX_API RenderCommands
 	{
 	public:
 		static void Init();
@@ -12,11 +12,11 @@ namespace Apex {
 		static void SetClearColor(const glm::vec4& color);
 		static void Clear();
 
-		static void Draw(uint32_t vertexCount);
+		static void Draw(uint32_t vertexCount, DrawMode mode = DrawMode::TRIANGLES);
 
-		static void Draw(const Ref<VertexArray>& vertexArray);
-		static void DrawIndexed(const Ref<VertexArray>& vertexArray, uint32_t indexCount = 0);
-		static void DrawInstanced(const Ref<VertexArray>& vertexArray, uint32_t count);
+		static void Draw(const Ref<VertexArray>& vertexArray, DrawMode mode = DrawMode::TRIANGLES);
+		static void DrawIndexed(const Ref<VertexArray>& vertexArray, uint32_t indexCount = 0, DrawMode mode = DrawMode::TRIANGLES);
+		static void DrawInstanced(const Ref<VertexArray>& vertexArray, uint32_t count, DrawMode mode = DrawMode::TRIANGLES);
 
 		static void SetDepthTest(bool value);
 		static void SetDepthWriteMode(bool value);
@@ -31,6 +31,10 @@ namespace Apex {
 
 		static void SetCulling(bool value);
 		static void SetBlendMode(BlendingMode sourceMode, BlendingMode destMode);
+
+		static void SetPointSize(float size);
+		static void SetLineWidth(float width);
+
 		static void SetViewport(uint32_t x, uint32_t y, size_t width, size_t height);
 		static void ImageAccessBarrier();
 

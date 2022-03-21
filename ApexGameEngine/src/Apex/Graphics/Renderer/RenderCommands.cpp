@@ -19,17 +19,17 @@ namespace Apex {
 	void RenderCommands::Clear()
 	{ s_RendererAPI->Clear(); }
 
-	void RenderCommands::Draw(uint32_t vertexCount)
-	{ s_RendererAPI->Draw(vertexCount); }
+	void RenderCommands::Draw(uint32_t vertexCount, DrawMode mode)
+	{ s_RendererAPI->Draw(vertexCount, mode); }
 
-	void RenderCommands::Draw(const Ref<VertexArray>& vertexArray)
-	{ s_RendererAPI->Draw(vertexArray); }
+	void RenderCommands::Draw(const Ref<VertexArray>& vertexArray, DrawMode mode)
+	{ s_RendererAPI->Draw(vertexArray, mode); }
 
-	void RenderCommands::DrawIndexed(const Ref<VertexArray>& vertexArray, uint32_t indexCount)
-	{ s_RendererAPI->DrawIndexed(vertexArray, indexCount); }
+	void RenderCommands::DrawIndexed(const Ref<VertexArray>& vertexArray, uint32_t indexCount, DrawMode mode)
+	{ s_RendererAPI->DrawIndexed(vertexArray, indexCount, mode); }
 
-	void RenderCommands::DrawInstanced(const Ref<VertexArray>& vertexArray, uint32_t count)
-	{ s_RendererAPI->DrawInstanced(vertexArray, count); }
+	void RenderCommands::DrawInstanced(const Ref<VertexArray>& vertexArray, uint32_t count, DrawMode mode)
+	{ s_RendererAPI->DrawInstanced(vertexArray, count, mode); }
 
 	void RenderCommands::SetDepthTest(bool value)
 	{ s_RendererAPI->SetDepthTest(value); }
@@ -58,6 +58,12 @@ namespace Apex {
 
 	void RenderCommands::SetBlendMode(BlendingMode sourceMode, BlendingMode destMode)
 	{ s_RendererAPI->SetBlendMode(sourceMode, destMode); }
+
+	void RenderCommands::SetPointSize(float size)
+	{ s_RendererAPI->SetPointSize(size); }
+
+	void RenderCommands::SetLineWidth(float width)
+	{ s_RendererAPI->SetLineWidth(width); }
 
 	void RenderCommands::SetViewport(uint32_t x, uint32_t y, size_t width, size_t height)
 	{ s_RendererAPI->SetViewport(x, y, width, height); }

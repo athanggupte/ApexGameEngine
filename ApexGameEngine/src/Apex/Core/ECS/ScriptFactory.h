@@ -24,7 +24,7 @@ namespace Apex {
 	{ public: \
 		static decltype(auto) Create() \
 		{ \
-			auto ptr = Apex::Ref<script##Factory>(new script##Factory()); \
+			auto ptr = Apex::CreateRef<script##Factory>(); \
 			Apex::Application::Get().GetResourceManager().Insert<AScriptFactory>(RESNAME(STR(script)), ptr); \
 			APEX_CORE_DEBUG("Added script factory ({})", STR(script)); \
 			return ptr; \

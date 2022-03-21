@@ -61,9 +61,9 @@ namespace Apex {
 		virtual void SetUniMat4(const std::string& name, const glm::mat4& matrix) const = 0;
 		virtual void SetUniMat4v(const std::string& name, glm::mat4 matrices[], size_t count) const = 0;
 		
-		static Ref<Shader> Create(const std::filesystem::path& filepath);
-		static Ref<Shader> Create(const std::string& name, const std::string& source);
-		static Ref<Shader> Create(const std::string& name, const std::string& vertexSrc, const std::string& fragmentSrc);
+		static Ref<Shader> APEX_API Create(const std::filesystem::path& filepath);
+		static Ref<Shader> APEX_API Create(const std::string& name, const std::string& source);
+		static Ref<Shader> APEX_API Create(const std::string& name, const std::string& vertexSrc, const std::string& fragmentSrc);
 	};
 
 	

@@ -26,6 +26,8 @@ namespace Apex {
 
 		virtual void OnCreate() {}
 		virtual void OnUpdate(Timestep ts) {}
+		virtual void OnRender(Timestep ts) {}
+		virtual void OnPhysicsUpdate(Timestep ts) {}
 		virtual void OnDestroy() {}
 		// virtual void OnFixedUpdate(FixedTimestep ts) {}
 

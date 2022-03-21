@@ -7,6 +7,23 @@ namespace Apex {
 	class VertexArray; // Forward Declaration
 	
 	/* OpenGL specific -> change later */
+	enum class DrawMode
+	{
+		POINTS = 0x0000,
+		LINES,
+		LINE_LOOP,
+		LINE_STRIP,
+		TRIANGLES,
+		TRIANGLE_STRIP,
+		TRIANGLE_FAN,
+
+		LINES_ADJACENCY = 0x000A,
+		LINE_STRIP_ADJACENCY,
+		TRIANGLES_ADJACENCY,
+		TRIANGLE_STRIP_ADJACENCY,
+		PATCHES
+	};
+
 	enum class BlendingMode
 	{
 		ZERO = 0, ONE = 1,
@@ -62,11 +79,11 @@ namespace Apex {
 		virtual void SetClearColor(const glm::vec4& color) = 0;
 		virtual void Clear() = 0;
 
-		virtual void Draw(uint32_t vertexCount) = 0;
+		virtual void Draw(uint32_t vertexCount, DrawMode mode = DrawMode::TRIANGLES) = 0;
 
-		virtual void Draw(const Ref<VertexArray>& vertexArray) = 0;
-		virtual void DrawIndexed(const Ref<VertexArray>& vertexArray, uint32_t indexCount = 0) = 0;
-		virtual void DrawInstanced(const Ref<VertexArray>& vertexArray, uint32_t count) = 0;
+		virtual void Draw(const Ref<VertexArray>& vertexArray, DrawMode mode = DrawMode::TRIANGLES) = 0;
+		virtual void DrawIndexed(const Ref<VertexArray>& vertexArray, uint32_t indexCount = 0, DrawMode mode = DrawMode::TRIANGLES) = 0;
+		virtual void DrawInstanced(const Ref<VertexArray>& vertexArray, uint32_t count, DrawMode mode = DrawMode::TRIANGLES) = 0;
 
 		virtual void SetDepthTest(bool value) = 0;
 		virtual void SetDepthWriteMode(bool value) = 0;
@@ -79,7 +96,10 @@ namespace Apex {
 		
 		virtual void SetCulling(bool value) = 0;
 		virtual void SetBlendMode(BlendingMode sourceMode, BlendingMode destMode) = 0;
-		
+
+		virtual void SetPointSize(float size) = 0;
+		virtual void SetLineWidth(float width) = 0;
+
 		virtual void SetViewport(uint32_t x, uint32_t y, size_t width, size_t height) = 0;
 		virtual void ImageAccessBarrier() = 0;
 

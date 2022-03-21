@@ -8,7 +8,7 @@
 #define COMPONENT_DEFAULT_CTR(name)	name() = default;\
 									name(const name&) = default
 
-#define REGISTER_COMPONENT(name) static constexpr const char* TypeName = name;\
+#define REGISTER_COMPONENT(name) static constexpr const char* TypeName = STR(name);\
 								COMPONENT_DEFAULT_CTR(name)
 
 #include "Apex/Core/Camera.h"

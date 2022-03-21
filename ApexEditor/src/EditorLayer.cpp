@@ -39,7 +39,7 @@ namespace Apex {
 	
 	EditorLayer::EditorLayer()
 		: Layer("ApexEditor"),
-		  m_BGColor{0.42f, 0.63f, 0.75f, 1.0f},
+		  m_BGColor{0.023f, 0.039f, 0.124f, 1.0f},
 		  m_EditorCamera(Camera::ProjectionType::Perspective, Application::Get().GetWindow().GetWidth(),
 		                 Application::Get().GetWindow().GetHeight()),
 		  m_OrthographicCameraController(m_EditorCamera, 1.f, glm::vec3{0.f, 0.f, 5.f}),
@@ -273,6 +273,8 @@ namespace Apex {
 		Renderer::BeginScene(m_EditorCamera, m_EditorCameraController->GetTransform());
 		RenderCommands::SetDepthTest(true);
 		m_ActiveScene->Render3D();
+		if (m_SceneState == SceneState::Play)
+			m_ActiveScene->OnScriptRender(ts);
 		Renderer::EndScene();
 
 		if (showSkybox) {
@@ -978,7 +980,8 @@ namespace Apex {
 
 	void EditorLayer::SceneNew()
 	{
-		m_ActiveScene = CreateRef<Scene>();
+		m_EditorScene = CreateRef<Scene>();
+		m_ActiveScene = m_EditorScene;
 		m_SceneHierarchyPanel.SetContext(m_ActiveScene);
 	}
 
@@ -996,7 +999,8 @@ namespace Apex {
 		auto serializer = SceneSerializerFactory().SetFormat(SceneSerializerFactory::Format::XML).Build(scene);
 		if (serializer->Deserialize(path.string())) {
 			scene->OnSetup();
-			m_ActiveScene = std::move(scene);
+			m_EditorScene = std::move(scene);
+			m_ActiveScene = m_EditorScene;
 			m_RecentFiles.Push(path.string());
 			m_SceneHierarchyPanel.SetContext(m_ActiveScene);
 			m_InspectorPanel.SetContext({}, m_ActiveScene);
@@ -1006,7 +1010,10 @@ namespace Apex {
 
 	void EditorLayer::SceneSave()
 	{
-		SceneSaveAs(m_RecentFiles.Top());
+		auto filename = m_RecentFiles.Empty() ? Utils::SaveFileDialog() : m_RecentFiles.Top();
+		if (!filename.empty()) {
+			SceneSaveAs(filename);
+		}
 	}
 
 	void EditorLayer::SceneSaveAs()

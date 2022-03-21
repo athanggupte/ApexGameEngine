@@ -194,6 +194,8 @@ namespace Apex {
 			return "TextRendererComponent";
 		if constexpr (std::is_same_v<Component_t, MeshRendererComponent>)
 			return "MeshRendererComponent";
+		if constexpr (std::is_same_v<Component_t, LightComponent>)
+			return "LightComponent";
 		return "Unknown Component Type";
 	}
 
@@ -225,7 +227,8 @@ namespace Apex {
 	}
 
 	using AllBuiltInComponents = ComponentGroup<TransformComponent, SpriteRendererComponent, CameraComponent,
-	                                            NativeScriptComponent, TextRendererComponent, MeshRendererComponent>;
+	                                            NativeScriptComponent, TextRendererComponent, MeshRendererComponent,
+	                                            LightComponent>;
 
 	Ref<Scene> Scene::Copy()
 	{
@@ -283,20 +286,28 @@ namespace Apex {
 		Render2D();
 	}
 
+	void Scene::OnScriptRender(Timestep ts)
+	{
+		m_Registry.view<NativeScriptComponent>()
+			.each([ts](NativeScriptComponent& nsc) {
+				nsc.instance->OnRender(ts);
+			});
+	}
+
 	void Scene::OnViewportResize(uint32_t width, uint32_t height)
 	{
-		Options.ViewportWidth = width;
-		Options.ViewportHeight = height;
+		m_Options.viewportWidth = width;
+		m_Options.viewportHeight = height;
 		
 		m_Registry.view<CameraComponent>().each([this](auto& cameraComponent) {
 			if (!cameraComponent.fixedAspectRatio)
-				cameraComponent.camera.SetViewportSize(Options.ViewportWidth, Options.ViewportHeight);
+				cameraComponent.camera.SetViewportSize(m_Options.viewportWidth, m_Options.viewportHeight);
 		});
 	}
 	
 	void Scene::SetPrimaryCamera(const Entity& entity)
 	{
-		Options.PrimaryCamera = entity.m_EntityId;
+		m_Options.primaryCamera = entity.m_EntityId;
 	}
 
 	//template<typename Component_t>
