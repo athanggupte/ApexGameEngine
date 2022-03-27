@@ -4,6 +4,7 @@
 
 #include "EditorLayer.h"
 #include "Apex/Graphics/FBXImporter.h"
+#include "Apex/Physics/PhysicsManager.h"
 #include "Apex/Utils/Utils.h"
 
 namespace Apex {
@@ -15,12 +16,14 @@ namespace Apex {
 			: Application(WindowProps("ApexEditor", 1600u, 900u))
 		{
 			FBXImporter::Init();
+			PhysicsManager::Init();
 			PushLayer(new EditorLayer());
 			this->GetWindow().SetWindowIcon(Apex::Utils::LoadImage_internal(APEX_INSTALL_LOCATION "/assets/Apex-Game-Engine-32.png"));
 		}
 
 		~ApexEditor() override
 		{
+			PhysicsManager::Shutdown();
 			FBXImporter::Shutdown();
 		}
 	};

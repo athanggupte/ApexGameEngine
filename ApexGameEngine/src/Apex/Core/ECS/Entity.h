@@ -49,10 +49,18 @@ namespace Apex {
 			m_Scene->m_Registry.remove<Component_t>(m_EntityId);
 		}
 
+		template<typename... Component_t>
+		inline void RemoveComponents()
+		{
+			m_Scene->m_Registry.remove<Component_t...>(m_EntityId);
+		}
+
 		inline operator bool() const { return m_EntityId != entt::null; }
 		inline operator entt::entity() const { return m_EntityId; }
 		inline operator uint32_t() const { return (uint32_t)m_EntityId; }
-		
+
+		inline Scene* GetScene() const { return m_Scene; }
+
 		inline bool operator == (const Entity& other) const
 		{
 			return m_EntityId == other.m_EntityId && m_Scene == other.m_Scene;

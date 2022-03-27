@@ -5,9 +5,10 @@
 #include "Apex/Core/Timer.h"
 #include "Apex/Core/Events/Event.h"
 #include "Apex/Core/ResourceManager/ResourceManager.h"
+#include "Apex/Physics/PhysicsManager.h"
 
 namespace Apex {
-	
+
 	class Scene;
 	class Entity; // Forward declaration
 	
@@ -22,7 +23,12 @@ namespace Apex {
 		Entity CreateEntityWithGUID(const GUID& guid);
 		Entity CreateEntityWithGUID(const GUID& guid, StringHandle name);
 
+		Entity CreateMetaEntity();
+
 		void RemoveEntity(Entity entity);
+
+		Entity GetEntityByGUID(const GUID& guid);
+		std::vector<Entity> GetEntitiesByTag(StringHandle tag);
 
 		void OnSetup();
 		void OnPlay();
@@ -71,6 +77,11 @@ namespace Apex {
 			Resource<Shader> skyboxShader;
 		};
 
+		PhysicsScene& GetPhysicsScene()
+		{
+			return m_PhysicsScene;
+		}
+
 		EnvironmentLighting& GetEnvironment()
 		{
 			return m_Environment;
@@ -89,6 +100,9 @@ namespace Apex {
 		template<typename Archiver, typename... Types>
 		friend void Serialize(const Scene* scene, Archiver&& archiver);
 
+		PhysicsScene m_PhysicsScene;
+		float m_PhysicsTimeAccumulator = 0.f;
+		float m_PhysicsTimestep = 1.f / 30.f;
 		
 		// Scene rendering
 		SceneOptions m_Options;

@@ -200,6 +200,7 @@ namespace Apex
 		  m_DataType(GetOpenGLDataType(spec.dataType)), m_Filtering(spec.filtering),
 		  m_PixelSize(GetOpenGLPixelSize(spec.internalFormat))
 	{
+		APEX_CORE_ASSERT(width > 0 && height > 0, "Width and Height of texture must be 1 or greater!");
 		//m_Specification = spec;
 
 		glCreateTextures(GL_TEXTURE_2D, 1, &m_RendererID);
@@ -354,6 +355,7 @@ namespace Apex
 		  m_DataType(GetOpenGLDataType(spec.dataType)),
 		  m_PixelSize(GetOpenGLPixelSize(spec.internalFormat))
 	{
+		APEX_CORE_ASSERT(width > 0 && height > 0, "Width and Height of texture must be 1 or greater!");
 		//m_Specification = spec;
 
 		glCreateTextures(GL_TEXTURE_2D_MULTISAMPLE, 1, &m_RendererID);
@@ -376,6 +378,7 @@ namespace Apex
 
 	void OpenGLTexture2DMS::Invalidate(uint32_t width, uint32_t height)
 	{
+		APEX_CORE_ASSERT(width > 0 && height > 0, "Width and Height of texture must be 1 or greater!");
 		m_Width = width;
 		m_Height = height;
 
@@ -457,7 +460,7 @@ namespace Apex
 		  m_PixelSize(GetOpenGLPixelSize(spec.internalFormat))
 	{
 		//m_Specification = spec;
-
+		APEX_CORE_ASSERT(size > 0, "Width and Height of texture must be 1 or greater!");
 		glCreateTextures(GL_TEXTURE_CUBE_MAP, 1, &m_RendererID);
 
 		glTextureParameteri(m_RendererID, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
@@ -511,6 +514,7 @@ namespace Apex
 		  m_DataType(GetOpenGLDataType(spec.dataType)),
 		  m_Filtering(spec.filtering), m_PixelSize(GetOpenGLPixelSize(spec.internalFormat))
 	{
+		APEX_CORE_ASSERT(width > 0 && height > 0, "Width and Height of texture must be 1 or greater!");
 		glCreateTextures(GL_TEXTURE_2D_ARRAY, 1, &m_RendererID);
 
 		auto [minFilter, magFilter] = GetMinMagFilterPair(m_Filtering);

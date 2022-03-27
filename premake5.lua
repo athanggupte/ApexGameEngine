@@ -59,8 +59,18 @@ project "Assimp"
 		"{MKDIR} build",
 		"{CHDIR} build",
 		"%{CMAKE} -DASSIMP_BUILD_ASSIMP_TOOLS=OFF -DASSIMP_BUILD_SAMPLES=OFF -DASSIMP_BUILD_TESTS=OFF ..",
-		"%{CMAKE} --build . "
+		-- "%{CMAKE} --build . "
 	}
+
+	filter "configurations:Debug"
+		buildcommands {
+			"%{CMAKE} --build . --config Debug"
+		}
+
+	filter "configurations:Release or Dist"
+		buildcommands {
+			"%{CMAKE} --build . --config Release"
+		}
 
 	filter "system:windows"
 		buildcommands {
@@ -80,8 +90,18 @@ project "FreeType"
 		"{MKDIR} build",
 		"{CHDIR} build",
 		"%{CMAKE} ..",
-		"%{CMAKE} --build . "
+		-- "%{CMAKE} --build . "
 	}
+
+	filter "configurations:Debug"
+		buildcommands {
+			"%{CMAKE} --build . --config Debug"
+		}
+
+	filter "configurations:Release or Dist"
+		buildcommands {
+			"%{CMAKE} --build . --config Release"
+		}
 
 group "Utils"
 project "utf-bom-utils"
@@ -92,5 +112,15 @@ project "utf-bom-utils"
 		"{MKDIR} ../bin/%{prj.name}",
 		"{CHDIR} ../bin/%{prj.name}",
 		"%{CMAKE} ../../%{prj.name}",
-		"%{CMAKE} --build ."
+		--"%{CMAKE} --build ."
 	}
+
+	filter "configurations:Debug"
+		buildcommands {
+			"%{CMAKE} --build . --config Debug"
+		}
+
+	filter "configurations:Release or Dist"
+		buildcommands {
+			"%{CMAKE} --build . --config Release"
+		}

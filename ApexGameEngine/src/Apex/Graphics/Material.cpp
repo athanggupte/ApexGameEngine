@@ -99,13 +99,14 @@ namespace Apex {
 
 			if (ShaderUniformTypeIsSampler(type)) {
 				TextureSlotMap map;
-				std::string mapId = name;
+				std::string_view mapId = name;
 				if (name[0] == '_') {
 					// Uniform is a reserved texture
-					auto texType = name.substr(0, 4);
+					auto texType = std::string_view(name.c_str(), 4);
+					//auto texType = name.substr(0, 4);
 					if (texType == "_Mat") {
 						// Material texture
-						mapId = name.substr(4);
+						mapId = std::string_view(name.c_str() + 4);
 						map.slot = GetTextureSlotFromName(name);
 					} else if (texType == "_Env") {
 						// Environment texture
@@ -117,10 +118,11 @@ namespace Apex {
 				}
 				// If mapping with texture name exists then assign the texture to the map,
 				// else create a new mapping for the texture name
-				if (auto itr = m_Textures.find(mapId); itr != m_Textures.end()) {
+				std::string mapIdStr = std::string(mapId);
+				if (auto itr = m_Textures.find(mapIdStr); itr != m_Textures.end()) {
 					itr->second.slot = map.slot;
 				} else {
-					auto [it, success] = m_Textures.try_emplace(mapId, map);
+					auto [it, success] = m_Textures.try_emplace(mapIdStr, map);
 					APEX_CORE_ASSERT(success, "Texture slot could not be added to material!");
 				}
 				APEX_CORE_DEBUG("mapId: {}", mapId);
@@ -128,21 +130,22 @@ namespace Apex {
 				// Uniform is an alternative for a texture
 				TextureSlotMap map;
 				map.altType = type;
-				std::string mapId = name.substr(4);
-				auto texType = name.substr(4, 3);
+				std::string_view mapId = std::string_view(name.c_str(), 4);
+				auto texType = std::string_view(name.c_str() + 4, 3);
 				if (texType == "Mat") {
 					// Material texture
-					mapId = name.substr(7);
+					mapId = std::string_view(name.c_str() + 7);
 				} else if (texType == "Env") {
 					// Environment texture
 					continue; // Don't add this type of texture to Material
 				}
 				// If mapping with texture name exists then assign the texture to the map,
 				// else create a new mapping for the texture name
-				if (auto itr = m_Textures.find(mapId); itr != m_Textures.end()) {
+				std::string mapIdStr = std::string(mapId);
+				if (auto itr = m_Textures.find(mapIdStr); itr != m_Textures.end()) {
 					itr->second.altType = map.altType;
 				} else {
-					auto [it, success] = m_Textures.try_emplace(mapId, map);
+					auto [it, success] = m_Textures.try_emplace(mapIdStr, map);
 					APEX_CORE_ASSERT(success, "Texture slot could not be added to material!");
 				}
 			}

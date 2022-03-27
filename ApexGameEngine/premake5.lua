@@ -53,6 +53,8 @@ project "ApexGameEngine"
 		"%{IncludeDirs.ApexIK}",
 	}
 
+	includedirs(IncludeDirs["PhysX"])
+
 	libdirs {
 		--"ApexGameEngine/vendor/Assimp/build/contrib/zlib/Debug",
 		--"ApexGameEngine/vendor/Assimp/build/contrib/irrXML/Debug"
@@ -68,7 +70,7 @@ project "ApexGameEngine"
 		--"zlibd",4"
 		--"IrrXMLd",
 	}
-	
+
 	targetDir = path.getabsolute("%{wks.location}/bin/" .. outputdir .. "/%{prj.name}")
 	
 	defines {
@@ -100,26 +102,49 @@ project "ApexGameEngine"
 		}
 		
 		libdirs {
-			"%{WinLibDirs.FreeType}",
-			"%{WinLibDirs.Assimp}",
 			"%{WinLibDirs.irrKlang}",
-			"%{WinLibDirs.FBX}",
 		}
 
 		links {
 			"%{WinLibs.OpenGL}",
-			"%{WinLibs.FreeType}",
-			"%{WinLibs.Assimp}",
 			"%{WinLibs.irrKlang}",
 			"%{WinLibs.FBX}",
 			"%{WinLibs.FBX_xml}",
 			"%{WinLibs.FBX_zlib}",
 		}
 
+		links(WinLibs["PhysX"])
+
 		postbuildcommands {
 			"%{wks.location}/vendor/bin/defmaker/defmaker.exe %{cfg.linktarget.directory}/%{prj.name}.def %{cfg.linktarget.abspath}",
 		}
         
+	filter { "system:windows", "configurations:Debug" }
+		libdirs {
+			"%{WinLibDirs.FreeType_Debug}",
+			"%{WinLibDirs.Assimp_Debug}",
+			"%{WinLibDirs.FBX_Debug}",
+			"%{WinLibDirs.PhysX_Debug}",
+		}
+
+		links {
+			"%{WinLibs.FreeType_Debug}",
+			"%{WinLibs.Assimp_Debug}",
+		}
+
+	filter { "system:windows", "configurations:Release or Dist" }
+		libdirs {
+			"%{WinLibDirs.FreeType_Release}",
+			"%{WinLibDirs.Assimp_Release}",
+			"%{WinLibDirs.FBX_Release}",
+			"%{WinLibDirs.PhysX_Release}",
+		}
+
+		links {
+			"%{WinLibs.FreeType_Release}",
+			"%{WinLibs.Assimp_Release}",
+		}
+
 	filter "system:linux"
 		systemversion "latest"
 
@@ -153,7 +178,8 @@ project "ApexGameEngine"
 	filter "configurations:Debug"
 		defines {
 			"APEX_DEBUG", "APEX_ENABLE_ASSERTS", "APEX_PROFILER_ENABLE",
-			"APEX_HOME_DIR="..curDir
+			"APEX_HOME_DIR="..curDir,
+			"_DEBUG"
 		}
 		runtime "Debug"
 		symbols "on"
@@ -161,12 +187,13 @@ project "ApexGameEngine"
 	filter "configurations:Release"
 		defines {
 			"APEX_RELEASE", "APEX_PROFILER_ENABLE",
-			"APEX_HOME_DIR="..curDir
+			"APEX_HOME_DIR="..curDir,
+			"NDEBUG"
 		}
 		runtime "Release"
 		optimize "on"
 
 	filter "configurations:Dist"
-		defines { "APEX_DIST", "APEX_HOME_DIR=\".\"" }
+		defines { "APEX_DIST", "APEX_HOME_DIR=\".\"", "NDEBUG" }
 		runtime "Release"
 		optimize "on"

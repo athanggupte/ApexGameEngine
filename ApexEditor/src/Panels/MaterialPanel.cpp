@@ -53,7 +53,7 @@ namespace Apex {
 	{
 		std::string materialName = "None";
 		if (m_ContextMaterial.IsValid())
-			materialName = TO_CSTRING(Strings::Get(m_ContextMaterial.GetId()));
+			materialName = TO_STRING(Strings::Get(m_ContextMaterial.GetId()));
 
 		bool openPopup = false;
 

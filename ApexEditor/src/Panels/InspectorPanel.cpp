@@ -365,6 +365,38 @@ namespace Apex {
 			}
 		}
 
+		if (m_ContextEntity.HasComponent<RigidBodyComponent>()) {
+			auto& rb = m_ContextEntity.GetComponent<RigidBodyComponent>();
+			if (ImGui::TreeNodeEx((void*)typeid(RigidBodyComponent).hash_code(), treeNodeFlags, "Rigid Body")) {
+				ImGui::DragFloat("Density", &rb.density, 0.1f, 0, 1.e7f);
+				if (ImGui::BeginCombo("Type", RigidBodyTypeString(rb.type))) {
+					for (int i = 0; i < static_cast<int>(RigidBodyType::_COUNT); ++i) {
+						if (ImGui::Selectable(RigidBodyTypeString(static_cast<RigidBodyType>(i)), i == static_cast<int>(rb.type))) {
+							rb.type = static_cast<RigidBodyType>(i);
+						}
+					}
+					ImGui::EndCombo();
+				}
+				ImGui::TreePop();
+			}
+		}
+
+		if (m_ContextEntity.HasComponent<BoxCollider>()) {
+			auto& boxCollider = m_ContextEntity.GetComponent<BoxCollider>();
+			if (ImGui::TreeNodeEx((void*)typeid(BoxCollider).hash_code(), treeNodeFlags, "Box Collider")) {
+				ImGui::DragFloat3("Half Extents", glm::value_ptr(boxCollider.halfExtents));
+				ImGui::TreePop();
+			}
+		}
+
+		if (m_ContextEntity.HasComponent<SphereCollider>()) {
+			auto& sphereCollider = m_ContextEntity.GetComponent<SphereCollider>();
+			if (ImGui::TreeNodeEx((void*)typeid(SphereCollider).hash_code(), treeNodeFlags, "Sphere Collider")) {
+				ImGui::DragFloat("Radius", &sphereCollider.radius);
+				ImGui::TreePop();
+			}
+		}
+
 		// Native Script Component
 		if (m_ContextEntity.HasComponent<NativeScriptComponent>()) {
 			auto& scriptComp = m_ContextEntity.GetComponent<NativeScriptComponent>();
@@ -414,15 +446,26 @@ namespace Apex {
 					m_ContextEntity.AddComponent<LightComponent>();
 
 			if (ImGui::BeginMenu("Physics")) {
+
+				if (!m_ContextEntity.HasComponent<RigidBodyComponent>())
+					if (ImGui::MenuItem("Rigid Body"))
+						m_ContextEntity.AddComponent<RigidBodyComponent>();
 				
-				// if (!m_ContextEntity.HasComponent<Collider3DComponent>())
-					if (ImGui::MenuItem("Collider 3D")) {}
+				if (!m_ContextEntity.HasComponent<BoxCollider>())
+					if (ImGui::MenuItem("Box Collider"))
+						m_ContextEntity.AddComponent<BoxCollider>();
+
+				if (!m_ContextEntity.HasComponent<SphereCollider>())
+					if (ImGui::MenuItem("Sphere Collider"))
+						m_ContextEntity.AddComponent<SphereCollider>();
+				
+				ImGui::EndMenu();
+			}
+
+			if (ImGui::BeginMenu("Physics2D")) {
 				
 				// if (!m_ContextEntity.HasComponent<Collider2DComponent>())
 					if (ImGui::MenuItem("Collider 2D")) {}
-				
-				// if (!m_ContextEntity.HasComponent<RigidBody3DComponent>())
-					if (ImGui::MenuItem("Rigid Body 3D")) {}
 				
 				// if (!m_ContextEntity.HasComponent<RigidBody2DComponent>())
 					if (ImGui::MenuItem("Rigid Body 2D")) {}

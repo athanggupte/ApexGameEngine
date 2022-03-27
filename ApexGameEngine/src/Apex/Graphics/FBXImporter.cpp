@@ -91,40 +91,52 @@ namespace Apex {
 		if (!nodeName.empty()) {
 			if (auto childNode = fbxScene->GetRootNode()->FindChild(nodeName.c_str()))
 				node = childNode;
-			else 
-				node =  fbxScene->GetRootNode()->GetChild(0);
 		}
+		if (node == nullptr)
+			node =  fbxScene->GetRootNode()->GetChild(0);
 		 	
 		// fbx::ProcessNode(node, scene.get(), false);
 		auto meshAttr = node->GetMesh();
-		if (meshAttr)
+		if (meshAttr) {
+			meshAttr->ComputeBBox();
+			auto bbMin = meshAttr->BBoxMin.Get();
+			auto bbMinStr = fmt::format("({}, {}, {})", bbMin[0], bbMin[1], bbMin[2]);
+			auto bbMax = meshAttr->BBoxMax.Get();
+			auto bbMaxStr = fmt::format("({}, {}, {})", bbMax[0], bbMax[1], bbMax[2]);
+			APEX_CORE_DEBUG("FBXImporter ({0}) :: BBoxMin : {} | BBoxMax : {}", node->GetName(), bbMinStr, bbMaxStr);
 			return fbx::ProcessMesh(node, meshAttr);
+		}
 		return { nullptr };
 	}
 
 	FbxScene* fbx::ParseScene(const std::filesystem::path& filepath)
 	{
-		FbxImporter* fbxImporter = FbxImporter::Create(s_Data.fbxManager, filepath.filename().string().c_str());
-		APEX_CORE_ASSERT(fbxImporter->Initialize(filepath.string().c_str(), -1, s_Data.fbxManager->GetIOSettings()),
+		auto filenameStr = filepath.filename().string();
+		auto filepathStr = filepath.string();
+		::FbxImporter* fbxImporter = ::FbxImporter::Create(s_Data.fbxManager, filenameStr.c_str());
+		APEX_CORE_ASSERT(fbxImporter->Initialize(filepathStr.c_str(), -1, s_Data.fbxManager->GetIOSettings()),
 			fmt::format("FbxImporter Initialize failed for '{0}'! Error: {1}", filepath, fbxImporter->GetStatus().GetErrorString()));
 
-		FbxScene* fbxScene = FbxScene::Create(s_Data.fbxManager, filepath.filename().string().c_str());
-		fbxImporter->Import(fbxScene);
+		FbxScene* fbxScene = FbxScene::Create(s_Data.fbxManager, filenameStr.c_str());
+		if (!fbxImporter->Import(fbxScene)) {
+			FbxStatus importStatus = fbxImporter->GetStatus();
+			APEX_CORE_ERROR("Could not load FBX scene : {} :: {}", filepathStr, importStatus.GetErrorString());
+		}
 		fbxImporter->Destroy();
 
 		if(fbxScene->GetGlobalSettings().GetSystemUnit() != FbxSystemUnit::m)
 		{
-			constexpr FbxSystemUnit::ConversionOptions fbxConversionOptions = {
-				false, /* mConvertRrsNodes */
-				true, /* mConvertAllLimits */
-				true, /* mConvertClusters */
-				true, /* mConvertLightIntensity */
-				true, /* mConvertPhotometricLProperties */
-				true  /* mConvertCameraClipPlanes */
-			};
+			//constexpr FbxSystemUnit::ConversionOptions fbxConversionOptions = {
+			//	false, /* mConvertRrsNodes */
+			//	true, /* mConvertAllLimits */
+			//	true, /* mConvertClusters */
+			//	true, /* mConvertLightIntensity */
+			//	true, /* mConvertPhotometricLProperties */
+			//	true  /* mConvertCameraClipPlanes */
+			//};
 
 			// Convert the scene to meters using the defined options.
-			FbxSystemUnit::m.ConvertScene(fbxScene, fbxConversionOptions);
+			FbxSystemUnit::m.ConvertScene(fbxScene/*, fbxConversionOptions*/);
 		}
 
 		return fbxScene;
@@ -149,7 +161,11 @@ namespace Apex {
 		APEX_CORE_INFO("FBXImport ({0}) :: attr ({1}) : {2}", nodeName, typeName, attrName);
 
 		switch (attribute->GetAttributeType()) {
-		case FbxNodeAttribute::eSkeleton: break;
+		case FbxNodeAttribute::eSkeleton:
+		{
+			APEX_CORE_DEBUG("FBXImport ({0}) :: Skeleton", nodeName);
+			break;
+		}
 		case FbxNodeAttribute::eMesh:
 		{
 			FbxGeometryConverter geometryConverter(s_Data.fbxManager);

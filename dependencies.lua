@@ -1,4 +1,5 @@
 FBX_SDK = os.getenv("FBX_SDK_PATH")
+PHYSX_PATH = "../../PhysX"
 
 -- Include directories relative to the root (solution) directory
 IncludeDirs = {}
@@ -17,23 +18,47 @@ IncludeDirs["ImGuizmoQuat"] = "%{wks.location}/ApexGameEngine/vendor/imguizmo_qu
 IncludeDirs["ImGuizmo"] =     "%{wks.location}/ApexGameEngine/vendor/ImGuizmo/"
 IncludeDirs["ApexIK"] =       "%{wks.location}/ApexGameEngine/modules/ApexIK/ApexIK/include/"
 IncludeDirs["FBX"] =          "%{FBX_SDK}/include"
+IncludeDirs["PhysX"] = {
+	"%{PHYSX_PATH}/physx/include",
+	"%{PHYSX_PATH}/pxshared/include",
+}
 
 -- Platform library linkages
 -- Windows
 WinLibDirs = {}
-WinLibDirs["FreeType"] =  "%{wks.location}/ApexGameEngine/vendor/freetype/build/Debug"
-WinLibDirs["Assimp"] =    "%{wks.location}/ApexGameEngine/vendor/Assimp/build/lib/Debug"
-WinLibDirs["irrKlang"] =  "%{wks.location}/ApexGameEngine/vendor/irrKlang/lib"
-WinLibDirs["FBX"] =       "%{FBX_SDK}/lib/vs2019/x64/debug"
+WinLibDirs["FreeType_Debug"] = "%{wks.location}/ApexGameEngine/vendor/freetype/build/Debug"
+WinLibDirs["Assimp_Debug"] =   "%{wks.location}/ApexGameEngine/vendor/Assimp/build/lib/Debug"
+WinLibDirs["FBX_Debug"] =      "%{FBX_SDK}/lib/vs2019/x64/debug"
+WinLibDirs["PhysX_Debug"] =    "%{PHYSX_PATH}/physx/bin/win.x86_64.vc142.md/debug"
+
+WinLibDirs["FreeType_Release"] = "%{wks.location}/ApexGameEngine/vendor/freetype/build/Release"
+WinLibDirs["Assimp_Release"] =   "%{wks.location}/ApexGameEngine/vendor/Assimp/build/lib/Release"
+WinLibDirs["FBX_Release"] =      "%{FBX_SDK}/lib/vs2019/x64/release"
+WinLibDirs["irrKlang"] =         "%{wks.location}/ApexGameEngine/vendor/irrKlang/lib"
+WinLibDirs["PhysX_Release"] =    "%{PHYSX_PATH}/physx/bin/win.x86_64.vc142.md/checked"
 
 WinLibs = {}
+WinLibs["FreeType_Debug"] = "freetyped.lib"
+WinLibs["Assimp_Debug"] =   "assimp-vc142-mtd"
+
+WinLibs["FreeType_Release"] = "freetype.lib"
+WinLibs["Assimp_Release"] =   "assimp-vc142-mt"
+
 WinLibs["OpenGL"] =   "opengl32.lib"
-WinLibs["FreeType"] = "freetyped"
-WinLibs["Assimp"] =   "assimp-vc142-mtd"
 WinLibs["irrKlang"] = "irrKlang"
 WinLibs["FBX"] =      "libfbxsdk-md.lib"
 WinLibs["FBX_xml"] =  "libxml2-md.lib"
 WinLibs["FBX_zlib"] = "zlib-md.lib"
+WinLibs["PhysX"] = {
+	"PhysX_64.lib",
+	"PhysXFoundation_64.lib",
+	"PhysXCommon_64.lib",
+	"PhysXCooking_64.lib",
+	"PhysXExtensions_static_64.lib",
+	"PhysXCharacterKinematic_static_64.lib",
+	"PhysXVehicle_static_64.lib",
+	"PhysXPvdSDK_static_64.lib",
+}
 
 -- Linux
 LinuxLibDirs = {}

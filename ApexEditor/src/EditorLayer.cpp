@@ -19,6 +19,7 @@
 #include "IconsMaterialDesign.h"
 #include "ImGuizmo.h"
 #include "Apex/Core/DllManager.h"
+#include "Apex/Core/ECS/Components/PhysicsComponents.h"
 #include "Apex/Graphics/FBXImporter.h"
 #include "Apex/Graphics/Material.h"
 #include "Apex/Graphics/Font.h"
@@ -153,9 +154,25 @@ namespace Apex {
 			meshComp.mesh = resourceManager.Get<Mesh>(RESNAME("default-plane"));
 			meshComp.material = resourceManager.Insert<Material>(RESNAME("default-material"), CreateRef<Material>(resourceManager.Get<Shader>(RESNAME("shader_StandardPBR"))));
 		}
-		//planeEntity.AddComponent<NativeScriptComponent>(resourceManager.Get<AScriptFactory>(RESNAME("MaterialScript")));
+		{
+			auto sphereEntity = m_ActiveScene->CreateEntity(HASH("Sphere"));
+			sphereEntity.Transform().translation.y += 15.f;
+			auto& meshComp = sphereEntity.AddComponent<MeshRendererComponent>();
+			auto mesh = FBXImporter::LoadMesh(FileSystem::GetFileIfExists("editor_assets/meshes/sphere-tris.fbx"), "Sphere");
+			meshComp.mesh = resourceManager.Insert<Mesh>(RESNAME("default-sphere"), mesh);
+			auto material = CreateRef<Material>(resourceManager.Get<Shader>(RESNAME("shader_StandardPBR")));
+			meshComp.material = resourceManager.Insert<Material>(RESNAME("material.sphere"), material);
 
-		// pusheenTexture->Bind(0);
+			sphereEntity.AddComponent<SphereCollider>();
+		}
+		{
+			auto dirLightEntity = m_ActiveScene->CreateEntity(HASH("Directional Light"));
+			dirLightEntity.Transform().rotation = glm::eulerAngles(glm::quatLookAt(glm::normalize(glm::vec3{ 1.f, 1.f, 0.f }), glm::vec3{ 0.f, 1.f, 0.f }));
+			auto& lightComp = dirLightEntity.AddComponent<LightComponent>();
+			lightComp.type = LightType::DirectionalLight;
+			lightComp.color = glm::vec4{ 0.98f, 0.92f, 0.85f, 1.f };
+			lightComp.intensity = 8.f;
+		}
 		
 		m_ActiveScene->OnSetup();
 
@@ -169,7 +186,7 @@ namespace Apex {
 		ImGui::GetIO().ConfigWindowsMoveFromTitleBarOnly = true;
 		SetupEditorFonts();
 
-		FBXImporter::Import(FileSystem::GetFileIfExists("editor_assets/meshes/sphere-tris.fbx"), m_ActiveScene);
+		// FBXImporter::Import(FileSystem::GetFileIfExists("editor_assets/meshes/sphere-tris.fbx"), m_ActiveScene);
 		// FBXImporter::Import(FileSystem::GetFileIfExists("editor_assets/meshes/suzanne/source/suzanne.fbx"), m_ActiveScene);
 
 		//s_FontAtlas = CreateRef<FontAtlas>();

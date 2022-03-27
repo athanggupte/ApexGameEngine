@@ -17,6 +17,9 @@
 #include "Apex/Graphics/Mesh.h"
 #include "Apex/Graphics/Material.h"
 
+// PhysX includes
+#include <PxPhysicsAPI.h>
+
 namespace Apex {
 
 	static Ref<Shader> errorShader;
@@ -85,9 +88,26 @@ namespace Apex {
 		return entity;
 	}
 
+	Entity Scene::CreateMetaEntity()
+	{
+		auto entity = Entity{ m_Registry.create(), this };
+		entity.AddComponent<TransformComponent>();
+		return entity;
+	}
+
 	void Scene::RemoveEntity(Entity entity)
 	{
 		m_Registry.destroy(entity.m_EntityId);
+	}
+
+	Entity Scene::GetEntityByGUID(const GUID& guid)
+	{
+		return {};
+	}
+
+	std::vector<Entity> Scene::GetEntitiesByTag(StringHandle tag)
+	{
+		return {};
 	}
 
 	void Scene::OnSetup()
@@ -123,6 +143,75 @@ namespace Apex {
 		OnSetup();
 		resourceManager.LoadAll<Texture>();
 		resourceManager.LoadAll<Shader>();
+
+		m_PhysicsScene = PhysicsManager::CreateScene();
+
+		physx::PxMaterial* pxMaterial = PhysicsManager::GetPhysics().createMaterial(0.8f, 0.4f, 0.6f);
+		// TODO: Consider removing this or conditioning it upon some variable
+		physx::PxRigidStatic* groundPlane = PxCreatePlane(m_PhysicsScene->getPhysics(), physx::PxPlane{ 0.f, 1.f, 0.f, 0.f }, *pxMaterial);
+		m_PhysicsScene->addActor(*groundPlane);
+
+		m_Registry.view<TransformComponent, RigidBodyComponent, BoxCollider>()
+			.each([this, &pxMaterial](auto entity, TransformComponent& transform, RigidBodyComponent& rb, BoxCollider& box_collider) {
+				physx::PxTransform pxTransform;
+				pxTransform.p.x = transform.translation.x;
+				pxTransform.p.y = transform.translation.y;
+				pxTransform.p.z = transform.translation.z;
+				const auto q = glm::quat(transform.rotation);
+				pxTransform.q.x = q.x;
+				pxTransform.q.y = q.y;
+				pxTransform.q.z = q.z;
+				pxTransform.q.w = q.w;
+
+				auto geom = physx::PxBoxGeometry{ box_collider.halfExtents.x * transform.scale.x, box_collider.halfExtents.y * transform.scale.y, box_collider.halfExtents.z * transform.scale.z };
+				physx::PxRigidActor* actor = nullptr;
+				switch (rb.type)
+				{
+				case RigidBodyType::Static:
+					actor = PxCreateStatic(m_PhysicsScene->getPhysics(), pxTransform, geom, *pxMaterial);
+					break;
+				case RigidBodyType::Kinematic:
+					actor = PxCreateKinematic(m_PhysicsScene->getPhysics(), pxTransform, geom, *pxMaterial, rb.density);
+					break;
+				case RigidBodyType::Dynamic:
+					actor = PxCreateDynamic(m_PhysicsScene->getPhysics(), pxTransform, geom, *pxMaterial, rb.density);
+					break;
+				}
+				actor->userData = reinterpret_cast<void*>(static_cast<uintptr_t>(entity));
+				m_PhysicsScene->addActor(*actor);
+			});
+
+		m_Registry.view<TransformComponent, RigidBodyComponent, SphereCollider>()
+			.each([this, &pxMaterial](auto entity, TransformComponent& transform, RigidBodyComponent& rb, SphereCollider& sphere_collider) {
+				physx::PxTransform pxTransform;
+				pxTransform.p.x = transform.translation.x;
+				pxTransform.p.y = transform.translation.y;
+				pxTransform.p.z = transform.translation.z;
+				const auto q = glm::quat(transform.rotation);
+				pxTransform.q.x = q.x;
+				pxTransform.q.y = q.y;
+				pxTransform.q.z = q.z;
+				pxTransform.q.w = q.w;
+
+				auto geom = physx::PxSphereGeometry{ sphere_collider.radius };
+				physx::PxRigidActor* actor = nullptr;
+				switch (rb.type)
+				{
+				case RigidBodyType::Static:
+					actor = PxCreateStatic(m_PhysicsScene->getPhysics(), pxTransform, geom, *pxMaterial);
+					break;
+				case RigidBodyType::Kinematic:
+					actor = PxCreateKinematic(m_PhysicsScene->getPhysics(), pxTransform, geom, *pxMaterial, rb.density);
+					break;
+				case RigidBodyType::Dynamic:
+					actor = PxCreateDynamic(m_PhysicsScene->getPhysics(), pxTransform, geom, *pxMaterial, rb.density);
+					break;
+				}
+				actor->userData = reinterpret_cast<void*>(static_cast<uintptr_t>(entity));
+				m_PhysicsScene->addActor(*actor);
+			});
+
+		m_PhysicsTimeAccumulator = 0.f;
 	}
 
 	void Scene::OnStop()
@@ -135,6 +224,9 @@ namespace Apex {
 				nsc.factory->DestroyScript(nsc.instance);
 				nsc.instance = nullptr;
 			});
+
+		m_PhysicsScene = {};
+		m_PhysicsTimeAccumulator = 0.f;
 	}
 
 	void Scene::Render2D()
@@ -226,9 +318,9 @@ namespace Apex {
 		CopyComponent<Component_t...>(src, dst, enttMap);
 	}
 
-	using AllBuiltInComponents = ComponentGroup<TransformComponent, SpriteRendererComponent, CameraComponent,
+	using AllBuiltInComponents = ComponentGroup<TransformComponent, SpriteRendererComponent, CameraComponent, LightComponent,
 	                                            NativeScriptComponent, TextRendererComponent, MeshRendererComponent,
-	                                            LightComponent>;
+	                                            RigidBodyComponent, BoxCollider, SphereCollider>;
 
 	Ref<Scene> Scene::Copy()
 	{
@@ -261,6 +353,27 @@ namespace Apex {
 	void Scene::OnUpdate(Timestep ts)
 	{
 		// Physics Update
+		m_PhysicsTimeAccumulator += ts.GetSeconds();
+		if (m_PhysicsTimeAccumulator >= m_PhysicsTimestep) {
+			m_PhysicsScene->simulate(m_PhysicsTimestep);
+			m_PhysicsScene->fetchResults(true);
+			m_PhysicsTimeAccumulator -= m_PhysicsTimestep;
+		}
+
+		uint32_t nbActiveActors = 0;
+		auto activeActors = m_PhysicsScene->getActiveActors(nbActiveActors);
+		for (auto i = 0u; i < nbActiveActors; ++i) {
+			auto actor = (physx::PxRigidActor*)activeActors[i];
+			auto entity = static_cast<entt::entity>(reinterpret_cast<intptr_t>(actor->userData));
+			auto& transform = m_Registry.get<TransformComponent>(entity);
+			auto pxTransform = actor->getGlobalPose();
+			transform.translation.x = pxTransform.p.x;
+			transform.translation.y = pxTransform.p.y;
+			transform.translation.z = pxTransform.p.z;
+			glm::quat q { pxTransform.q.w, pxTransform.q.x, pxTransform.q.y, pxTransform.q.z };
+			transform.rotation = glm::eulerAngles(q);
+		}
+
 		// Update Pathfinding
 		// Update AI
 		// Update Scripts
