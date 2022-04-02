@@ -74,11 +74,20 @@ namespace Apex {
             SerializeVec(scaleNode, transform.scale);
         }
 
-        /*if (entity.HasComponent<CameraComponent>()) {
-            const auto& camera = entity.GetComponent<CameraComponent>().Camera;
+        if (entity.HasComponent<CameraComponent>()) {
+            const auto& cameraComp = entity.GetComponent<CameraComponent>();
             auto cameraNode = entityNode.append_child("CameraComponent");
-            camera.
-        }*/
+            cameraNode.append_child("ProjectionType").append_child(pugi::node_pcdata).set_value(CameraProjectionTypeString(cameraComp.camera.GetProjectionType()));
+            if (cameraComp.camera.GetProjectionType() == Camera::ProjectionType::Perspective) {
+            	cameraNode.append_child("VerticalFOV").append_child(pugi::node_pcdata).set_value(TO_CSTRING(cameraComp.camera.GetPerspectiveVerticalFov()));
+            	cameraNode.append_child("Near").append_child(pugi::node_pcdata).set_value(TO_CSTRING(cameraComp.camera.GetPerspectiveNear()));
+            	cameraNode.append_child("Far").append_child(pugi::node_pcdata).set_value(TO_CSTRING(cameraComp.camera.GetPerspectiveFar()));
+            } else {
+	            cameraNode.append_child("Size").append_child(pugi::node_pcdata).set_value(TO_CSTRING(cameraComp.camera.GetOrthographicSize()));
+            	cameraNode.append_child("Near").append_child(pugi::node_pcdata).set_value(TO_CSTRING(cameraComp.camera.GetOrthographicNear()));
+            	cameraNode.append_child("Far").append_child(pugi::node_pcdata).set_value(TO_CSTRING(cameraComp.camera.GetOrthographicFar()));
+            }
+        }
 
         if (entity.HasComponent<SpriteRendererComponent>()) {
             const auto& sprite = entity.GetComponent<SpriteRendererComponent>();
@@ -137,6 +146,25 @@ namespace Apex {
             } 
         }
 
+        if (entity.HasComponent<RigidBodyComponent>()) {
+	        const auto& rb = entity.GetComponent<RigidBodyComponent>();
+            auto rbNode = entityNode.append_child("RigidBodyComponent");
+            rbNode.append_child("Type").append_child(pugi::node_pcdata).set_value(RigidBodyTypeString(rb.type));
+            rbNode.append_child("Density").append_child(pugi::node_pcdata).set_value(TO_CSTRING(rb.density));
+        }
+
+        if (entity.HasComponent<BoxCollider>()) {
+	        const auto& boxCollider = entity.GetComponent<BoxCollider>();
+            auto boxColliderNode = entityNode.append_child("BoxCollider");
+            auto halfExtentsNode = boxColliderNode.append_child("HalfExtents");
+            SerializeVec(halfExtentsNode, boxCollider.halfExtents);
+        }
+
+        if (entity.HasComponent<SphereCollider>()) {
+	        const auto& sphereCollider = entity.GetComponent<SphereCollider>();
+            auto sphereColliderNode = entityNode.append_child("SphereCollider");
+            sphereColliderNode.append_child("Radius").append_child(pugi::node_pcdata).set_value(TO_CSTRING(sphereCollider.radius));
+        }
     }
 
     void XMLSceneSerializer::SerializeSceneFooter(std::stringstream& out)
@@ -230,6 +258,27 @@ namespace Apex {
 	            lightComp.innerCutoffAngle = glm::radians(std::stof(lightCompNode.child("InnerCutoff").child_value()));
 	            lightComp.outerCutoffAngle = glm::radians(std::stof(lightCompNode.child("OuterCutoff").child_value()));
             }
+        }
+
+        if (const auto rbNode = node.child("RigidBodyComponent")) {
+	        auto& rb = entity.AddComponent<RigidBodyComponent>();
+            std::string rbType = rbNode.child("Type").child_value();
+            if (rbType == "Static") rb.type = RigidBodyType::Static;
+            if (rbType == "Kinematic") rb.type = RigidBodyType::Kinematic;
+            if (rbType == "Dynamic") rb.type = RigidBodyType::Dynamic;
+
+        	rb.density = std::stof(rbNode.child("Density").child_value());
+        }
+
+    	if (const auto boxColliderNode = node.child("BoxCollider")) {
+	        auto& boxCollider = entity.AddComponent<BoxCollider>();
+	        const auto halfExtentsNode = boxColliderNode.child("HalfExtents");
+            DeserializeVec(halfExtentsNode, boxCollider.halfExtents);
+        }
+
+        if (const auto sphereColliderNode = node.child("SphereCollider")) {
+	        auto& sphereCollider = entity.AddComponent<SphereCollider>();
+            sphereCollider.radius = std::stof(sphereColliderNode.child("Radius").child_value());
         }
 
         // Other Components

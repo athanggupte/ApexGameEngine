@@ -236,7 +236,7 @@ void main()
 		}
 	}
 
-	Lo += ambient * albedo;
+	Lo += ambient;// * albedo;
 
 	// Final output fragment color
 	o_Color = vec4(Lo, 1.0);

@@ -52,7 +52,7 @@ namespace Apex {
 
 	struct BoxCollider
 	{
-		glm::vec3 halfExtents { 1.f };
+		glm::vec3 halfExtents { 0.5f };
 
 		//// Array Element
 		//uint16_t arraySize = 0; // Num of elements next

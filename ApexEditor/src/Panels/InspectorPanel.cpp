@@ -165,18 +165,14 @@ namespace Apex {
 			auto& camera = cameraComp.camera;
 
 			if (ImGui::TreeNodeEx((void*)typeid(CameraComponent).hash_code(), treeNodeFlags, "Camera")) {
-				constexpr const char* projectionTypeStrings[] = { "Perspective", "Orthographic" };
-				constexpr const size_t projectionTypesLen = std::size(projectionTypeStrings);
-				const char* currentProjectionTypeStr = projectionTypeStrings[(int)cameraComp.camera.GetProjectionType()];
-				if (ImGui::BeginCombo("Projection", currentProjectionTypeStr)) {
-					for (int i=0; i<projectionTypesLen; i++) {
-						bool isSelected = projectionTypeStrings[i] == currentProjectionTypeStr;
-						if (ImGui::Selectable(projectionTypeStrings[i], isSelected)) {
-							currentProjectionTypeStr = projectionTypeStrings[i];
+				if (ImGui::BeginCombo("Projection", CameraProjectionTypeString(cameraComp.camera.GetProjectionType()))) {
+					for (int i = 0; i < static_cast<int>(Camera::ProjectionType::_COUNT); ++i) {
+						bool selected = i == static_cast<int>(cameraComp.camera.GetProjectionType());
+						if (ImGui::Selectable(CameraProjectionTypeString((Camera::ProjectionType)i), selected)) {
 							camera.SetProjectionType(static_cast<Camera::ProjectionType>(i));
 						}
 						
-						if (isSelected)
+						if (selected)
 							ImGui::SetItemDefaultFocus();
 					}
 					
@@ -332,7 +328,7 @@ namespace Apex {
 			if (ImGui::TreeNodeEx((void*)typeid(TextRendererComponent).hash_code(), treeNodeFlags, "Text Renderer")) {
 				ImGui::InputText("Text", &textComp.text);
 				ImGui::ColorEdit4("Color", glm::value_ptr(textComp.color), ImGuiColorEditFlags_HDR | ImGuiColorEditFlags_AlphaBar);
-
+				ImGui::DragFloat("Width", &textComp.width, 0.01, 0, 1);
 				ImGui::TreePop();
 			}
 		}
@@ -365,6 +361,7 @@ namespace Apex {
 			}
 		}
 
+		// Rigid Body Component
 		if (m_ContextEntity.HasComponent<RigidBodyComponent>()) {
 			auto& rb = m_ContextEntity.GetComponent<RigidBodyComponent>();
 			if (ImGui::TreeNodeEx((void*)typeid(RigidBodyComponent).hash_code(), treeNodeFlags, "Rigid Body")) {
@@ -381,6 +378,7 @@ namespace Apex {
 			}
 		}
 
+		// Box Collider
 		if (m_ContextEntity.HasComponent<BoxCollider>()) {
 			auto& boxCollider = m_ContextEntity.GetComponent<BoxCollider>();
 			if (ImGui::TreeNodeEx((void*)typeid(BoxCollider).hash_code(), treeNodeFlags, "Box Collider")) {
@@ -389,6 +387,7 @@ namespace Apex {
 			}
 		}
 
+		// Sphere Collider
 		if (m_ContextEntity.HasComponent<SphereCollider>()) {
 			auto& sphereCollider = m_ContextEntity.GetComponent<SphereCollider>();
 			if (ImGui::TreeNodeEx((void*)typeid(SphereCollider).hash_code(), treeNodeFlags, "Sphere Collider")) {

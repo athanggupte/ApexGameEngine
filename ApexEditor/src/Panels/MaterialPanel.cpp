@@ -83,7 +83,7 @@ namespace Apex {
 			}
 			std::string newMatName;
 			bool create = ImGui::InputText("Name", &newMatName, ImGuiInputTextFlags_EnterReturnsTrue);
-			create |= ImGui::Button("Create");
+			//create |= ImGui::Button("Create");
 			ImGui::SameLine();
 			if (ImGui::Button("Cancel"))
 				ImGui::CloseCurrentPopup();

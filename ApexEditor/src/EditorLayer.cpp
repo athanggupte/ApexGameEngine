@@ -581,7 +581,9 @@ namespace Apex {
 	void EditorLayer::ShowSettings()
 	{
 		ImGui::Begin("Settings");
-		
+
+		ImGui::Text("Frame time: %2.3f ms", Timer::GetTimestep().GetMillis());
+
 		auto stats = Renderer2D::GetStats();
 		ImGui::Text("Renderer2D Stats:");
 		ImGui::Text("Draw Calls: %d", stats.drawCalls);

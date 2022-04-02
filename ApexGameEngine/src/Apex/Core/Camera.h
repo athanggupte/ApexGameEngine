@@ -3,11 +3,16 @@
 #include <glm/glm.hpp>
 
 namespace Apex {
-	
+
 	class Camera
 	{
 	public:
-		enum class ProjectionType { Perspective = 0, Orthographic = 1 };
+		enum class ProjectionType
+		{
+			Perspective = 0, Orthographic = 1,
+
+			_COUNT
+		};
 	public:
 		// Camera();
 		Camera(ProjectionType projType);
@@ -66,5 +71,14 @@ namespace Apex {
 		glm::mat4 m_Projection = glm::mat4(1.f);
 	};
 	
-	
+	constexpr const char* CameraProjectionTypeString(Camera::ProjectionType type)
+	{
+		switch (type)
+		{
+		case Camera::ProjectionType::Perspective: return "Perspective";
+		case Camera::ProjectionType::Orthographic: return "Orthographic";
+		default: return "UNKNOWN";
+		}
+	}
+
 }
