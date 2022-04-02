@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include "glm/vec2.hpp"
+#include "glm/vec4.hpp"
 
 struct ImFontGlyph;
 struct ImFontConfig;
@@ -9,6 +10,14 @@ struct ImFontAtlas;
 namespace Apex {
 	class FontAtlas;
 	class Texture2D;
+
+	struct TextGradient
+	{
+		glm::vec4 colorTopLeft{1.f};
+		glm::vec4 colorTopRight{1.f};
+		glm::vec4 colorBotRight{1.f};
+		glm::vec4 colorBotLeft{1.f};
+	};
 
 	class FontGlyph
 	{

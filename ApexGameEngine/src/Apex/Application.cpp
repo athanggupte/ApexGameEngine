@@ -9,6 +9,7 @@
 #include "Apex/Graphics/Renderer/Renderer.h"
 #include "Apex/Graphics/Renderer/Renderer2D.h"
 #include "Apex/Graphics/PostProcessing/PostProcess.h"
+#include "Graphics/Renderer/TextRenderer.h"
 
 //#include <GLFW/glfw3.h>
 //#include <glad/glad.h>
@@ -33,6 +34,7 @@ namespace Apex {
 		FileSystem::Init();
 		Renderer::Init();
 		Renderer2D::Init();
+		TextRenderer::Init();
 		PostProcess::Init();
 
 		m_ImGuiLayer = new ImGuiLayer();
@@ -44,6 +46,7 @@ namespace Apex {
 	{
 		Renderer::Shutdown();
 		Renderer2D::Shutdown();
+		TextRenderer::Shutdown();
 		PostProcess::Shutdown();
 		FileSystem::Shutdown();
 	}

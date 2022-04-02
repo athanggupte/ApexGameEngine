@@ -24,6 +24,7 @@
 #include "Apex/Graphics/Material.h"
 #include "Apex/Graphics/Font.h"
 #include "Apex/Graphics/Renderer/Renderer.h"
+#include "Apex/Graphics/Renderer/TextRenderer.h"
 #include "Apex/Utils/ScopeGuard.hpp"
 
 #include <imgui.h>
@@ -189,14 +190,15 @@ namespace Apex {
 		// FBXImporter::Import(FileSystem::GetFileIfExists("editor_assets/meshes/sphere-tris.fbx"), m_ActiveScene);
 		// FBXImporter::Import(FileSystem::GetFileIfExists("editor_assets/meshes/suzanne/source/suzanne.fbx"), m_ActiveScene);
 
-		//s_FontAtlas = CreateRef<FontAtlas>();
+		s_FontAtlas = CreateRef<FontAtlas>();
 		//(void)s_FontAtlas->AddFontFromFileTTF("C:\\Windows\\Fonts\\segoeui.ttf", 50.f);
-		//s_FontAtlas->BuildRGBA32();
+		s_FontAtlas->AddFontFromFileTTF(R"(C:\Users\Rackware_2\Repos\ApexGameEngine\ApexEditor\assets\fonts\AquireBold-8Ma60.otf)", 128.f);
+		s_FontAtlas->BuildRGBA32();
 
-		//auto textEntity = m_ActiveScene->CreateEntity(HASH("text"));
-		//textEntity.AddComponent<TextRendererComponent>(u8"Hello", s_FontAtlas->GetFontAtIndex(0), glm::vec4{ 10.f, 4.f, 2.f, 1.f });
-		//textEntity.Transform().scale.x = 4.f;
-		//textEntity.Transform().scale.y = 4.f;
+		auto textEntity = m_ActiveScene->CreateEntity(HASH("text"));
+		textEntity.AddComponent<TextRendererComponent>(u8"HELLO", s_FontAtlas->GetFontAtIndex(0), glm::vec4{ 10.f, 4.f, 2.f, 1.f });
+		textEntity.Transform().scale.x = 4.f;
+		textEntity.Transform().scale.y = 4.f;
 
 		// TODO: Move to Play()
 		// m_ActiveScene->OnPlay();
@@ -308,8 +310,10 @@ namespace Apex {
 
 		RenderCommands::SetCulling(false);
 		Renderer2D::BeginScene(m_EditorCamera, m_EditorCameraController->GetTransform());
+		TextRenderer::BeginScene(m_EditorCamera, m_EditorCameraController->GetTransform());
 		m_ActiveScene->Render2D();
 		Renderer2D::EndScene();
+		TextRenderer::EndScene();
 
 		// Render the Grid
 		cameraTransform[3] = cameraTranslation;

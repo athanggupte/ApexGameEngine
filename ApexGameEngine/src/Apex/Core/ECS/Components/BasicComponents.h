@@ -135,6 +135,8 @@ namespace Apex {
 		std::string text;
 		Font font;
 		glm::vec4 color { 1.f };
+		float width { 0.52f };
+		float thickness { 0.f };
 
 		COMPONENT_DEFAULT_CTR(TextRendererComponent);
 

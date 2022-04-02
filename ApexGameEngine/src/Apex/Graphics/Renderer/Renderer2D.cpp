@@ -2,9 +2,6 @@
 #include "Renderer2D.h"
 
 #include "Apex.h"
-#include "Apex.h"
-#include "Apex.h"
-#include "Apex.h"
 #include "imgui.h"
 #include "imgui_internal.h"
 #include "Apex/Core/Camera.h"
@@ -13,7 +10,6 @@
 #include "Apex/Graphics/RenderPrimitives/Texture.h"
 
 #include "RenderCommands.h"
-#include "Apex/Graphics/Font.h"
 
 #include <glm/gtc/matrix_transform.hpp>
 
@@ -145,16 +141,9 @@ namespace Apex {
 			in vec2 v_TexCoord;
 			in flat float v_TexIndex;
 
-			const float width = 0.52;
-			const float edge = 0.02;
-
 			void main()
 			{
-				float distance = 1.0 - texture(u_Textures[int(v_TexIndex)], v_TexCoord).a;
-				float alpha = 1.0 - smoothstep(width, width + edge, distance);
-				o_Color = vec4(v_Color.rgb, alpha);
-
-				// o_Color = texture(u_Textures[int(v_TexIndex)], v_TexCoord /** u_TilingFactor*/).rgba * v_Color;
+				o_Color = texture(u_Textures[int(v_TexIndex)], v_TexCoord /** u_TilingFactor*/).rgba * v_Color;
 				if (o_Color.a < 0.05)
 					discard;
 			}
@@ -353,67 +342,6 @@ namespace Apex {
 		
 		// Statistics
 		s_RenderData.stats.quadCount++;
-	}
-
-	void Renderer2D::DrawGlyphs(const std::string& text, const glm::mat4& transform, const glm::vec4& color, const Font& font)
-	{
-		const auto numIndexCountForText = text.length() * 6;
-		if (s_RenderData.quadIndexCount + numIndexCountForText >= Renderer2DData::MAX_INDICES)
-		{
-			EndScene();
-			ResetBatch();
-		}
-
-		auto texture = font.GetFontAtlas()->GetFontAtlasTexture();
-				
-		float textureIndex = 0.f;
-		
-		for (uint32_t i = s_RenderData.BASE_TEXTURE_SLOT; i < s_RenderData.textureSlotIndex; i++) {
-			if (s_RenderData.textureSlots[i]->GetID() == texture->GetID()) {
-				textureIndex = static_cast<float>(i);
-				break;
-			}
-		}
-		
-		if (textureIndex == 0.f)
-		{
-			textureIndex = static_cast<float>(s_RenderData.textureSlotIndex);
-			s_RenderData.textureSlots[s_RenderData.textureSlotIndex] = texture;
-			s_RenderData.textureSlotIndex++;
-		}
-
-		auto x = 0.f, y = 0.f;
-
-		// Taken from imgui_draw.cpp > ImFont::RenderText
-		auto s = text.data();
-		auto s_end = text.data() + text.size();
-		while (s < s_end) {
-			auto c = static_cast<uint32_t>(*s);
-			if (c < 0x80) {
-				s += 1;
-			} else {
-				s += ImTextCharFromUtf8(&c, s, s_end);
-				if (c == 0) // Malformed UTF-8?
-					break;
-			}
-
-			auto glyph = font.FindGlyph(c);
-			for (uint32_t i=0; i<4; i++) {
-				auto position = glyph.GetPosition(static_cast<FontGlyph::Corner>(i)) / font.GetFontSize();
-				auto uv = glyph.GetUV(static_cast<FontGlyph::Corner>(i));
-
-				s_RenderData.quadBufferPtr->position = transform * glm::vec4{ x + position.x, y - position.y, 0.f, 1.f };
-				s_RenderData.quadBufferPtr->color = color;
-				s_RenderData.quadBufferPtr->texCoord = { uv.x, -uv.y };
-				s_RenderData.quadBufferPtr->texIndex = textureIndex;
-				s_RenderData.quadBufferPtr++;
-			}
-			s_RenderData.quadIndexCount += 6;
-			x += glyph.GetAdvanceX() / font.GetFontSize();
-		
-			// Statistics
-			s_RenderData.stats.quadCount++;
-		}
 	}
 	
 	void Renderer2D::ResetStats()

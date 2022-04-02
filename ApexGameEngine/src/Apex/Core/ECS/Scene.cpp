@@ -18,6 +18,8 @@
 #include "Apex/Graphics/Material.h"
 
 // PhysX includes
+#include "Apex/Graphics/Renderer/TextRenderer.h"
+
 #include <PxPhysicsAPI.h>
 
 namespace Apex {
@@ -251,7 +253,7 @@ namespace Apex {
 
 		m_Registry.view<TransformComponent, TextRendererComponent>()
 			.each([](const TransformComponent& transform, const TextRendererComponent& textRenderer) {
-				Renderer2D::DrawGlyphs(textRenderer.text, transform.GetTransform(), textRenderer.color, textRenderer.font);
+				TextRenderer::DrawGlyphs(textRenderer.text, transform.GetTransform(), textRenderer.font, textRenderer.color, textRenderer.width, textRenderer.thickness);
 			});
 	}
 
