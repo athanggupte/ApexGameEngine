@@ -1,6 +1,6 @@
 ﻿#pragma once
-// #include <PxScene.h>
 
+// Forward Declarations
 namespace physx
 {
 	class PxPhysics;
@@ -8,9 +8,10 @@ namespace physx
 }
 
 namespace Apex {
+	class SimulationEventCallback;
 
-	// class PhysicsScene;
-	using PhysicsScene = std::shared_ptr<physx::PxScene>;
+	//using PhysicsScene = std::shared_ptr<physx::PxScene>;
+	using PhysicsScene = physx::PxScene*;
 
 	class PhysicsManager
 	{
@@ -20,23 +21,11 @@ namespace Apex {
 		static void Shutdown();
 
 		static physx::PxPhysics& GetPhysics();
-	};
-
-
-	/*class PhysicsScene
-	{
-	public:
-		PhysicsScene() = default;
-		PhysicsScene(physx::PxScene* scene) ;
-		~PhysicsScene();
-
-		physx::PxScene* operator -> () { return m_PxScene; }
-		const physx::PxScene* operator -> () const { return m_PxScene; }
-
-		physx::PxScene* Get() const { return m_PxScene; }
 
 	private:
-		physx::PxScene* m_PxScene = nullptr;
-	};*/
+		static SimulationEventCallback& GetSimulationEventCallback();
+
+		friend class Scene;
+	};
 
 }

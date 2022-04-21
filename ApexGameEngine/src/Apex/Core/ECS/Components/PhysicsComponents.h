@@ -96,4 +96,9 @@ namespace Apex {
 		}
 	};
 
+	struct ContactListenerIdComponent
+	{
+		size_t listenerId;
+	};
+
 }

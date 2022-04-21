@@ -27,6 +27,8 @@
 #include "Apex/Graphics/Renderer/TextRenderer.h"
 #include "Apex/Utils/ScopeGuard.hpp"
 
+#include "Apex/Physics/ContactListener.h"
+
 #include <imgui.h>
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -36,6 +38,19 @@ namespace Apex {
 	//TODO: Remove this after testing!
 	static glm::vec3 lightPos { 1.0f, 5.6f, 2.0f };
 	static glm::vec3 directionalLightDirection{ 1.f, -1.f, 1.f };
+	class MyContactListener : public IContactListener
+	{
+	public:
+		void OnContact(Entity other_entity) override
+		{
+			APEX_CORE_INFO("Contact found! [sphere] : {}", other_entity.Tag().str());
+		}
+
+	private:
+		void OnOverlapBegin(Entity other_entity) override {}
+		void OnOverlapEnd(Entity other_entity) override {}
+	};
+	static Ref<IContactListener> myContactListener = CreateRef<MyContactListener>();
 
 	Ref<FontAtlas> s_FontAtlas;
 	
@@ -154,17 +169,24 @@ namespace Apex {
 			auto& meshComp = planeEntity.AddComponent<MeshRendererComponent>();
 			meshComp.mesh = resourceManager.Get<Mesh>(RESNAME("default-plane"));
 			meshComp.material = resourceManager.Insert<Material>(RESNAME("default-material"), CreateRef<Material>(resourceManager.Get<Shader>(RESNAME("shader_StandardPBR"))));
+
+			planeEntity.AddComponent<BoxCollider>(0.5f, 0.0001f, 0.5f);
+			planeEntity.AddComponent<RigidBodyComponent>().type = RigidBodyType::Static;
 		}
 		{
 			auto sphereEntity = m_ActiveScene->CreateEntity(HASH("Sphere"));
 			sphereEntity.Transform().translation.y += 15.f;
+
 			auto& meshComp = sphereEntity.AddComponent<MeshRendererComponent>();
 			auto mesh = FBXImporter::LoadMesh(FileSystem::GetFileIfExists("editor_assets/meshes/sphere-tris.fbx"), "Sphere");
 			meshComp.mesh = resourceManager.Insert<Mesh>(RESNAME("default-sphere"), mesh);
 			auto material = CreateRef<Material>(resourceManager.Get<Shader>(RESNAME("shader_StandardPBR")));
+			material->SetAltColor("Albedo", { 1.f, 1.f, 5.f, 1.f });
 			meshComp.material = resourceManager.Insert<Material>(RESNAME("material.sphere"), material);
 
 			sphereEntity.AddComponent<SphereCollider>();
+			sphereEntity.AddComponent<RigidBodyComponent>().type = RigidBodyType::Dynamic;
+			//m_ActiveScene->AddContactListener(sphereEntity, myContactListener);
 		}
 		{
 			auto dirLightEntity = m_ActiveScene->CreateEntity(HASH("Directional Light"));

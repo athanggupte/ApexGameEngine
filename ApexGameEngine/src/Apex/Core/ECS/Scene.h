@@ -5,6 +5,7 @@
 #include "Apex/Core/Timer.h"
 #include "Apex/Core/Events/Event.h"
 #include "Apex/Core/ResourceManager/ResourceManager.h"
+#include "Apex/Physics/ContactListener.h"
 #include "Apex/Physics/PhysicsManager.h"
 
 namespace Apex {
@@ -45,6 +46,8 @@ namespace Apex {
 		Ref<Scene> Copy();
 		
 		void SetPrimaryCamera(const Entity&);
+
+		void AddContactListener(Entity entity, IContactListener* listener);
 
 		// ECS functionality
 		template<typename... Component, typename... Exclude>

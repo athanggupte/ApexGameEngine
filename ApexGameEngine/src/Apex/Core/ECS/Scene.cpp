@@ -19,6 +19,7 @@
 
 // PhysX includes
 #include "Apex/Graphics/Renderer/TextRenderer.h"
+#include "Apex/Physics/SimulationEventCallback.h"
 
 #include <PxPhysicsAPI.h>
 
@@ -146,12 +147,13 @@ namespace Apex {
 		resourceManager.LoadAll<Texture>();
 		resourceManager.LoadAll<Shader>();
 
+		PhysicsManager::GetSimulationEventCallback().SetContext(this);
 		m_PhysicsScene = PhysicsManager::CreateScene();
 
 		physx::PxMaterial* pxMaterial = PhysicsManager::GetPhysics().createMaterial(0.8f, 0.4f, 0.6f);
 		// TODO: Consider removing this or conditioning it upon some variable
-		physx::PxRigidStatic* groundPlane = PxCreatePlane(m_PhysicsScene->getPhysics(), physx::PxPlane{ 0.f, 1.f, 0.f, 0.f }, *pxMaterial);
-		m_PhysicsScene->addActor(*groundPlane);
+		//physx::PxRigidStatic* groundPlane = PxCreatePlane(m_PhysicsScene->getPhysics(), physx::PxPlane{ 0.f, 1.f, 0.f, 0.f }, *pxMaterial);
+		//m_PhysicsScene->addActor(*groundPlane);
 
 		m_Registry.view<TransformComponent, RigidBodyComponent, BoxCollider>()
 			.each([this, &pxMaterial](auto entity, TransformComponent& transform, RigidBodyComponent& rb, BoxCollider& box_collider) {
@@ -180,6 +182,7 @@ namespace Apex {
 					break;
 				}
 				actor->userData = reinterpret_cast<void*>(static_cast<uintptr_t>(entity));
+				APEX_CORE_INFO("Adding Physx::RigidBody for entity : {} ({})", entity, m_Registry.get<TagComponent>(entity).tag.str());
 				m_PhysicsScene->addActor(*actor);
 			});
 
@@ -208,8 +211,10 @@ namespace Apex {
 				case RigidBodyType::Dynamic:
 					actor = PxCreateDynamic(m_PhysicsScene->getPhysics(), pxTransform, geom, *pxMaterial, rb.density);
 					break;
+				default: ;
 				}
 				actor->userData = reinterpret_cast<void*>(static_cast<uintptr_t>(entity));
+				APEX_CORE_INFO("Adding Physx::RigidBody for entity : {} ({})", entity, m_Registry.get<TagComponent>(entity).tag.str());
 				m_PhysicsScene->addActor(*actor);
 			});
 
@@ -229,6 +234,49 @@ namespace Apex {
 
 		m_PhysicsScene = {};
 		m_PhysicsTimeAccumulator = 0.f;
+	}
+
+	void Scene::OnUpdate(Timestep ts)
+	{
+		// Physics Update
+		m_PhysicsTimeAccumulator += ts.GetSeconds();
+		if (m_PhysicsTimeAccumulator >= m_PhysicsTimestep) {
+			m_PhysicsScene->simulate(m_PhysicsTimestep);
+			m_PhysicsScene->fetchResults(true);
+			m_PhysicsTimeAccumulator -= m_PhysicsTimestep;
+		}
+
+		uint32_t nbActiveActors = 0;
+		auto activeActors = m_PhysicsScene->getActiveActors(nbActiveActors);
+		for (auto i = 0u; i < nbActiveActors; ++i) {
+			auto actor = (physx::PxRigidActor*)activeActors[i];
+			auto entity = static_cast<entt::entity>(reinterpret_cast<intptr_t>(actor->userData));
+			auto& transform = m_Registry.get<TransformComponent>(entity);
+			auto pxTransform = actor->getGlobalPose();
+			transform.translation.x = pxTransform.p.x;
+			transform.translation.y = pxTransform.p.y;
+			transform.translation.z = pxTransform.p.z;
+			glm::quat q { pxTransform.q.w, pxTransform.q.x, pxTransform.q.y, pxTransform.q.z };
+			transform.rotation = glm::eulerAngles(q);
+		}
+
+		// Update Pathfinding
+		// Update AI
+		// Update Scripts
+		m_Registry.view<NativeScriptComponent>()
+			.each([this, ts](NativeScriptComponent& nsc) {
+				nsc.instance->OnUpdate(ts);
+			});
+		// Triggers
+		// Sound
+		// Render
+		/*if (Options.PrimaryCamera != entt::null) {
+			auto [camera, transform] = m_Registry.get<CameraComponent, TransformComponent>(Options.PrimaryCamera);
+			Renderer2D::BeginScene(camera.camera, transform.GetTransform());
+			Render2D();
+			Renderer2D::EndScene();
+		}*/
+		// PostProcess
 	}
 
 	void Scene::Render2D()
@@ -324,6 +372,8 @@ namespace Apex {
 	                                            NativeScriptComponent, TextRendererComponent, MeshRendererComponent,
 	                                            RigidBodyComponent, BoxCollider, SphereCollider>;
 
+	using MetaComponents = ComponentGroup<ContactListenerIdComponent>;
+
 	Ref<Scene> Scene::Copy()
 	{
 		Ref<Scene> newScene = CreateRef<Scene>();
@@ -343,56 +393,9 @@ namespace Apex {
 
 		CopyComponent(AllBuiltInComponents{}, srcRegistry, dstRegistry, enttMap);
 
-		//CopyComponent<TransformComponent>(srcRegistry, dstRegistry, enttMap);
-		//CopyComponent<SpriteRendererComponent>(srcRegistry, dstRegistry, enttMap);
-		//CopyComponent<CameraComponent>(srcRegistry, dstRegistry, enttMap);
-		//CopyComponent<NativeScriptComponent>(srcRegistry, dstRegistry, enttMap);
-		//CopyComponent<MeshRendererComponent>(srcRegistry, dstRegistry, enttMap);
+		CopyComponent(MetaComponents{}, srcRegistry, dstRegistry, enttMap);
 
 		return newScene;
-	}
-
-	void Scene::OnUpdate(Timestep ts)
-	{
-		// Physics Update
-		m_PhysicsTimeAccumulator += ts.GetSeconds();
-		if (m_PhysicsTimeAccumulator >= m_PhysicsTimestep) {
-			m_PhysicsScene->simulate(m_PhysicsTimestep);
-			m_PhysicsScene->fetchResults(true);
-			m_PhysicsTimeAccumulator -= m_PhysicsTimestep;
-		}
-
-		uint32_t nbActiveActors = 0;
-		auto activeActors = m_PhysicsScene->getActiveActors(nbActiveActors);
-		for (auto i = 0u; i < nbActiveActors; ++i) {
-			auto actor = (physx::PxRigidActor*)activeActors[i];
-			auto entity = static_cast<entt::entity>(reinterpret_cast<intptr_t>(actor->userData));
-			auto& transform = m_Registry.get<TransformComponent>(entity);
-			auto pxTransform = actor->getGlobalPose();
-			transform.translation.x = pxTransform.p.x;
-			transform.translation.y = pxTransform.p.y;
-			transform.translation.z = pxTransform.p.z;
-			glm::quat q { pxTransform.q.w, pxTransform.q.x, pxTransform.q.y, pxTransform.q.z };
-			transform.rotation = glm::eulerAngles(q);
-		}
-
-		// Update Pathfinding
-		// Update AI
-		// Update Scripts
-		m_Registry.view<NativeScriptComponent>()
-			.each([this, ts](NativeScriptComponent& nsc) {
-				nsc.instance->OnUpdate(ts);
-			});
-		// Triggers
-		// Sound
-		// Render
-		/*if (Options.PrimaryCamera != entt::null) {
-			auto [camera, transform] = m_Registry.get<CameraComponent, TransformComponent>(Options.PrimaryCamera);
-			Renderer2D::BeginScene(camera.camera, transform.GetTransform());
-			Render2D();
-			Renderer2D::EndScene();
-		}*/
-		// PostProcess
 	}
 
 	void Scene::OnEditorUpdate(Timestep ts)
@@ -423,6 +426,12 @@ namespace Apex {
 	void Scene::SetPrimaryCamera(const Entity& entity)
 	{
 		m_Options.primaryCamera = entity.m_EntityId;
+	}
+
+	void Scene::AddContactListener(Entity entity, IContactListener* listener)
+	{
+		auto index = PhysicsManager::GetSimulationEventCallback().AddContactListener(listener);
+		m_Registry.emplace<ContactListenerIdComponent>(entity, index-1);
 	}
 
 	//template<typename Component_t>
