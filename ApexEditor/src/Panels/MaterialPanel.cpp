@@ -92,6 +92,7 @@ namespace Apex {
 				if (!Application::Get().GetResourceManager().Exists(id)) {
 					auto material = CreateRef<Material>();
 					m_ContextMaterial = Application::Get().GetResourceManager().Insert<Material>(id, material);
+					m_ContextMaterial->SetShader(Application::Get().GetResourceManager().Get<Shader>(RESNAME("shader_StandardPBR")));
 					ImGui::CloseCurrentPopup();
 				} else {
 					matNameExists = true;
