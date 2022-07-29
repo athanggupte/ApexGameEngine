@@ -9,7 +9,7 @@
 #include "Apex/Core/ECS/ScriptFactory.h"
 #include "Apex/Core/ECS/Components.h"
 #include "Apex/Graphics/Material.h"
-#include "Apex/Utils/Random.h"
+#include "Util/Random.h"
 
 #include <glm/gtx/string_cast.hpp>
 #include <glm/gtx/rotate_vector.hpp>

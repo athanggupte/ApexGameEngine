@@ -10,7 +10,7 @@
 #include "Apex/Graphics/Material.h"
 #include "Apex/Graphics/Material.h"
 #include "Apex/Graphics/ShaderDefines.h"
-#include "Apex/Utils/ScopeGuard.hpp"
+#include "Util/ScopeGuard.hpp"
 
 #include <misc/cpp/imgui_stdlib.h>
 

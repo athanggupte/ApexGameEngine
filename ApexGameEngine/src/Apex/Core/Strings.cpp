@@ -1,7 +1,7 @@
 #include "apex_pch.h"
 #include "Strings.h"
 
-#include "Apex/Utils/CustomDataStructures.h"
+#include "Util/StringStorage.hpp"
 
 namespace Apex {
 

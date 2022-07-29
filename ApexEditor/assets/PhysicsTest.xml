@@ -4,8 +4,8 @@
 <!--ApexGameEngine scene description file-->
 <Scene name="Untitled">
   <Entities>
-    <Entity id="b5d75cd1-8661-4092-9b91-51b815ff0292">
-      <TagComponent>plane</TagComponent>
+    <Entity id="5591ec63-d713-44c4-dbba-e6caed819d12">
+      <TagComponent>Unnamed Entity</TagComponent>
       <TransformComponent>
         <Translation>
           <x>0</x>
@@ -18,26 +18,18 @@
           <z>0</z>
         </Rotation>
         <Scale>
-          <x>50</x>
+          <x>1</x>
           <y>1</y>
-          <z>50</z>
+          <z>1</z>
         </Scale>
       </TransformComponent>
-      <MeshRendererComponent>
-        <Mesh>
-          <ResourceId>default-plane</ResourceId>
-        </Mesh>
-        <Material>
-          <ResourceId>default-material</ResourceId>
-        </Material>
-      </MeshRendererComponent>
     </Entity>
-    <Entity id="27ea8c21-036a-487b-d79d-0f902e3a26d8">
-      <TagComponent>Sphere</TagComponent>
+    <Entity id="1bffed17-9347-4653-82b9-71022b272f26">
+      <TagComponent>cube</TagComponent>
       <TransformComponent>
         <Translation>
           <x>0</x>
-          <y>25</y>
+          <y>14.783292</y>
           <z>0</z>
         </Translation>
         <Rotation>
@@ -53,156 +45,26 @@
       </TransformComponent>
       <MeshRendererComponent>
         <Mesh>
-          <ResourceId>default-sphere</ResourceId>
+          <ResourceId>default-cube</ResourceId>
         </Mesh>
         <Material>
-          <ResourceId>material.sphere</ResourceId>
+          <ResourceId>cube.material</ResourceId>
         </Material>
       </MeshRendererComponent>
-      <RigidBodyComponent>
-        <Type>Dynamic</Type>
-        <Density>1000</Density>
-      </RigidBodyComponent>
-      <SphereCollider>
-        <Radius>1</Radius>
-      </SphereCollider>
-    </Entity>
-    <Entity id="75ad3833-75be-4768-c596-306bca017b7e">
-      <TagComponent>Directional Light</TagComponent>
-      <TransformComponent>
-        <Translation>
-          <x>0</x>
-          <y>0</y>
-          <z>0</z>
-        </Translation>
-        <Rotation>
-          <x>45</x>
-          <y>-90</y>
-          <z>0</z>
-        </Rotation>
-        <Scale>
-          <x>1</x>
-          <y>1</y>
-          <z>1</z>
-        </Scale>
-      </TransformComponent>
       <LightComponent>
-        <Type>Directional</Type>
+        <Type>Point</Type>
         <Color>
-          <x>0.98</x>
-          <y>0.92</y>
-          <z>0.85</z>
+          <x>0.43037975</x>
+          <y>0.1794111</y>
+          <z>0.056294393</z>
           <w>1</w>
         </Color>
-        <Intensity>8</Intensity>
-        <Shadows enable="true" />
+        <Intensity>10</Intensity>
+        <Radius>25</Radius>
+        <AttenuationConstant>1</AttenuationConstant>
+        <AttenuationLinear>0</AttenuationLinear>
+        <AttenuationQuadratic>0</AttenuationQuadratic>
       </LightComponent>
-    </Entity>
-    <Entity id="dcba5d0e-e17d-492d-77b5-3029b818c560">
-      <TagComponent>wall-2</TagComponent>
-      <TransformComponent>
-        <Translation>
-          <x>0</x>
-          <y>5.2470303</y>
-          <z>-5.9026365</z>
-        </Translation>
-        <Rotation>
-          <x>-19.751423</x>
-          <y>4.2831917</y>
-          <z>0.6819122</z>
-        </Rotation>
-        <Scale>
-          <x>10.000003</x>
-          <y>10</y>
-          <z>0.9999994</z>
-        </Scale>
-      </TransformComponent>
-      <MeshRendererComponent>
-        <Mesh>
-          <ResourceId>default-cube</ResourceId>
-        </Mesh>
-        <Material>
-          <ResourceId>default-material</ResourceId>
-        </Material>
-      </MeshRendererComponent>
-      <RigidBodyComponent>
-        <Type>Static</Type>
-        <Density>1</Density>
-      </RigidBodyComponent>
-      <BoxCollider>
-        <HalfExtents>
-          <x>0.5</x>
-          <y>0.5</y>
-          <z>0.5</z>
-        </HalfExtents>
-      </BoxCollider>
-    </Entity>
-    <Entity id="6e5f77c5-c806-4404-9a88-922cf6fa6fb1">
-      <TagComponent>wall-1</TagComponent>
-      <TransformComponent>
-        <Translation>
-          <x>0</x>
-          <y>11.6183405</y>
-          <z>2.6576705</z>
-        </Translation>
-        <Rotation>
-          <x>27.187748</x>
-          <y>0.50666875</y>
-          <z>21.506586</z>
-        </Rotation>
-        <Scale>
-          <x>10.000024</x>
-          <y>10.000053</y>
-          <z>0.999996</z>
-        </Scale>
-      </TransformComponent>
-      <MeshRendererComponent>
-        <Mesh>
-          <ResourceId>default-cube</ResourceId>
-        </Mesh>
-        <Material>
-          <ResourceId>default-material</ResourceId>
-        </Material>
-      </MeshRendererComponent>
-      <RigidBodyComponent>
-        <Type>Static</Type>
-        <Density>1</Density>
-      </RigidBodyComponent>
-      <BoxCollider>
-        <HalfExtents>
-          <x>0.5</x>
-          <y>0.5</y>
-          <z>0.5</z>
-        </HalfExtents>
-      </BoxCollider>
-    </Entity>
-    <Entity id="0662dffe-494e-4cdf-6b8b-4133ff97efdf">
-      <TagComponent>Pin-2</TagComponent>
-      <TransformComponent>
-        <Translation>
-          <x>2.5495386</x>
-          <y>2.01</y>
-          <z>10.272125</z>
-        </Translation>
-        <Rotation>
-          <x>0</x>
-          <y>0</y>
-          <z>0</z>
-        </Rotation>
-        <Scale>
-          <x>1</x>
-          <y>4</y>
-          <z>1</z>
-        </Scale>
-      </TransformComponent>
-      <MeshRendererComponent>
-        <Mesh>
-          <ResourceId>default-cube</ResourceId>
-        </Mesh>
-        <Material>
-          <ResourceId>default-material</ResourceId>
-        </Material>
-      </MeshRendererComponent>
       <RigidBodyComponent>
         <Type>Dynamic</Type>
         <Density>1</Density>
@@ -254,13 +116,13 @@
         </HalfExtents>
       </BoxCollider>
     </Entity>
-    <Entity id="1bffed17-9347-4653-82b9-71022b272f26">
-      <TagComponent>cube</TagComponent>
+    <Entity id="0662dffe-494e-4cdf-6b8b-4133ff97efdf">
+      <TagComponent>Pin-2</TagComponent>
       <TransformComponent>
         <Translation>
-          <x>0</x>
-          <y>14.783292</y>
-          <z>0</z>
+          <x>2.5495386</x>
+          <y>2.01</y>
+          <z>10.272125</z>
         </Translation>
         <Rotation>
           <x>0</x>
@@ -269,7 +131,7 @@
         </Rotation>
         <Scale>
           <x>1</x>
-          <y>1</y>
+          <y>4</y>
           <z>1</z>
         </Scale>
       </TransformComponent>
@@ -293,12 +155,121 @@
         </HalfExtents>
       </BoxCollider>
     </Entity>
-    <Entity id="5591ec63-d713-44c4-dbba-e6caed819d12">
-      <TagComponent>Unnamed Entity</TagComponent>
+    <Entity id="6e5f77c5-c806-4404-9a88-922cf6fa6fb1">
+      <TagComponent>wall-1</TagComponent>
+      <TransformComponent>
+        <Translation>
+          <x>0</x>
+          <y>11.6183405</y>
+          <z>2.6576705</z>
+        </Translation>
+        <Rotation>
+          <x>27.187748</x>
+          <y>0.50666875</y>
+          <z>21.506586</z>
+        </Rotation>
+        <Scale>
+          <x>10.000024</x>
+          <y>10.000053</y>
+          <z>0.999996</z>
+        </Scale>
+      </TransformComponent>
+      <MeshRendererComponent>
+        <Mesh>
+          <ResourceId>default-cube</ResourceId>
+        </Mesh>
+        <Material>
+          <ResourceId>default-material</ResourceId>
+        </Material>
+      </MeshRendererComponent>
+      <RigidBodyComponent>
+        <Type>Static</Type>
+        <Density>1</Density>
+      </RigidBodyComponent>
+      <BoxCollider>
+        <HalfExtents>
+          <x>0.5</x>
+          <y>0.5</y>
+          <z>0.5</z>
+        </HalfExtents>
+      </BoxCollider>
+    </Entity>
+    <Entity id="dcba5d0e-e17d-492d-77b5-3029b818c560">
+      <TagComponent>wall-2</TagComponent>
+      <TransformComponent>
+        <Translation>
+          <x>0</x>
+          <y>5.2470303</y>
+          <z>-5.9026365</z>
+        </Translation>
+        <Rotation>
+          <x>-19.751423</x>
+          <y>4.2831917</y>
+          <z>0.6819122</z>
+        </Rotation>
+        <Scale>
+          <x>10.000003</x>
+          <y>10</y>
+          <z>0.9999994</z>
+        </Scale>
+      </TransformComponent>
+      <MeshRendererComponent>
+        <Mesh>
+          <ResourceId>default-cube</ResourceId>
+        </Mesh>
+        <Material>
+          <ResourceId>default-material</ResourceId>
+        </Material>
+      </MeshRendererComponent>
+      <RigidBodyComponent>
+        <Type>Static</Type>
+        <Density>1</Density>
+      </RigidBodyComponent>
+      <BoxCollider>
+        <HalfExtents>
+          <x>0.5</x>
+          <y>0.5</y>
+          <z>0.5</z>
+        </HalfExtents>
+      </BoxCollider>
+    </Entity>
+    <Entity id="75ad3833-75be-4768-c596-306bca017b7e">
+      <TagComponent>Directional Light</TagComponent>
       <TransformComponent>
         <Translation>
           <x>0</x>
           <y>0</y>
+          <z>0</z>
+        </Translation>
+        <Rotation>
+          <x>45</x>
+          <y>-90</y>
+          <z>0</z>
+        </Rotation>
+        <Scale>
+          <x>1</x>
+          <y>1</y>
+          <z>1</z>
+        </Scale>
+      </TransformComponent>
+      <LightComponent>
+        <Type>Directional</Type>
+        <Color>
+          <x>0.98</x>
+          <y>0.92</y>
+          <z>0.85</z>
+          <w>1</w>
+        </Color>
+        <Intensity>8</Intensity>
+        <Shadows enable="true" />
+      </LightComponent>
+    </Entity>
+    <Entity id="27ea8c21-036a-487b-d79d-0f902e3a26d8">
+      <TagComponent>Sphere</TagComponent>
+      <TransformComponent>
+        <Translation>
+          <x>0</x>
+          <y>25</y>
           <z>0</z>
         </Translation>
         <Rotation>
@@ -312,6 +283,74 @@
           <z>1</z>
         </Scale>
       </TransformComponent>
+      <MeshRendererComponent>
+        <Mesh>
+          <ResourceId>default-sphere</ResourceId>
+        </Mesh>
+        <Material>
+          <ResourceId>material.sphere</ResourceId>
+        </Material>
+      </MeshRendererComponent>
+      <LightComponent>
+        <Type>Point</Type>
+        <Color>
+          <x>0.21608004</x>
+          <y>0.29204616</y>
+          <z>0.9662447</z>
+          <w>1</w>
+        </Color>
+        <Intensity>58</Intensity>
+        <Radius>70</Radius>
+        <AttenuationConstant>1</AttenuationConstant>
+        <AttenuationLinear>0</AttenuationLinear>
+        <AttenuationQuadratic>0</AttenuationQuadratic>
+      </LightComponent>
+      <RigidBodyComponent>
+        <Type>Dynamic</Type>
+        <Density>1000</Density>
+      </RigidBodyComponent>
+      <SphereCollider>
+        <Radius>1</Radius>
+      </SphereCollider>
+    </Entity>
+    <Entity id="b5d75cd1-8661-4092-9b91-51b815ff0292">
+      <TagComponent>plane</TagComponent>
+      <TransformComponent>
+        <Translation>
+          <x>0</x>
+          <y>0</y>
+          <z>0</z>
+        </Translation>
+        <Rotation>
+          <x>0</x>
+          <y>0</y>
+          <z>0</z>
+        </Rotation>
+        <Scale>
+          <x>50</x>
+          <y>1</y>
+          <z>50</z>
+        </Scale>
+      </TransformComponent>
+      <MeshRendererComponent>
+        <Mesh>
+          <ResourceId>default-plane</ResourceId>
+        </Mesh>
+        <Material>
+          <ResourceId>default-material</ResourceId>
+        </Material>
+      </MeshRendererComponent>
+      <RigidBodyComponent>
+        <Type>Static</Type>
+        <Density>1</Density>
+      </RigidBodyComponent>
+      <BoxCollider>
+        <HalfExtents>
+          <x>0.5</x>
+          <y>0.01</y>
+          <z>0.5</z>
+        </HalfExtents>
+      </BoxCollider>
     </Entity>
   </Entities>
 </Scene>

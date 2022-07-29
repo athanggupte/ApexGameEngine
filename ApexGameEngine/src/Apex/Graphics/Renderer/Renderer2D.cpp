@@ -1,7 +1,6 @@
 #include "apex_pch.h"
 #include "Renderer2D.h"
 
-#include "Apex.h"
 #include "imgui.h"
 #include "imgui_internal.h"
 #include "Apex/Core/Camera.h"

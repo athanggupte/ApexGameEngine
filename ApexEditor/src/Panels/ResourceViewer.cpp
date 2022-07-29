@@ -4,6 +4,7 @@
 #include "IconsMaterialDesign.h"
 #include "imgui.h"
 #include "Apex/Application.h"
+#include "Apex/Graphics/RenderPrimitives/Texture.h"
 
 namespace Apex {
 
@@ -36,6 +37,29 @@ namespace Apex {
 				ImGui::Text("%d", i);
 				ImGui::TableSetColumnIndex(1);
 				ImGui::Text("%s", fmt::format("{}", Strings::Get(id)).c_str());
+				if constexpr (std::is_same<T, Texture>()) {
+					if (ImGui::IsItemHovered()) {
+						auto texPtr = static_cast<Ref<Texture>>(ptr);
+						auto rMin = ImGui::GetItemRectMin();
+						auto rMax = ImGui::GetItemRectMax();
+
+						auto size = ImVec2{ static_cast<float>(texPtr->GetWidth()), static_cast<float>(texPtr->GetHeight()) };
+
+						auto texType = texPtr->GetType();
+						ImGui::BeginTooltip();
+						switch (texType)
+						{
+						case TextureType::Texture2D:
+							ImGui::Image((void*)(intptr_t)texPtr->GetID(), size, { 0, 1 }, { 1, 0 });
+							break;
+						case TextureType::TextureCubemap: break;
+						case TextureType::Texture2DMS: break;
+						case TextureType::Texture2DArray: break;
+						case TextureType::TextureCubemapArray: break;
+						}
+						ImGui::EndTooltip();
+					}
+				}
 				ImGui::TableSetColumnIndex(2);
 				ImGui::Text((ptr) ? ICON_MD_CHECK : "");
 

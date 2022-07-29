@@ -17,6 +17,8 @@ namespace Apex {
 		void PopLayer(Layer* layer);
 		void PopOverlay(Layer* overlay);
 
+		void Clear();
+
 		inline std::vector<Layer*>::iterator begin() { return m_Layers.begin(); }
 		inline std::vector<Layer*>::iterator end() { return m_Layers.end(); }
 

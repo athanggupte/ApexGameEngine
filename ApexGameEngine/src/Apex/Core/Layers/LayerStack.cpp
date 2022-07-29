@@ -4,14 +4,13 @@
 namespace Apex {
 
 	LayerStack::LayerStack()
+		: m_LayerInsertIndex(0)
 	{
-		m_LayerInsertIndex = 0;
 	}
 
 	LayerStack::~LayerStack()
 	{
-		for (Layer* layer : m_Layers)
-			delete layer;
+		Clear();
 	}
 
 	void LayerStack::PushLayer(Layer * layer)
@@ -42,4 +41,11 @@ namespace Apex {
 		}
 	}
 
+	void LayerStack::Clear()
+	{
+		for (Layer* layer : m_Layers)
+			delete layer;
+		m_LayerInsertIndex = 0;
+		m_Layers.clear();
+	}
 }

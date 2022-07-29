@@ -1,11 +1,13 @@
 #include "apexed_pch.h"
 #include <Apex.h>
-#include "Apex/StartUp.h"
 
 #include "EditorLayer.h"
 #include "Apex/Graphics/FBXImporter.h"
 #include "Apex/Physics/PhysicsManager.h"
 #include "Apex/Utils/Utils.h"
+#include "Util/Random.h"
+
+#include "Apex/StartUp.h"
 
 namespace Apex {
 

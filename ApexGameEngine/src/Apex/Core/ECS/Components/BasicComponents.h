@@ -111,10 +111,32 @@ namespace Apex {
 		EntityScript* instance = nullptr;
 		Resource<AScriptFactory> factory;
 
-		COMPONENT_DEFAULT_CTR(NativeScriptComponent);
+	#ifndef APEX_DIST
+		EntityScript* editorInstance = nullptr;
+	#endif
+
+		NativeScriptComponent() = default;
+		NativeScriptComponent(const NativeScriptComponent& other)
+			: instance(other.instance), factory(other.factory)
+	#ifndef APEX_DIST
+			, editorInstance(factory->CloneScript(other.editorInstance))
+	#endif
+		{}
 
 		explicit NativeScriptComponent(const Resource<AScriptFactory>& script_factory)
-			: factory(script_factory) {}
+			: factory(script_factory)
+	#ifndef APEX_DIST
+			, editorInstance(factory->InstantiateScript())
+	#endif
+		{}
+
+	#ifndef APEX_DIST
+		~NativeScriptComponent()
+		{
+			if (editorInstance)
+				factory->DestroyScript(editorInstance);
+		}
+	#endif
 
 		/*using InstantiateFn_t = EntityScript*(*)();
 		using DestroyFn_t = void (*)(NativeScriptComponent*);

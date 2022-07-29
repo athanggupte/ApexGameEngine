@@ -1,8 +1,11 @@
 #pragma once
 
 #include "Apex/Core/Strings.h"
-#include "Apex/Utils/Utils.h"
 #include "Apex/Core/FileSystem/FileSystem.h"
+#include "Apex/Utils/Utils.h"
+
+#include "Util/BucketList.hpp"
+#include "Util/Iterable.hpp"
 
 // #include "ResourceLibrary.h"
 
@@ -175,7 +178,7 @@ namespace Apex {
 			APEX_CORE_ASSERT(!Exists(id), "Resource '" + TO_STRING(Strings::Get(id)) + "' already exists!");
 			auto& resourcePool = GetPoolToUse<Resource_t>();
 			size_t index = resourcePool.size();
-			auto& [it, success] = m_Registry.try_emplace(id, index, GetResourceType<Resource_t>(), "");
+			auto [it, success] = m_Registry.try_emplace(id, index, GetResourceType<Resource_t>(), "");
 			APEX_CORE_ASSERT(success, "Could not add resource!");
 			resourcePool.push_back({ id, ptr });
 			return Resource<Resource_t>{ id, &resourcePool.back().second/*, index*/ };
@@ -189,7 +192,7 @@ namespace Apex {
 			APEX_CORE_ASSERT(!Exists(id), "Resource '" + TO_STRING(Strings::Get(id)) + "' already exists!");
 			auto& resourcePool = GetPoolToUse<Resource_t>();
 			size_t index = resourcePool.size();
-			auto& [it, success] = m_Registry.try_emplace(id, index, GetResourceType<Resource_t>(), filepath.string());
+			auto [it, success] = m_Registry.try_emplace(id, index, GetResourceType<Resource_t>(), filepath.string());
 			APEX_CORE_ASSERT(success, "Could not add resource!");
 			resourcePool.push_back({ id, nullptr });
 			return Resource<Resource_t>{ id, &resourcePool.back().second/*, index*/ };

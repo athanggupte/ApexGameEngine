@@ -3,7 +3,7 @@
 
 #include "Apex/Utils/Utils.h"
 #include "Apex/Core/FileSystem/FileSystem.h"
-#include "Apex/Utils/ScopeGuard.hpp"
+#include "Util/ScopeGuard.hpp"
 
 #include <glad/glad.h>
 #include <stb_image.h>

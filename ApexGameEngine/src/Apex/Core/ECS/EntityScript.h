@@ -31,6 +31,8 @@ namespace Apex {
 		virtual void OnDestroy() {}
 		// virtual void OnFixedUpdate(FixedTimestep ts) {}
 
+		// virtual void OnImGuiRender() {}
+
 	private:
 		Entity m_Entity;
 		

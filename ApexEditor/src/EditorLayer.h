@@ -10,6 +10,7 @@
 #include "Panels/AssetExplorer.h"
 #include "Panels/MaterialPanel.h"
 #include "Panels/ResourceViewer.h"
+#include "Util/SingleCopyStack.hpp"
 
 #include <glm/glm.hpp>
 
@@ -125,7 +126,7 @@ namespace Apex {
 		MaterialPanel m_MaterialPanel;
 		ResourceViewer m_ResourceViewer;
 
-		::SingleCopyStack<std::string, 16> m_RecentFiles;
+		SingleCopyStack<std::string, 16> m_RecentFiles;
 
 		// Editor assets
 		Ref<Texture> m_IconEditor;

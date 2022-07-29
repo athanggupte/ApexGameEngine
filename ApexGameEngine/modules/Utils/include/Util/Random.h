@@ -38,8 +38,8 @@ namespace Apex {
 		}
 
 	private:
-		static mt_engine s_RandomEngine;
-		static std::uniform_int_distribution<mt_engine::result_type> s_Distribution;
+		inline static mt_engine s_RandomEngine;
+		inline static std::uniform_int_distribution<mt_engine::result_type> s_Distribution;
 	};
 
 }

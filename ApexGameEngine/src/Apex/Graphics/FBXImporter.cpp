@@ -103,7 +103,7 @@ namespace Apex {
 			auto bbMinStr = fmt::format("({}, {}, {})", bbMin[0], bbMin[1], bbMin[2]);
 			auto bbMax = meshAttr->BBoxMax.Get();
 			auto bbMaxStr = fmt::format("({}, {}, {})", bbMax[0], bbMax[1], bbMax[2]);
-			APEX_CORE_DEBUG("FBXImporter ({0}) :: BBoxMin : {} | BBoxMax : {}", node->GetName(), bbMinStr, bbMaxStr);
+			APEX_CORE_DEBUG("FBXImporter ({}) :: BBoxMin : {} | BBoxMax : {}", node->GetName(), bbMinStr, bbMaxStr);
 			return fbx::ProcessMesh(node, meshAttr);
 		}
 		return { nullptr };

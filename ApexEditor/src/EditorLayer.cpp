@@ -3,7 +3,6 @@
 
 #include "EditorLayer.h"
 #include "Apex/Utils/Utils.h"
-#include "Apex/Utils/CustomDataStructures.h"
 #include "Apex/Core/ResourceManager/ResourceManager.h"
 #include "Apex/Core/ECS/SceneSerializer.h"
 
@@ -25,9 +24,11 @@
 #include "Apex/Graphics/Font.h"
 #include "Apex/Graphics/Renderer/Renderer.h"
 #include "Apex/Graphics/Renderer/TextRenderer.h"
-#include "Apex/Utils/ScopeGuard.hpp"
+
+#include "Util/ScopeGuard.hpp"
 
 #include "Apex/Physics/ContactListener.h"
+#include "Panels/ClassViewer.h"
 
 #include <imgui.h>
 #include <glm/gtc/type_ptr.hpp>
@@ -551,6 +552,9 @@ namespace Apex {
 			m_InspectorPanel.SetContext(entity, m_ActiveScene);
 		m_InspectorPanel.OnImGuiRender();
 
+		static ClassViewer classViewer;
+		classViewer.OnImGuiRender();
+
 		SceneToolbar();
 
 // 		if (ImGui::Button("Parse Graph")) {
@@ -566,6 +570,8 @@ namespace Apex {
 				{ 200, 200 }, {0.f, 1.f}, {1.f, 0.f});
 		}
 		ImGui::End();*/
+
+		// m_ActiveScene->OnImGuiRender();
 
 		EndDockspace();
 	}
@@ -624,6 +630,8 @@ namespace Apex {
 	void EditorLayer::GameViewport()
 	{
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{ 0.f, 0.f });
+		ON_SCOPE_END { ImGui::PopStyleVar(); };
+
 		ImGui::Begin("Game View");
 		
 		m_ViewportFocused = ImGui::IsWindowFocused();
@@ -681,7 +689,6 @@ namespace Apex {
 		DrawGizmos();
 
 		ImGui::End();
-		ImGui::PopStyleVar();
 	}
 
 	void EditorLayer::DrawGizmos()
@@ -1002,15 +1009,18 @@ namespace Apex {
 			else if (mod_ctrl) {
 				SceneSave();
 			}
-			else if (!mod_shift) {
-				// Set gizmo to Scale
-			}
 			break;
-		case APEX_KEY_M:
+		case APEX_KEY_Y:
+			// Set gizmo to Scale
+			m_GizmoType = ImGuizmo::OPERATION::SCALE;
+			break;
+		case APEX_KEY_T:
 			// Set gizmo to Translate/Move
+			m_GizmoType = ImGuizmo::OPERATION::TRANSLATE;
 			break;
 		case APEX_KEY_R:
 			// Set gizmo to Rotate
+			m_GizmoType = ImGuizmo::OPERATION::ROTATE;
 			break;
 
 		}

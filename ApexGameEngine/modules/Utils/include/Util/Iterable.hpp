@@ -16,6 +16,16 @@ public:
 	{
 	}
 
+	Iterable(const Iter& begin, const Iter& end)
+		: _begin(begin), _end(end)
+	{
+	}
+
+	Iterable(const ConstIter& begin, const ConstIter& end)
+            : _begin(begin), _end(end)
+	{
+	}
+
 	Iter begin()
 	{
 		return _begin;

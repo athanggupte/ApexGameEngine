@@ -1,0 +1,15 @@
+// Hint files help the Visual Studio IDE interpret Visual C++ identifiers
+// such as names of functions and macros.
+// For more information see https://go.microsoft.com/fwlink/?linkid=865984
+#define CLASS(__VA_ARGS__) class __attribute__((annotate("reflect-class;" #__VA_ARGS__)))
+#define CLASS(__VA_ARGS__) class
+#define METHOD(__VA_ARGS__) __attribute__((annotate("reflect-method;" #__VA_ARGS__)))
+#define METHOD(__VA_ARGS__)
+#define PROPERTY(__VA_ARGS__) __attribute__((annotate("reflect-property;" #__VA_ARGS__)))
+#define PROPERTY(__VA_ARGS__)
+#define DEFINE_GET_TYPE(_type_) template Type* GetType<_type_>();
+#define DEFINE_GET_TYPE(_type_) extern template Type* GetType<_type_>();
+#define ENUM(__VA_ARGS__) enum class __attribute__((annotate("reflect-enum;" #__VA_ARGS__)))
+#define ENUM(__VA_ARGS__)
+#define REFLECT_PRIVATE(__VA_ARGS__)
+#define REFLECT_PRIVATE(name)

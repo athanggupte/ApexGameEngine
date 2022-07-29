@@ -44,11 +44,13 @@ namespace Apex {
 
 	Application::~Application()
 	{
+		m_LayerStack.Clear();
 		Renderer::Shutdown();
 		Renderer2D::Shutdown();
 		TextRenderer::Shutdown();
 		PostProcess::Shutdown();
 		FileSystem::Shutdown();
+		m_ResourceManager.reset();
 	}
 
 	void Application::Run()

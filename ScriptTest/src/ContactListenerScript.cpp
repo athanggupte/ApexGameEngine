@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Apex.h"
 #include "Apex/Graphics/Material.h"
+#include "Util/Random.h"
 
 using namespace Apex;
 
@@ -26,7 +27,7 @@ protected:
 		if (self().HasComponent<MeshRendererComponent>()) {
 			auto& [mesh, material, _] = self().GetComponent<MeshRendererComponent>();
 			if (material.IsValid() && material.IsLoaded()) {
-				auto randomColor = glm::vec3 { Random::Float(), Random::Float(), Random::Float() } * 10.f;
+				auto randomColor = glm::vec3 { Random::Float(), Random::Float(), Random::Float() } * 5.f;
 				material->SetAltColor("Albedo", { randomColor, 1.f });
 			}
 		}

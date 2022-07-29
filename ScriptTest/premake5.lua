@@ -15,6 +15,10 @@ project "ScriptTest"
 		"src/**.cpp"
 	}
 
+	excludes {
+		"**.reflect.cpp"
+	}
+
 	includedirs {
 		"src",
 		"%{wks.location}/ApexGameEngine/src",
@@ -30,11 +34,14 @@ project "ScriptTest"
 		"%{IncludeDirs.entt}",
 		-- "%{IncludeDirs.ImGuizmoQuat}",
 		-- Modules
-		"%{IncludeDirs.ApexIK}"
+		"%{IncludeDirs.Utils}",
+		"%{IncludeDirs.Reflect}",
+		"%{IncludeDirs.ApexIK}",
 	}
 
 	links {
 		"%{wks.location}/bin/" .. outputdir .. "/ApexEditor/ApexEditor.lib",
+		"Reflect",
 		-- "GLFW",
 		-- "Glad",
 		-- "ImGui",

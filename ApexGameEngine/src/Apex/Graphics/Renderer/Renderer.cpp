@@ -5,7 +5,7 @@
 #include "Apex/Core/Camera.h"
 #include "Apex/Graphics/RenderPrimitives/VertexArray.h"
 #include "Apex/Graphics/RenderPrimitives/Shader.h"
-#include "Apex/Utils/Random.h"
+#include "Util/Random.h"
 //#include "Apex/Graphics/Model/Model.h"
 
 #include "Apex/Core/ECS/Scene.h"

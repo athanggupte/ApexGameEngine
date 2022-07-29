@@ -43,7 +43,9 @@ project "ApexEditor"
 		"%{IncludeDirs.ImGuizmoQuat}",
 		"%{IncludeDirs.ImGuizmo}",
 		-- Modules
-		"%{IncludeDirs.ApexIK}"
+		"%{IncludeDirs.Utils}",
+		"%{IncludeDirs.Reflect}",
+		"%{IncludeDirs.ApexIK}",
 	}
 
 	links {
@@ -67,11 +69,14 @@ project "ApexEditor"
 
 		defines {
 			"APEX_PLATFORM_WINDOWS",
-			"APEX_ENGINE_EXPORTS"
+			"APEX_ENGINE_EXPORTS",
+			"REFLECT_DLL",
+			"REFLECT_EXPORTS",
 		}
 
 		linkoptions {
-			"/DEF:\"%{wks.location}/bin/" .. outputdir .. "/ApexGameEngine/ApexGameEngine.def\""
+			"/DEF:\"%{wks.location}/bin/" .. outputdir .. "/ApexGameEngine/ApexGameEngine.def\"",
+			"/ignore:4006",
 		}
 
 		libdirs {

@@ -37,6 +37,7 @@ namespace Apex {
 		void OnUpdate(Timestep ts);
 		void OnEditorUpdate(Timestep ts);
 		void OnScriptRender(Timestep ts);
+		//void OnImGuiRender();
 		void OnEvent(Event&);
 		void OnViewportResize(uint32_t width, uint32_t height);
 

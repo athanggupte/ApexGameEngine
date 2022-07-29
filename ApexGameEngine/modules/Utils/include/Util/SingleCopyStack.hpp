@@ -66,17 +66,19 @@ public:
 public:
 	struct Iterator
 	{
-		using iterator_category  = std::random_access_iterator_tag;
-		using difference_type    = size_t;
+		using iterator_category    = std::random_access_iterator_tag;
+		using difference_type      = size_t;
 		
-		using value_type         = data_t;
-		using pointer_type       = value_type*;
-		using reference_type     = value_type&;
+		using value_type           = data_t;
+		using pointer_type         = value_type*;
+		using reference_type       = value_type&;
+		using const_pointer_type   = value_type const*;
+		using const_reference_type = value_type const&;
 		
 		Iterator(SingleCopyStack* ptr, difference_type idx) : m_ContainerPtr(ptr), m_Idx(idx) {}
 		
 		reference_type operator * () { return m_ContainerPtr->m_Container[m_Idx]; }
-		const reference_type operator * () const { return m_ContainerPtr->m_Container[m_Idx]; }
+		const_reference_type operator * () const { return m_ContainerPtr->m_Container[m_Idx]; }
 		
 // 		pointer_type operator -> () { return &m_ContainerPtr->m_Container[m_Idx]; }
 // 		const pointer_type operator -> () const { return &m_ContainerPtr->m_Container[m_Idx]; }

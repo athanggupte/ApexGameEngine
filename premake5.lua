@@ -1,3 +1,5 @@
+require "export-compile-commands"
+
 include "dependencies.lua"
 
 workspace "ApexGameEngine"
@@ -19,7 +21,12 @@ group "Dependencies"
 	include "ApexGameEngine/vendor/imguizmo_quat"
 
 group "Modules"
+	include "ApexGameEngine/modules/Utils"
+	include "ApexGameEngine/modules/Reflect"
 	include "ApexGameEngine/modules/ApexIK"
+
+
+
 
 linux_de = os.getenv("XDG_CURRENT_DESKTOP")
 curDir = os.getenv("CD")

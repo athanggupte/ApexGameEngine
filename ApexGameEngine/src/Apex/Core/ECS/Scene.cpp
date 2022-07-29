@@ -138,7 +138,11 @@ namespace Apex {
 
 		m_Registry.view<NativeScriptComponent>()
 			.each([this](auto entity, NativeScriptComponent& nsc) {
+			#ifndef APEX_DIST
+				nsc.instance = nsc.factory->CloneScript(nsc.editorInstance);
+			#else
 				nsc.instance = nsc.factory->InstantiateScript();
+			#endif
 				nsc.instance->m_Entity = Entity{ entity, this };
 				nsc.instance->OnCreate();
 			});
@@ -411,6 +415,14 @@ namespace Apex {
 				nsc.instance->OnRender(ts);
 			});
 	}
+
+	//void Scene::OnImGuiRender()
+	//{
+	//	m_Registry.view<NativeScriptComponent>()
+	//		.each([](NativeScriptComponent& nsc) {
+	//			nsc.instance->OnImGuiRender();
+	//		});
+	//}
 
 	void Scene::OnViewportResize(uint32_t width, uint32_t height)
 	{

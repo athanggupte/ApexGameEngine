@@ -28,6 +28,9 @@ project "ApexGameEngine"
 		-- ImGuizmo --
 		"%{wks.location}/ApexGameEngine/vendor/ImGuizmo/ImGuizmo.h",
 		"%{wks.location}/ApexGameEngine/vendor/ImGuizmo/ImGuizmo.cpp",
+	
+		-- Reflect TypeImpl --
+		-- "%{wks.location}/ApexGameEngine/modules/Reflect/Reflect/src/TypeImpl.cpp"
 	}
 
 	includedirs {
@@ -50,6 +53,8 @@ project "ApexGameEngine"
 		"%{IncludeDirs.pugixml}",
 		"%{IncludeDirs.FBX}",
 		-- Modules
+		"%{IncludeDirs.Utils}",
+		"%{IncludeDirs.Reflect}",
 		"%{IncludeDirs.ApexIK}",
 	}
 
@@ -67,6 +72,7 @@ project "ApexGameEngine"
 		"ImGui",
 		"ImGuizmoQuat",
 		"ApexIK",
+		"Reflect",
 		--"zlibd",4"
 		--"IrrXMLd",
 	}
@@ -92,13 +98,18 @@ project "ApexGameEngine"
 	filter "files:vendor/ImGuizmo/**.cpp"
 		flags { "NoPCH" }
 
+	filter "files:modules/Reflect/**.cpp"
+		flags { "NoPCH" }
+
 	filter "system:windows"
 		systemversion "latest"
 
 		defines {
 			"APEX_PLATFORM_WINDOWS",
 			"APEX_ENGINE_EXPORTS",
-			"GLFW_INCLUDE_NONE"
+			"REFLECT_DLL",
+			"REFLECT_EXPORTS",
+			"GLFW_INCLUDE_NONE",
 		}
 		
 		libdirs {
@@ -114,6 +125,10 @@ project "ApexGameEngine"
 		}
 
 		links(WinLibs["PhysX"])
+
+		linkoptions {
+			"/ignore:4006",
+		}
 
 		postbuildcommands {
 			"%{wks.location}/vendor/bin/defmaker/defmaker.exe %{cfg.linktarget.directory}/%{prj.name}.def %{cfg.linktarget.abspath}",

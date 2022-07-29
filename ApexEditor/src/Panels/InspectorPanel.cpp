@@ -9,7 +9,7 @@
 #include "Apex/Core/Input/Input.h"
 #include "Apex/Core/Input/KeyCodes.h"
 #include "Apex/Utils/Utils.h"
-#include "Apex/Utils/ScopeGuard.hpp"
+#include "Util/ScopeGuard.hpp"
 
 #include "Apex/Graphics/RenderPrimitives/Shader.h"
 #include "Apex/Graphics/RenderPrimitives/Texture.h"
@@ -27,6 +27,8 @@
 // ImGui implementations for std::string
 #include "CommonResources.h"
 
+#include "Class.h"
+#include "TypeWidgets.h"
 
 
 namespace Apex {
@@ -400,16 +402,37 @@ namespace Apex {
 		if (m_ContextEntity.HasComponent<NativeScriptComponent>()) {
 			auto& scriptComp = m_ContextEntity.GetComponent<NativeScriptComponent>();
 			const std::string scriptName = TO_STRING(Strings::Get(scriptComp.factory.GetId()));
-			if (ImGui::TreeNodeEx((void*)typeid(NativeScriptComponent).hash_code(), treeNodeFlags, scriptName.c_str())) {
-				if (ImGui::BeginTable("Parameters", 2, ImGuiTableFlags_BordersInner)) {
-					for (auto i = 0; i < 5; i++) {
-						ImGui::TableNextRow();
-						ImGui::TableNextColumn();
-						ImGui::Text("Param_%d", i+1);
-						ImGui::TableNextColumn();
-						ImGui::Text("some value");
+			if (ImGui::TreeNodeEx((void*)typeid(NativeScriptComponent).hash_code(), treeNodeFlags, "%s", scriptName.c_str())) {
+				if (scriptComp.factory->GetType()) {
+					auto scriptClass = scriptComp.factory->GetType()->CastAs<Class>();
+					
+					Any classInstance = scriptComp.instance
+										? Any::From(scriptComp.instance, scriptClass)
+										: scriptComp.editorInstance
+											? Any::From(scriptComp.editorInstance, scriptClass)
+											: Any{};
+
+					if (classInstance) {
+						for (auto& field : scriptClass->fields()) {
+							auto fieldInstance = field.GetValue(classInstance);
+							TypeEdit(field.Name(), fieldInstance);
+						}
+					} else {
+						for (auto& field : scriptClass->fields()) {
+							ImGui::Text("%s (%s)", field.Name(), field.Type()->Name().data());
+						}
 					}
-					ImGui::EndTable();
+
+					/*if (ImGui::BeginTable("Parameters", 2, ImGuiTableFlags_BordersInner)) {
+						for (auto i = 0; i < 5; i++) {
+							ImGui::TableNextRow();
+							ImGui::TableNextColumn();
+							ImGui::Text("Param_%d", i+1);
+							ImGui::TableNextColumn();
+							ImGui::Text("some value");
+						}
+						ImGui::EndTable();
+					}*/
 				}
 				ImGui::TreePop();
 			}
