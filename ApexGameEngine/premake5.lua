@@ -89,7 +89,8 @@ project "ApexGameEngine"
 		buildmessage "Embedding %{file.relpath} into obj"
 		buildcommands {
 			"%{UTF_BOM_REMOVE} %{file.relpath}",
-			"%{OBJCOPY} --input-target binary --output-target pe-x86-64 --binary-architecture i386 %{file.relpath} %{cfg.objdir}/%{file.basename}.obj"
+			"%{OBJCOPY} --input-target binary --output-target pe-x86-64 --binary-architecture i386 %{file.relpath} %{cfg.objdir}/%{file.basename}.obj",
+			"{ECHO} Created %{cfg.objdir}/%{file.basename}.obj from %{file.relpath}"
 		}
 		buildoutputs {
 			"%{cfg.objdir}/%{file.basename}.obj"

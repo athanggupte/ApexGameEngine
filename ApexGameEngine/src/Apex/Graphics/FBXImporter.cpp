@@ -1,4 +1,4 @@
-﻿#include "apex_pch.h"
+#include "apex_pch.h"
 #include "FBXImporter.h"
 
 #include "Material.h"
@@ -231,7 +231,8 @@ namespace Apex {
 	void fbx::ProcessControlPoints(FbxMesh* mesh, std::vector<ControlPoint>& outControlPoints)
 	{
 		const int controlPointsCount = mesh->GetControlPointsCount();
-		
+		APEX_CORE_INFO("FBXImporter :: mesh ({}) :: Loaded {} Control Points", mesh->GetName(), controlPointsCount);
+
 		outControlPoints.reserve(controlPointsCount);
 
 		for (int i = 0; i < controlPointsCount; i++) {

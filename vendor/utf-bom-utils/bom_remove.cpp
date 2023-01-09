@@ -7,6 +7,7 @@
 #include <cstdio>
 #include <iostream>
 #include <string>
+#include <filesystem>
 
 #include "CDirectoryExplorer.h"
 
@@ -29,21 +30,23 @@ int main(int argc, char** argv)
 
 		for (int i=1;i<argc;i++)
 		{
-			CDirectoryExplorer::TFileInfoList lst;
+			/*CDirectoryExplorer::TFileInfoList lst;
 			CDirectoryExplorer::explore(argv[i],FILE_ATTRIB_ARCHIVE,lst);
 
 			if (lst.empty())
 			{
 				cerr << "Error: Not found " << argv[i] << endl;
 				continue;
-			}
+			}*/
 
-			for (CDirectoryExplorer::TFileInfoList::const_iterator it=lst.begin();it!=lst.end();it++)
+			//for (CDirectoryExplorer::TFileInfoList::const_iterator it=lst.begin();it!=lst.end();it++)
 			{
-				FILE *f = fopen(it->wholePath.c_str(),"rb");
+				//FILE *f = fopen(it->wholePath.c_str(),"rb");
+				FILE *f = fopen(argv[i],"rb");
 				if (!f)
 				{
-					cerr << "Error: Cannot open" << it->wholePath << endl;
+					//cerr << "Error: Cannot open" << it->wholePath << endl;
+					cerr << "Error: Cannot open" << argv[i] << endl;
 					continue;
 				}
 				unsigned char buf[10];
@@ -56,7 +59,8 @@ int main(int argc, char** argv)
 
 				if (!(buf[0]==0xEF && buf[1]==0xBB && buf[2]==0xBF))
 				{
-					cout  << "Skipping (has no BOM): " << it->wholePath << endl;
+					//cout  << "Skipping (has no BOM): " << it->wholePath << endl;
+					cout  << "Skipping (has no BOM): " << argv[i] << endl;
 					continue;
 				}
 
@@ -64,30 +68,33 @@ int main(int argc, char** argv)
 				// Read the whole file:
 				unsigned char *fil_buf = new unsigned char[N];
 
-				f = fopen(it->wholePath.c_str(),"rb");
+				//f = fopen(it->wholePath.c_str(),"rb");
+				f = fopen(argv[i],"rb");
 				fread(fil_buf,1,N,f);
 				fclose(f);
 
 				// Write new version:
-				f = fopen(it->wholePath.c_str(),"wb");
+				//f = fopen(it->wholePath.c_str(),"wb");
+				f = fopen(argv[i],"wb");
 				fwrite(fil_buf+3,1,N-3,f);
 				fclose(f);
 
 				delete[] fil_buf;
 
-				cout << "Removed BOM: " << it->wholePath << endl;
+				//cout << "Removed BOM: " << it->wholePath << endl;
+				cout << "Removed BOM: " << argv[i] << endl;
 			}
 		}
 		
 		return 0;
 	} catch (exception &e)
 	{
-		cerr << "EXCEPCTION: " << e.what() << endl;
+		cerr << "EXCEPTION: " << e.what() << endl;
 		return -1;
 	}
 	catch (...)
 	{
-		cerr << "Untyped excepcion!!";
+		cerr << "Untyped exception!!";
 		return -1;
 	}
 }

@@ -48,8 +48,16 @@ group ""
 	-- include "GameLib"
 
 
+function os.capture(cmd)
+	local f = io.popen(cmd, "r")
+	local s = string.gsub(f:read("*a"), "[\n\r]+", "")
+	f:close()
+	return s
+end
+
 if os.istarget "windows" then
-	CMAKE = "%CMAKE_PATH%\\cmake"
+	CMAKE = ('"'..os.capture("where cmake")..'"') or path.join(os.getenv("CMAKE_PATH"), "cmake")
+	-- print(CMAKE)
 	OBJCOPY = "%{wks.location}/vendor/bin/binutils-x64/objcopy.exe"
 else
 	CMAKE = "cmake"
@@ -63,8 +71,10 @@ project "Assimp"
 	kind "Makefile"
 
 	buildcommands {
+		-- "call VsDevCmd.bat",
 		"{MKDIR} build",
 		"{CHDIR} build",
+		"{ECHO} %{CMAKE}",
 		"%{CMAKE} -DASSIMP_BUILD_ASSIMP_TOOLS=OFF -DASSIMP_BUILD_SAMPLES=OFF -DASSIMP_BUILD_TESTS=OFF ..",
 		-- "%{CMAKE} --build . "
 	}
@@ -94,6 +104,7 @@ project "FreeType"
 	kind "Makefile"
 
 	buildcommands {
+		-- "call VsDevCmd.bat",
 		"{MKDIR} build",
 		"{CHDIR} build",
 		"%{CMAKE} ..",
@@ -116,6 +127,7 @@ project "utf-bom-utils"
 	kind "Makefile"
 
 	buildcommands {
+		-- "call VsDevCmd.bat",
 		"{MKDIR} ../bin/%{prj.name}",
 		"{CHDIR} ../bin/%{prj.name}",
 		"%{CMAKE} ../../%{prj.name}",

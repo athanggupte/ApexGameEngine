@@ -35,6 +35,7 @@ namespace Apex {
 		void OnPlay();
 		void OnStop();
 		void OnUpdate(Timestep ts);
+		void OnPhysicsUpdate(Timestep ts);
 		void OnEditorUpdate(Timestep ts);
 		void OnScriptRender(Timestep ts);
 		//void OnImGuiRender();

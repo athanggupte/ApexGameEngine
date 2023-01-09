@@ -2,6 +2,8 @@
 #include "PhysicsTypes.h"
 #include "PhysicsManager.h"
 
+#include "Apex/Core/ECS/Components.h"
+
 #include "SimulationEventCallback.h"
 
 #include <PxPhysicsAPI.h>
@@ -112,6 +114,66 @@ namespace Apex {
 	physx::PxPhysics& PhysicsManager::GetPhysics()
 	{
 		return *s_PhysXData->mPhysics;
+	}
+
+	physx::PxRigidActor* PhysicsManager::CreatePhysicsActor(TransformComponent& transform, RigidBodyComponent& rb, BoxCollider& box_collider, physx::PxMaterial* pxMaterial)
+	{
+		PxTransform pxTransform;
+		pxTransform.p.x = transform.translation.x;
+		pxTransform.p.y = transform.translation.y;
+		pxTransform.p.z = transform.translation.z;
+		const auto q = glm::quat(transform.rotation);
+		pxTransform.q.x = q.x;
+		pxTransform.q.y = q.y;
+		pxTransform.q.z = q.z;
+		pxTransform.q.w = q.w;
+
+		auto geom = physx::PxBoxGeometry{ box_collider.halfExtents.x * transform.scale.x, box_collider.halfExtents.y * transform.scale.y, box_collider.halfExtents.z * transform.scale.z };
+		physx::PxRigidActor* actor = nullptr;
+		switch (rb.type)
+		{
+		case RigidBodyType::Static:
+			actor = PxCreateStatic(GetPhysics(), pxTransform, geom, *pxMaterial);
+			break;
+		case RigidBodyType::Kinematic:
+			actor = PxCreateKinematic(GetPhysics(), pxTransform, geom, *pxMaterial, rb.density);
+			break;
+		case RigidBodyType::Dynamic:
+			actor = PxCreateDynamic(GetPhysics(), pxTransform, geom, *pxMaterial, rb.density);
+			break;
+		default: ;
+		}
+		return actor;
+	}
+
+	physx::PxRigidActor* PhysicsManager::CreatePhysicsActor(TransformComponent& transform, RigidBodyComponent& rb, SphereCollider& sphere_collider, physx::PxMaterial* pxMaterial)
+	{
+		PxTransform pxTransform;
+		pxTransform.p.x = transform.translation.x;
+		pxTransform.p.y = transform.translation.y;
+		pxTransform.p.z = transform.translation.z;
+		const auto q = glm::quat(transform.rotation);
+		pxTransform.q.x = q.x;
+		pxTransform.q.y = q.y;
+		pxTransform.q.z = q.z;
+		pxTransform.q.w = q.w;
+
+		auto geom = physx::PxSphereGeometry{ sphere_collider.radius };
+		physx::PxRigidActor* actor = nullptr;
+		switch (rb.type)
+		{
+		case RigidBodyType::Static:
+			actor = PxCreateStatic(GetPhysics(), pxTransform, geom, *pxMaterial);
+			break;
+		case RigidBodyType::Kinematic:
+			actor = PxCreateKinematic(GetPhysics(), pxTransform, geom, *pxMaterial, rb.density);
+			break;
+		case RigidBodyType::Dynamic:
+			actor = PxCreateDynamic(GetPhysics(), pxTransform, geom, *pxMaterial, rb.density);
+			break;
+		default: ;
+		}
+		return actor;
 	}
 
 	SimulationEventCallback& PhysicsManager::GetSimulationEventCallback()

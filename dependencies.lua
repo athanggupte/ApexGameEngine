@@ -1,5 +1,6 @@
 FBX_SDK = os.getenv("FBX_SDK_PATH")
-PHYSX_PATH = "../../PhysX"
+printf("Found FBX SDK at %s", FBX_SDK)
+PHYSX_PATH = "%{wks.location}/ApexGameEngine/vendor/PhysX"
 
 -- Include directories relative to the root (solution) directory
 IncludeDirs = {}
@@ -41,10 +42,10 @@ WinLibDirs["PhysX_Release"] =    "%{PHYSX_PATH}/physx/bin/win.x86_64.vc142.md/ch
 
 WinLibs = {}
 WinLibs["FreeType_Debug"] = "freetyped.lib"
-WinLibs["Assimp_Debug"] =   "assimp-vc142-mtd"
+WinLibs["Assimp_Debug"] =   "assimp-vc143-mtd"
 
 WinLibs["FreeType_Release"] = "freetype.lib"
-WinLibs["Assimp_Release"] =   "assimp-vc142-mt"
+WinLibs["Assimp_Release"] =   "assimp-vc143-mt"
 
 WinLibs["OpenGL"] =   "opengl32.lib"
 WinLibs["irrKlang"] = "irrKlang"
@@ -52,10 +53,10 @@ WinLibs["FBX"] =      "libfbxsdk-md.lib"
 WinLibs["FBX_xml"] =  "libxml2-md.lib"
 WinLibs["FBX_zlib"] = "zlib-md.lib"
 WinLibs["PhysX"] = {
-	"PhysX_64.lib",
-	"PhysXFoundation_64.lib",
-	"PhysXCommon_64.lib",
-	"PhysXCooking_64.lib",
+	"PhysX_static_64.lib",
+	"PhysXFoundation_static_64.lib",
+	"PhysXCommon_static_64.lib",
+	"PhysXCooking_static_64.lib",
 	"PhysXExtensions_static_64.lib",
 	"PhysXCharacterKinematic_static_64.lib",
 	"PhysXVehicle_static_64.lib",

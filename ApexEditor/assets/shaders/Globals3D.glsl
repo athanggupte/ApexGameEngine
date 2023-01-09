@@ -55,6 +55,6 @@ u_Lights;
 #define HalfPI 1.5707963269
 #define PI2 9.8696044024
 
-#define EPSILON 1e-5
+#define EPSILON 1e-7
 
 #endif // _APEX_INCLUDE_GLOBALS3D_GLH_

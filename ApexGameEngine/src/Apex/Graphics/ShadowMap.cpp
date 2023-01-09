@@ -152,7 +152,7 @@ namespace Apex {
 		Camera cascadeCamera = camera;
 		auto farPlane = cascadeCamera.GetPerspectiveFar();
 
-		cascadeCamera.SetPerspectiveFar(farPlane / 50.f); // Cascade #1
+		cascadeCamera.SetPerspectiveFar(farPlane / 25.f); // Cascade #1
 		//cascadeCamera.SetPerspectiveFar(farPlane / 25.f); // Cascade #2
 		//cascadeCamera.SetPerspectiveFar(farPlane / 10.f);	// Cascade #3
 		//cascadeCamera.SetPerspectiveFar(farPlane / 2.f);	// Cascade #4

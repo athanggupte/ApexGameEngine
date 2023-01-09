@@ -7,11 +7,10 @@ float clamped_dot(in vec3 a, in vec3 b)
 
 vec3 fresnel_Schlick(in vec3 L, in vec3 N, in vec3 F0)
 {
-	float LdotN = dot(L, N);
-	float OneMinusLdotN = 1.0 - LdotN;
+	float NdotL = dot(N, L);
 
-	//vec3 fresnel = F0 + (1.0 - F0) * pow(OneMinusLdotN, 5.0);
-	vec3 fresnel = F0 + (1.0 - F0) * exp2((-5.55473 * LdotN - 6.98316) * LdotN);
+	//vec3 fresnel = F0 + (1.0 - F0) * pow(clamp(1.0 - NdotL, 0.0, 1.0), 5.0);
+	vec3 fresnel = F0 + (1.0 - F0) * clamp(exp2((-5.55473 * NdotL - 6.98316) * NdotL), 0.0, 1.0);
 
 	return fresnel;
 }
@@ -39,15 +38,15 @@ float ndf_Beckmann(in vec3 N, in vec3 M, in float roughness)
 	return ndf;
 }
 
-float ndf_GGX(in vec3 N, in vec3 M, in float roughness) // aka Trowbridge-Reitz
+float ndf_GGX(in vec3 N, in vec3 H, in float roughness) // aka Trowbridge-Reitz
 {
 	float alpha = roughness * roughness;
 	float alpha2 = alpha * alpha;
 
-	float NdotM = clamped_dot(N, M);
-	float NdotM2 = NdotM * NdotM;
+	float NdotH = clamped_dot(N, H);
+	float NdotH2 = NdotH * NdotH;
 
-	float denom_term = NdotM2 * (alpha2 - 1.0) + 1.0;
+	float denom_term = NdotH2 * (alpha2 - 1.0) + 1.0;
 	float denom_term2 = denom_term * denom_term;
 
 	float ndf = alpha2 / (PI * denom_term2);
@@ -66,9 +65,8 @@ float geom_GGX_1(in vec3 V, in vec3 N, in float k)
 
 float geom_GGX(in vec3 L, in vec3 V, in vec3 H, in vec3 N, in float roughness)
 {
-	float r = (roughness + 1) / 2.0;
-	float alpha = r * r;
-	float k = alpha / 2.0;
+	float r = roughness + 1.0;
+	float k = (r * r) / 8.0;
 
 	float geom = geom_GGX_1(L, N, k) * geom_GGX_1(V, N, k);
 

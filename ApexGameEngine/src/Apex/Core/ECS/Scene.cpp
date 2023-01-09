@@ -132,6 +132,12 @@ namespace Apex {
 			});
 	}
 
+	// TODO: Change place to put this
+	struct __AddedToPhysxTag{};
+
+	// TODO: Remove this conditioning it upon some variable
+	physx::PxMaterial* pxMaterial = nullptr;
+
 	void Scene::OnPlay()
 	{
 		auto& resourceManager = Application::Get().GetResourceManager();
@@ -154,72 +160,27 @@ namespace Apex {
 		PhysicsManager::GetSimulationEventCallback().SetContext(this);
 		m_PhysicsScene = PhysicsManager::CreateScene();
 
-		physx::PxMaterial* pxMaterial = PhysicsManager::GetPhysics().createMaterial(0.8f, 0.4f, 0.6f);
-		// TODO: Consider removing this or conditioning it upon some variable
+		pxMaterial = PhysicsManager::GetPhysics().createMaterial(0.8f, 0.4f, 0.6f);
+
 		//physx::PxRigidStatic* groundPlane = PxCreatePlane(m_PhysicsScene->getPhysics(), physx::PxPlane{ 0.f, 1.f, 0.f, 0.f }, *pxMaterial);
 		//m_PhysicsScene->addActor(*groundPlane);
 
 		m_Registry.view<TransformComponent, RigidBodyComponent, BoxCollider>()
-			.each([this, &pxMaterial](auto entity, TransformComponent& transform, RigidBodyComponent& rb, BoxCollider& box_collider) {
-				physx::PxTransform pxTransform;
-				pxTransform.p.x = transform.translation.x;
-				pxTransform.p.y = transform.translation.y;
-				pxTransform.p.z = transform.translation.z;
-				const auto q = glm::quat(transform.rotation);
-				pxTransform.q.x = q.x;
-				pxTransform.q.y = q.y;
-				pxTransform.q.z = q.z;
-				pxTransform.q.w = q.w;
-
-				auto geom = physx::PxBoxGeometry{ box_collider.halfExtents.x * transform.scale.x, box_collider.halfExtents.y * transform.scale.y, box_collider.halfExtents.z * transform.scale.z };
-				physx::PxRigidActor* actor = nullptr;
-				switch (rb.type)
-				{
-				case RigidBodyType::Static:
-					actor = PxCreateStatic(m_PhysicsScene->getPhysics(), pxTransform, geom, *pxMaterial);
-					break;
-				case RigidBodyType::Kinematic:
-					actor = PxCreateKinematic(m_PhysicsScene->getPhysics(), pxTransform, geom, *pxMaterial, rb.density);
-					break;
-				case RigidBodyType::Dynamic:
-					actor = PxCreateDynamic(m_PhysicsScene->getPhysics(), pxTransform, geom, *pxMaterial, rb.density);
-					break;
-				}
+			.each([this](auto entity, TransformComponent& transform, RigidBodyComponent& rb, BoxCollider& box_collider) {
+				auto actor = PhysicsManager::CreatePhysicsActor(transform, rb, box_collider, pxMaterial);
 				actor->userData = reinterpret_cast<void*>(static_cast<uintptr_t>(entity));
 				APEX_CORE_INFO("Adding Physx::RigidBody for entity : {} ({})", entity, m_Registry.get<TagComponent>(entity).tag.str());
 				m_PhysicsScene->addActor(*actor);
+				m_Registry.emplace<__AddedToPhysxTag>(entity);
 			});
 
 		m_Registry.view<TransformComponent, RigidBodyComponent, SphereCollider>()
-			.each([this, &pxMaterial](auto entity, TransformComponent& transform, RigidBodyComponent& rb, SphereCollider& sphere_collider) {
-				physx::PxTransform pxTransform;
-				pxTransform.p.x = transform.translation.x;
-				pxTransform.p.y = transform.translation.y;
-				pxTransform.p.z = transform.translation.z;
-				const auto q = glm::quat(transform.rotation);
-				pxTransform.q.x = q.x;
-				pxTransform.q.y = q.y;
-				pxTransform.q.z = q.z;
-				pxTransform.q.w = q.w;
-
-				auto geom = physx::PxSphereGeometry{ sphere_collider.radius };
-				physx::PxRigidActor* actor = nullptr;
-				switch (rb.type)
-				{
-				case RigidBodyType::Static:
-					actor = PxCreateStatic(m_PhysicsScene->getPhysics(), pxTransform, geom, *pxMaterial);
-					break;
-				case RigidBodyType::Kinematic:
-					actor = PxCreateKinematic(m_PhysicsScene->getPhysics(), pxTransform, geom, *pxMaterial, rb.density);
-					break;
-				case RigidBodyType::Dynamic:
-					actor = PxCreateDynamic(m_PhysicsScene->getPhysics(), pxTransform, geom, *pxMaterial, rb.density);
-					break;
-				default: ;
-				}
+			.each([this](auto entity, TransformComponent& transform, RigidBodyComponent& rb, SphereCollider& sphere_collider) {
+				auto actor = PhysicsManager::CreatePhysicsActor(transform, rb, sphere_collider, pxMaterial);
 				actor->userData = reinterpret_cast<void*>(static_cast<uintptr_t>(entity));
 				APEX_CORE_INFO("Adding Physx::RigidBody for entity : {} ({})", entity, m_Registry.get<TagComponent>(entity).tag.str());
 				m_PhysicsScene->addActor(*actor);
+				m_Registry.emplace<__AddedToPhysxTag>(entity);
 			});
 
 		m_PhysicsTimeAccumulator = 0.f;
@@ -245,9 +206,7 @@ namespace Apex {
 		// Physics Update
 		m_PhysicsTimeAccumulator += ts.GetSeconds();
 		if (m_PhysicsTimeAccumulator >= m_PhysicsTimestep) {
-			m_PhysicsScene->simulate(m_PhysicsTimestep);
-			m_PhysicsScene->fetchResults(true);
-			m_PhysicsTimeAccumulator -= m_PhysicsTimestep;
+			OnPhysicsUpdate(ts);
 		}
 
 		uint32_t nbActiveActors = 0;
@@ -281,6 +240,40 @@ namespace Apex {
 			Renderer2D::EndScene();
 		}*/
 		// PostProcess
+	}
+
+	void Scene::OnPhysicsUpdate(Timestep ts)
+	{
+		m_PhysicsScene->simulate(m_PhysicsTimestep);
+		m_PhysicsScene->fetchResults(true);
+		m_PhysicsTimeAccumulator -= m_PhysicsTimestep;
+
+		m_Registry.view<NativeScriptComponent>()
+			.each([this, ts](NativeScriptComponent& nsc) {
+				nsc.instance->OnPhysicsUpdate(m_PhysicsTimestep);
+			});
+
+		m_Registry.view<TransformComponent, RigidBodyComponent, BoxCollider>(entt::exclude<__AddedToPhysxTag>)
+			.each([this](auto entity, TransformComponent& transform, RigidBodyComponent& rb, BoxCollider& box_collider) {
+				//Entity e{entity, this};
+				//APEX_LOG_DEBUG("new PhysxEntity w/ BoxCollider ({})", e.Tag().str());
+				auto actor = PhysicsManager::CreatePhysicsActor(transform, rb, box_collider, pxMaterial);
+				actor->userData = reinterpret_cast<void*>(static_cast<uintptr_t>(entity));
+				APEX_CORE_INFO("Adding Physx::RigidBody for entity : {} ({})", entity, m_Registry.get<TagComponent>(entity).tag.str());
+				m_PhysicsScene->addActor(*actor);
+				m_Registry.emplace<__AddedToPhysxTag>(entity);
+			});
+
+		m_Registry.view<TransformComponent, RigidBodyComponent, SphereCollider>(entt::exclude<__AddedToPhysxTag>)
+			.each([this](auto entity, TransformComponent& transform, RigidBodyComponent& rb, SphereCollider& sphere_collider) {
+				//Entity e{entity, this};
+				//APEX_LOG_DEBUG("new PhysxEntity w/ SphereCollider ({})", e.Tag().str());
+				auto actor = PhysicsManager::CreatePhysicsActor(transform, rb, sphere_collider, pxMaterial);
+				actor->userData = reinterpret_cast<void*>(static_cast<uintptr_t>(entity));
+				APEX_CORE_INFO("Adding Physx::RigidBody for entity : {} ({})", entity, m_Registry.get<TagComponent>(entity).tag.str());
+				m_PhysicsScene->addActor(*actor);
+				m_Registry.emplace<__AddedToPhysxTag>(entity);
+			});
 	}
 
 	void Scene::Render2D()
@@ -342,6 +335,18 @@ namespace Apex {
 			return "MeshRendererComponent";
 		if constexpr (std::is_same_v<Component_t, LightComponent>)
 			return "LightComponent";
+		if constexpr (std::is_same_v<Component_t, RigidBodyComponent>)
+			return "RigidBodyComponent";
+		if constexpr (std::is_same_v<Component_t, BoxCollider>)
+			return "BoxCollider";
+		if constexpr (std::is_same_v<Component_t, SphereCollider>)
+			return "SphereCollider";
+
+
+		if constexpr (std::is_same_v<Component_t, __AddedToPhysxTag>)
+			return "__AddedToPhysxTag";
+
+
 		return "Unknown Component Type";
 	}
 

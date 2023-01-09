@@ -11,7 +11,14 @@ namespace Apex {
 
 		[[nodiscard]] float GetSeconds() const { return m_Time; }
 		[[nodiscard]] float GetMillis() const { return m_Time * 1000.0f; }
-		
+
+
+		Timestep& operator += (const Timestep& ts) { this->m_Time += ts.m_Time; return *this; }
+		Timestep& operator -= (const Timestep& ts) { this->m_Time -= ts.m_Time; return *this; }
+
+		const Timestep operator + (const Timestep& ts) const { return Timestep{*this} += ts; }
+		const Timestep operator - (const Timestep& ts) const { return Timestep{*this} -= ts; }
+
 	private:
 		float m_Time;
 	};

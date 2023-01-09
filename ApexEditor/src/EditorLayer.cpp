@@ -98,7 +98,7 @@ namespace Apex {
 		m_PostProcessFramebuffer->AddColorAttachment({ TextureAccessFormat::RGBA, TextureInternalFormat::RGBA16, TextureDataType::FLOAT, TextureFiltering::BILINEAR });
 		m_ShaderGrid = Shader::Create("editor_assets/shaders/InfiniteGridXZ.glsl");
 
-		m_ShadowMap = CreateRef<ShadowMap>(2048u, 2048u);
+		m_ShadowMap = CreateRef<ShadowMap>(4096u, 4096u);
 
 		auto& resourceManager = Application::Get().GetResourceManager();
 		/* Initialize Shaders */
@@ -179,7 +179,7 @@ namespace Apex {
 			sphereEntity.Transform().translation.y += 15.f;
 
 			auto& meshComp = sphereEntity.AddComponent<MeshRendererComponent>();
-			auto mesh = FBXImporter::LoadMesh(FileSystem::GetFileIfExists("editor_assets/meshes/sphere-tris.fbx"), "Sphere");
+			auto mesh = FBXImporter::LoadMesh(FileSystem::GetFileIfExists("editor_assets/meshes/sphere-tris-1.fbx"), "Sphere");
 			meshComp.mesh = resourceManager.Insert<Mesh>(RESNAME("default-sphere"), mesh);
 			auto material = CreateRef<Material>(resourceManager.Get<Shader>(RESNAME("shader_StandardPBR")));
 			material->SetAltColor("Albedo", { 1.f, 1.f, 5.f, 1.f });
@@ -215,7 +215,7 @@ namespace Apex {
 
 		s_FontAtlas = CreateRef<FontAtlas>();
 		//(void)s_FontAtlas->AddFontFromFileTTF("C:\\Windows\\Fonts\\segoeui.ttf", 50.f);
-		s_FontAtlas->AddFontFromFileTTF(R"(C:\Users\Rackware_2\Repos\ApexGameEngine\ApexEditor\assets\fonts\AquireBold-8Ma60.otf)", 128.f);
+		s_FontAtlas->AddFontFromFileTTF(R"(C:\Users\athan\source\repos\ApexGameEngine\ApexEditor\assets\fonts\AquireBold-8Ma60.otf)", 128.f);
 		s_FontAtlas->BuildRGBA32();
 
 		auto textEntity = m_ActiveScene->CreateEntity(HASH("text"));
@@ -614,15 +614,29 @@ namespace Apex {
 	{
 		ImGui::Begin("Settings");
 
-		ImGui::Text("Frame time: %2.3f ms", Timer::GetTimestep().GetMillis());
+		static float frame_time = Timer::GetTimestep().GetMillis();
+		static int fps = 1000.f / frame_time;
+		static float accumulator = 0.f;
+		static int count = 0;
+		accumulator += Timer::GetTimestep().GetMillis();
+		count++;
+
+		if (accumulator > 200.f) {
+			frame_time = accumulator / (float)count;
+			accumulator = 0.f;
+			count = 0;
+		}
+
+		ImGui::Text("Frame time : %2.3f ms", frame_time);
+		ImGui::Text("FPS : %.0f", 1000.f / frame_time);
 
 		auto stats = Renderer2D::GetStats();
 		ImGui::Text("Renderer2D Stats:");
-		ImGui::Text("Draw Calls: %d", stats.drawCalls);
-		ImGui::Text("Quads: %d", stats.quadCount);
-		ImGui::Text("Triangles: %d", stats.GetTriangleCount());
-		ImGui::Text("Vertices: %d", stats.GetVertexCount());
-		ImGui::Text("Indices: %d", stats.GetIndexCount());
+		ImGui::Text("Draw Calls : %d", stats.drawCalls);
+		ImGui::Text("Quads : %d", stats.quadCount);
+		ImGui::Text("Triangles : %d", stats.GetTriangleCount());
+		ImGui::Text("Vertices : %d", stats.GetVertexCount());
+		ImGui::Text("Indices : %d", stats.GetIndexCount());
 		
 		ImGui::End();
 	}
@@ -667,7 +681,7 @@ namespace Apex {
 		ImGui::SetNextWindowPos(curWinMin);
 		auto curWinWidth = ImGui::GetWindowContentRegionWidth();
 		
-		ImGui::BeginChild("##camera_controls", ImVec2(curWinWidth, 50.f), false, ImGuiWindowFlags_NoBackground);
+		/*ImGui::BeginChild("##camera_controls", ImVec2(curWinWidth, 50.f), false, ImGuiWindowFlags_NoBackground);
 		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.4f, 0.2f, 0.6f, 0.2f));
 
 		if (m_EditorCameraController == &m_PerspectiveCameraController) {
@@ -684,7 +698,7 @@ namespace Apex {
 		}
 
 		ImGui::PopStyleColor();
-		ImGui::EndChild();
+		ImGui::EndChild();*/
 
 		DrawGizmos();
 

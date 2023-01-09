@@ -284,7 +284,7 @@ namespace Apex {
 						if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ASSET_BROWSER_ITEM")) {
 							if (const auto filename = static_cast<const char*>(payload->Data); filename != nullptr) {
 								fs::path path { filename };
-								if (path.extension() == ".fbx") {
+								if (path.extension() == ".fbx" || path.extension() == ".obj") {
 									const auto id = RESNAME(path.stem().string());
 									if (!Application::Get().GetResourceManager().Exists(id)) {
 										meshComp.mesh = Application::Get().GetResourceManager().Insert<Mesh>(id, filename);

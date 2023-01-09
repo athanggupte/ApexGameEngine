@@ -31,11 +31,25 @@
 
 #include <stdexcept>
 #include <string.h>
+#include <format>
+
+template< typename... Args >
+std::string string_sprintf( const char* format, Args... args ) {
+  int length = std::snprintf( nullptr, 0, format, args... );
+  // assert( length >= 0 );
+
+  char* buf = new char[length + 1];
+  std::snprintf( buf, length + 1, format, args... );
+
+  std::string str( buf );
+  delete[] buf;
+  return str;
+}
 
 #define MRPT_TRY_START
 #define MRPT_TRY_END
 #define THROW_EXCEPTION(s) { throw std::runtime_error(s); }
-#define THROW_EXCEPTION_CUSTOM_MSG1(msg,args) { throw std::runtime_error(msg); }
+#define THROW_EXCEPTION_CUSTOM_MSG1(msg,args) { throw std::runtime_error(string_sprintf(msg, args)); }
 
 #if defined(_WIN32) || defined(WIN32)
 	#define MRPT_OS_WINDOWS

@@ -132,7 +132,8 @@ vec3 CalculateBRDF(in vec3 N, in vec3 V, in vec3 L, in vec3 F0, in vec3 albedo, 
 	float G = geom_GGX(L, V, H, N, roughness);
 
 	vec3 num_Spec = F * D * G;
-	float den_Spec = 4.0 * NdotL * NdotV + EPSILON;
+	//float den_Spec = 4.0 * NdotL * NdotV + EPSILON;
+	float den_Spec = max(4.0 * NdotL * NdotV, EPSILON);
 
 	vec3 specular = num_Spec / den_Spec;
 
@@ -165,7 +166,7 @@ void main()
 	vec3 b = cross(n, t) * v_Tangent.w;
 
 	// Get world space vectors
-	vec3 N = mat3(t, b ,n) * normal;
+	vec3 N = normalize(mat3(t, b ,n) * normal);
 	vec3 V = normalize(u_Camera.Position.xyz - v_Position);
 
 	// Set Fresnel value for material
@@ -179,7 +180,7 @@ void main()
 	for (int i = 0; i < u_Lights.NumDirectionalLights; i++) 
 	{
 		// Light Type #1 (Directional)
-		vec3 L = -normalize(u_Lights.DirectionalLights[i].Direction.xyz);
+		vec3 L = normalize(-u_Lights.DirectionalLights[i].Direction.xyz);
 		vec3 Li = u_Lights.DirectionalLights[i].Color.rgb;
 
 		// Calculate shadows
@@ -239,7 +240,7 @@ void main()
 		}
 	}
 
-	Lo += ambient;// * albedo;
+	Lo += ambient * albedo;
 
 	// Final output fragment color
 	o_Color = vec4(Lo, 1.0);
