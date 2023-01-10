@@ -191,9 +191,6 @@ void main()
 		Lo += (1.0 - shadow) * CalculateBRDF(N, V, L, F0, albedo, roughness, metallic, Li);
 	}
 
-	o_Color = vec4(Lo, 1.0);
-	return;
-
 	for (int i = 0; i < u_Lights.NumPointLights; i++) 
 	{
 		// Light Type #2 (Point)

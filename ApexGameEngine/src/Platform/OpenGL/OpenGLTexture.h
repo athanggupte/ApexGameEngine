@@ -21,11 +21,11 @@ namespace Apex {
 		[[nodiscard]] const std::string& GetName() const override { return m_Name; }
 
 		void Bind(uint32_t slot = 0) const override;
-		void BindImage(uint32_t unit, bool read, bool write) const override;
+		void BindImage(uint32_t unit, bool read, bool write, int level) const override;
 		
 		// virtual void Resize(uint32_t width, uint32_t height) override;
 		void Invalidate(uint32_t width, uint32_t height) override;
-		void SetData(void* data, uint32_t size) override;
+		void SetData(void* data, uint32_t size, int level) override;
 		void GenerateMipmap() const override;
 	private:
 		std::string m_Name;
@@ -52,7 +52,7 @@ namespace Apex {
 		
 		// virtual void Resize(uint32_t width, uint32_t height) override;
 		void Invalidate(uint32_t width, uint32_t height) override;
-		void SetData(void* data, uint32_t size) override;
+		void SetData(void* data, uint32_t size, int level) override;
 		void GenerateMipmap() const override;
 	private:
 		std::string m_Name;
@@ -75,12 +75,12 @@ namespace Apex {
 
 		void Bind(uint32_t slot) const override;
 
-		void SetData(void* data, int faceIndex, uint32_t size) override;
+		void SetData(void* data, int faceIndex, uint32_t size, int level) override;
 		void Invalidate(uint32_t width, uint32_t height) override;
 		void GenerateMipmap() const override;
 
 	protected:
-		void SetData(void* data, uint32_t size) override {}
+		void SetData(void* data, uint32_t size, int level) override {}
 
 	private:
 		std::string m_Name;
@@ -103,14 +103,15 @@ namespace Apex {
 		[[nodiscard]] const std::string& GetName() const override { return m_Name; }
 
 		void Bind(uint32_t slot = 0) const override;
-		void BindImage(uint32_t unit, int index, bool read, bool write) const override;
+		void BindImage(uint32_t unit, int index, bool read, bool write, int level) const override;
 		
 		void Invalidate(uint32_t width, uint32_t height) override;
-		void SetData(void* data, int index, uint32_t size) override;
+		void SetData(void* data, int index, uint32_t size, int level) override;
 		void GenerateMipmap() const override;
 		
 	protected:
-		void SetData(void* data, uint32_t size) override {}
+		void SetData(void* data, uint32_t size, int level) override {}
+
 	private:
 		std::string m_Name;
 		uint32_t m_Width, m_Height;

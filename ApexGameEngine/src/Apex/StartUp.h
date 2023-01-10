@@ -1,4 +1,6 @@
 #pragma once
+#include <Util/Random.h>
+#include "Apex/Utils/Profiler.h"
 
 //#ifdef APEX_PLATFORM_WINDOWS
 

@@ -1,17 +1,10 @@
-#include <Apex.h>
-#include <imgui.h>
+#include "pch.h"
 
 // #include <future>
 // #include <thread>
 
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
-#include <glm/gtc/quaternion.hpp>
 
-// #include "Apex/Graphics/Material.h"
-#include "Apex/Graphics/Model.h"
-#include "Apex/Graphics/Renderer/ForwardRenderer.h"
+#include "Apex/Application.h"
 //#include "Apex/Utils/ComputeShader/ComputeShader.h"
 //#include "Apex/Physics/ParticleSystem/ParticleSystem2D.h"
 
@@ -23,22 +16,18 @@
 // Audio
 //#include "irrKlang.h"
 
-#include "Apex/Core/FileSystem/VFS.h"
 
-#include "Apex/Core/ECS/Scene.h"
-#include "Apex/Core/ECS/Entity.h"
-#include "Apex/Core/ECS/Components.h"
-#include "Apex/Core/CameraController.h"
-
-#include <imGuIZMOquat.h>
+//#include <imGuIZMOquat.h>
 
 /****************      Example Layers      *****************/
 // #include "TestLayer.h"
 // #include "ParticleSystemExample.h"
 // #include "ModelLoaderExample.h"
 // #include "TerminalExample.h"
+#include "BloomTest.h"
+#include "Apex/Core/FileSystem/FileSystem.h"
 
-#if 1
+#if 0
 class SandboxLayer: public Apex::Layer
 {
 public:
@@ -347,9 +336,9 @@ public:
 		//Apex::Log::GetCoreLogger()->set_pattern("%^[%T] <%n> at %@ :: %v%$");
 		//Apex::Collision::Init();
 		//Apex::NetworkManager::Startup();
-		Apex::ForwardRenderer::Init();
 		
-		PushLayer(new SandboxLayer());
+		Apex::FileSystem::Mount("assets", APEX_INSTALL_LOCATION "/assets");
+		PushLayer(new sandbox::BloomTest());
 		//PushLayer(new ModelLayer());
 		//PushLayer(new ParticleLayer());
 		//PushLayer(new DXBall::TestLayer());
@@ -358,7 +347,6 @@ public:
 
 	~Sandbox()
 	{
-		Apex::ForwardRenderer::Shutdown();
 		//Apex::NetworkManager::Cleanup();
 	}
 

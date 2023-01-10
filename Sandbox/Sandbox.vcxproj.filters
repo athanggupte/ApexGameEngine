@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\ChildProcess.h" />
+    <ClInclude Include="src\BloomTest.h" />
     <ClInclude Include="src\Games\DXBall\DXBall.h">
       <Filter>Games\DXBall</Filter>
     </ClInclude>
@@ -34,14 +34,14 @@
     <ClInclude Include="src\Games\DXBall\Gameplay\Player.h">
       <Filter>Games\DXBall\Gameplay</Filter>
     </ClInclude>
-    <ClInclude Include="src\ModelLoaderExample.h" />
-    <ClInclude Include="src\ParticleSystemExample.h" />
-    <ClInclude Include="src\Terminal.h" />
-    <ClInclude Include="src\TerminalExample.h" />
     <ClInclude Include="src\TestLayer.h" />
+    <ClInclude Include="src\pch.h" />
+    <ClInclude Include="src\VoxelTest.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\BloomTest.cpp" />
     <ClCompile Include="src\SandboxApp.cpp" />
-    <ClCompile Include="src\TerminalWindows.cpp" />
+    <ClCompile Include="src\pch.cpp" />
+    <ClCompile Include="src\VoxelTest.cpp" />
   </ItemGroup>
 </Project>

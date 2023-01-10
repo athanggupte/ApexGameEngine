@@ -53,7 +53,7 @@ namespace Apex {
 		glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, true);
 		glfwWindowHint(GLFW_SCALE_TO_MONITOR, true);
 		//glfwWindowHint(GLFW_MAXIMIZED, true);
-		glfwWindowHint(GLFW_DECORATED, false);
+		//glfwWindowHint(GLFW_DECORATED, false);
 		
 		m_Window = glfwCreateWindow((int)m_Data.w_Width, (int)m_Data.w_Height, m_Data.w_Title.c_str(), nullptr, nullptr);
 		

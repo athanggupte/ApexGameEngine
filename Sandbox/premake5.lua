@@ -7,15 +7,22 @@ project "Sandbox"
 	targetdir ("%{wks.location}/bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("%{wks.location}/bin-int/" .. outputdir .. "/%{prj.name}")
 
+	pchheader "pch.h"
+	pchsource "src/pch.cpp"
+
 	files {
-		"%{prj.name}/src/**.h",
-		"%{prj.name}/src/**.cpp"
+		"src/**.h",
+		"src/**.cpp"
+	}
+
+	removefiles {
+		"**/__obsolete__/**",
 	}
 
 	includedirs {
-		"Sandbox/src",
-		"ApexGameEngine/src",
-		"ApexGameEngine/assets/shaders",
+		"src",
+		"%{wks.location}/ApexGameEngine/src",
+		"%{wks.location}/ApexGameEngine/assets/shaders",
 		-- External Dependencies
 		"%{IncludeDirs.spdlog}",
 		"%{IncludeDirs.ImGui}",
@@ -27,6 +34,8 @@ project "Sandbox"
 		"%{IncludeDirs.entt}",
 		"%{IncludeDirs.ImGuizmoQuat}",
 		-- Modules
+		"%{IncludeDirs.Utils}",
+		"%{IncludeDirs.Reflect}",
 		"%{IncludeDirs.ApexIK}"
 	}
 
@@ -50,7 +59,10 @@ project "Sandbox"
 		systemversion "latest"
 
 		defines {
-			"APEX_PLATFORM_WINDOWS"
+			"APEX_PLATFORM_WINDOWS",
+			"APEX_ENGINE_EXPORTS",
+			"REFLECT_DLL",
+			"REFLECT_EXPORTS",
 		}
 		
 		-- libdirs (WinLibDirs)

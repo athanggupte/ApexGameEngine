@@ -44,9 +44,9 @@ float perlinNoise2D(in vec2 coord, in float maxWavelength, in int nOctaves, in f
 	
 	while (--octave > 0) {
 		wavelength /= 2;
-		noize += interpolatedNoiseWl2D(coord, wavelength) * pow(weight, nOctaves - octave + 1);
+		noize += interpolatedNoiseWl2D(coord + vec2(0.2, 0.6) * (nOctaves - octave), wavelength) * pow(weight, nOctaves - octave + 1);
 	}
-	return noize;
+	return noize / nOctaves;
 }
 
 float dotNoise2D(in vec2 pos, in float maxDotSize, in float density)
@@ -81,10 +81,10 @@ void main()
 {
 	ivec2 pCoords = ivec2(gl_GlobalInvocationID.xy);
 
-	//vec3 outColor = vec3(1.0) * smoothstep(0.4, 0.6, dotNoise2D(gl_GlobalInvocationID.xy, 1.0, 0.05));	
-	vec3 outColor = vec3(1.0) * (1.0 - equipotentialFilter(interpolatedNoiseWl2D(gl_GlobalInvocationID.xy, 16.0), 0.45, 0.5));
-	//vec3 outColor = vec3(1.0) * perlinNoise2D(gl_GlobalInvocationID.xy, 32.0, 5, 1.0) / 5;
-	//vec3 outColor = vec3(1.0) * equipotentialFilter(perlinNoise2D(gl_GlobalInvocationID.xy, 32.0, 5, 1.0), 0.5, 0.45);
+	//vec3 outColor = vec3(1.0) * smoothstep(0.4, 0.6, dotNoise2D(pCoords, 1.0, 0.05));	
+	//vec3 outColor = vec3(1.0) * equipotentialFilter(interpolatedNoiseWl2D(pCoords, 16.0), 0.5, 0.5);
+	//vec3 outColor = vec3(1.0) * (1.0 - equipotentialFilter(interpolatedNoiseWl2D(pCoords, 16.0), 0.45, 0.5));
+	vec3 outColor = vec3(1.0) * perlinNoise2D(pCoords, 64.0, 6, 1.0);
 	
 	imageStore(outImage, pCoords, vec4(outColor, 1.0));
 }

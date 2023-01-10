@@ -1,8 +1,8 @@
 #pragma once
-#include "Apex/Core/ResourceManager/ResourceFactory.h"
 
 namespace Apex {
-	
+	struct TextureDesc;
+
 	enum class TextureAccessFormat
 	{
 		RED, 		//I_RED,
@@ -39,9 +39,13 @@ namespace Apex {
 	enum class TextureFiltering
 	{
 		NEAREST,
-		//LINEAR,
+		LINEAR,
 		BILINEAR,
-		TRILINEAR
+		TRILINEAR,
+
+		LINEAR_MIPMAP_NEAREST,
+		NEAREST_MIPMAP_LINEAR,
+		NEAREST_MIPMAP_NEAREST,
 	};
 
 	/*enum class Parameters
@@ -73,6 +77,7 @@ namespace Apex {
 		//TextureDepth2D,
 		Texture2DMS,
 
+		Texture3D,
 		Texture2DArray,
 		TextureCubemapArray,
 	};
@@ -87,7 +92,7 @@ namespace Apex {
 		[[nodiscard]] virtual uint32_t GetID() const = 0;
 
 		virtual void Bind(uint32_t slot = 0) const = 0;
-		virtual void SetData(void* data, uint32_t size) = 0;
+		virtual void SetData(void* data, uint32_t size, int level = 0) = 0;
 		// virtual void Resize(uint32_t width, uint32_t height) = 0;
 		virtual void Invalidate(uint32_t width, uint32_t height) = 0;
 
@@ -100,6 +105,9 @@ namespace Apex {
 		virtual uint32_t GetMaxIndex() { return this->m_MaxIndex; }
 		//[[nodiscard]] virtual TextureSpec GetSpec() const = 0;
 		[[nodiscard]] virtual TextureType GetType() const = 0;
+
+		static Ref<Texture> APEX_API Create(TextureDesc desc);
+
 	protected:
 		uint32_t m_NumberOfRows = 1;// , n_NumberOfCols = 1;
 		uint32_t m_MaxIndex = 1;
@@ -112,7 +120,7 @@ namespace Apex {
 		static Ref<Texture2D> APEX_API Create(const fs::path& path, bool useSRGB = false, bool useHDR = false, TextureFiltering filtering = TextureFiltering::BILINEAR);
 		static Ref<Texture2D> APEX_API Create(uint32_t width, uint32_t height, const TextureSpec& spec, const std::string& name = "");
 
-		virtual void BindImage(uint32_t unit, bool read, bool write) const = 0;
+		virtual void BindImage(uint32_t unit, bool read, bool write, int level = 0) const = 0;
 
 		[[nodiscard]] TextureType GetType() const override { return TextureType::Texture2D; }
 	};
@@ -125,7 +133,7 @@ namespace Apex {
 		[[nodiscard]] TextureType GetType() const override { return TextureType::Texture2DMS; }
 
 	private:
-		void BindImage(uint32_t unit, bool read, bool write) const override {}
+		void BindImage(uint32_t unit, bool read, bool write, int level) const override {}
 	};
 
 	class TextureCubemap : public Texture
@@ -134,20 +142,26 @@ namespace Apex {
 		static Ref<TextureCubemap> APEX_API Create(const std::array<fs::path, 6>& paths, bool useHDR = true, TextureFiltering filtering = TextureFiltering::BILINEAR);
 		static Ref<TextureCubemap> APEX_API Create(uint32_t size, const TextureSpec& spec, const std::string& name = "");
 
-		virtual void SetData(void* data, int faceIndex, uint32_t size) = 0;
+		virtual void SetData(void* data, int faceIndex, uint32_t size, int level = 0) = 0;
 
 		[[nodiscard]] TextureType GetType() const override { return TextureType::TextureCubemap; }
 	};
-
+	
 	class Texture2DArray : public Texture
 	{
 	public:
 		static Ref<Texture2DArray> APEX_API Create(uint32_t width, uint32_t height, uint32_t count, const TextureSpec& spec, const std::string& name = "");
 
-		virtual void SetData(void* data, int index, uint32_t size) = 0;
-		virtual void BindImage(uint32_t unit, int index, bool read, bool write) const = 0;
+		virtual void SetData(void* data, int index, uint32_t size, int level = 0) = 0;
+		virtual void BindImage(uint32_t unit, int index, bool read, bool write, int level = 0) const = 0;
 
 		[[nodiscard]] TextureType GetType() const override { return TextureType::Texture2DArray; }
+	};
+
+	class Texture3D : public Texture
+	{
+	public:
+		static Ref<Texture2DArray> APEX_API Create(uint32_t width, uint32_t height, uint32_t depth, const TextureSpec& spec, const std::string& name = "");
 	};
 
 #ifdef SEPARATE_DEPTH_CLASS
@@ -170,38 +184,18 @@ namespace Apex {
 	};
 #endif
 
-	
-	template<>
-	class ResourceFactory<Texture>
+	struct TextureDesc
 	{
-	public:
-		ResourceFactory() = default;
-
-		ResourceFactory& SetSource(const fs::path& file);
-		ResourceFactory& SetData(void* data, uint32_t size);
-		ResourceFactory& CopyFrom(const Ref<Texture>& ptr);
-		ResourceFactory& SetTextureType(TextureType type);
-		ResourceFactory& SetSRGB(bool srgb);
-		ResourceFactory& SetHDR(bool hdr);
-		ResourceFactory& SetFiltering(TextureFiltering filtering);
-
-		//ResourceFactory& SetDataType(TextureDataType data_type);
-		//ResourceFactory& SetAccessFormat(TextureAccessFormat access_format);
-		ResourceFactory& SetSpecification(TextureSpec spec);
-
-		[[nodiscard]] Ref<Texture> Create(const std::string& name = "") const;
-
-	private:
-		fs::path m_SourceFile;
-		void* m_Data = nullptr; // Non-owning pointer to texture data. Must be valid until Create() is called.
-		uint32_t m_DataSize;
-		uint32_t m_Width = 0, m_Height = 0;
-		TextureType m_Type;
-		TextureSpec m_Specification;
-		bool m_HDR = false, m_sRGB = false;
-
-		Ref<Texture> m_SourcePtr;
-		bool m_SpecificationSet = false;
+		fs::path sourceFile;
+		void* data = nullptr; // Non-owning pointer to texture data. Must be valid until Create() is called.
+		uint32_t dataSize;
+		uint32_t width = 0, height = 0;
+		TextureType type;
+		TextureSpec spec;
+		bool isHDR = false;
+		bool isSRGB = false;
+		int mipBaseLevel = 0;
+		int mipMaxLevel;
 	};
 
 

@@ -34,6 +34,8 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
+#include "Apex/Graphics/PostProcessing/Bloom.h"
+
 namespace Apex {
 
 	//TODO: Remove this after testing!
@@ -91,11 +93,13 @@ namespace Apex {
 		m_ActiveScene = m_EditorScene;
 
 		// TODO: Framebuffer builder - specify all framebuffer attachments before actually creating the framebuffer (avoid invalidating over and over)
-		m_GameFramebuffer = Framebuffer::Create({ 1280u, 720u, 1, true});
-		m_GameFramebufferMS = Framebuffer::Create({ 1280u, 720u, 0, false, true, false, false, 8 });
+		m_GameFramebuffer = Framebuffer::Create({ 1280u, 720u, 0, true});
+		m_GameFramebuffer->AddColorAttachment({ TextureAccessFormat::RGBA, TextureInternalFormat::RGBA16, TextureDataType::FLOAT, TextureFiltering::BILINEAR });
+		m_GameFramebufferMS = Framebuffer::Create({ 1280u, 720u, 0, false, true, true, false, 8 });
 		m_GameFramebufferMS->AddColorAttachment({ TextureAccessFormat::RGBA, TextureInternalFormat::RGBA16, TextureDataType::FLOAT, TextureFiltering::BILINEAR });
 		m_PostProcessFramebuffer = Framebuffer::Create({ 1280u, 720u, 0, false });
 		m_PostProcessFramebuffer->AddColorAttachment({ TextureAccessFormat::RGBA, TextureInternalFormat::RGBA16, TextureDataType::FLOAT, TextureFiltering::BILINEAR });
+		BloomPass::Init(1280u, 720u);
 		m_ShaderGrid = Shader::Create("editor_assets/shaders/InfiniteGridXZ.glsl");
 
 		m_ShadowMap = CreateRef<ShadowMap>(4096u, 4096u);
@@ -239,6 +243,9 @@ namespace Apex {
 	static bool useMSAA = true;
 	static bool showSkybox = true;
 	static bool usePostProcess = true;
+	static bool useBloom = true;
+	static float bloomFilterRadius = 0.004f;
+	static int bloomSteps = 5;
 
 	void EditorLayer::OnUpdate(Timestep ts) 
 	{
@@ -257,6 +264,9 @@ namespace Apex {
 				m_GameFramebuffer->Resize((uint32_t)m_GameViewportSize.x, (uint32_t)m_GameViewportSize.y);
 				m_GameFramebufferMS->Resize((uint32_t)m_GameViewportSize.x, (uint32_t)m_GameViewportSize.y);
 				m_PostProcessFramebuffer->Resize((uint32_t)m_GameViewportSize.x, (uint32_t)m_GameViewportSize.y);
+
+				BloomPass::Init((uint32_t)m_GameViewportSize.x, (uint32_t)m_GameViewportSize.y);
+
 			}
 			m_EditorCameraController->OnResize(static_cast<uint32_t>(m_GameViewportSize.x), static_cast<uint32_t>(m_GameViewportSize.y));
 			m_ActiveScene->OnViewportResize(static_cast<uint32_t>(m_GameViewportSize.x), static_cast<uint32_t>(m_GameViewportSize.y));
@@ -270,6 +280,7 @@ namespace Apex {
 			m_ActiveScene->OnUpdate(ts);
 		}
 
+		// TODO: Move all the render passes to core engine - Renderer or new RenderPass class
 		// Render
 		// Set Camera Data
 
@@ -284,12 +295,15 @@ namespace Apex {
 
 		Renderer2D::ResetStats();
 
-		if (useMSAA)
-			m_GameFramebufferMS->Bind();
-		else
-			m_GameFramebuffer->Bind();
 		RenderCommands::SetClearColor(m_BGColor);
+		m_GameFramebuffer->Bind();
 		RenderCommands::Clear();
+		m_PostProcessFramebuffer->Bind();
+		RenderCommands::Clear();
+		if (useMSAA) {
+			m_GameFramebufferMS->Bind();
+			RenderCommands::Clear();
+		}
 
 		
 		auto cameraTransform = m_EditorCameraController->GetTransform();
@@ -299,8 +313,6 @@ namespace Apex {
 		skyboxTexture->Bind(1);
 
 		// TODO:
-		// 1. Transfer Camera and environment related variables to Uniform Buffer
-		//    and set them once every frame in Renderer::BeginScene
 		// 2. Transfer Light characteristics to dedicated Light class and Uniform Buffer
 		//    and use those objects to set shader variables inside Renderer::BeginScene
 		auto pbrShader = Application::Get().GetResourceManager().Get<Shader>(RESNAME("shader_StandardPBR"));
@@ -344,30 +356,39 @@ namespace Apex {
 		gridTransform[3] = glm::vec4(cameraTranslation.x, 0.f, cameraTranslation.z, 1.f);
 
 		// m_ShaderGrid = Application::Get().GetResourceManager().Get<Shader>(RESNAME("shader_InfiniteGridXZ"));
+		//m_GameFramebuffer->Bind();
 		m_ShaderGrid->Bind();
 		m_ShaderGrid->SetUniMat4("u_ViewProjection", m_EditorCamera.GetProjection() * glm::inverse(cameraTransform));
 		m_ShaderGrid->SetUniMat4("u_ModelMatrix", gridTransform);
 		RenderCommands::SetCulling(false);
 		RenderCommands::Draw(6);
 
-		// Post process
 		if (useMSAA) {
-			m_GameFramebufferMS->Blit(m_PostProcessFramebuffer);
-		} else {
-			m_GameFramebuffer->Blit(m_PostProcessFramebuffer);
+			m_GameFramebufferMS->Blit(m_GameFramebuffer);
 		}
 
+		if (useBloom) {
+			BloomPass::Render(m_GameFramebuffer->GetColorAttachment(0), m_GameFramebuffer->GetColorAttachment(0), bloomFilterRadius, bloomSteps);
+		}
+		m_GameFramebuffer->Blit(m_PostProcessFramebuffer);
+
+		// Post process
 		if (usePostProcess) {
+			RenderCommands::SetDepthWriteMode(false);
 			m_GameFramebuffer->Bind();
 			RenderCommands::Clear();
 			auto tonemapShader = Application::Get().GetResourceManager().Get<Shader>(RESNAME("shader_ACESTonemap"));
 			tonemapShader->Bind();
 			m_PostProcessFramebuffer->GetColorAttachment(0)->Bind(1);
 			RenderCommands::Draw(3);
+			RenderCommands::SetDepthWriteMode(true);
 		} else {
 			m_PostProcessFramebuffer->Blit(m_GameFramebuffer);
 		}
-		
+
+		RenderCommands::SetDepthTest(true);
+
+
 		m_GameFramebuffer->Unbind();
 	}
 
@@ -436,8 +457,16 @@ namespace Apex {
 		if (ImGui::Begin("Rendering")) {
 			ImGui::Checkbox("MSAA", &useMSAA);
 			ImGui::Checkbox("Post process", &usePostProcess);
+			ImGui::Checkbox("Bloom", &useBloom);
 			ImGui::Checkbox("Show Skybox", &showSkybox);
 			ImGui::Separator();
+
+			ImGui::BeginGroup();
+			ImGui::DragFloat("Bloom Threshold", &BloomPass::Threshold(), 0.05, 0.f, 5.f);
+			ImGui::DragFloat("Bloom Knee", &BloomPass::Knee(), 0.05, 0.f, 5.f);
+			ImGui::DragFloat("Bloom Filter Radius", &bloomFilterRadius, 0.001f, 0.001f, 0.5f);
+			ImGui::SliderInt("Bloom Steps", &bloomSteps, 1, 10);
+			ImGui::EndGroup();
 
 			ImGui::BeginGroup();
 			ImGui::DragFloat3("Light Pos", &lightPos.x);

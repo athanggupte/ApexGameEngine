@@ -173,6 +173,12 @@ namespace Apex
 				ret.second = GL_NEAREST;
 				break;
 			}
+		case TextureFiltering::LINEAR:
+			{
+				ret.first = GL_LINEAR;
+				ret.second = GL_LINEAR;
+				break;
+			}
 		case TextureFiltering::BILINEAR:
 			{
 				ret.first = GL_LINEAR;
@@ -182,6 +188,24 @@ namespace Apex
 		case TextureFiltering::TRILINEAR:
 			{
 				ret.first = GL_LINEAR_MIPMAP_LINEAR;
+				ret.second = GL_LINEAR;
+				break;
+			}
+		case TextureFiltering::LINEAR_MIPMAP_NEAREST:
+			{
+				ret.first = GL_LINEAR_MIPMAP_NEAREST;
+				ret.second = GL_LINEAR;
+				break;
+			}
+		case TextureFiltering::NEAREST_MIPMAP_LINEAR:
+			{
+				ret.first = GL_NEAREST_MIPMAP_LINEAR;
+				ret.second = GL_LINEAR;
+				break;
+			}
+		case TextureFiltering::NEAREST_MIPMAP_NEAREST:
+			{
+				ret.first = GL_NEAREST_MIPMAP_NEAREST;
 				ret.second = GL_LINEAR;
 				break;
 			}
@@ -216,7 +240,12 @@ namespace Apex
 			glTextureParameterfv(m_RendererID, GL_TEXTURE_BORDER_COLOR, borderColor);
 		}
 
-		glTextureStorage2D(m_RendererID, 1, m_InternalFormat, m_Width, m_Height);
+		glTextureParameteri(m_RendererID, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTextureParameteri(m_RendererID, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+		int numMipLevels = static_cast<int>(std::log2f(std::min(width, height)));
+		numMipLevels = std::max(1, std::min(8, numMipLevels));
+		glTextureStorage2D(m_RendererID, numMipLevels, m_InternalFormat, m_Width, m_Height);
 
 		if(!m_Name.empty())
 			glObjectLabel(GL_TEXTURE, m_RendererID, -1, m_Name.c_str());
@@ -240,7 +269,8 @@ namespace Apex
 		}
 
 		if (useHDR) {
-			pixels = stbi_loadf_from_memory(data.data(), data.size(), &width, &height, &channels, 0);
+			pixels = stbi_loadf_from_memory(data.data(), data.size(), &width, &height, &channels, 4);
+			channels = 4;
 		} else {
 			pixels = stbi_load_from_memory(data.data(), data.size(), &width, &height, &channels, 0);
 		}
@@ -310,17 +340,17 @@ namespace Apex
 		glBindTextureUnit(slot, m_RendererID);
 	}	
 
-	void OpenGLTexture2D::BindImage(uint32_t unit, bool read, bool write) const
+	void OpenGLTexture2D::BindImage(uint32_t unit, bool read, bool write, int level) const
 	{
 		APEX_CORE_ASSERT(read || write, "Image should be atleast readable or writable");
-		glBindImageTexture(unit, m_RendererID, 0, GL_FALSE, 0, (read && write) ? GL_READ_WRITE : (read) ? GL_READ_ONLY : GL_WRITE_ONLY, m_InternalFormat);
+		glBindImageTexture(unit, m_RendererID, level, GL_FALSE, 0, (read && write) ? GL_READ_WRITE : (read) ? GL_READ_ONLY : GL_WRITE_ONLY, m_InternalFormat);
 		//Renderer::SetImageAccessBit();
 	}
 
-	void OpenGLTexture2D::SetData(void* data, uint32_t size)
+	void OpenGLTexture2D::SetData(void* data, uint32_t size, int level)
 	{
 		APEX_CORE_ASSERT(size == m_PixelSize * m_Width * m_Height, "Size of data not equal to size of texture!");
-		glTextureSubImage2D(m_RendererID, 0, 0, 0, m_Width, m_Height, m_AccessFormat, m_DataType, data);
+		glTextureSubImage2D(m_RendererID, level, 0, 0, m_Width, m_Height, m_AccessFormat, m_DataType, data);
 	}
 	
 	void OpenGLTexture2D::GenerateMipmap() const
@@ -392,10 +422,10 @@ namespace Apex
 			glObjectLabel(GL_TEXTURE, m_RendererID, -1, m_Name.c_str());
 	}
 
-	void OpenGLTexture2DMS::SetData(void* data, uint32_t size)
+	void OpenGLTexture2DMS::SetData(void* data, uint32_t size, int level)
 	{
 		APEX_CORE_ASSERT(size == m_PixelSize * m_Width * m_Height, "Size of data not equal to size of texture!");
-		glTextureSubImage2D(m_RendererID, 0, 0, 0, m_Width, m_Height, m_AccessFormat, m_DataType, data);
+		glTextureSubImage2D(m_RendererID, level, 0, 0, m_Width, m_Height, m_AccessFormat, m_DataType, data);
 	}
 
 	void OpenGLTexture2DMS::GenerateMipmap() const
@@ -487,10 +517,10 @@ namespace Apex
 		glBindTextureUnit(slot, m_RendererID);
 	}
 
-	void OpenGLTextureCubemap::SetData(void* data, int faceIndex, uint32_t size)
+	void OpenGLTextureCubemap::SetData(void* data, int faceIndex, uint32_t size, int level)
 	{
 		APEX_CORE_ASSERT(size == m_PixelSize * m_Size * m_Size, "Size of data not equal to size of texture!");
-		glTextureSubImage3D(m_RendererID, 0, 0, 0, faceIndex, m_Size, m_Size, 1, GL_RGB, m_DataType, data);
+		glTextureSubImage3D(m_RendererID, level, 0, 0, faceIndex, m_Size, m_Size, 1, GL_RGB, m_DataType, data);
 	}
 
 	void OpenGLTextureCubemap::Invalidate(uint32_t width, uint32_t height)
@@ -544,10 +574,10 @@ namespace Apex
 		glBindTextureUnit(slot, m_RendererID);
 	}
 
-	void OpenGLTexture2DArray::BindImage(uint32_t unit, int index, bool read, bool write) const
+	void OpenGLTexture2DArray::BindImage(uint32_t unit, int index, bool read, bool write, int level) const
 	{
 		APEX_CORE_ASSERT(read || write, "Image should be atleast readable or writable");
-		glBindImageTexture(unit, m_RendererID, 0, GL_TRUE, index, (read && write) ? GL_READ_WRITE : (read) ? GL_READ_ONLY : GL_WRITE_ONLY, m_InternalFormat);
+		glBindImageTexture(unit, m_RendererID, level, GL_TRUE, index, (read && write) ? GL_READ_WRITE : (read) ? GL_READ_ONLY : GL_WRITE_ONLY, m_InternalFormat);
 	}
 
 	void OpenGLTexture2DArray::Invalidate(uint32_t width, uint32_t height)
@@ -555,9 +585,9 @@ namespace Apex
 		APEX_CORE_ERROR("Function (" __FUNCSIG__ ") NOT implemented!");
 	}
 
-	void OpenGLTexture2DArray::SetData(void* data, int index, uint32_t size)
+	void OpenGLTexture2DArray::SetData(void* data, int index, uint32_t size, int level)
 	{
-		glTextureSubImage3D(m_RendererID, 0, 0, 0, index, m_Width, m_Height, 1, m_AccessFormat, m_DataType, data);
+		glTextureSubImage3D(m_RendererID, level, 0, 0, index, m_Width, m_Height, 1, m_AccessFormat, m_DataType, data);
 	}
 
 	void OpenGLTexture2DArray::GenerateMipmap() const
