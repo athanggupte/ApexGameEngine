@@ -10,7 +10,7 @@ namespace Apex {
 		void Init() override;
 
 		void SetClearColor(const glm::vec4& color) override;
-		void Clear() override;
+		void Clear(FramebufferTargetMask mask) override;
 
 		void Draw(uint32_t vertexCount, DrawMode mode) override;
 		void Draw(const Ref<VertexArray>& vertexArray, DrawMode mode) override;

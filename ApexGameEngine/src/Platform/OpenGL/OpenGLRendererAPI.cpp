@@ -7,6 +7,8 @@
 
 namespace Apex {
 
+#include "OpenGLHelpers.h"
+
 	void OpenGLRendererAPI::Init()
 	{
 		glEnable(GL_BLEND);
@@ -19,9 +21,9 @@ namespace Apex {
 		glClearColor(color.r, color.g, color.b, color.a);
 	}
 
-	void OpenGLRendererAPI::Clear()
+	void OpenGLRendererAPI::Clear(FramebufferTargetMask mask)
 	{
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT/* | GL_STENCIL_BUFFER_BIT*/);
+		glClear(GetGLFramebufferTargetMask(mask));
 	}
 
 	void OpenGLRendererAPI::Draw(uint32_t vertexCount, DrawMode mode)

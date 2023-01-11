@@ -64,6 +64,17 @@ namespace Apex {
 		
 		INVERT = 0x150A
 	};
+
+	struct FramebufferTargetBit {
+		enum  : int32_t
+		{
+			COLOR = 1,
+			DEPTH = 2,
+			STENCIL = 4,
+		};
+	};
+
+	using FramebufferTargetMask = int32_t;
 	
 	class RendererAPI
 	{
@@ -77,7 +88,7 @@ namespace Apex {
 		virtual void Init() = 0;
 
 		virtual void SetClearColor(const glm::vec4& color) = 0;
-		virtual void Clear() = 0;
+		virtual void Clear(FramebufferTargetMask mask) = 0;
 
 		virtual void Draw(uint32_t vertexCount, DrawMode mode = DrawMode::TRIANGLES) = 0;
 

@@ -16,8 +16,8 @@ namespace Apex {
 	void RenderCommands::SetClearColor(const glm::vec4& color)
 	{ s_RendererAPI->SetClearColor(color); }
 
-	void RenderCommands::Clear()
-	{ s_RendererAPI->Clear(); }
+	void RenderCommands::Clear(FramebufferTargetMask mask)
+	{ s_RendererAPI->Clear(mask); }
 
 	void RenderCommands::Draw(uint32_t vertexCount, DrawMode mode)
 	{ s_RendererAPI->Draw(vertexCount, mode); }

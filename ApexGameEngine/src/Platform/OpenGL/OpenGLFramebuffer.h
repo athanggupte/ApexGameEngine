@@ -19,7 +19,7 @@ namespace Apex {
 		void AddColorAttachment(TextureSpec textureSpec) override;
 		void AttachDepthTexture(const Ref<Texture>& texture, bool stencil = false) override;
 
-		void Blit(const Ref<Framebuffer>& targetFramebuffer) override;
+		void Blit(const Ref<Framebuffer>& targetFramebuffer, FramebufferTargetMask mask) override;
 
 		[[nodiscard]] uint32_t GetColorAttachmentID(uint32_t index) const override { return m_ColorAttachments[index]->GetID(); }
 		[[nodiscard]] const Ref<Texture2D>& GetColorAttachment(uint32_t index) const override { return m_ColorAttachments[index]; }

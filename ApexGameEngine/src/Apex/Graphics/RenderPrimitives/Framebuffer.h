@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Texture.h"
+#include "Apex/Graphics/Renderer/RendererAPI.h"
 
 namespace Apex {
 	
@@ -16,7 +17,7 @@ namespace Apex {
 
 		constexpr static uint8_t MAX_COLOR_ATTACHMENTS = 8;
 	};
-	
+
 	class Framebuffer
 	{
 	public:
@@ -31,7 +32,7 @@ namespace Apex {
 		virtual void AddColorAttachment(TextureSpec textureSpec = SimpleTextureSpec) = 0;
 		virtual void AttachDepthTexture(const Ref<Texture>& texture, bool stencil = false) = 0;
 
-		virtual void Blit(const Ref<Framebuffer>& targetFramebuffer) = 0;
+		virtual void Blit(const Ref<Framebuffer>& targetFramebuffer, FramebufferTargetMask mask = FramebufferTargetBit::COLOR) = 0;
 
 		[[nodiscard]] virtual uint32_t GetColorAttachmentID(uint32_t index = 0) const = 0;
 		[[nodiscard]] virtual const Ref<Texture2D>& GetColorAttachment(uint32_t index = 0) const = 0;

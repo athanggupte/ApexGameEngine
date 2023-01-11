@@ -3,6 +3,8 @@
 
 #include <glad/glad.h>
 
+#include "Apex/Graphics/Renderer/RendererAPI.h"
+
 namespace Apex {
 	
 	constexpr static GLenum OpenGLColorAttachments[] = {
@@ -29,6 +31,8 @@ namespace Apex {
 		default: return "UNKNOWN";
 		}
 	}
+
+#include "OpenGLHelpers.h"
 
 	//////////////////////////////////////////////////////////////////////
 	/*--------------------------Frame Buffer----------------------------*/
@@ -171,13 +175,13 @@ namespace Apex {
 		}
 	}
 
-	void OpenGLFramebuffer::Blit(const Ref<Framebuffer>& targetFramebuffer)
+	void OpenGLFramebuffer::Blit(const Ref<Framebuffer>& targetFramebuffer, FramebufferTargetMask mask)
 	{
 		auto target = std::static_pointer_cast<OpenGLFramebuffer>(targetFramebuffer);
 		glBlitNamedFramebuffer(m_RendererID, target->m_RendererID,
 			0, 0, m_Specification.width, m_Specification.height,
 			0, 0, target->m_Specification.width, target->m_Specification.height,
-			GL_COLOR_BUFFER_BIT, GL_LINEAR);
+			GetGLFramebufferTargetMask(mask), (mask & FramebufferTargetBit::DEPTH || mask & FramebufferTargetBit::STENCIL) ? GL_NEAREST : GL_LINEAR);
 	}
 
 	void OpenGLFramebuffer::SetSpecification(const FramebufferSpec& specification)

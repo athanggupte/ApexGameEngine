@@ -7,7 +7,6 @@
 #include "Apex/Core/ECS/SceneSerializer.h"
 
 #include "Panels/PieMenu.h"
-#include "Primitives.h"
 // #include "EditorTools/NodeGraph/Node.h"
 // #include "EditorTools/NodeGraph/NodeGraph.h"
  //#include "EditorTools/PythonGraph/PythonGraph.h"
@@ -34,6 +33,7 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
+#include "Apex/Graphics/Primitives.h"
 #include "Apex/Graphics/PostProcessing/Bloom.h"
 
 namespace Apex {
@@ -296,9 +296,9 @@ namespace Apex {
 		Renderer2D::ResetStats();
 
 		RenderCommands::SetClearColor(m_BGColor);
-		m_GameFramebuffer->Bind();
-		RenderCommands::Clear();
 		m_PostProcessFramebuffer->Bind();
+		RenderCommands::Clear();
+		m_GameFramebuffer->Bind();
 		RenderCommands::Clear();
 		if (useMSAA) {
 			m_GameFramebufferMS->Bind();
@@ -350,6 +350,16 @@ namespace Apex {
 		Renderer2D::EndScene();
 		TextRenderer::EndScene();
 
+		if (useMSAA) {
+			m_GameFramebufferMS->Blit(m_GameFramebuffer, FramebufferTargetBit::COLOR | FramebufferTargetBit::DEPTH);
+		}
+
+		if (useBloom) {
+			BloomPass::Render(m_GameFramebuffer->GetColorAttachment(0), m_GameFramebuffer->GetColorAttachment(0), bloomFilterRadius, bloomSteps);
+		}
+
+		m_GameFramebuffer->Bind();
+
 		// Render the Grid
 		cameraTransform[3] = cameraTranslation;
 		glm::mat4 gridTransform = glm::mat4(1.f);
@@ -363,13 +373,6 @@ namespace Apex {
 		RenderCommands::SetCulling(false);
 		RenderCommands::Draw(6);
 
-		if (useMSAA) {
-			m_GameFramebufferMS->Blit(m_GameFramebuffer);
-		}
-
-		if (useBloom) {
-			BloomPass::Render(m_GameFramebuffer->GetColorAttachment(0), m_GameFramebuffer->GetColorAttachment(0), bloomFilterRadius, bloomSteps);
-		}
 		m_GameFramebuffer->Blit(m_PostProcessFramebuffer);
 
 		// Post process

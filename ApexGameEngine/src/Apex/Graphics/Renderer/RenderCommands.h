@@ -10,7 +10,7 @@ namespace Apex {
 		static void Init();
 
 		static void SetClearColor(const glm::vec4& color);
-		static void Clear();
+		static void Clear(FramebufferTargetMask mask = FramebufferTargetBit::COLOR | FramebufferTargetBit::DEPTH);
 
 		static void Draw(uint32_t vertexCount, DrawMode mode = DrawMode::TRIANGLES);
 
