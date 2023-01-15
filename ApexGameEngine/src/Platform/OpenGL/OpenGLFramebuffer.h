@@ -17,9 +17,16 @@ namespace Apex {
 		void Resize(uint32_t width, uint32_t height) override;
 
 		void AddColorAttachment(TextureSpec textureSpec) override;
+		void AttachColorTexture(const Ref<Texture>& texture, int index, int level) override;
+		void AttachColorTextureLayer(const Ref<Texture>& texture, int index, int layer, int level) override;
 		void AttachDepthTexture(const Ref<Texture>& texture, bool stencil = false) override;
 
 		void Blit(const Ref<Framebuffer>& targetFramebuffer, FramebufferTargetMask mask) override;
+		void BlitToDefault(uint32_t width, uint32_t height, FramebufferTargetMask mask) override;
+
+		void SetReadBuffer(uint32_t index) override;
+		void SetWriteBuffersRange(uint32_t num_buffers, uint32_t start_index) override;
+
 
 		[[nodiscard]] uint32_t GetColorAttachmentID(uint32_t index) const override { return m_ColorAttachments[index]->GetID(); }
 		[[nodiscard]] const Ref<Texture2D>& GetColorAttachment(uint32_t index) const override { return m_ColorAttachments[index]; }

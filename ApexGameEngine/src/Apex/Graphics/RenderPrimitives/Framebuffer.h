@@ -9,8 +9,8 @@ namespace Apex {
 	{
 		uint32_t width, height;
 		uint8_t numColorAttachments = 1;
-		bool useDepthBuffer = false; // If the framebuffer should use a DepthBuffer instead of Renderbuffer for depth
-		bool useDepth = true; // If the framebuffer should have a depth attachment. Ignored if useDepthBuffer is true
+		bool useDepthTexture = false; // If the framebuffer should use a separate DepthBuffer texture instead of Renderbuffer for depth
+		bool useDepth = true; // If the framebuffer should have a depth attachment. Ignored if useDepthTexture is true
 		bool multisample = false;
 		bool useHDR = false;
 		uint32_t msSamples = 4; // Ignored if multisample is false
@@ -29,10 +29,16 @@ namespace Apex {
 		virtual void Invalidate() = 0;
 		virtual void Resize(uint32_t width, uint32_t height) = 0;
 		
-		virtual void AddColorAttachment(TextureSpec textureSpec = SimpleTextureSpec) = 0;
+		virtual void AddColorAttachment(TextureSpec textureSpec = defaults::SimpleTextureSpec) = 0;
+		virtual void AttachColorTexture(const Ref<Texture>& texture, int index, int level = 0) = 0;
+		virtual void AttachColorTextureLayer(const Ref<Texture>& texture, int index, int layer = 0, int level = 0) = 0;
 		virtual void AttachDepthTexture(const Ref<Texture>& texture, bool stencil = false) = 0;
 
 		virtual void Blit(const Ref<Framebuffer>& targetFramebuffer, FramebufferTargetMask mask = FramebufferTargetBit::COLOR) = 0;
+		virtual void BlitToDefault(uint32_t width, uint32_t height, FramebufferTargetMask mask = FramebufferTargetBit::COLOR) = 0;
+
+		virtual void SetReadBuffer(uint32_t index) = 0;
+		virtual void SetWriteBuffersRange(uint32_t num_buffers, uint32_t start_index) = 0;
 
 		[[nodiscard]] virtual uint32_t GetColorAttachmentID(uint32_t index = 0) const = 0;
 		[[nodiscard]] virtual const Ref<Texture2D>& GetColorAttachment(uint32_t index = 0) const = 0;

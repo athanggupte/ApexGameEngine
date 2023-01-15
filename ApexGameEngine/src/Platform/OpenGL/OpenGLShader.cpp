@@ -151,7 +151,7 @@ namespace Apex {
 		while (std::regex_search(source_cbegin, source.cend(), matches, regex)) {
 			APEX_CORE_ASSERT(matches.size() == 4, "Invalid matches!");
 			if (matches[1].str() == "\"" && !filepath.empty()) {
-				entries.emplace_back((size_t)matches.position(), (size_t)(matches.length()), filepath.parent_path().string() + "/" + matches[2].str());
+				entries.emplace_back((size_t)matches.position(), (size_t)(matches.length()), fs::weakly_canonical(filepath.parent_path() / matches[2].str()));
 			} else if (matches[1].str() == "<") {
 				entries.emplace_back((size_t)matches.position(), (size_t)(matches.length()), matches[2].str());
 			} else {

@@ -19,7 +19,7 @@ namespace Apex {
 
 	static constexpr const char dirRegexStr[] = R"(([a-zA-Z0-9_-]+)(/[a-zA-Z0-9_-]+)*/?)";
 	static const std::regex dirRegex(dirRegexStr);
-	static constexpr const char fileRegexStr[] = R"(([a-zA-Z0-9_-]+/)*([a-zA-Z0-9_-])+\.[a-z0-9]+)";
+	static constexpr const char fileRegexStr[] = R"(([a-zA-Z0-9_-]+[/\\])*([a-zA-Z0-9_-])+\.[a-z0-9]+)";
 	static const std::regex fileRegex(fileRegexStr);
 	
 	static Unique<VFS::IMountPoint> CreateMountPoint(const fs::path& phyPath)

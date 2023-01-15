@@ -15,7 +15,8 @@ namespace Apex {
 		if (name == "_MatMetallic")		return TEX_SLOT_MAT_Metallic;
 		if (name == "_MatRoughness")	return TEX_SLOT_MAT_Roughness;
 		if (name == "_MatNormal")		return TEX_SLOT_MAT_Normal;
-		return 0;
+		if (name == "_MatAO")			return TEX_SLOT_MAT_AO;
+		return TEX_SLOT_User0;
 	}
 
 	Material::Material()
@@ -49,7 +50,7 @@ namespace Apex {
 			m_Shader->SetUniInt1(name, slot);
 		}*/
 		for (auto& [name, map] : m_Textures) {
-			if (map.slot < TEX_SLOT_MAT_User0) {
+			if (map.slot < TEX_SLOT_User0) {
 				m_Shader->SetUniInt1("_bUse" + name, map.use);
 			}
 
@@ -57,7 +58,7 @@ namespace Apex {
 				map.texture->Bind(map.slot);
 			} else {
 				emptyTexture->Bind(map.slot);
-				std::string altColorName = std::string("_alt") + (map.slot < TEX_SLOT_MAT_User0 ? "Mat" : "") + name;
+				std::string altColorName = std::string("_alt") + (map.slot < TEX_SLOT_User0 ? "Mat" : "") + name;
 				switch (map.altType)
 				{
 				case ShaderUniformType::FLOAT:
@@ -94,7 +95,7 @@ namespace Apex {
 		APEX_CORE_INFO("Shader {0} uniforms:", Strings::Get(m_Shader.GetId()));
 
 		uint32_t userTextureSlots = 0;
-		for (const auto [name, type, location, size] : m_Shader->GetActiveUniformData()) {
+		for (const auto& [name, type, location, size] : m_Shader->GetActiveUniformData()) {
 			APEX_CORE_INFO("\t{0} | type: {1} | location: {2} | size: {3}", name, ShaderUniformTypeToString(type), location, size);
 
 			if (ShaderUniformTypeIsSampler(type)) {
@@ -114,7 +115,7 @@ namespace Apex {
 					}
 				} else {
 					// Uniform is a user-defined texture
-					map.slot = TEX_SLOT_MAT_User0 + userTextureSlots;
+					map.slot = TEX_SLOT_User0 + userTextureSlots;
 				}
 				// If mapping with texture name exists then assign the texture to the map,
 				// else create a new mapping for the texture name
