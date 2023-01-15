@@ -36,12 +36,15 @@
     </ClInclude>
     <ClInclude Include="src\TestLayer.h" />
     <ClInclude Include="src\pch.h" />
-    <ClInclude Include="src\VoxelTest.h" />
+    <ClInclude Include="src\ImageBasedPBRTest.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\BloomTest.cpp" />
     <ClCompile Include="src\SandboxApp.cpp" />
     <ClCompile Include="src\pch.cpp" />
-    <ClCompile Include="src\VoxelTest.cpp" />
+    <ClCompile Include="src\ImageBasedPBRTest.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="assets\shaders\SkyboxReflectionUnlit.glsl" />
   </ItemGroup>
 </Project>

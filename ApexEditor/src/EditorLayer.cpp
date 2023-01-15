@@ -87,7 +87,7 @@ namespace Apex {
 		FileSystem::MountRoot(APEX_INSTALL_LOCATION "/assets");
 
 		// TODO: Remove
-		const auto dll = LoadDll(APEX_INSTALL_LOCATION "/../ScriptTest/ScriptTest.dll");
+		const Dll* dll = LoadDll(APEX_INSTALL_LOCATION "/../ScriptTest/ScriptTest.dll");
 
 		m_EditorScene = CreateRef<Scene>();
 		m_ActiveScene = m_EditorScene;
@@ -100,18 +100,18 @@ namespace Apex {
 		m_PostProcessFramebuffer = Framebuffer::Create({ 1280u, 720u, 0, false });
 		m_PostProcessFramebuffer->AddColorAttachment({ TextureAccessFormat::RGBA, TextureInternalFormat::RGBA16, TextureDataType::FLOAT, TextureFiltering::BILINEAR });
 		BloomPass::Init(1280u, 720u);
-		m_ShaderGrid = Shader::Create("editor_assets/shaders/InfiniteGridXZ.glsl");
+		m_ShaderGrid = Shader::Create("internal_assets/shaders/InfiniteGridXZ.glsl");
 
 		m_ShadowMap = CreateRef<ShadowMap>(4096u, 4096u);
 
 		auto& resourceManager = Application::Get().GetResourceManager();
 		/* Initialize Shaders */
-		auto cubemapShader = resourceManager.Insert<Shader>(RESNAME("shader_Skybox"), "editor_assets/shaders/Skybox.glsl");
-		auto tonemapShader = resourceManager.Insert<Shader>(RESNAME("shader_ACESTonemap"), "editor_assets/shaders/ACESTonemap.glsl");
-		auto debugVerticesShader = resourceManager.Insert<Shader>(RESNAME("shader_DebugVerticesUnlit"), "editor_assets/shaders/DebugVerticesUnlit.glsl");
-		auto debugTrianglesShader = resourceManager.Insert<Shader>(RESNAME("shader_DebugTrianglesUnlit"), "editor_assets/shaders/DebugTrianglesUnlit.glsl");
-		auto albedoUnlitShader = resourceManager.Insert<Shader>(RESNAME("shader_AlbedoUnlit"), "editor_assets/shaders/AlbedoUnlit.glsl");
-		auto standardPBRShader = resourceManager.Insert<Shader>(RESNAME("shader_StandardPBR"), "editor_assets/shaders/StandardPBR_new.glsl");
+		auto cubemapShader = resourceManager.Insert<Shader>(RESNAME("shader_Skybox"), "internal_assets/shaders/Skybox.glsl");
+		auto tonemapShader = resourceManager.Insert<Shader>(RESNAME("shader_ACESTonemap"), "internal_assets/shaders/ACESTonemap.glsl");
+		auto debugVerticesShader = resourceManager.Insert<Shader>(RESNAME("shader_DebugVerticesUnlit"), "internal_assets/shaders/debugging/DebugVerticesUnlit.glsl");
+		auto debugTrianglesShader = resourceManager.Insert<Shader>(RESNAME("shader_DebugTrianglesUnlit"), "internal_assets/shaders/debugging/DebugTrianglesUnlit.glsl");
+		auto albedoUnlitShader = resourceManager.Insert<Shader>(RESNAME("shader_AlbedoUnlit"), "internal_assets/shaders/AlbedoUnlit.glsl");
+		auto standardPBRShader = resourceManager.Insert<Shader>(RESNAME("shader_StandardPBR"), "internal_assets/shaders/StandardPBR_new.glsl");
 
 		resourceManager.Insert<Material>(RESNAME("material_DebugVertices"), CreateRef<Material>(debugVerticesShader));
 		resourceManager.Insert<Material>(RESNAME("material_DebugTriangles"), CreateRef<Material>(debugTrianglesShader));
@@ -119,7 +119,7 @@ namespace Apex {
 
 		/* Initialize Textures */
 		m_IconEditor = Texture2D::Create(APEX_INSTALL_LOCATION "/assets/Apex-Game-Engine-32.png");
-		m_ImageTexture = Texture2D::Create(256U, 256U, HDRTextureSpec, "Image");
+		m_ImageTexture = Texture2D::Create(256U, 256U, defaults::HDRTextureSpec, "Image");
 		m_ComputeShader = ComputeShader::Create("Blur.compute");
 
 		/*auto cubemapTexture = TextureCubemap::Create({
@@ -310,7 +310,7 @@ namespace Apex {
 		auto cameraTranslation = cameraTransform[3];
 
 		auto skyboxTexture = Application::Get().GetResourceManager().Get<Texture>(RESNAME("texture_Skybox"));
-		skyboxTexture->Bind(1);
+		skyboxTexture->Bind(TEX_SLOT_ENV_Skybox);
 
 		// TODO:
 		// 2. Transfer Light characteristics to dedicated Light class and Uniform Buffer
@@ -320,7 +320,7 @@ namespace Apex {
 		pbrShader->SetUniFloat3("u_LightPos", lightPos);
 		pbrShader->SetUniFloat3("u_LightDir", directionalLightDirection);
 		pbrShader->SetUniMat4("u_LightSpaceTransform", m_ShadowMap->GetLightSpaceTransform());
-		m_ShadowMap->GetDepthTexture()->Bind(5);
+		m_ShadowMap->GetDepthTexture()->Bind(TEX_SLOT_ENV_Shadow);
 
 		RenderCommands::SetCulling(true);
 

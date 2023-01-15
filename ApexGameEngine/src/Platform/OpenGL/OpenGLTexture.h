@@ -60,6 +60,7 @@ namespace Apex {
 		uint32_t m_RendererID = 0;
 		GLenum m_InternalFormat, m_AccessFormat, m_DataType;
 		uint32_t m_PixelSize;
+		uint32_t m_Samples;
 	};
 
 	class OpenGLTextureCubemap : public TextureCubemap

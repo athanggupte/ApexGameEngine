@@ -168,8 +168,6 @@ namespace Apex {
 		}
 		case FbxNodeAttribute::eMesh:
 		{
-			FbxGeometryConverter geometryConverter(s_Data.fbxManager);
-			attribute = geometryConverter.Triangulate(attribute, false);
 			auto _mesh = ProcessMesh(node, attribute);
 
 			if (Application::Get().GetResourceManager().Exists(RESNAME(attrName))) {
@@ -213,6 +211,9 @@ namespace Apex {
 
 	Ref<Mesh> fbx::ProcessMesh(FbxNode* node, FbxNodeAttribute* attribute)
 	{
+		FbxGeometryConverter geometryConverter(s_Data.fbxManager);
+		attribute = geometryConverter.Triangulate(attribute, false);
+
 		std::vector<ControlPoint> controlPoints;
 		std::vector<Vertex> vertices;
 		std::vector<uint32_t> indices;

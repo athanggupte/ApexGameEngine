@@ -213,6 +213,34 @@ namespace Apex
 		return ret;
 	}
 
+	constexpr bool UseMipmaps(TextureFiltering filtering)
+	{
+		switch (filtering)
+		{
+		case TextureFiltering::NEAREST:
+		case TextureFiltering::LINEAR:
+		case TextureFiltering::BILINEAR:
+			return false;
+
+		case TextureFiltering::TRILINEAR:
+		case TextureFiltering::LINEAR_MIPMAP_NEAREST:
+		case TextureFiltering::NEAREST_MIPMAP_LINEAR:
+		case TextureFiltering::NEAREST_MIPMAP_NEAREST:
+			return true;
+		}
+		return true;
+	}
+
+	constexpr uint32_t log2(uint32_t n)
+	{
+		return (n > 1) ? 1 + log2(n >> 1) : 0;
+	}
+
+	constexpr uint32_t GetNumMipLevels(uint32_t width, uint32_t height)
+	{
+		return std::max(1u, std::min(8u, log2(std::min(width, height))));
+	}
+
 	//////////////////////////////////////////////////////////////////////
 	/*---------------------------Texture 2D-----------------------------*/
 	//////////////////////////////////////////////////////////////////////
@@ -243,9 +271,8 @@ namespace Apex
 		glTextureParameteri(m_RendererID, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 		glTextureParameteri(m_RendererID, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
-		int numMipLevels = static_cast<int>(std::log2f(std::min(width, height)));
-		numMipLevels = std::max(1, std::min(8, numMipLevels));
-		glTextureStorage2D(m_RendererID, numMipLevels, m_InternalFormat, m_Width, m_Height);
+		m_MipLevels = UseMipmaps(spec.filtering) ? GetNumMipLevels(width, height) : 1;
+		glTextureStorage2D(m_RendererID, static_cast<int>(m_MipLevels), m_InternalFormat, static_cast<int>(m_Width), static_cast<int>(m_Height));
 
 		if(!m_Name.empty())
 			glObjectLabel(GL_TEXTURE, m_RendererID, -1, m_Name.c_str());
@@ -255,7 +282,7 @@ namespace Apex
 		: m_Name(path.string())
 	{
 		int width, height, channels;
-		stbi_set_flip_vertically_on_load(0);
+		stbi_set_flip_vertically_on_load(1);
 		void *pixels = nullptr;
 		
 		std::vector<uint8_t> data;
@@ -316,6 +343,7 @@ namespace Apex
 		//m_PixelSize = GetOpenGLPixelSize(m_Specification.internalFormat);
 		m_PixelSize = GetOpenGLPixelSize(apxInternalFormat);
 		m_Filtering = filtering;
+		m_MipLevels = UseMipmaps(filtering) ? GetNumMipLevels(width, height) : 1;
 		//m_Specification.dataType = useHDR ? TextureDataType::FLOAT : TextureDataType::UBYTE;
 
 		glCreateTextures(GL_TEXTURE_2D, 1, &m_RendererID);
@@ -324,7 +352,7 @@ namespace Apex
 		glTextureParameteri(m_RendererID, GL_TEXTURE_MIN_FILTER, minFilter);
 		glTextureParameteri(m_RendererID, GL_TEXTURE_MAG_FILTER, magFilter);
 
-		glTextureStorage2D(m_RendererID, 1, m_InternalFormat, m_Width, m_Height);
+		glTextureStorage2D(m_RendererID, m_MipLevels, m_InternalFormat, m_Width, m_Height);
 		glTextureSubImage2D(m_RendererID, 0, 0, 0, m_Width, m_Height, m_AccessFormat, m_DataType, pixels);
 
 		glObjectLabel(GL_TEXTURE, m_RendererID, -1, path.filename().string().c_str());
@@ -383,14 +411,15 @@ namespace Apex
 		  m_InternalFormat(GetOpenGLInternalFormat(spec.internalFormat, spec.dataType)),
 		  m_AccessFormat(GetOpenGLAccessFormat(spec.accessFormat)),
 		  m_DataType(GetOpenGLDataType(spec.dataType)),
-		  m_PixelSize(GetOpenGLPixelSize(spec.internalFormat))
+		  m_PixelSize(GetOpenGLPixelSize(spec.internalFormat)),
+	      m_Samples(samples)
 	{
 		APEX_CORE_ASSERT(width > 0 && height > 0, "Width and Height of texture must be 1 or greater!");
 		//m_Specification = spec;
 
 		glCreateTextures(GL_TEXTURE_2D_MULTISAMPLE, 1, &m_RendererID);
 
-		glTextureStorage2DMultisample(m_RendererID, samples, m_InternalFormat, m_Width, m_Height, GL_TRUE);
+		glTextureStorage2DMultisample(m_RendererID, m_Samples, m_InternalFormat, m_Width, m_Height, GL_TRUE);
 		
 		if(!m_Name.empty())
 			glObjectLabel(GL_TEXTURE, m_RendererID, -1, m_Name.c_str());
@@ -416,7 +445,7 @@ namespace Apex
 
 		glCreateTextures(GL_TEXTURE_2D_MULTISAMPLE, 1, &m_RendererID);
 
-		glTextureStorage2DMultisample(m_RendererID, 8, m_InternalFormat, m_Width, m_Height, GL_TRUE);
+		glTextureStorage2DMultisample(m_RendererID, m_Samples, m_InternalFormat, m_Width, m_Height, GL_TRUE);
 		
 		if(!m_Name.empty())
 			glObjectLabel(GL_TEXTURE, m_RendererID, -1, m_Name.c_str());
@@ -475,7 +504,8 @@ namespace Apex
 			APEX_CORE_ASSERT(width == height, "Cubemap textures must have equal width and height!");
 			if (m_Size == 0) {
 				m_Size = width;
-				glTextureStorage2D(m_RendererID, 1, m_InternalFormat, m_Size, m_Size);
+				m_MipLevels = UseMipmaps(filtering) ? GetNumMipLevels(width, height) : 1;
+				glTextureStorage2D(m_RendererID, m_MipLevels, m_InternalFormat, m_Size, m_Size);
 			}
 			APEX_CORE_ASSERT(m_Size == width, "All cubemap textures must have same width!");
 
@@ -501,7 +531,8 @@ namespace Apex
 		glTextureParameteri(m_RendererID, GL_TEXTURE_MIN_FILTER, minFilter);
 		glTextureParameteri(m_RendererID, GL_TEXTURE_MAG_FILTER, magFilter);
 
-		glTextureStorage2D(m_RendererID, 1, m_InternalFormat, m_Size, m_Size);
+		m_MipLevels = UseMipmaps(spec.filtering) ? GetNumMipLevels(size, size) : 1;
+		glTextureStorage2D(m_RendererID, m_MipLevels, m_InternalFormat, m_Size, m_Size);
 
 		if(!name.empty())
 			glObjectLabel(GL_TEXTURE, m_RendererID, -1, m_Name.c_str());
@@ -558,7 +589,8 @@ namespace Apex
 			glTextureParameterfv(m_RendererID, GL_TEXTURE_BORDER_COLOR, borderColor);
 		}
 
-		glTextureStorage3D(m_RendererID, 1, m_InternalFormat, m_Width, m_Height, m_Count);
+		m_MipLevels = UseMipmaps(spec.filtering) ? GetNumMipLevels(width, height) : 1;
+		glTextureStorage3D(m_RendererID, m_MipLevels, m_InternalFormat, m_Width, m_Height, m_Count);
 
 		if(!m_Name.empty())
 			glObjectLabel(GL_TEXTURE, m_RendererID, -1, m_Name.c_str());

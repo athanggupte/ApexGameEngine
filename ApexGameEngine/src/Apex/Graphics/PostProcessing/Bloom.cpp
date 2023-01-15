@@ -32,7 +32,7 @@ namespace Apex {
 		s_DownsampleShader = ComputeShader::Create("internal_assets/shaders/BloomDownsample.glsl");
 		s_UpsampleShader = ComputeShader::Create("internal_assets/shaders/BloomUpsample.glsl");
 
-		auto sampling_texture_spec = HDRTextureSpec;
+		auto sampling_texture_spec = defaults::HDRTextureSpec;
 		sampling_texture_spec.filtering = TextureFiltering::TRILINEAR;
 		s_SamplingTexture = Texture2D::Create(srcWidth / 2, srcHeight / 2, sampling_texture_spec, "Bloom: Sampling Texture");
 	}

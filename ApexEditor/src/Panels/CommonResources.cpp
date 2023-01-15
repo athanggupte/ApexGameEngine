@@ -22,7 +22,7 @@ namespace Apex {
 	const Ref<Texture>& Common::GetPlaceholderTexture()
 	{
 		if (!internal::s_PlaceholderTexture) {
-			internal::s_PlaceholderTexture = Texture2D::Create(2, 2, SimpleTextureSpec, "PlaceholderTexture");
+			internal::s_PlaceholderTexture = Texture2D::Create(2, 2, defaults::SimpleTextureSpec, "PlaceholderTexture");
 			uint32_t texData[4] = { 0xaaaaaaaa, 0xdddddddd, 0xdddddddd, 0xaaaaaaaa };
 			internal::s_PlaceholderTexture->SetData(texData, sizeof(texData));
 		}

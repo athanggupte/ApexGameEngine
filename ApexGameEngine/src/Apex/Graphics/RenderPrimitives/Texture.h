@@ -63,12 +63,14 @@ namespace Apex {
 		TextureDataType dataType;
 		TextureFiltering filtering = TextureFiltering::BILINEAR;
 	};
-	
-	// Default TextureSpecs
-	inline static constexpr TextureSpec SimpleTextureSpec{ TextureAccessFormat::RGBA, TextureInternalFormat::RGBA8, TextureDataType::UBYTE };
-	inline static constexpr TextureSpec SRGBTextureSpec{ TextureAccessFormat::RGBA, TextureInternalFormat::SRGBA8, TextureDataType::UBYTE };
-	inline static constexpr TextureSpec HDRTextureSpec{ TextureAccessFormat::RGBA, TextureInternalFormat::RGBA16, TextureDataType::FLOAT };
-	inline static constexpr TextureSpec EnvironmentMapSpec{ TextureAccessFormat::RGB, TextureInternalFormat::RGB16, TextureDataType::FLOAT };
+
+	namespace defaults {
+		// Default TextureSpecs
+		inline static constexpr TextureSpec SimpleTextureSpec{ TextureAccessFormat::RGBA, TextureInternalFormat::RGBA8, TextureDataType::UBYTE };
+		inline static constexpr TextureSpec SRGBTextureSpec{ TextureAccessFormat::RGBA, TextureInternalFormat::SRGBA8, TextureDataType::UBYTE };
+		inline static constexpr TextureSpec HDRTextureSpec{ TextureAccessFormat::RGBA, TextureInternalFormat::RGBA16, TextureDataType::FLOAT };
+		inline static constexpr TextureSpec EnvironmentMapSpec{ TextureAccessFormat::RGB, TextureInternalFormat::RGB16, TextureDataType::FLOAT };
+	}
 
 	enum class TextureType
 	{
@@ -103,6 +105,7 @@ namespace Apex {
 		virtual void SetRows(uint32_t rows) { this->m_NumberOfRows = rows; this->m_MaxIndex = rows * rows; }
 		virtual uint32_t GetRows() { return this->m_NumberOfRows; }
 		virtual uint32_t GetMaxIndex() { return this->m_MaxIndex; }
+		virtual uint32_t GetMipLevels() { return this->m_MipLevels; };
 		//[[nodiscard]] virtual TextureSpec GetSpec() const = 0;
 		[[nodiscard]] virtual TextureType GetType() const = 0;
 
@@ -111,6 +114,7 @@ namespace Apex {
 	protected:
 		uint32_t m_NumberOfRows = 1;// , n_NumberOfCols = 1;
 		uint32_t m_MaxIndex = 1;
+		uint32_t m_MipLevels = 1;
 		//TextureSpec m_Specification;
 	};
 

@@ -18,21 +18,20 @@
 // Global Uniform Sampler bindings
 // #define TEX_SLOT_error			0
 #define TEX_SLOT_ENV_Skybox		0
-#define TEX_SLOT_MAT_Albedo		1
-#define TEX_SLOT_MAT_Metallic	2
-#define TEX_SLOT_MAT_Roughness	3
-#define TEX_SLOT_MAT_Normal		4
+#define TEX_SLOT_ENV_Irradiance 1
+#define TEX_SLOT_ENV_BRDFLUT    2
+#define TEX_SLOT_ENV_Shadow     3
+#define TEX_SLOT_MAT_Albedo		4
+#define TEX_SLOT_MAT_Metallic	5
+#define TEX_SLOT_MAT_Roughness	6
+#define TEX_SLOT_MAT_Normal		7
+#define TEX_SLOT_MAT_AO			8
+#define TEX_SLOT_MAT_Emissive	9
 // ... More texture slots to be used/reused
 
 // User defined textures should use the following reserved texture slots (may be extended in the future)
-#define TEX_SLOT_MAT_User0		8
-#define TEX_SLOT_MAT_User1		9
-#define TEX_SLOT_MAT_User2		10
-#define TEX_SLOT_MAT_User3		11
-#define TEX_SLOT_MAT_User4		12
-#define TEX_SLOT_MAT_User5		13
-#define TEX_SLOT_MAT_User6		14
-#define TEX_SLOT_MAT_User7		15
+
+#define TEX_SLOT_User0			10
 
 // Global shader constants
 // Forward Renderer

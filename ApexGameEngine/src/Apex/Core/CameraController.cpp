@@ -107,9 +107,13 @@ namespace Apex {
 	PerspectiveCameraController::PerspectiveCameraController(Camera& camera, const glm::vec3& camera_position,
 		const glm::vec3& camera_rotation, float movement_speed, float rotation_speed)
 		: CameraController(camera), m_CameraPosition(camera_position),
-		m_MovementSpeed(movement_speed), m_RotationSpeed(rotation_speed)
+		m_MovementSpeed(movement_speed), m_RotationSpeed(rotation_speed),
+		m_CameraDirection(glm::rotate(glm::mat4(1.f), camera_rotation.x, glm::vec3{ 1.f, 0.f, 0.f })
+							* glm::rotate(glm::mat4(1.f), camera_rotation.y, worldUp)
+							* glm::vec4(glm::vec3{ 0.f, 0.f, 1.f }, 0.f)),
+		m_CameraRight(glm::normalize(glm::cross(worldUp, m_CameraDirection))),
+		m_CameraUp(glm::cross(m_CameraDirection, m_CameraRight))
 	{
-		m_CameraDirection = { 0.f, 0.f, 1.f };
 	}
 
 	glm::mat4 PerspectiveCameraController::GetTransform() const

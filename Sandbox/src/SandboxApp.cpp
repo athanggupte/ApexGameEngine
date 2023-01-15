@@ -25,7 +25,9 @@
 // #include "ModelLoaderExample.h"
 // #include "TerminalExample.h"
 #include "BloomTest.h"
+#include "ImageBasedPBRTest.h"
 #include "Apex/Core/FileSystem/FileSystem.h"
+#include "Apex/Graphics/FBXImporter.h"
 
 #if 0
 class SandboxLayer: public Apex::Layer
@@ -336,9 +338,11 @@ public:
 		//Apex::Log::GetCoreLogger()->set_pattern("%^[%T] <%n> at %@ :: %v%$");
 		//Apex::Collision::Init();
 		//Apex::NetworkManager::Startup();
+		Apex::FBXImporter::Init();
 		
 		Apex::FileSystem::Mount("assets", APEX_INSTALL_LOCATION "/assets");
-		PushLayer(new sandbox::BloomTest());
+		//PushLayer(new sandbox::BloomTest());
+		PushLayer(new sandbox::ImageBasedPBRTest());
 		//PushLayer(new ModelLayer());
 		//PushLayer(new ParticleLayer());
 		//PushLayer(new DXBall::TestLayer());
@@ -348,6 +352,7 @@ public:
 	~Sandbox()
 	{
 		//Apex::NetworkManager::Cleanup();
+		Apex::FBXImporter::Shutdown();
 	}
 
 };
