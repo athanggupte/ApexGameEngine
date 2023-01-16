@@ -158,18 +158,18 @@ namespace Apex {
 		resourceManager.LoadAllResources();
 
 		/* Entity initialization */
-		/*auto cubeEntity = m_ActiveScene->CreateEntity(HASH("cube"));
+		/*auto cubeEntity = m_ActiveScene->CreateEntity(TEXT("cube"));
 		cubeEntity.AddComponent<MeshRendererComponent>(cubeMesh.GetId(), debugTrianglesShader.GetId());
 
-		auto planeEntity = m_ActiveScene->CreateEntity(HASH("plane"));
+		auto planeEntity = m_ActiveScene->CreateEntity(TEXT("plane"));
 		planeEntity.AddComponent<MeshRendererComponent>(planeMesh.GetId(), debugTrianglesShader.GetId());
 		planeEntity.GetComponent<TransformComponent>().scale *= glm::vec3(5.f, 1.f, 5.f);*/
 
-		//auto suzanneEntity = m_ActiveScene->CreateEntity(HASH("suzanne"));
+		//auto suzanneEntity = m_ActiveScene->CreateEntity(TEXT("suzanne"));
 		//suzanneEntity.AddComponent<MeshRendererComponent>(suzanneMesh, suzanneMaterial);
 
 		{
-			auto planeEntity = m_ActiveScene->CreateEntity(HASH("plane"));
+			auto planeEntity = m_ActiveScene->CreateEntity(TEXT("plane"));
 			planeEntity.Transform().scale *= glm::vec3{ 50.f, 1.f, 50.f };
 			auto& meshComp = planeEntity.AddComponent<MeshRendererComponent>();
 			meshComp.mesh = resourceManager.Get<Mesh>(RESNAME("default-plane"));
@@ -179,7 +179,7 @@ namespace Apex {
 			planeEntity.AddComponent<RigidBodyComponent>().type = RigidBodyType::Static;
 		}
 		{
-			auto sphereEntity = m_ActiveScene->CreateEntity(HASH("Sphere"));
+			auto sphereEntity = m_ActiveScene->CreateEntity(TEXT("Sphere"));
 			sphereEntity.Transform().translation.y += 15.f;
 
 			auto& meshComp = sphereEntity.AddComponent<MeshRendererComponent>();
@@ -194,7 +194,7 @@ namespace Apex {
 			//m_ActiveScene->AddContactListener(sphereEntity, myContactListener);
 		}
 		{
-			auto dirLightEntity = m_ActiveScene->CreateEntity(HASH("Directional Light"));
+			auto dirLightEntity = m_ActiveScene->CreateEntity(TEXT("Directional Light"));
 			dirLightEntity.Transform().rotation = glm::eulerAngles(glm::quatLookAt(glm::normalize(glm::vec3{ 1.f, 1.f, 0.f }), glm::vec3{ 0.f, 1.f, 0.f }));
 			auto& lightComp = dirLightEntity.AddComponent<LightComponent>();
 			lightComp.type = LightType::DirectionalLight;
@@ -222,7 +222,7 @@ namespace Apex {
 		s_FontAtlas->AddFontFromFileTTF(R"(C:\Users\athan\source\repos\ApexGameEngine\ApexEditor\assets\fonts\AquireBold-8Ma60.otf)", 128.f);
 		s_FontAtlas->BuildRGBA32();
 
-		auto textEntity = m_ActiveScene->CreateEntity(HASH("text"));
+		auto textEntity = m_ActiveScene->CreateEntity(TEXT("text"));
 		textEntity.AddComponent<TextRendererComponent>(u8"HELLO", s_FontAtlas->GetFontAtIndex(0), glm::vec4{ 10.f, 4.f, 2.f, 1.f });
 		textEntity.Transform().scale.x = 4.f;
 		textEntity.Transform().scale.y = 4.f;

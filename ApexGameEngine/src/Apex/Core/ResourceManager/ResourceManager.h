@@ -18,7 +18,11 @@ namespace Apex {
 
 	using Handle = uint64_t;
 
-#define RESNAME(_str_) static_cast<Apex::Handle>(HASH(_str_))
+#ifndef APEX_DIST
+#define RESNAME(_str_) static_cast<Apex::Handle>(TEXT(_str_))
+#else
+#define RESNAME(_str_) static_cast<Apex::Handle>()
+#endif
 
 	enum class ResourceType : uint32_t
 	{

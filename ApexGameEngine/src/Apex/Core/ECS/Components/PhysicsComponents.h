@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -86,7 +86,7 @@ namespace Apex {
 
 		BoxCollider& AddNext(Entity entity)
 		{
-			Entity newEntity = entity.GetScene()->CreateEntity(HASH("__A_BoxCollider"));
+			Entity newEntity = entity.GetScene()->CreateEntity(TEXT("__A_BoxCollider"));
 			arrayElement.next = newEntity;
 			
 			auto& bcArrElem = newEntity.AddComponent<BoxColliderArrayElement>();

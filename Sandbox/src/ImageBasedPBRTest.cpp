@@ -359,7 +359,7 @@ namespace sandbox {
 		}
 
 		{
-			Entity oldcar = s_Scene->CreateEntity(HASH("oldcar"));
+			Entity oldcar = s_Scene->CreateEntity(TEXT("oldcar"));
 			MeshRendererComponent& meshComp = oldcar.AddComponent<MeshRendererComponent>();
 			meshComp.mesh = Application::Get().GetResourceManager().Get<Mesh>(RESNAME("oldcar"));
 			meshComp.material = Application::Get().GetResourceManager().Get<Material>(RESNAME("oldcar-material"));

@@ -37,12 +37,14 @@
     <ClInclude Include="src\TestLayer.h" />
     <ClInclude Include="src\pch.h" />
     <ClInclude Include="src\ImageBasedPBRTest.h" />
+    <ClInclude Include="src\TextureDescriptorTest.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\BloomTest.cpp" />
     <ClCompile Include="src\SandboxApp.cpp" />
     <ClCompile Include="src\pch.cpp" />
     <ClCompile Include="src\ImageBasedPBRTest.cpp" />
+    <ClCompile Include="src\TextureDescriptorTest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="assets\shaders\SkyboxReflectionUnlit.glsl" />

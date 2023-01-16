@@ -222,6 +222,19 @@ namespace Apex {
 		}
 	}
 
+	std::vector<uint8_t> FileSystem::ReadFromFile(const fs::path& filePath)
+	{
+		std::vector<uint8_t> data;
+		if (const auto file = GetFileIfExists(filePath); file && file->OpenRead()) {
+			data.resize(file->Size());
+			file->Read(data.data(), data.size());
+			file->Close();
+		} else {
+			APEX_CORE_CRITICAL("Could not open Texture file {}", file->GetPhysicalPath());
+		}
+		return data;
+	}
+
 #if 0
 	// Deprecated
 	bool FileSystem::Mount(const std::string& virtualPathStr, const std::string& physicalPathStr)

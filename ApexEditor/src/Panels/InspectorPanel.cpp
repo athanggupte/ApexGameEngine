@@ -138,7 +138,7 @@ namespace Apex {
 			static bool isChanged = false;
 
 			if (ImGui::InputText("Tag", buffer, BUFFER_SIZE, ImGuiInputTextFlags_EnterReturnsTrue)) {
-				tag = HASH(buffer);
+				tag = TEXT(buffer);
 			}
 
 			ImGui::Separator();

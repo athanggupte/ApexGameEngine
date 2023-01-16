@@ -265,10 +265,10 @@ Type* GetTypeImpl(TypeTag<T>)
     }
 
 //#define REGISTER_CLASS(_type_) \
-//    GetTypeRegistry().AddClass(static_cast<uint64_t>(HASH(STR(_type_))), this)
+//    GetTypeRegistry().AddClass(static_cast<uint64_t>(TEXT(STR(_type_))), this)
 //
 //#define REGISTER_ENUM(_type_) \
-//    GetTypeRegistry().AddEnum(static_cast<uint64_t>(HASH(STR(_type_))), this)
+//    GetTypeRegistry().AddEnum(static_cast<uint64_t>(TEXT(STR(_type_))), this)
 
 #define DEFINE_ENUM_NAME_OF(_enum_) \
 	virtual std::string_view NameOf(const Any& value) override \
