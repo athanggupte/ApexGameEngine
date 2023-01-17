@@ -195,7 +195,7 @@ namespace Apex {
 	    const auto tagNode = node.child("TagComponent");
         if (!tagNode)
             return false;
-        entity.GetComponent<TagComponent>().tag = HASH(tagNode.child_value());
+        entity.GetComponent<TagComponent>().tag = TEXT(tagNode.child_value());
 
         APEX_CORE_DEBUG("Importing entity '{}'", entity.GetComponent<TagComponent>().tag.str());
 

@@ -183,7 +183,7 @@ namespace Apex {
 
 			if (scene) {
 				entity = scene->CreateEntity();
-				entity.GetComponent<TagComponent>().tag = HASH(nodeName);
+				entity.GetComponent<TagComponent>().tag = TEXT(nodeName);
 				auto& transform = entity.GetComponent<TransformComponent>();
 				transform.translation = translation;
 				transform.rotation = glm::radians(rotation);

@@ -11,7 +11,7 @@ class SCRIPT_TEST_API EntityCreationScript : public EntityScript
 protected:
 	void OnCreate() override
 	{
-		auto entity = parentScene()->CreateEntity(HASH("Entity-from-script"));
+		auto entity = parentScene()->CreateEntity(TEXT("Entity-from-script"));
 		auto& meshComp = entity.AddComponent<MeshRendererComponent>();
 		meshComp.mesh = GetResourceManager().Get<Mesh>(RESNAME("default-plane"));
 		meshComp.material = GetResourceManager().GetOrEmplace(RESNAME("material_from_script"), CreateRef<Material>());

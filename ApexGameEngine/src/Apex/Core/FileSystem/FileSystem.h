@@ -42,6 +42,8 @@ namespace Apex {
 		static Ref<File> MakeFile(const fs::path& filePath, bool makeParents = false);
 		static void VisitDirectory(const fs::path& dirPath, VisitorFn func);
 		static void VisitDirectoryRecursive(const fs::path& dirPath, VisitorFn func);
+
+		static std::vector<uint8_t> ReadFromFile(const fs::path& filePath);
 #if 0
 		// Deprecated
 		static bool Mount(const std::string& virtualPath, const std::string& physicalPath);

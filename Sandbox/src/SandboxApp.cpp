@@ -26,6 +26,7 @@
 // #include "TerminalExample.h"
 #include "BloomTest.h"
 #include "ImageBasedPBRTest.h"
+#include "TextureDescriptorTest.h"
 #include "Apex/Core/FileSystem/FileSystem.h"
 #include "Apex/Graphics/FBXImporter.h"
 
@@ -342,7 +343,8 @@ public:
 		
 		Apex::FileSystem::Mount("assets", APEX_INSTALL_LOCATION "/assets");
 		//PushLayer(new sandbox::BloomTest());
-		PushLayer(new sandbox::ImageBasedPBRTest());
+		//PushLayer(new sandbox::ImageBasedPBRTest());
+		PushLayer(new sandbox::TextureDescriptorTest());
 		//PushLayer(new ModelLayer());
 		//PushLayer(new ParticleLayer());
 		//PushLayer(new DXBall::TestLayer());

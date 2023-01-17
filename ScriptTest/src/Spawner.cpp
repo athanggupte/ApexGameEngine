@@ -16,7 +16,7 @@ protected:
 	{
 		m_TimeUntilNextUpdate = spawnDelay;
 
-		baseEntity = parentScene()->CreateEntity(HASH("Base-Entity"));
+		baseEntity = parentScene()->CreateEntity(TEXT("Base-Entity"));
 		baseEntity.Transform() = self().Transform();
 
 		auto& meshComp = baseEntity.AddComponent<MeshRendererComponent>();
@@ -32,7 +32,7 @@ protected:
 		if (m_Count < maxNumber) {
 			m_TimeUntilNextUpdate -= ts;
 			if (m_TimeUntilNextUpdate < 0.f) {
-				auto new_entity = parentScene()->CreateEntity(HASH("spawned-entity"));
+				auto new_entity = parentScene()->CreateEntity(TEXT("spawned-entity"));
 				new_entity.Transform() = self().Transform();
 				new_entity.AddComponent<MeshRendererComponent>() = baseEntity.GetComponent<MeshRendererComponent>();
 				if (baseEntity.HasComponent<RigidBodyComponent>())

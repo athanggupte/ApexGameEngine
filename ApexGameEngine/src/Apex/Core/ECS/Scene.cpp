@@ -69,7 +69,7 @@ namespace Apex {
 	Entity Scene::CreateEntity()
 	{
 		// static uint32_t counter = 1;
-		return CreateEntity(HASH("Unnamed Entity"));
+		return CreateEntity(TEXT("Unnamed Entity"));
 	}
 
 	Entity Scene::CreateEntity(StringHandle name)
@@ -79,7 +79,7 @@ namespace Apex {
 
 	Entity Scene::CreateEntityWithGUID(const GUID& guid)
 	{
-		return CreateEntityWithGUID(guid, HASH("Unnamed Entity"));
+		return CreateEntityWithGUID(guid, TEXT("Unnamed Entity"));
 	}
 
 	Entity Scene::CreateEntityWithGUID(const GUID& guid, StringHandle name)

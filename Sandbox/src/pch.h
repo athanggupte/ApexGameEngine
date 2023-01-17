@@ -22,3 +22,4 @@ namespace fs = std::filesystem;
 #include "Apex/Core/Core.h"
 #include "Apex/Core/Log.h"
 #include "Util/HashFNV1a.h"
+#include "Apex/Core/Strings.h"

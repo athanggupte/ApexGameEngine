@@ -1,9 +1,11 @@
 #pragma once
+#include "Texture.h"
+#include "glm/vec4.hpp"
 
 namespace Apex {
 	struct TextureDesc;
 
-	enum class TextureAccessFormat
+	enum class TextureAccessFormat : uint8_t
 	{
 		RED, 		//I_RED,
 		RG, 		//I_RG,
@@ -13,8 +15,10 @@ namespace Apex {
 		DEPTH,
 		STENCIL,
 	};
+	constexpr size_t SIZE_TEXTUREACCESSFORMAT = sizeof(TextureAccessFormat);
+	static_assert(SIZE_TEXTUREACCESSFORMAT == 1);
 	
-	enum class TextureInternalFormat
+	enum class TextureInternalFormat : uint8_t
 	{
 		R8 = 0x10, R16, R32,
 		RG8 = 0x20, RG16, RG32,
@@ -27,16 +31,20 @@ namespace Apex {
 		D24S8 = 0x90, D32S8,
 		STENCIL8 = 0xa0
 	};
+	constexpr size_t SIZE_TEXTUREINTERNALFORMAT = sizeof(TextureInternalFormat);
+	static_assert(SIZE_TEXTUREINTERNALFORMAT == 1);
 	
-	enum class TextureDataType
+	enum class TextureDataType : uint8_t
 	{
 		BYTE, UBYTE,
 		SHORT, USHORT,
 		INT, UINT,
 		FLOAT
 	};
+	constexpr size_t SIZE_TEXTUREDATATYPE = sizeof(TextureDataType);
+	static_assert(SIZE_TEXTUREDATATYPE == 1);
 
-	enum class TextureFiltering
+	enum class TextureFiltering : uint8_t
 	{
 		NEAREST,
 		LINEAR,
@@ -47,15 +55,19 @@ namespace Apex {
 		NEAREST_MIPMAP_LINEAR,
 		NEAREST_MIPMAP_NEAREST,
 	};
+	constexpr size_t SIZE_TEXTUREFILTERING = sizeof(TextureFiltering);
+	static_assert(SIZE_TEXTUREFILTERING == 1);
 
-	/*enum class Parameters
+	enum class TextureWrapMode : uint8_t
 	{
-		FILTER_MIN, FILTER_MAG,
-		MIPMAP_LEVEL_MIN, MIPMAP_LEVEL_MAX,
-		LOD_MIN, LOD_MAX,
-		WRAP_U, WRAP_V, WRAP_W
-	};*/
-	
+		REPEAT,
+		MIRRORED,
+		CLAMP_TO_EDGE,
+		CLAMP_TO_BORDER,
+	};
+	constexpr size_t SIZE_TEXTUREWRAPMODE = sizeof(TextureWrapMode);
+	static_assert(SIZE_TEXTUREWRAPMODE == 1);
+
 	struct TextureSpec
 	{
 		TextureAccessFormat accessFormat;
@@ -63,6 +75,9 @@ namespace Apex {
 		TextureDataType dataType;
 		TextureFiltering filtering = TextureFiltering::BILINEAR;
 	};
+	constexpr size_t SIZE_TEXTURESPEC = sizeof(TextureSpec);
+	static_assert(SIZE_TEXTURESPEC == 4);
+
 
 	namespace defaults {
 		// Default TextureSpecs
@@ -72,7 +87,7 @@ namespace Apex {
 		inline static constexpr TextureSpec EnvironmentMapSpec{ TextureAccessFormat::RGB, TextureInternalFormat::RGB16, TextureDataType::FLOAT };
 	}
 
-	enum class TextureType
+	enum class TextureType : uint8_t
 	{
 		Texture2D,
 		TextureCubemap,
@@ -83,6 +98,8 @@ namespace Apex {
 		Texture2DArray,
 		TextureCubemapArray,
 	};
+	constexpr size_t SIZE_TEXTURETYPE = sizeof(TextureType);
+	static_assert(SIZE_TEXTURETYPE == 1);
 
 	class Texture
 	{
@@ -100,22 +117,21 @@ namespace Apex {
 
 		virtual void GenerateMipmap() const = 0;
 
-		[[nodiscard]] virtual const std::string& GetName() const = 0;
+		[[nodiscard]] virtual std::string_view GetName() const = 0;
 		
-		virtual void SetRows(uint32_t rows) { this->m_NumberOfRows = rows; this->m_MaxIndex = rows * rows; }
-		virtual uint32_t GetRows() { return this->m_NumberOfRows; }
-		virtual uint32_t GetMaxIndex() { return this->m_MaxIndex; }
-		virtual uint32_t GetMipLevels() { return this->m_MipLevels; };
+		//virtual void SetRows(uint32_t rows) { this->m_NumberOfRows = rows; this->m_MaxIndex = rows * rows; }
+		//virtual uint32_t GetRows() { return this->m_NumberOfRows; }
+		//virtual uint32_t GetMaxIndex() { return this->m_MaxIndex; }
+		virtual uint32_t GetMipLevels() { return this->m_MipLevels; }
 		//[[nodiscard]] virtual TextureSpec GetSpec() const = 0;
 		[[nodiscard]] virtual TextureType GetType() const = 0;
 
 		static Ref<Texture> APEX_API Create(TextureDesc desc);
 
 	protected:
-		uint32_t m_NumberOfRows = 1;// , n_NumberOfCols = 1;
-		uint32_t m_MaxIndex = 1;
+		//uint32_t m_NumberOfRows = 1;// , n_NumberOfCols = 1;
+		//uint32_t m_MaxIndex = 1;
 		uint32_t m_MipLevels = 1;
-		//TextureSpec m_Specification;
 	};
 
 	class Texture2D : public Texture
@@ -168,39 +184,33 @@ namespace Apex {
 		static Ref<Texture2DArray> APEX_API Create(uint32_t width, uint32_t height, uint32_t depth, const TextureSpec& spec, const std::string& name = "");
 	};
 
-#ifdef SEPARATE_DEPTH_CLASS
-	class TextureDepth2D : public Texture
-	{
-	public:
-		static Ref<TextureDepth2D> APEX_API Create(uint32_t width = 1024, uint32_t height = 1024);
-
-		[[nodiscard]] TextureType GetType() const override { return TextureType::TextureDepth2D; }
-	};
-#endif
-
-//#define IMAGE_STORE_CLASS
-#ifdef IMAGE_STORE_CLASS
-	class ImageStore2D : public Texture2D
-	{
-		static Ref<ImageStore2D> Create(uint32_t width, uint32_t height, const std::string& name);
-
-		virtual void BindImage(uint32_t unit, bool read, bool write) const = 0;
-	};
-#endif
 
 	struct TextureDesc
 	{
-		fs::path sourceFile;
-		void* data = nullptr; // Non-owning pointer to texture data. Must be valid until Create() is called.
-		uint32_t dataSize;
-		uint32_t width = 0, height = 0;
-		TextureType type;
-		TextureSpec spec;
-		bool isHDR = false;
-		bool isSRGB = false;
-		int mipBaseLevel = 0;
-		int mipMaxLevel;
+		std::string_view name;												// 16 bytes
+		std::vector<fs::path> srcPaths;										// 32 bytes
+
+		// Non-owning pointer to texture data. Must be valid until Create() is called.
+		void* data = nullptr;												// 8 bytes
+		uint32_t dataSize = 0;												// 4 bytes
+		uint32_t width = 0, height = 0;										// 8 bytes
+		union { uint32_t depth = 0; uint32_t count; };						// 4 bytes
+		union { uint32_t mipLevels = 0; uint32_t samples; };				// 4 bytes 
+
+		TextureType type;													// 1 byte
+		TextureAccessFormat accessFormat;									// 1 byte
+		TextureInternalFormat internalFormat;								// 1 byte
+		TextureDataType dataType;											// 1 byte
+		TextureFiltering filtering = TextureFiltering::BILINEAR;			// 1 byte
+		TextureWrapMode wrapMode[3] = { TextureWrapMode::CLAMP_TO_EDGE };	// 3 bytes
+		
+		glm::vec4 borderColor = {};											// 16 bytes
 	};
+	constexpr size_t SIZE_TEXTUREDESC = sizeof(TextureDesc);
+	constexpr size_t SIZE_VECTOR = sizeof(std::vector<std::string_view>);
+	constexpr size_t SIZE_PATH = sizeof(fs::path);
+	constexpr size_t SIZE_VEC4 = sizeof(glm::vec4);
+
 
 
 }

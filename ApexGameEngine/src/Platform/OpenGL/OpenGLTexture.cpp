@@ -151,11 +151,20 @@ namespace Apex
 		return 0;
 	}
 
-	constexpr static uint32_t GetOpenGLPixelSize(TextureInternalFormat internalFormat)
+	constexpr static uint32_t GetNumChannels(TextureInternalFormat internal_format)
 	{
-		if (internalFormat == IF::SRGB8) return 3;
-		if (internalFormat == IF::SRGBA8) return 4;
-		return (((uint32_t)internalFormat & 0xf0) >> 4) * (1 << ((uint32_t)internalFormat & 0x0f));
+		if (internal_format == IF::SRGB8) return 3;
+		if (internal_format == IF::SRGBA8) return 4;
+		if (internal_format >= IF::DEPTH16) return 1;
+		return (static_cast<uint32_t>(internal_format) & 0xf0) >> 4;
+	}
+
+	constexpr static uint32_t GetOpenGLPixelSize(TextureInternalFormat internal_format)
+	{
+		if (internal_format == IF::SRGB8) return 3;
+		if (internal_format == IF::SRGBA8) return 4;
+		if (internal_format >= IF::DEPTH16) return 1;
+		return ((static_cast<uint32_t>(internal_format) & 0xf0) >> 4) * (1 << (static_cast<uint32_t>(internal_format) & 0x0f));
 	}
 
 	template<TextureType type = TextureType::Texture2D>
@@ -213,7 +222,7 @@ namespace Apex
 		return ret;
 	}
 
-	constexpr bool UseMipmaps(TextureFiltering filtering)
+	constexpr static bool UseMipmaps(TextureFiltering filtering)
 	{
 		switch (filtering)
 		{
@@ -231,12 +240,24 @@ namespace Apex
 		return true;
 	}
 
-	constexpr uint32_t log2(uint32_t n)
+	constexpr static GLint GetOpenGLWrapMode(TextureWrapMode wrap_mode)
+	{
+		switch (wrap_mode)
+		{
+		case TextureWrapMode::REPEAT:			return GL_REPEAT;
+		case TextureWrapMode::MIRRORED:			return GL_MIRRORED_REPEAT;
+		case TextureWrapMode::CLAMP_TO_EDGE:	return GL_CLAMP_TO_EDGE;
+		case TextureWrapMode::CLAMP_TO_BORDER:	return GL_CLAMP_TO_BORDER;
+		}
+		return 0;
+	}
+
+	constexpr static uint32_t log2(uint32_t n)
 	{
 		return (n > 1) ? 1 + log2(n >> 1) : 0;
 	}
 
-	constexpr uint32_t GetNumMipLevels(uint32_t width, uint32_t height)
+	constexpr static uint32_t GetNumMipLevels(uint32_t width, uint32_t height)
 	{
 		return std::max(1u, std::min(8u, log2(std::min(width, height))));
 	}
@@ -244,6 +265,65 @@ namespace Apex
 	//////////////////////////////////////////////////////////////////////
 	/*---------------------------Texture 2D-----------------------------*/
 	//////////////////////////////////////////////////////////////////////
+
+	OpenGLTexture2D::OpenGLTexture2D(const TextureDesc& desc)
+		: m_Name(desc.name),
+		  m_Width(desc.width), m_Height(desc.height),
+		  m_InternalFormat(GetOpenGLInternalFormat(desc.internalFormat, desc.dataType)),
+		  m_AccessFormat(GetOpenGLAccessFormat(desc.accessFormat)),
+		  m_DataType(GetOpenGLDataType(desc.dataType)),
+		  m_Filtering(desc.filtering),
+		  m_PixelSize(GetOpenGLPixelSize(desc.internalFormat))
+	{
+		glCreateTextures(GL_TEXTURE_2D, 1, &m_RendererID);
+
+		auto [minFilter, magFilter] = GetMinMagFilterPair(m_Filtering);
+		glTextureParameteri(m_RendererID, GL_TEXTURE_MIN_FILTER, minFilter);
+		glTextureParameteri(m_RendererID, GL_TEXTURE_MAG_FILTER, magFilter);
+
+		glTextureParameteri(m_RendererID, GL_TEXTURE_WRAP_S, GetOpenGLWrapMode(desc.wrapMode[0]));
+		glTextureParameteri(m_RendererID, GL_TEXTURE_WRAP_T, GetOpenGLWrapMode(desc.wrapMode[1]));
+
+		void* pixels;
+
+		if (!desc.srcPaths.empty()) {
+			int width, height, channels;
+			stbi_set_flip_vertically_on_load(TRUE);
+
+			std::vector<uint8_t> data = FileSystem::ReadFromFile(desc.srcPaths[0]);
+
+			if (desc.dataType == TextureDataType::FLOAT)
+				pixels = stbi_loadf_from_memory(data.data(), data.size(),
+											&width, &height, &channels,
+			                                GetNumChannels(desc.internalFormat));
+			else
+				pixels = stbi_load_from_memory(data.data(), data.size(),
+											&width, &height, &channels,
+			                                GetNumChannels(desc.internalFormat));
+
+			APEX_CORE_ASSERT(pixels, fmt::format("Failed to load image : {0} | [stbi]: {1}", desc.srcPaths[0], stbi_failure_reason()));
+			m_Width = width;
+			m_Height = height;
+
+			if (m_Name.empty())
+				m_Name = TEXT(desc.srcPaths[0].string()).str();
+		} else {
+			pixels = desc.data;
+		}
+
+		ON_SCOPE_END { if (pixels && !desc.srcPaths.empty()) stbi_image_free(pixels); };
+
+		APEX_CORE_ASSERT(m_Width > 0 && m_Height > 0, "Width and Height of texture must be 1 or greater!");
+
+		m_MipLevels = desc.mipLevels ? desc.mipLevels : UseMipmaps(m_Filtering) ? GetNumMipLevels(m_Width, m_Height) : 1;
+		glTextureStorage2D(m_RendererID, m_MipLevels, m_InternalFormat, m_Width, m_Height);
+
+		if (pixels)
+			glTextureSubImage2D(m_RendererID, 0, 0, 0, m_Width, m_Height, m_AccessFormat, m_DataType, pixels);
+
+		if(!m_Name.empty())
+			glObjectLabel(GL_TEXTURE, m_RendererID, m_Name.size(), m_Name.data());
+	}
 
 	OpenGLTexture2D::OpenGLTexture2D(uint32_t width, uint32_t height, const TextureSpec& spec, std::string name)
 		: m_Name(std::move(name)), m_Width(width), m_Height(height),
@@ -275,11 +355,11 @@ namespace Apex
 		glTextureStorage2D(m_RendererID, static_cast<int>(m_MipLevels), m_InternalFormat, static_cast<int>(m_Width), static_cast<int>(m_Height));
 
 		if(!m_Name.empty())
-			glObjectLabel(GL_TEXTURE, m_RendererID, -1, m_Name.c_str());
+			glObjectLabel(GL_TEXTURE, m_RendererID, m_Name.size(), m_Name.data());
 	}
-	
+
 	OpenGLTexture2D::OpenGLTexture2D(const fs::path& path, bool useSRGB, bool useHDR, TextureFiltering filtering)
-		: m_Name(path.string())
+		: m_Name(TEXT(path.string()).str())
 	{
 		int width, height, channels;
 		stbi_set_flip_vertically_on_load(1);
@@ -355,7 +435,7 @@ namespace Apex
 		glTextureStorage2D(m_RendererID, m_MipLevels, m_InternalFormat, m_Width, m_Height);
 		glTextureSubImage2D(m_RendererID, 0, 0, 0, m_Width, m_Height, m_AccessFormat, m_DataType, pixels);
 
-		glObjectLabel(GL_TEXTURE, m_RendererID, -1, path.filename().string().c_str());
+		glObjectLabel(GL_TEXTURE, m_RendererID, m_Name.size(), path.filename().string().c_str());
 	}
 	
 	OpenGLTexture2D::~OpenGLTexture2D()
@@ -406,6 +486,60 @@ namespace Apex
 	/*---------------------Texture 2D Multisample-----------------------*/
 	//////////////////////////////////////////////////////////////////////
 
+	OpenGLTexture2DMS::OpenGLTexture2DMS(const TextureDesc& desc)
+		: m_Name(desc.name),
+		  m_Width(desc.width), m_Height(desc.height),
+		  m_InternalFormat(GetOpenGLInternalFormat(desc.internalFormat, desc.dataType)),
+		  m_AccessFormat(GetOpenGLAccessFormat(desc.accessFormat)),
+		  m_DataType(GetOpenGLDataType(desc.dataType)),
+		  m_PixelSize(GetOpenGLPixelSize(desc.internalFormat)),
+		  m_Samples(desc.samples)
+	{
+		glCreateTextures(GL_TEXTURE_2D_MULTISAMPLE, 1, &m_RendererID);
+
+		glTextureParameteri(m_RendererID, GL_TEXTURE_WRAP_S, GetOpenGLWrapMode(desc.wrapMode[0]));
+		glTextureParameteri(m_RendererID, GL_TEXTURE_WRAP_T, GetOpenGLWrapMode(desc.wrapMode[1]));
+
+		void* pixels;
+
+		if (!desc.srcPaths.empty()) {
+			int width, height, channels;
+			stbi_set_flip_vertically_on_load(TRUE);
+
+			std::vector<uint8_t> data = FileSystem::ReadFromFile(desc.srcPaths[0]);
+
+			if (desc.dataType == TextureDataType::FLOAT)
+				pixels = stbi_loadf_from_memory(data.data(), data.size(),
+											&width, &height, &channels,
+			                                GetNumChannels(desc.internalFormat));
+			else
+				pixels = stbi_load_from_memory(data.data(), data.size(),
+											&width, &height, &channels,
+			                                GetNumChannels(desc.internalFormat));
+
+			m_Width = width;
+			m_Height = height;
+
+			if (m_Name.empty())
+				m_Name = TEXT(desc.srcPaths[0].string()).str();
+		} else {
+			pixels = desc.data;
+		}
+
+		ON_SCOPE_END { if (pixels && !desc.srcPaths.empty()) stbi_image_free(pixels); };
+		APEX_CORE_ASSERT(pixels, fmt::format("Failed to load image : {0} | [stbi]: {1}", desc.srcPaths[0], stbi_failure_reason()));
+
+		APEX_CORE_ASSERT(m_Width > 0 && m_Height > 0, "Width and Height of texture must be 1 or greater!");
+
+		glTextureStorage2DMultisample(m_RendererID, m_Samples, m_InternalFormat, m_Width, m_Height, GL_TRUE);
+
+		if (pixels)
+			glTextureSubImage2D(m_RendererID, 0, 0, 0, m_Width, m_Height, m_AccessFormat, m_DataType, pixels);
+
+		if(!m_Name.empty())
+			glObjectLabel(GL_TEXTURE, m_RendererID, m_Name.size(), m_Name.data());
+	}
+
 	OpenGLTexture2DMS::OpenGLTexture2DMS(uint32_t width, uint32_t height, const TextureSpec& spec, uint32_t samples, std::string name)
 		: m_Name(std::move(name)), m_Width(width), m_Height(height),
 		  m_InternalFormat(GetOpenGLInternalFormat(spec.internalFormat, spec.dataType)),
@@ -422,7 +556,7 @@ namespace Apex
 		glTextureStorage2DMultisample(m_RendererID, m_Samples, m_InternalFormat, m_Width, m_Height, GL_TRUE);
 		
 		if(!m_Name.empty())
-			glObjectLabel(GL_TEXTURE, m_RendererID, -1, m_Name.c_str());
+			glObjectLabel(GL_TEXTURE, m_RendererID, m_Name.size(), m_Name.data());
 	}
 
 	OpenGLTexture2DMS::~OpenGLTexture2DMS()
@@ -448,7 +582,7 @@ namespace Apex
 		glTextureStorage2DMultisample(m_RendererID, m_Samples, m_InternalFormat, m_Width, m_Height, GL_TRUE);
 		
 		if(!m_Name.empty())
-			glObjectLabel(GL_TEXTURE, m_RendererID, -1, m_Name.c_str());
+			glObjectLabel(GL_TEXTURE, m_RendererID, m_Name.size(), m_Name.data());
 	}
 
 	void OpenGLTexture2DMS::SetData(void* data, uint32_t size, int level)
@@ -466,8 +600,82 @@ namespace Apex
 	/*-------------------------Texture Cubemap--------------------------*/
 	//////////////////////////////////////////////////////////////////////
 
+	OpenGLTextureCubemap::OpenGLTextureCubemap(const TextureDesc& desc)
+		: m_Name(desc.name), m_Size(desc.width),
+		  m_InternalFormat(GetOpenGLInternalFormat(desc.internalFormat, desc.dataType)),
+		  m_AccessFormat(GetOpenGLAccessFormat(desc.accessFormat)),
+		  m_DataType(GetOpenGLDataType(desc.dataType)),
+		  m_Filtering(desc.filtering),
+		  m_PixelSize(GetOpenGLPixelSize(desc.internalFormat))
+	{
+		glCreateTextures(GL_TEXTURE_CUBE_MAP, 1, &m_RendererID);
+
+		glTextureParameteri(m_RendererID, GL_TEXTURE_WRAP_S, GetOpenGLWrapMode(desc.wrapMode[0]));
+		glTextureParameteri(m_RendererID, GL_TEXTURE_WRAP_T, GetOpenGLWrapMode(desc.wrapMode[1]));
+		glTextureParameteri(m_RendererID, GL_TEXTURE_WRAP_R, GetOpenGLWrapMode(desc.wrapMode[2]));
+
+		auto [minFilter, magFilter] = GetMinMagFilterPair(m_Filtering);
+		glTextureParameteri(m_RendererID, GL_TEXTURE_MIN_FILTER, minFilter);
+		glTextureParameteri(m_RendererID, GL_TEXTURE_MAG_FILTER, magFilter);
+
+		if (desc.srcPaths.size() == 6) {
+			for (int faceIndex = 0; faceIndex < 6; faceIndex++) {
+				int width, height, channels;
+				stbi_set_flip_vertically_on_load(TRUE);
+				void* pixels = nullptr;
+
+				std::vector<uint8_t> data = FileSystem::ReadFromFile(desc.srcPaths[0]);
+
+				if (desc.dataType == TextureDataType::FLOAT)
+					pixels = stbi_loadf_from_memory(data.data(), data.size(),
+												&width, &height, &channels,
+				                                GetNumChannels(desc.internalFormat));
+				else
+					pixels = stbi_load_from_memory(data.data(), data.size(),
+												&width, &height, &channels,
+				                                GetNumChannels(desc.internalFormat));
+
+				APEX_CORE_ASSERT(pixels, fmt::format("Failed to load image : {0} | [stbi]: {1}", desc.srcPaths[faceIndex], stbi_failure_reason()));
+				ON_SCOPE_END { stbi_image_free(pixels); };
+
+				APEX_CORE_ASSERT(width == height, "Cubemap textures must have equal width and height!");
+				if (faceIndex == 0) {
+					m_Size = width;
+					m_MipLevels = UseMipmaps(m_Filtering) ? GetNumMipLevels(width, height) : 1;
+					glTextureStorage2D(m_RendererID, m_MipLevels, m_InternalFormat, m_Size, m_Size);
+
+					if (m_Name.empty())
+						m_Name = TEXT(desc.srcPaths[0].string()).str();
+				}
+				APEX_CORE_ASSERT(m_Size == static_cast<uint32_t>(width), "All cubemap textures must have same width!");
+
+				glTextureSubImage3D(m_RendererID, 0, 0, 0, faceIndex, m_Size, m_Size, 1, m_InternalFormat, m_DataType, pixels);
+			}
+		} else if (desc.data && desc.dataSize > 0 && desc.dataSize % (m_Size * m_Size) == 0) {
+			m_MipLevels = UseMipmaps(m_Filtering) ? GetNumMipLevels(m_Size, m_Size) : 1;
+			glTextureStorage2D(m_RendererID, m_MipLevels, m_InternalFormat, m_Size, m_Size);
+			if (desc.dataSize % 6 == 0) {
+				const uint32_t deltaOffset = desc.dataSize / 6;
+				uint32_t offset = 0;
+				for (int faceIndex = 0; faceIndex < 6; faceIndex++) {
+					const void* pixels = reinterpret_cast<void*>(reinterpret_cast<intptr_t>(desc.data) + offset);
+					glTextureSubImage3D(m_RendererID, 0, 0, 0, faceIndex, m_Size, m_Size, 1, m_InternalFormat, m_DataType, pixels);
+					offset += deltaOffset;
+				}
+			} else {
+				for (int faceIndex = 0; faceIndex < 6; faceIndex++) {
+					glTextureSubImage3D(m_RendererID, 0, 0, 0, faceIndex, m_Size, m_Size, 1, m_InternalFormat, m_DataType, desc.data);
+				}
+			}
+		}
+
+		if (!m_Name.empty())
+			glObjectLabel(GL_TEXTURE, m_RendererID, m_Name.size(), m_Name.data());
+	}
+
 	OpenGLTextureCubemap::OpenGLTextureCubemap(const std::array<std::filesystem::path, 6>& paths, bool useHDR, TextureFiltering filtering)
 		: m_InternalFormat(useHDR ? GL_RGB16F : GL_RGB8),
+		  m_AccessFormat(GL_RGB),
 		  m_DataType(useHDR ? GL_FLOAT : GL_UNSIGNED_BYTE),
 		  m_Filtering(filtering),
 		  m_PixelSize(useHDR ? 6 : 3)
@@ -509,12 +717,13 @@ namespace Apex
 			}
 			APEX_CORE_ASSERT(m_Size == width, "All cubemap textures must have same width!");
 
-			glTextureSubImage3D(m_RendererID, 0, 0, 0, faceIndex, m_Size, m_Size, 1, GL_RGB, m_DataType, pixels);
+			glTextureSubImage3D(m_RendererID, 0, 0, 0, faceIndex, m_Size, m_Size, 1, m_AccessFormat, m_DataType, pixels);
 		}
 	}
 
 	OpenGLTextureCubemap::OpenGLTextureCubemap(uint32_t size, const TextureSpec& spec, const std::string& name)
-		: m_Name(name), m_Size(size), m_InternalFormat(GetOpenGLInternalFormat(spec.internalFormat, spec.dataType)),
+		: m_Name(name), m_Size(size),
+		  m_InternalFormat(GetOpenGLInternalFormat(spec.internalFormat, spec.dataType)),
 		  m_DataType(GetOpenGLDataType(spec.dataType)),
 		  m_Filtering(spec.filtering),
 		  m_PixelSize(GetOpenGLPixelSize(spec.internalFormat))
@@ -535,7 +744,7 @@ namespace Apex
 		glTextureStorage2D(m_RendererID, m_MipLevels, m_InternalFormat, m_Size, m_Size);
 
 		if(!name.empty())
-			glObjectLabel(GL_TEXTURE, m_RendererID, -1, m_Name.c_str());
+			glObjectLabel(GL_TEXTURE, m_RendererID, m_Name.size(), m_Name.data());
 	}
 
 	OpenGLTextureCubemap::~OpenGLTextureCubemap()
@@ -593,7 +802,7 @@ namespace Apex
 		glTextureStorage3D(m_RendererID, m_MipLevels, m_InternalFormat, m_Width, m_Height, m_Count);
 
 		if(!m_Name.empty())
-			glObjectLabel(GL_TEXTURE, m_RendererID, -1, m_Name.c_str());
+			glObjectLabel(GL_TEXTURE, m_RendererID, m_Name.size(), m_Name.data());
 	}
 
 	OpenGLTexture2DArray::~OpenGLTexture2DArray()
@@ -627,178 +836,4 @@ namespace Apex
 		glGenerateTextureMipmap(m_RendererID);
 	}
 
-
-	//////////////////////////////////////////////////////////////////////
-	/*------------------------Texture 2D HDR----------------------------*/
-	//////////////////////////////////////////////////////////////////////
-#ifdef SEPARATE_HDR
-	OpenGLTexture2D_HDR::OpenGLTexture2D_HDR(uint32_t width, uint32_t height, const std::string& name)
-		: m_Width(width), m_Height(height)
-	{
-		glCreateTextures(GL_TEXTURE_2D, 1, &m_RendererID);
-		glTextureStorage2D(m_RendererID, 1, GL_RGBA16F, m_Width, m_Height);
-		
-		if (!name.empty())
-			glObjectLabel(GL_TEXTURE, m_RendererID, -1, name.c_str());
-
-		glTextureParameteri(m_RendererID, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTextureParameteri(m_RendererID, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	}
-
-	OpenGLTexture2D_HDR::OpenGLTexture2D_HDR(const std::string & path)
-		: m_Path(path)
-	{
-		int width, height, channels;
-		stbi_set_flip_vertically_on_load(1);
-		stbi_uc* data = stbi_load(path.c_str(), &width, &height, &channels, 0);
-		APEX_CORE_ASSERT(data, std::string("Failed to load image : " + path));
-
-		m_Width = width;
-		m_Height = height;
-
-		GLenum internalFormat = 0, dataFormat = 0;
-
-		
-		if (channels == 3) {
-			internalFormat = GL_RGB16F;
-			dataFormat = GL_RGB;
-		}
-		else if (channels == 4) {
-			internalFormat = GL_RGBA16F;
-			dataFormat = GL_RGBA;
-		}
-
-		APEX_CORE_ASSERT(internalFormat && dataFormat, "Image format not supported");
-
-		glGenTextures(1, &m_RendererID);
-		glBindTexture(GL_TEXTURE_2D, m_RendererID);
-		glTextureStorage2D(m_RendererID, 1, internalFormat, m_Width, m_Height);
-		//glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, m_Width, m_Height, 0, dataFormat, GL_UNSIGNED_BYTE, data);
-
-		glTextureParameteri(m_RendererID, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTextureParameteri(m_RendererID, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-
-		glTextureSubImage2D(m_RendererID, 0, 0, 0, m_Width, m_Height, dataFormat, GL_FLOAT, data);
-
-		stbi_image_free(data);
-	}
-
-	OpenGLTexture2D_HDR::~OpenGLTexture2D_HDR()
-	{
-		glDeleteTextures(1, &m_RendererID);
-	}
-
-	void OpenGLTexture2D_HDR::Bind(uint32_t slot) const
-	{
-		glBindTextureUnit(slot, m_RendererID);
-	}
-
-	void OpenGLTexture2D_HDR::BindImage(uint32_t unit, bool read, bool write) const
-	{
-		APEX_CORE_ASSERT(read || write, "Image should be atleast readable or writable");
-		glBindImageTexture(unit, m_RendererID, 0, GL_FALSE, 0, (read && write) ? GL_READ_WRITE : (read) ? GL_READ_ONLY : GL_WRITE_ONLY, GL_RGBA16F);
-		Renderer::SetImageAccessBit();
-	}
-	
-	void OpenGLTexture2D_HDR::SetData(void* data, uint32_t size)
-	{
-		glTextureSubImage2D(m_RendererID, 0, 0, 0, m_Width, m_Height, m_DataFormat, GL_UNSIGNED_BYTE, data);
-	}
-#endif
-
-	//////////////////////////////////////////////////////////////////////
-	/*-----------------------Texture Depth 2D---------------------------*/
-	//////////////////////////////////////////////////////////////////////
-
-#ifdef SEPARATE_DEPTH_CLASS
-  	OpenGLTextureDepth2D::OpenGLTextureDepth2D(uint32_t width, uint32_t height)
-		: m_Width(width), m_Height(height), m_Filtering(TextureFiltering::NEAREST)
-	{
-		glCreateTextures(GL_TEXTURE_2D, 1, &m_RendererID);
-
-		auto [minFilter, magFilter] = GetMinMagFilterPair(m_Filtering);
-		glTextureParameteri(m_RendererID, GL_TEXTURE_MIN_FILTER, minFilter);
-		glTextureParameteri(m_RendererID, GL_TEXTURE_MAG_FILTER, magFilter);
-
-		glTextureParameteri(m_RendererID, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
-		glTextureParameteri(m_RendererID, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
-		float borderColor[] = { 1.0f, 1.0f, 1.0f, 1.0f };
-		glTextureParameterfv(m_RendererID, GL_TEXTURE_BORDER_COLOR, borderColor);
-
-		/*TODO: Make depth texture internal format customizable*/
-		glTextureStorage2D(m_RendererID, 1, GL_DEPTH24_STENCIL8, m_Width, m_Height);
-		//glTextureStorage2D(m_RendererID, 1, GL_DEPTH_COMPONENT24, m_Width, m_Height);
-	}
-
-	OpenGLTextureDepth2D::~OpenGLTextureDepth2D()
-	{
-		glDeleteTextures(1, &m_RendererID);
-	}
-
-	void OpenGLTextureDepth2D::Bind(uint32_t slot) const
-	{
-		glBindTextureUnit(slot, m_RendererID);
-	}
-
-	void OpenGLTextureDepth2D::Invalidate(uint32_t width, uint32_t height)
-	{
-		m_Width = width;
-		m_Height = height;
-
-		glDeleteTextures(1, &m_RendererID);
-
-		glCreateTextures(GL_TEXTURE_2D, 1, &m_RendererID);
-
-		glTextureParameteri(m_RendererID, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTextureParameteri(m_RendererID, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-		
-		glTextureStorage2D(m_RendererID, 1, GL_DEPTH24_STENCIL8, m_Width, m_Height);
-	}
-
-	void OpenGLTextureDepth2D::GenerateMipmap() const
-	{
-		glGenerateTextureMipmap(m_RendererID);
-	}
-#endif
-
-
-	//////////////////////////////////////////////////////////////////////
-	/*------------------------Image Store 2D----------------------------*/
-	//////////////////////////////////////////////////////////////////////
-#ifdef IMAGE_STORE_CLASS
-	OpenGLImageStore2D::OpenGLImageStore2D(uint32_t width, uint32_t height, const std::string& name)
-		: m_Width(width), m_Height(height)
-	{
-		glGenTextures(1, &m_RendererID);
-		glBindTexture(GL_TEXTURE_2D, m_RendererID);
-		
-		//glTextureStorage2D(m_RendererID, 1, GL_RGBA8, m_Width, m_Height);
-
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA32F, m_Width, m_Height, 0, GL_RGBA, GL_FLOAT, nullptr);
-		//glTextureSubImage2D(m_RendererID, 0, 0, 0, m_Width, m_Height, GL_RGB, GL_UNSIGNED_BYTE, nullptr);
-
-		if (!name.empty())
-			glObjectLabel(GL_TEXTURE, m_RendererID, -1, name.c_str());
-
-		glTextureParameteri(m_RendererID, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTextureParameteri(m_RendererID, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	}
-
-	OpenGLImageStore2D::~OpenGLImageStore2D()
-	{
-		glDeleteTextures(1, &m_RendererID);
-	}
-
-	void OpenGLImageStore2D::Bind(uint32_t slot) const
-	{
-		glBindTextureUnit(slot, m_RendererID);
-	}
-
-	void OpenGLImageStore2D::BindImage(uint32_t unit, bool read, bool write) const
-	{
-		APEX_CORE_ASSERT(read || write, "Image should be atleast readable or writable");
-		glBindImageTexture(unit, m_RendererID, 0, GL_FALSE, 0, (read && write) ? GL_READ_WRITE : (read) ? GL_READ_ONLY : GL_WRITE_ONLY, GL_RGB8);
-		Renderer::SetImageAccessBit();
-	}
-#endif
 }

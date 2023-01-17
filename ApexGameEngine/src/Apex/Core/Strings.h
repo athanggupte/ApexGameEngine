@@ -20,13 +20,18 @@ namespace Apex {
 
 	struct APEX_API StringHandle
 	{
-		uint64_t hash;
-
+	public:
 		explicit operator uint64_t() const;
 		[[nodiscard]] std::string_view str() const;
+	private:
+		StringHandle(uint64_t hash) : hash(hash) {}
+		uint64_t hash = 0;
+
+		friend class Strings;
 	};
 
 }
 
 
-#define HASH(_str_) Apex::Strings::InternString(hash_64_fnv1a_const(_str_), _str_)
+#define TEXT(_str_) Apex::Strings::InternString(hash_64_fnv1a_const(_str_), _str_)
+#define HASH(_str_) hash_64_fnv1a_const(_str_)

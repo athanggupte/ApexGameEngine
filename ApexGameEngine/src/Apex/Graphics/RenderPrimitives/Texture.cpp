@@ -5,8 +5,21 @@
 #include "Apex/Application.h"
 
 #include "Platform/OpenGL/OpenGLTexture.h"
+#include "Platform/OpenGL/OpenGLTextureFactory.h"
 
 namespace Apex {
+
+	Ref<Texture> Texture::Create(TextureDesc desc)
+	{
+		switch (RendererAPI::GetAPI())
+		{
+		case RendererAPI::API::None:	APEX_CORE_CRITICAL("No Rendering API selected"); return nullptr;
+		case RendererAPI::API::OpenGL:	return OpenGLTextureFactory::Create(desc);
+
+		default:				APEX_CORE_CRITICAL("Unknown Rendering API"); return nullptr;
+		}
+		return nullptr;
+	}
 
 	Ref<Texture2D> Texture2D::Create(const fs::path& path, bool useSRGB, bool useHDR, TextureFiltering filtering)
 	{
