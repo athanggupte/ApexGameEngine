@@ -84,10 +84,15 @@ namespace Apex {
 
 	Entity Scene::CreateEntityWithGUID(const GUID& guid, StringHandle name)
 	{
+		APEX_CORE_ASSERT(m_GuidRegistry.count(guid) == 0, "Entity with given GUID already exists!");
+
 		auto entity = Entity{ m_Registry.create(), this };
 		entity.AddComponent<IDComponent>(guid);
 		entity.AddComponent<TransformComponent>();
 		entity.AddComponent<TagComponent>(name);
+
+		m_GuidRegistry.emplace(guid, entity.m_EntityId);
+
 		return entity;
 	}
 
@@ -105,7 +110,7 @@ namespace Apex {
 
 	Entity Scene::GetEntityByGUID(const GUID& guid)
 	{
-		return {};
+		return { m_GuidRegistry[guid], this };
 	}
 
 	std::vector<Entity> Scene::GetEntitiesByTag(StringHandle tag)
@@ -390,19 +395,19 @@ namespace Apex {
 		auto& dstRegistry = newScene->m_Registry;
 		auto& srcRegistry = m_Registry;
 
-		std::unordered_map<GUID, entt::entity> enttMap;
+		std::unordered_map<GUID, entt::entity> newSceneEntityMap;
 
 		auto v = srcRegistry.view<IDComponent>();
 		for (entt::entity e : v) {
 			GUID id = m_Registry.get<IDComponent>(e).id;
 			auto tag = m_Registry.get<TagComponent>(e).tag;
 			auto entity = newScene->CreateEntityWithGUID(id, tag);
-			enttMap.emplace(id, static_cast<entt::entity>(entity));
+			newSceneEntityMap.emplace(id, static_cast<entt::entity>(entity));
 		}
 
-		CopyComponent(AllBuiltInComponents{}, srcRegistry, dstRegistry, enttMap);
+		CopyComponent(AllBuiltInComponents{}, srcRegistry, dstRegistry, newSceneEntityMap);
 
-		CopyComponent(MetaComponents{}, srcRegistry, dstRegistry, enttMap);
+		CopyComponent(MetaComponents{}, srcRegistry, dstRegistry, newSceneEntityMap);
 
 		return newScene;
 	}

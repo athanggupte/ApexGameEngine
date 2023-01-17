@@ -186,10 +186,10 @@
       </TransformComponent>
       <MeshRendererComponent>
         <Mesh>
-          <ResourceId>default-sphere</ResourceId>
+          <ResourceId>sphere</ResourceId>
         </Mesh>
         <Material>
-          <ResourceId>default-material</ResourceId>
+          <ResourceId>sphere.mat</ResourceId>
         </Material>
       </MeshRendererComponent>
     </Entity>

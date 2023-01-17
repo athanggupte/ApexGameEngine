@@ -98,6 +98,7 @@ namespace Apex {
 
 	private:
 		entt::registry m_Registry;
+		std::unordered_map<GUID, entt::entity> m_GuidRegistry;
 		
 		friend class Entity;
 		friend class SceneHierarchyPanel;

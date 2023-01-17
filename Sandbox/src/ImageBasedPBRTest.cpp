@@ -16,6 +16,7 @@
 #include "Apex/Graphics/RenderPrimitives/Shader.h"
 #include "Apex/Graphics/Material.h"
 #include "Apex/Graphics/PreProcessing/EnvironmentMap.h"
+#include "glm/gtc/type_ptr.hpp"
 
 using namespace Apex;
 
@@ -180,9 +181,17 @@ namespace sandbox {
 		s_BRDFLUTTexture->Bind(TEX_SLOT_ENV_BRDFLUT);
 		s_Scene->Render3D();
 
-		if (options::drawNormals) {
+		/*{
+			ResourceManager& resourceManager = Application::Get().GetResourceManager();
+			Resource<Mesh> mesh = resourceManager.Get<Mesh>(RESNAME("sphere"));
+			Resource<Shader> shader = resourceManager.Get<Shader>(RESNAME("shader_StandardPBRTransparent"));
+
+			Renderer::Submit(shader.Get(), mesh->GetVAO(), glm::mat4{ 1.0 });
+		}*/
+
+		/*if (options::drawNormals) {
 			DrawSceneNormals();
-		}
+		}*/
 
 		// Draw Skybox
 		{
@@ -233,6 +242,27 @@ namespace sandbox {
 				options::showIrradianceMap = false;
 		}
 
+		{
+			ResourceManager& resourceManager = Application::Get().GetResourceManager();
+			Resource<Material> mat = resourceManager.Get<Material>(RESNAME("sphere.mat"));
+
+			static glm::vec4 albedo{0.0};
+			if (ImGui::ColorEdit4("Albedo", glm::value_ptr(albedo))) {
+				mat->SetAltColor("Albedo", albedo);
+			}
+
+			static float metallic{0.0};
+			if (ImGui::DragFloat("Metallic", &metallic, 0.001, 0, 1.0)) {
+				mat->SetAltColor("Metallic", glm::vec4{ metallic });
+			}
+
+			static float roughness{0.0};
+			if (ImGui::DragFloat("Roughness", &roughness, 0.001, 0, 1.0)) {
+				mat->SetAltColor("Roughness", glm::vec4{ roughness });
+			}
+		}
+
+
 		static bool albedo_only = false;
 		if (ImGui::Checkbox("Albedo Only", &albedo_only)) {
 			auto& resourceManager = Application::Get().GetResourceManager();
@@ -271,21 +301,24 @@ namespace sandbox {
 			auto& resourceManager = Application::Get().GetResourceManager();
 			resourceManager.Insert<Shader>(RESNAME("shader_StandardPBR"), "internal_assets/shaders/StandardPBR_new.glsl");
 			resourceManager.Insert<Shader>(RESNAME("shader_AlbedoUnlit"), "internal_assets/shaders/AlbedoUnlit.glsl");
+
 			resourceManager.Insert<Shader>(RESNAME("shader_SkyboxReflectionUnlit"), "assets/shaders/SkyboxReflectionUnlit.glsl");
+			resourceManager.Insert<Shader>(RESNAME("shader_StandardPBRTransparent"), "assets/shaders/StandardPBR-Transparent.glsl");
 
 			resourceManager.Insert<Texture>(RESNAME("texture_UV-Checker"), "internal_assets/textures/UV_Checker.png");
 
 			resourceManager.Insert<Mesh>(RESNAME("default-plane"), Primitives::Plane::GetMesh());
 			resourceManager.Insert<Mesh>(RESNAME("default-cube"), Primitives::Cube::GetMesh());
-			resourceManager.Insert<Mesh>(RESNAME("default-sphere"), FBXImporter::LoadMesh(FileSystem::GetFileIfExists("assets/models/sphere-tris-1.fbx"), "Sphere"));
+			resourceManager.Insert<Mesh>(RESNAME("sphere"), FBXImporter::LoadMesh(FileSystem::GetFileIfExists("assets/models/sphere-tris-1.fbx"), "Sphere"));
 			resourceManager.Insert<Mesh>(RESNAME("heavy-metal-squiggle-orb"), FBXImporter::LoadMesh(FileSystem::GetFileIfExists("assets/models/heavy-metal-squiggle-orb-4k/source/bool_low-tris.fbx")));
 			resourceManager.Insert<Mesh>(RESNAME("oldcar"), FBXImporter::LoadMesh(FileSystem::GetFileIfExists("assets/models/old-rusty-car/oldcar.fbx")));
 
 			{
 			Resource<Material> mat = resourceManager.Insert<Material>(
-				RESNAME("default-material"),
-				CreateRef<Material>(resourceManager.Get<Shader>(RESNAME("shader_StandardPBR"))));
-			//mat->SetTexture("Albedo", resourceManager.Get<Texture>(RESNAME("texture_UV-Checker")));
+				RESNAME("sphere.mat"),
+				CreateRef<Material>(resourceManager.Get<Shader>(RESNAME("shader_StandardPBRTransparent"))));
+			mat->SetAltColor("Roughness", glm::vec4{ 0.01f });
+			mat->SetAltColor("Metallic", glm::vec4{ 0.01f });
 			}
 
 			{
@@ -296,14 +329,21 @@ namespace sandbox {
 
 			{
 			Resource<Material> mat = resourceManager.Insert<Material>(
+				RESNAME("transparent-material"),
+				CreateRef<Material>(resourceManager.Get<Shader>(RESNAME("shader_StandardPBRTransparent"))));
+			}
+
+			{
+			Resource<Material> mat = resourceManager.Insert<Material>(
 				RESNAME("heavy-metal-squiggle-orb.mat"),
-				CreateRef<Material>(resourceManager.Get<Shader>(RESNAME("shader_StandardPBR"))));
-			mat->SetTexture("Albedo",
+				CreateRef<Material>(resourceManager.Get<Shader>(RESNAME("shader_StandardPBRTransparent"))));
+			/*mat->SetTexture("Albedo",
 				resourceManager.Insert<Texture>(
 					RESNAME("heavy-metal-squiggle-orb.tex_albedo"),
 					Texture2D::Create(
 						"assets/models/heavy-metal-squiggle-orb-4k/textures/bool_low_bool_t_BaseColor.png",
-						true)));
+						true)));*/
+			mat->SetAltColor("Albedo", glm::vec4{ 0.02f, 0.67f, 0.33f, 0.4f });
 			mat->SetTexture("Metallic",
 				resourceManager.Insert<Texture>(
 					RESNAME("heavy-metal-squiggle-orb.tex_metallic"),
@@ -362,7 +402,7 @@ namespace sandbox {
 			Entity oldcar = s_Scene->CreateEntity(TEXT("oldcar"));
 			MeshRendererComponent& meshComp = oldcar.AddComponent<MeshRendererComponent>();
 			meshComp.mesh = Application::Get().GetResourceManager().Get<Mesh>(RESNAME("oldcar"));
-			meshComp.material = Application::Get().GetResourceManager().Get<Material>(RESNAME("oldcar-material"));
+			meshComp.material = Application::Get().GetResourceManager().Get<Material>(RESNAME("sphere.mat"));
 			oldcar.Transform().rotation.x = glm::radians(-90.f);
 			oldcar.Transform().scale *= 0.025f;
 		}
